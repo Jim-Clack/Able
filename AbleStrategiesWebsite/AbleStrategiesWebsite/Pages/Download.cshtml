@@ -1,0 +1,51 @@
+﻿@page
+@model AbleStrategiesWebsite.Pages.DownloadModel
+@{
+    ViewData["Title"] = "Download";
+}
+<h2>@ViewData["Title"]</h2>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Download</title>
+    <link rel="stylesheet" href="~/css/ablestrategies.css" asp-append-version="true" />
+</head>
+<body>
+    <h3>This will install the Free Evaluation Edition that can be upgraded when you decide to buy.</h3>
+    <div class="col-md-12" style="color:navy">
+        <h3>
+            <a href="~/download/ACheckbookSetup.msi" download>
+                Click <strong>THIS</strong> to download and install Able Strategies AbleCheckbook for Windows
+            </a>
+        </h3>
+    </div><br />
+    <div class="col-md-12" style="color:navy">
+        <h3>
+            <a href="~/download/setup.exe" download>
+                If it fails to install then you may need to also download <strong>THIS</strong> setup.exe file
+            </a>
+        </h3>
+    </div><br />
+    <div class="col-md-12">
+        <h4>
+            Once the download(s) finish, click the tab at the bottom of the page and run the msi file.
+            You may be prompted to accept the default installation steps once or several times.
+        </h4>
+    </div>
+    <p />
+    <div class="col-md-12 text-success">
+        <h4>
+            If you are currently using another checkbook app, bring it up and select File:Export QIF
+            to export your checkbook content to a QIF file. Tell it to save that file to your Documents
+            folder. Then you can bring up your newly installed Able Strategies AbleCheckbook, create a
+            new Checking account, and go to File:Import QIF to select that file you exported. Enjoy.
+            (If your old app doesn't support QIF then you can use CSV instead, with some possible loss
+            of data fidelity.)
+        </h4>
+    </div>
+
+</body>
+</html>

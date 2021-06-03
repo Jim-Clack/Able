@@ -1,0 +1,348 @@
+﻿namespace AbleCheckbook.Gui
+{
+    partial class ActivationForm
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this.textBoxSiteId = new System.Windows.Forms.TextBox();
+            this.textBoxUserId = new System.Windows.Forms.TextBox();
+            this.textBoxPostalCode = new System.Windows.Forms.TextBox();
+            this.textBoxPhoneNumber = new System.Windows.Forms.TextBox();
+            this.textBoxEmailAddress = new System.Windows.Forms.TextBox();
+            this.textBoxPin = new System.Windows.Forms.TextBox();
+            this.buttonActivate = new System.Windows.Forms.Button();
+            this.labelPin = new System.Windows.Forms.Label();
+            this.labelSiteId = new System.Windows.Forms.Label();
+            this.labelUserId = new System.Windows.Forms.Label();
+            this.labelPostalCode = new System.Windows.Forms.Label();
+            this.labelPhoneNumber = new System.Windows.Forms.Label();
+            this.labelEmailAddress = new System.Windows.Forms.Label();
+            this.checkBoxAcceptTerms = new System.Windows.Forms.CheckBox();
+            this.labelIpAddress = new System.Windows.Forms.Label();
+            this.textBoxIpAddress = new System.Windows.Forms.TextBox();
+            this.linkLabelEula = new System.Windows.Forms.LinkLabel();
+            this.textBoxSiteDescription = new System.Windows.Forms.TextBox();
+            this.labelSiteDescription = new System.Windows.Forms.Label();
+            this.buttonCancel = new System.Windows.Forms.Button();
+            this.textBoxCityState = new System.Windows.Forms.TextBox();
+            this.textBoxStreetAddress = new System.Windows.Forms.TextBox();
+            this.labelCityState = new System.Windows.Forms.Label();
+            this.labelStreetAddress = new System.Windows.Forms.Label();
+            this.SuspendLayout();
+            // 
+            // textBoxSiteId
+            // 
+            this.textBoxSiteId.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxSiteId.Location = new System.Drawing.Point(173, 15);
+            this.textBoxSiteId.Name = "textBoxSiteId";
+            this.textBoxSiteId.ReadOnly = true;
+            this.textBoxSiteId.Size = new System.Drawing.Size(133, 24);
+            this.textBoxSiteId.TabIndex = 0;
+            this.textBoxSiteId.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // textBoxUserId
+            // 
+            this.textBoxUserId.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxUserId.Location = new System.Drawing.Point(173, 49);
+            this.textBoxUserId.Name = "textBoxUserId";
+            this.textBoxUserId.Size = new System.Drawing.Size(133, 24);
+            this.textBoxUserId.TabIndex = 0;
+            this.textBoxUserId.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // textBoxPostalCode
+            // 
+            this.textBoxPostalCode.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxPostalCode.Location = new System.Drawing.Point(173, 116);
+            this.textBoxPostalCode.Name = "textBoxPostalCode";
+            this.textBoxPostalCode.Size = new System.Drawing.Size(133, 24);
+            this.textBoxPostalCode.TabIndex = 1;
+            this.textBoxPostalCode.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // textBoxPhoneNumber
+            // 
+            this.textBoxPhoneNumber.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxPhoneNumber.Location = new System.Drawing.Point(476, 116);
+            this.textBoxPhoneNumber.Name = "textBoxPhoneNumber";
+            this.textBoxPhoneNumber.Size = new System.Drawing.Size(133, 24);
+            this.textBoxPhoneNumber.TabIndex = 3;
+            this.textBoxPhoneNumber.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // textBoxEmailAddress
+            // 
+            this.textBoxEmailAddress.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxEmailAddress.Location = new System.Drawing.Point(476, 49);
+            this.textBoxEmailAddress.Name = "textBoxEmailAddress";
+            this.textBoxEmailAddress.Size = new System.Drawing.Size(133, 24);
+            this.textBoxEmailAddress.TabIndex = 2;
+            this.textBoxEmailAddress.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // textBoxPin
+            // 
+            this.textBoxPin.Enabled = false;
+            this.textBoxPin.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxPin.Location = new System.Drawing.Point(521, 229);
+            this.textBoxPin.Name = "textBoxPin";
+            this.textBoxPin.Size = new System.Drawing.Size(91, 24);
+            this.textBoxPin.TabIndex = 7;
+            this.textBoxPin.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // buttonActivate
+            // 
+            this.buttonActivate.Location = new System.Drawing.Point(433, 180);
+            this.buttonActivate.Name = "buttonActivate";
+            this.buttonActivate.Size = new System.Drawing.Size(176, 32);
+            this.buttonActivate.TabIndex = 5;
+            this.buttonActivate.Text = "Activate";
+            this.buttonActivate.UseVisualStyleBackColor = true;
+            this.buttonActivate.Click += new System.EventHandler(this.buttonActivate_Click);
+            // 
+            // labelPin
+            // 
+            this.labelPin.AutoSize = true;
+            this.labelPin.Location = new System.Drawing.Point(317, 232);
+            this.labelPin.Name = "labelPin";
+            this.labelPin.Size = new System.Drawing.Size(198, 17);
+            this.labelPin.TabIndex = 7;
+            this.labelPin.Text = "Offline / Manual Activation PIN";
+            // 
+            // labelSiteId
+            // 
+            this.labelSiteId.AutoSize = true;
+            this.labelSiteId.Location = new System.Drawing.Point(9, 18);
+            this.labelSiteId.Name = "labelSiteId";
+            this.labelSiteId.Size = new System.Drawing.Size(152, 17);
+            this.labelSiteId.TabIndex = 8;
+            this.labelSiteId.Text = "Site Identification Code";
+            // 
+            // labelUserId
+            // 
+            this.labelUserId.AutoSize = true;
+            this.labelUserId.Location = new System.Drawing.Point(9, 51);
+            this.labelUserId.Name = "labelUserId";
+            this.labelUserId.Size = new System.Drawing.Size(139, 17);
+            this.labelUserId.TabIndex = 9;
+            this.labelUserId.Text = "Contact / User Name";
+            // 
+            // labelPostalCode
+            // 
+            this.labelPostalCode.AutoSize = true;
+            this.labelPostalCode.Location = new System.Drawing.Point(9, 118);
+            this.labelPostalCode.Name = "labelPostalCode";
+            this.labelPostalCode.Size = new System.Drawing.Size(156, 17);
+            this.labelPostalCode.TabIndex = 10;
+            this.labelPostalCode.Text = "Postal / ZIP Code or CC";
+            // 
+            // labelPhoneNumber
+            // 
+            this.labelPhoneNumber.AutoSize = true;
+            this.labelPhoneNumber.Location = new System.Drawing.Point(313, 119);
+            this.labelPhoneNumber.Name = "labelPhoneNumber";
+            this.labelPhoneNumber.Size = new System.Drawing.Size(149, 17);
+            this.labelPhoneNumber.TabIndex = 11;
+            this.labelPhoneNumber.Text = "10-12 Digit Phone Nbr";
+            // 
+            // labelEmailAddress
+            // 
+            this.labelEmailAddress.AutoSize = true;
+            this.labelEmailAddress.Location = new System.Drawing.Point(312, 51);
+            this.labelEmailAddress.Name = "labelEmailAddress";
+            this.labelEmailAddress.Size = new System.Drawing.Size(150, 17);
+            this.labelEmailAddress.TabIndex = 12;
+            this.labelEmailAddress.Text = "Contact Email Address";
+            // 
+            // checkBoxAcceptTerms
+            // 
+            this.checkBoxAcceptTerms.AutoSize = true;
+            this.checkBoxAcceptTerms.Location = new System.Drawing.Point(13, 149);
+            this.checkBoxAcceptTerms.Name = "checkBoxAcceptTerms";
+            this.checkBoxAcceptTerms.Size = new System.Drawing.Size(318, 21);
+            this.checkBoxAcceptTerms.TabIndex = 4;
+            this.checkBoxAcceptTerms.Text = "I have read and accept the terms of the EULA";
+            this.checkBoxAcceptTerms.UseVisualStyleBackColor = true;
+            // 
+            // labelIpAddress
+            // 
+            this.labelIpAddress.AutoSize = true;
+            this.labelIpAddress.Location = new System.Drawing.Point(312, 18);
+            this.labelIpAddress.Name = "labelIpAddress";
+            this.labelIpAddress.Size = new System.Drawing.Size(152, 17);
+            this.labelIpAddress.TabIndex = 15;
+            this.labelIpAddress.Text = "Computer Identification";
+            // 
+            // textBoxIpAddress
+            // 
+            this.textBoxIpAddress.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxIpAddress.Location = new System.Drawing.Point(476, 15);
+            this.textBoxIpAddress.Name = "textBoxIpAddress";
+            this.textBoxIpAddress.ReadOnly = true;
+            this.textBoxIpAddress.Size = new System.Drawing.Size(133, 24);
+            this.textBoxIpAddress.TabIndex = 4;
+            this.textBoxIpAddress.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // linkLabelEula
+            // 
+            this.linkLabelEula.AutoSize = true;
+            this.linkLabelEula.Location = new System.Drawing.Point(346, 149);
+            this.linkLabelEula.Name = "linkLabelEula";
+            this.linkLabelEula.Size = new System.Drawing.Size(242, 17);
+            this.linkLabelEula.TabIndex = 16;
+            this.linkLabelEula.TabStop = true;
+            this.linkLabelEula.Text = "EULA - End User License Agreement";
+            // 
+            // textBoxSiteDescription
+            // 
+            this.textBoxSiteDescription.Enabled = false;
+            this.textBoxSiteDescription.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxSiteDescription.Location = new System.Drawing.Point(173, 229);
+            this.textBoxSiteDescription.Name = "textBoxSiteDescription";
+            this.textBoxSiteDescription.Size = new System.Drawing.Size(133, 24);
+            this.textBoxSiteDescription.TabIndex = 6;
+            this.textBoxSiteDescription.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // labelSiteDescription
+            // 
+            this.labelSiteDescription.AutoSize = true;
+            this.labelSiteDescription.Location = new System.Drawing.Point(5, 232);
+            this.labelSiteDescription.Name = "labelSiteDescription";
+            this.labelSiteDescription.Size = new System.Drawing.Size(165, 17);
+            this.labelSiteDescription.TabIndex = 18;
+            this.labelSiteDescription.Text = "Assigned site description";
+            // 
+            // buttonCancel
+            // 
+            this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.buttonCancel.Location = new System.Drawing.Point(249, 180);
+            this.buttonCancel.Name = "buttonCancel";
+            this.buttonCancel.Size = new System.Drawing.Size(158, 32);
+            this.buttonCancel.TabIndex = 19;
+            this.buttonCancel.Text = "Cancel";
+            this.buttonCancel.UseVisualStyleBackColor = true;
+            // 
+            // textBoxCityState
+            // 
+            this.textBoxCityState.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxCityState.Location = new System.Drawing.Point(476, 82);
+            this.textBoxCityState.Name = "textBoxCityState";
+            this.textBoxCityState.Size = new System.Drawing.Size(133, 24);
+            this.textBoxCityState.TabIndex = 21;
+            this.textBoxCityState.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // textBoxStreetAddress
+            // 
+            this.textBoxStreetAddress.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxStreetAddress.Location = new System.Drawing.Point(173, 82);
+            this.textBoxStreetAddress.Name = "textBoxStreetAddress";
+            this.textBoxStreetAddress.Size = new System.Drawing.Size(133, 24);
+            this.textBoxStreetAddress.TabIndex = 20;
+            this.textBoxStreetAddress.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // labelCityState
+            // 
+            this.labelCityState.AutoSize = true;
+            this.labelCityState.Location = new System.Drawing.Point(312, 84);
+            this.labelCityState.Name = "labelCityState";
+            this.labelCityState.Size = new System.Drawing.Size(155, 17);
+            this.labelCityState.TabIndex = 23;
+            this.labelCityState.Text = "City and State/Province";
+            // 
+            // labelStreetAddress
+            // 
+            this.labelStreetAddress.AutoSize = true;
+            this.labelStreetAddress.Location = new System.Drawing.Point(9, 84);
+            this.labelStreetAddress.Name = "labelStreetAddress";
+            this.labelStreetAddress.Size = new System.Drawing.Size(130, 17);
+            this.labelStreetAddress.TabIndex = 22;
+            this.labelStreetAddress.Text = "Address and Street";
+            // 
+            // ActivationForm
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.buttonCancel;
+            this.ClientSize = new System.Drawing.Size(622, 267);
+            this.Controls.Add(this.textBoxCityState);
+            this.Controls.Add(this.textBoxStreetAddress);
+            this.Controls.Add(this.labelCityState);
+            this.Controls.Add(this.labelStreetAddress);
+            this.Controls.Add(this.buttonCancel);
+            this.Controls.Add(this.textBoxPin);
+            this.Controls.Add(this.textBoxSiteDescription);
+            this.Controls.Add(this.linkLabelEula);
+            this.Controls.Add(this.textBoxIpAddress);
+            this.Controls.Add(this.checkBoxAcceptTerms);
+            this.Controls.Add(this.buttonActivate);
+            this.Controls.Add(this.textBoxEmailAddress);
+            this.Controls.Add(this.textBoxPhoneNumber);
+            this.Controls.Add(this.textBoxPostalCode);
+            this.Controls.Add(this.textBoxUserId);
+            this.Controls.Add(this.textBoxSiteId);
+            this.Controls.Add(this.labelIpAddress);
+            this.Controls.Add(this.labelEmailAddress);
+            this.Controls.Add(this.labelPhoneNumber);
+            this.Controls.Add(this.labelUserId);
+            this.Controls.Add(this.labelSiteId);
+            this.Controls.Add(this.labelPostalCode);
+            this.Controls.Add(this.labelSiteDescription);
+            this.Controls.Add(this.labelPin);
+            this.MaximumSize = new System.Drawing.Size(640, 314);
+            this.MinimumSize = new System.Drawing.Size(640, 314);
+            this.Name = "ActivationForm";
+            this.Text = "Activation";
+            this.Load += new System.EventHandler(this.ActivationForm_Load);
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.TextBox textBoxSiteId;
+        private System.Windows.Forms.TextBox textBoxUserId;
+        private System.Windows.Forms.TextBox textBoxPostalCode;
+        private System.Windows.Forms.TextBox textBoxPhoneNumber;
+        private System.Windows.Forms.TextBox textBoxEmailAddress;
+        private System.Windows.Forms.TextBox textBoxPin;
+        private System.Windows.Forms.Button buttonActivate;
+        private System.Windows.Forms.Label labelPin;
+        private System.Windows.Forms.Label labelSiteId;
+        private System.Windows.Forms.Label labelUserId;
+        private System.Windows.Forms.Label labelPostalCode;
+        private System.Windows.Forms.Label labelPhoneNumber;
+        private System.Windows.Forms.Label labelEmailAddress;
+        private System.Windows.Forms.CheckBox checkBoxAcceptTerms;
+        private System.Windows.Forms.Label labelIpAddress;
+        private System.Windows.Forms.TextBox textBoxIpAddress;
+        private System.Windows.Forms.LinkLabel linkLabelEula;
+        private System.Windows.Forms.TextBox textBoxSiteDescription;
+        private System.Windows.Forms.Label labelSiteDescription;
+        private System.Windows.Forms.Button buttonCancel;
+        private System.Windows.Forms.TextBox textBoxCityState;
+        private System.Windows.Forms.TextBox textBoxStreetAddress;
+        private System.Windows.Forms.Label labelCityState;
+        private System.Windows.Forms.Label labelStreetAddress;
+    }
+}

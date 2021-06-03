@@ -1,0 +1,185 @@
+﻿/* navbar menu at top */
+.navbar-ablestrategies {
+    color: navy;
+    font-weight: bold;
+    font-style: italic;
+}
+
+/* navbar menu at top */
+.navbar-ablestrategies:hover, .navbar-ablestrategies:focus {
+    color: orangered;
+    text-decoration: underline;
+}
+
+/* Horizontal rule - separator bar */
+hr {
+    height: 3px;
+    border-width: 1px;
+    border-style: none;
+    background-color: dodgerblue;
+}
+
+/* title at the top of a grid */
+.grid-title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 16pt;
+    color: navy;
+    background-color: lightgray;
+    background-clip: padding-box;
+    border-style: solid;
+    border-color: transparent;
+    border-width: 1px;
+    padding: 5px;
+}
+
+/* heading beneath the title of a grid */
+.grid-heading {
+    text-align: center;
+    font-weight: bold;
+    font-size: 13pt;
+    color: navy;
+    background-color: white;
+    background-clip: padding-box;
+    border-style: solid;
+    border-color: transparent;
+    border-width: 1px;
+    padding: 5px;
+}
+
+/* first-column heading beneath the title of a grid */
+.grid-col1heading {
+    text-align: center;
+    font-weight: bold;
+    font-size: 13pt;
+    color: orangered;
+    background-color: lightgray;
+    background-clip: padding-box;
+    border-style: solid;
+    border-color: transparent;
+    border-width: 1px;
+    padding: 5px;
+}
+
+/* first-column grid cell */
+.grid-cell {
+    text-align: center;
+    font-size: 12pt;
+    color: black;
+    background-color: white;
+    background-clip: padding-box;
+    border-style: solid;
+    border-color: transparent;
+    border-width: 1px;
+    padding: 5px;
+}
+
+/* first-column grid cell */
+.grid-col1cell {
+    text-align: center;
+    font-size: 12pt;
+    color: black;
+    background-color: lightgray;
+    background-clip: padding-box;
+    border-style: solid;
+    border-color: transparent;
+    border-width: 1px;
+    padding: 5px;
+}
+
+/* page background */
+body {
+    background-image: url(../images/watermark.jpg);
+    background-repeat: repeat;
+}
+
+/* pronounced quotes */
+.testimonial {
+    width: 100%;
+    text-align: center;
+    font-size: 16pt;
+    font-style: italic;
+    color: navy;
+}
+
+.ablestrategies-tochead {
+    font-size: 16pt;
+    color: navy;
+    background-color: orangered;
+    background-clip: padding-box;
+    border-style: solid;
+    border-color: transparent;
+    border-width: 2px;
+    padding: 3px;
+}
+
+.ablestrategies-tocentry {
+    text-align: left;
+    font-size: 14pt;
+    color: black;
+    background-color: white;
+    background-clip: padding-box;
+    border-style: solid;
+    border-color: transparent;
+    border-width: 2px;
+    padding: 3px;
+}
+
+.ablestrategies-toccomment {
+    text-align: left;
+    font-size: 14pt;
+    color: black;
+    background-color: transparent;
+    background-clip: padding-box;
+    border-style: solid;
+    border-color: transparent;
+    border-width: 2px;
+    padding: 3px;
+}
+
+.ablestrategies-tocbullets {
+    text-align: left;
+    font-size: 14pt;
+    color: navy;
+    background-color: transparent;
+    background-clip: padding-box;
+    border-style: solid;
+    border-color: transparent;
+    border-width: 2px;
+    padding: 3px;
+}
+
+.ablestrategies-tocleftbanner {
+    text-align: left;
+    font-size: 18pt;
+    font-weight: bold;
+    color: lightgray;
+    background-color: transparent;
+    background-clip: padding-box;
+    border-style: solid;
+    border-color: transparent;
+    padding: 3px;
+    text-orientation: sideways-left;
+    transform-origin: 200px 130px;
+    transform: rotate(-90deg);
+}
+
+.ablestrategies-helpbutton:link, .ablestrategies-helpbutton:visited, .ablestrategies-helpbutton:hover, .ablestrategies-helpbutton:focus {
+    text-align: left;
+    font-size: 14pt;
+    color: black;
+    background-color: white;
+    background-clip: padding-box;
+    border-style: solid;
+    border-color: transparent;
+    border-width: 2px;
+    padding: 3px;
+}
+
+.ablestrategies-helpbutton:hover, .ablestrategies-helpbutton:focus {
+    color: orange;
+}
+
+.ablestrategies-helpchapter {
+    color: black;
+}

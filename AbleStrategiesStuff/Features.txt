@@ -1,0 +1,53 @@
+Done or Nearing Completion:
+- Checkbook App for Windows - Main Program
+- Platform Neutral Implementation (Quicken has an advantage as it is web-based)
+- I18N/L10N & Configurable Resources (Quicken has, most others do not)
+- Undo/Redo (Very very limited in Quicken, not in most competitors)
+- Reconciliation Agent (Not in Quicken or competitors)
+- Import/Export QIF and CSV (Quicken/others typically have one or the other)
+- Year-End Wrap-up (Superior to Quicken, others typically do not support)
+- Split transactions, 2 max currently (Quicken unlimited, others don't support)
+- Automated Overlapping Backup (Quicken/others typically backup reminders only)
+- Scheduled events and reminders (Quicken has, most others do not)
+- Shows who made last mod to each entry and when (Quicken and others do not)
+- Sort by various fields (Quicken cannot do, nor can most others)
+- Rearrange columns, adjust widths (Quicken cannot, others do)
+- Can save and resume in mid-reconcilation (Quicken/others unknown)
+- Textual assistance guides the user (Others rely on help an online docs)
+- Ease-of-use, color-coding, consistent mouse/keyboard usage (Unlike Quicken)
+- Much simpler, intuitive, and less intimidating than Quicken and others
+- More effective use of screen real-estate without clutter or confusion
+- Tools for support staff to offer superior service (automated, soon)
+Finishing Touches YTD:
+- Finish Coding Front-End
+- Several Minor Details
+- Help System
+Major Work YTD:
+- Company Website (Required)
+- Automated Purchase and Activation (Required)
+- Mobile App iOS/Android (Planned to be far superior to Quicken)
+- Online Banking Support (Quicken has, others do not)
+- Check writing (Quicken and some competitors have)
+- Apple Mac Platform (Quicken and some competitors have)
+Other Expenses YTD:
+- Admin Costs, Legal Fees, Business Startup Costs, etc.
+- Marketing Costs
+- Supplies (i.e. Visual Studio TFS, Server/Cloud, etc.)
+- Cloud platform, Internet service provider
+Issues to be Resolved:
+- Market Survey, Identify and Evaluate Customers and Competitors
+- Free Evaluation Version? Crippled? Adware? Time-Limited? Full-Guilt-Trip?
+- Approach to Licensing and Payment, Third Party Resellers w/Bloatware?
+- Marketing Strategy (Grassroots? Partner with Banks? Gaps vs Head-to-Head)
+- Advertising - Media, Creatives, Target, Saturation, Web, Feedback/Analytics
+- Company Structure, Location, Charter, Administration, Job-Responsibilities
+- Additional Developer(s)? Rate/Benefits? Equity v Salary v Both v Contract?
+- Philosophy, Direction, Policy, Standards, etc.
+SWOT Notes and Key Differentiators:
+- Highest quality maintainable code (MS/MI is ~80, 60%+ Code Coverage exc UI)
+- Beta testing and Major Work initiatives to be completed
+- Quicken has rested on its laurels for far too long
+- The world has passed by Quicken and customers have higher expectations
+- Quicken's recent move to cloud was not market-driven but profit-driven
+- Competitors have not been able to succeed - Why? What can we do differently?
+- Business Plan - The Sooner the Better, Prioritization, Staffing, etc.

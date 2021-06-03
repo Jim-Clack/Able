@@ -1,0 +1,55 @@
+SQA...
+ * Intermix reconcile/year-end/checkoff/uncheck/undo/redo/save/open - verify
+ * Test performance/correctness with large DB's, such as 3000+ entries
+ * Make sure that everything that impacts the DB can be undone/redone
+ * Change computer date to test reconcile/year-end, running in a VM
+ * Thoroughly test all variations of ScheduledEvent, changing dates in a VM
+ * Test various screen resolutions, themes, and font scales (i.e. 100%, 150%)
+ * Test keyboard entry, tab-to-controls, non-mouse usage
+ * Modify aged SchEvent, is repeat-count updated correctly? All 5 modes?
+ * Test all ops (delete, edit, splits) on last and first entry of checkbook
+ * Check logs after each run to see if there were any stealthy problems
+Basic Functionality Test Script...
+ Note that this script should be improved by running it in a VM with
+ the OS set to prescribed dates in order to evaluate both reconciling
+ and year-end wrap-up in a realistic manner. Until then, just use suc-
+ ceeding dates for each step below. Note that this tests reconciliation
+ anomalies, not the happy-path, so it appears to make very little sense.
+ (The $8 pmt never clears; the $50 pmt isn't reflected in closing bal.)
+ Note: In competing apps the sign of the disparity might be reversed.
+ 1. new account:         from menu 
+ 2. starting balance:      1000.00
+ 3. new entry/payment:     -100.00
+ 4. new entry/payment:      -50.00
+ 5. new entry/payment:       -8.00
+ 6. reconcile                 menu
+ 7. closing balance:        892.00 
+ 8. verify disparity*:      108.00  
+ 9. check-off entry:       -100.00
+ 10. check-off entry:       -50.00
+ 11. verify tips:   -50.00 & -8.00
+ 12. verify disparity*:     -42.00
+ 13. adjust balance/done:   button  
+ 14. verify bal adj:         42.00
+ 15. new entry/payment:    -170.00
+ 16. verify balance:        714.00
+ 17. reconcile              button
+ 18. verify last balance:   892.00
+ 19. closing balance:       680.00
+ 20. verify disparity*:    -170.00
+ 21. check-off entry:      -170.00
+ 22. verify disparity*:       0.00
+ 23. adjust balance/done:   button
+ 24. verify bal adj:          0.00
+ 25. undo commit:           button
+ 26. undo check-off:        button
+ 27. verify not-checked:   -170.00
+ 28. redo check-off:        button
+ 29. verify checked-off:   -170.00
+ 30. verify disparity*:       0.00
+ 31. verify last balance:   850.00
+ 32. closing balance:       680.00
+ 33. verify disparity:        0.00
+ 34. adjust balance/done:   button
+ 35. verify bal adj:          0.00
+

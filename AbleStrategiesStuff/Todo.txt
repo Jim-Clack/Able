@@ -1,0 +1,38 @@
+Alpha TODO...
+ - Test expiration slow down - also splash & about
+ - EULA
+ - HPJIMC@30101 3983 C:\Users\jimcl\AppData\Roaming\AbleStrategies\ACheckbook\preferences.cnf
+
+Beta TODO...
+ - Flesh out online help
+ - Verify (via pop-up) dates or amounts that are questionable
+ - Prevent multiple instances at the same time
+ - AreYouSureForm with date/time/user that screen-captures, logs, and read log
+ - Expand column widths when form is resized on Scheduled Events List
+ - Activation: Add a time-of-day stamp to an image file as a tertiary expiry check
+ - Paypal API
+ - Implement Activate via Email as is appropriate (?)
+ - Web Services for online purchase and self-service activation
+ - Much testing
+
+Long-term TODO...
+ - Web Services for online reconciliation (Open Banking API)
+ - Budgeting, forecasting, trends, etc.
+ - Move SU user data to website instead of file
+ - Implement SU ReadLog
+ - When to call DiscardWeakRefs
+ - Better Icon, Toolbar Images, etc.
+ - Call Dispose() for fonts/colors/etc. (...or, better yet, "using")
+ - Need a command to "check for duplicates" and fix them
+ - Need a "rename category" that will, if required, merge categories
+ - Preference for Banking API: direct v via AbleStrategies server
+ - Put DB tables in a Dictionary or DBMS instead of a SortedList
+ - Fix piggish memory usage, especially unecessary duplications
+ - Make CsvImporter more flexible for various column sequences
+ - More fine-grained unit tests
+ - Overflow Undo-Queues to disk - sync to db via GUID
+ - View: Load Custom View, Save Custom View (Sort, ColWdts, ColSeq)
+ - Performance: Cache and maintain collections, optimize for speed
+ - Backup directly to Google Drive or iCloud
+ - Mobile App
+ - Mac edition

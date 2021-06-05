@@ -438,6 +438,7 @@ namespace AbleCheckbook
         {
             itemizeSplitsToolStripMenuItem.Checked = !itemizeSplitsToolStripMenuItem.Checked;
             _backend.ItemizedSplits = itemizeSplitsToolStripMenuItem.Checked;
+            _backend.CurrentEntryId = Guid.Empty;
             _backend.ReloadTransactions(SortEntriesBy.NoChange);
         }
 
@@ -514,9 +515,6 @@ namespace AbleCheckbook
 
         private void activateStripMenuItem_Click(object sender, EventArgs e)
         {
-            //Activation act = Activation.Instance;
-            //act.SetDefaultDays(2, 3);
-            //act.SetExpiration(2, act.ChecksumOfString(act.SiteIdentification));
             ActivationForm form = new ActivationForm();
             form.ShowDialog();
         }

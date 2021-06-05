@@ -148,6 +148,7 @@
             this.linkLabelEula.TabIndex = 17;
             this.linkLabelEula.TabStop = true;
             this.linkLabelEula.Text = "EULA - End User License Agreement";
+            this.linkLabelEula.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelEula_LinkClicked);
             // 
             // buttonOk
             // 

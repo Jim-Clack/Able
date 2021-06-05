@@ -42,5 +42,15 @@ namespace AbleCheckbook.Gui
             }
             textBoxHeading.Select(0, 0);
         }
+
+        private void linkLabelEula_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            MessageBox.Show(
+                "This is an Alpha test version to be used only for that purpose and remains the " +
+                "property of Able Strategies. No warranties are expressed or implied and it is " +
+                "expected that there will be bugs and inconsistencies as the product evolves. " +
+                "Any attempt to engineer or thwart the security of the application is prohibited. " +
+                "We thank you for your participation in the Alpha Test program.", "EULA", MessageBoxButtons.OK);
+        }
     }
 }

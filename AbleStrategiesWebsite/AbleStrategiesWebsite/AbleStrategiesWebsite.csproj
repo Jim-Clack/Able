@@ -23,6 +23,7 @@
   <ItemGroup>
     <None Include="Pages\Help\_Layout.cshtml" />
     <None Include="Pages\Help\_ViewImports.cshtml" />
+    <None Include="wwwroot\Help.html" />
   </ItemGroup>
 
 </Project>

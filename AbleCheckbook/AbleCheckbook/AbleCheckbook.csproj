@@ -269,7 +269,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Db\UndoableDbAccess.cs" />
-    <Compile Include="System\Forms.cs" />
     <EmbeddedResource Include="Gui\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </EmbeddedResource>

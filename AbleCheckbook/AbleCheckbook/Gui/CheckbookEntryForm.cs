@@ -208,13 +208,13 @@ namespace AbleCheckbook.Gui
                 comboCategory.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
                 comboCategory.FormattingEnabled = true;
                 comboCategory.Name = "comboCategory" + rowNumber;
-                comboCategory.SelectedIndexChanged += new System.EventHandler(this.comboCategory1_SelectedIndexChanged);
-                comboCategory.Leave += new System.EventHandler(this.comboCategory_Leave);
                 comboCategory.DataSource = _backend.Categories;
                 comboCategory.BindingContext = new BindingContext();
                 this.Controls.Add(comboCategory);
                 comboCategory.BringToFront();
                 comboCategory.Text = "";
+                comboCategory.SelectedIndexChanged += new System.EventHandler(this.comboCategory1_SelectedIndexChanged);
+                comboCategory.Leave += new System.EventHandler(this.comboCategory_Leave);
 
                 ComboBox comboKind = new ComboBox();
                 comboKind.Location = new Point((int)(257 * _xScale), yOffset);
@@ -255,12 +255,13 @@ namespace AbleCheckbook.Gui
                 textBoxAmount.Anchor = AnchorStyles.Right | AnchorStyles.Top;
                 textBoxAmount.AllowDrop = true;
                 textBoxAmount.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-                textBoxAmount.TextChanged += new System.EventHandler(this.textBoxAmount_TextChanged);
-                textBoxAmount.Enter += new System.EventHandler(this.textBoxAmount_Enter);
-                textBoxAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxAmount_KeyPress);
                 this.Controls.Add(textBoxAmount);
                 textBoxAmount.Text = "";
                 textBoxAmount.BringToFront();
+                textBoxAmount.Enter += new System.EventHandler(this.textBoxAmount_Enter);
+                textBoxAmount.TextChanged += new System.EventHandler(this.textBoxAmount_TextChanged);
+                textBoxAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxAmount_KeyPress);
+                textBoxAmount.Leave += new System.EventHandler(this.textBoxAmount_Leave);
 
                 _labelCategories[rowNumber] = labelCategory;
                 _comboCategories[rowNumber] = comboCategory;
@@ -849,9 +850,17 @@ namespace AbleCheckbook.Gui
 
         private void textBoxAmount_TextChanged(object sender, EventArgs e)
         {
-            AdjustAmountsPerKinds((Control)sender as Control);
+            // AdjustAmountsPerKinds((Control)sender as Control);
             UpdateVisibilities();
             ValidateReadyForSubmit();
+        }
+
+        private void textBoxAmount_Leave(object sender, EventArgs e)
+        {
+            if (sender as TextBox != null)
+            {
+                AdjustAmountsPerKinds((TextBox)sender);
+            }
         }
 
         private void comboKind_SelectedIndexChanged(object sender, EventArgs e)
@@ -864,17 +873,6 @@ namespace AbleCheckbook.Gui
         }
 
         private void comboCategory1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            UpdateVisibilities();
-        }
-
-        private void textBoxAmount2_TextChanged(object sender, EventArgs e)
-        {
-            UpdateVisibilities();
-            ValidateReadyForSubmit();
-        }
-
-        private void comboCategory2_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateVisibilities();
         }

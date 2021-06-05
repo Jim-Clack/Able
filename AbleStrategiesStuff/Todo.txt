@@ -1,9 +1,5 @@
-Alpha TODO...
- - Test expiration slow down - also splash & about
- - EULA
- - HPJIMC@30101 3983 C:\Users\jimcl\AppData\Roaming\AbleStrategies\ACheckbook\preferences.cnf
-
 Beta TODO...
+ - EULA
  - Flesh out online help
  - Verify (via pop-up) dates or amounts that are questionable
  - Prevent multiple instances at the same time

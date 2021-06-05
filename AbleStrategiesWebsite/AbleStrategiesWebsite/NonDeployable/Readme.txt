@@ -7,9 +7,12 @@ Setup
   Install WinSCP on your computer
 
 Caveats
-  
+  TBD
 
-Connection to IONOS Server
+Info on deploying .NET apps to Linux
+  https://docs.microsoft.com/en-us/dotnet/core/deploying/#framework-dependent-deployments-fdd
+
+Programmatic Connection to IONOS Server
 
   SessionOptions sessionOptions = new SessionOptions
   {

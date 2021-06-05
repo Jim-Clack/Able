@@ -211,7 +211,7 @@ namespace AbleCheckbook
                 {
                     MessageBox.Show(Strings.Get("Expired Trial Evaluation Period"), Strings.Get("Expired"), MessageBoxButtons.OK);
                 }
-                Thread.Sleep(100 + 10 * Math.Abs(expDays));
+                Thread.Sleep(500 + 20 * Math.Abs(expDays));
             }
             AdjustVisibilities();
             _busy = false;
@@ -290,6 +290,7 @@ namespace AbleCheckbook
                 labelLastClosing.Visible = labelThisClosing.Visible = false;
                 dataGridView1.Height = dataGridView1.Parent.Height - 100;
             }
+            dataGridView1.Columns["Balance"].Visible = _backend.SortedBy == SortEntriesBy.TranDate;
             dataGridView1.Columns["IsChecked"].Visible = reconciling;
             toolStripTextBoxSearchForPayee.Enabled = toolStripButtonSearchMemo.Enabled =
                 byCategoryToolStripMenuItem.Enabled = byCheckNumberToolStripMenuItem.Enabled = 

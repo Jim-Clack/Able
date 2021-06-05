@@ -128,10 +128,7 @@ namespace AbleCheckbook.Gui
             location.X = location.X + 20;
             form.StartPosition = FormStartPosition.Manual;
             form.Location = location;
-            if (form.rowCheckbook != null && form.rowCheckbook.Entry != null)
-            {
-                CurrentEntryId = form.rowCheckbook.Entry.Id;
-            }
+            CurrentEntryId = Guid.Empty;
             if (form.ShowDialog(parent) == DialogResult.OK)
             {
                 if (form.DeleteEntry)
@@ -145,6 +142,10 @@ namespace AbleCheckbook.Gui
                 else
                 {
                     SaveEntry(form);
+                    if (form.rowCheckbook != null && form.rowCheckbook.Entry != null)
+                    {
+                        CurrentEntryId = form.rowCheckbook.Entry.Id;
+                    }
                 }
             }
         }

@@ -65,7 +65,7 @@ When writing docs/help, explain...
 
 Kludge to force your system into Super-User mode...
  Activation.Instance.SetDefaultDays(180, 366); // note1: not needed but shown for completeness
- Activation.Instance.SetSiteDescription("MYNAME@99999"); // The @-sign enables SuperUser mode
+ Activation.Instance.SiteDescription = "MYNAME@99999"; // The @-sign enables SuperUser mode
  string pin = Activation.Instance.ResetAllEntries(Activation.Instance.ChecksumOfString(Activation.Instance.SiteIdentification));
  Activation.Instance.SetActivationPin(pin);
  Activation.Instance.SetFeatureBitmask(0x000000000000000FL, Activation.Instance.ChecksumOfString(Activation.Instance.SiteIdentification)); // note1
@@ -74,6 +74,8 @@ Kludge to force your system into Super-User mode...
 Open Banking API...
  https://www.openbankingtracker.com/country/united-states
  https://open-bank-project.readthedocs.io/en/latest/
+Info on deploying .NET apps to Linux
+  https://docs.microsoft.com/en-us/dotnet/core/deploying/#framework-dependent-deployments-fdd
 Google Drive API...
  https://developers.google.com/drive/api/v2/about-sdk
 Attribution on Website/About:

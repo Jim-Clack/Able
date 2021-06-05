@@ -93,6 +93,56 @@ body {
     background-repeat: repeat;
 }
 
+.able-h1 {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: bold;
+    color: navy;
+    margin-bottom: 8px;
+    padding-left: 0px;
+}
+
+.able-h2 {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: bold;
+    color: orangered;
+    margin-bottom: 6px;
+    padding-left: 5px;
+}
+
+.able-h3 {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: bold;
+    color: navy;
+    margin-bottom: 4px;
+    padding-left: 10px;
+}
+
+.able-h4 {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: normal;
+    color: black;
+    margin-bottom: 4px;
+    padding-left: 15px;
+}
+
+.able-h5 {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: normal;
+    color: darkgrey;
+    margin-bottom: 4px;
+    padding-left: 15px;
+}
+
 /* pronounced quotes */
 .testimonial {
     width: 100%;

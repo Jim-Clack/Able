@@ -9,6 +9,7 @@ Beta TODO...
  - Paypal API
  - Implement Activate via Email as is appropriate (?)
  - Web Services for online purchase and self-service activation
+ - Do a Year-End, then a year later do another, do the Balance-Forwards merge?
  - Much testing
 
 Long-term TODO...

@@ -511,6 +511,34 @@ namespace AbleCheckbook.Logic
         }
 
         /// <summary>
+        /// Return the ordinal string of a cardinal number.
+        /// </summary>
+        /// <param name="cardinal">the number</param>
+        /// <returns>its ordinal - "1st", "2nd", etc.</returns>
+        public static string Ordinal(int cardinal)
+        {
+            string ending = "th";
+            if ((cardinal % 100) < 11 || (cardinal % 100) > 13)
+            {
+                switch (cardinal % 10)
+                {
+                    case 1:
+                        ending = "st";
+                        break;
+                    case 2:
+                        ending = "nd";
+                        break;
+                    case 3:
+                        ending = "rd";
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return "" + cardinal + ending;
+        }
+
+        /// <summary>
         /// Capitalize the first letter of each word.
         /// </summary>
         /// <param name="text">to be uber capped</param>

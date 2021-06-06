@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScheduledEventEditForm));
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPageMonthly = new System.Windows.Forms.TabPage();
             this.labelExample1 = new System.Windows.Forms.Label();
@@ -713,6 +714,7 @@
             this.Controls.Add(this.labelFinalPayment);
             this.Controls.Add(this.labelNotice);
             this.Controls.Add(this.labelMemo);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(582, 430);
             this.Name = "ScheduledEventEditForm";
             this.Text = "Edit Scheduled Event";

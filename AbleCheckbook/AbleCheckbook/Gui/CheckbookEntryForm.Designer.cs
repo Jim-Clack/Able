@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CheckbookEntryForm));
             this.datePickerTransaction = new System.Windows.Forms.DateTimePicker();
             this.labelTransDate = new System.Windows.Forms.Label();
             this.textBoxCheckNbr = new System.Windows.Forms.TextBox();
@@ -283,6 +284,7 @@
             this.Controls.Add(this.labelTransDate);
             this.Controls.Add(this.textBoxMemo);
             this.Controls.Add(this.textBoxAssistance);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(640, 480);
             this.MinimumSize = new System.Drawing.Size(599, 323);
             this.Name = "CheckbookEntryForm";

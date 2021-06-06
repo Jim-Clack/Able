@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NotificationForm));
             this.labelMessage = new System.Windows.Forms.Label();
             this.textBoxDetails = new System.Windows.Forms.TextBox();
             this.buttonOk = new System.Windows.Forms.Button();
@@ -94,6 +95,7 @@
             this.Controls.Add(this.buttonOk);
             this.Controls.Add(this.textBoxDetails);
             this.Controls.Add(this.labelMessage);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "NotificationForm";
             this.Text = "Error";
             this.Load += new System.EventHandler(this.NotificationForm_Load);

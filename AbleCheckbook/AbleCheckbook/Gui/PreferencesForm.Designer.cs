@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PreferencesForm));
             this.textBoxBaseDir = new System.Windows.Forms.TextBox();
             this.labelBaseDir = new System.Windows.Forms.Label();
             this.buttonBrowseDb = new System.Windows.Forms.Button();
@@ -240,6 +241,7 @@
             this.Controls.Add(this.labelLogLevel);
             this.Controls.Add(this.labelSchedEventDays);
             this.Controls.Add(this.labelBackupsDir);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(680, 380);
             this.MinimumSize = new System.Drawing.Size(622, 362);
             this.Name = "PreferencesForm";

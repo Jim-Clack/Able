@@ -403,7 +403,6 @@ namespace AbleCheckbook.Logic
             AddString("Every");
             AddString("Monthly");
             AddString("Monthly on");
-            AddString("Occ#");
             AddString("Even");
             AddString("Odd");
             AddString("Edit Scheduled Event");

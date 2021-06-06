@@ -128,6 +128,7 @@
             this.Controls.Add(this.buttonBackward);
             this.Controls.Add(this.buttonForward);
             this.Controls.Add(this.textBoxMonthYear);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(400, 420);
             this.Name = "CategoryChartForm";
             this.Text = "CategoryChart";

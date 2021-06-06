@@ -28,9 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScheduledEventsListForm));
             this.dataGridViewEvents = new System.Windows.Forms.DataGridView();
-            this.buttonAddNew = new System.Windows.Forms.Button();
-            this.buttonClose = new System.Windows.Forms.Button();
             this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Payee = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -38,6 +37,8 @@
             this.Due = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Memo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LastPosting = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.buttonAddNew = new System.Windows.Forms.Button();
+            this.buttonClose = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewEvents)).BeginInit();
             this.SuspendLayout();
             // 
@@ -68,29 +69,6 @@
             this.dataGridViewEvents.Size = new System.Drawing.Size(506, 249);
             this.dataGridViewEvents.TabIndex = 0;
             this.dataGridViewEvents.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewEvents_CellClick);
-            // 
-            // buttonAddNew
-            // 
-            this.buttonAddNew.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonAddNew.Location = new System.Drawing.Point(13, 280);
-            this.buttonAddNew.Name = "buttonAddNew";
-            this.buttonAddNew.Size = new System.Drawing.Size(105, 32);
-            this.buttonAddNew.TabIndex = 1;
-            this.buttonAddNew.Text = "Add New";
-            this.buttonAddNew.UseVisualStyleBackColor = true;
-            this.buttonAddNew.Click += new System.EventHandler(this.buttonAddNew_Click);
-            // 
-            // buttonClose
-            // 
-            this.buttonClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonClose.Location = new System.Drawing.Point(414, 280);
-            this.buttonClose.Name = "buttonClose";
-            this.buttonClose.Size = new System.Drawing.Size(105, 32);
-            this.buttonClose.TabIndex = 2;
-            this.buttonClose.Text = "Close";
-            this.buttonClose.UseVisualStyleBackColor = true;
-            this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
             // 
             // Id
             // 
@@ -147,6 +125,29 @@
             this.LastPosting.Name = "LastPosting";
             this.LastPosting.ReadOnly = true;
             // 
+            // buttonAddNew
+            // 
+            this.buttonAddNew.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonAddNew.Location = new System.Drawing.Point(13, 280);
+            this.buttonAddNew.Name = "buttonAddNew";
+            this.buttonAddNew.Size = new System.Drawing.Size(105, 32);
+            this.buttonAddNew.TabIndex = 1;
+            this.buttonAddNew.Text = "Add New";
+            this.buttonAddNew.UseVisualStyleBackColor = true;
+            this.buttonAddNew.Click += new System.EventHandler(this.buttonAddNew_Click);
+            // 
+            // buttonClose
+            // 
+            this.buttonClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.buttonClose.Location = new System.Drawing.Point(414, 280);
+            this.buttonClose.Name = "buttonClose";
+            this.buttonClose.Size = new System.Drawing.Size(105, 32);
+            this.buttonClose.TabIndex = 2;
+            this.buttonClose.Text = "Close";
+            this.buttonClose.UseVisualStyleBackColor = true;
+            this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
+            // 
             // ScheduledEventsListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -156,6 +157,7 @@
             this.Controls.Add(this.buttonClose);
             this.Controls.Add(this.buttonAddNew);
             this.Controls.Add(this.dataGridViewEvents);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ScheduledEventsListForm";
             this.Text = "Scheduled Events";
             this.Load += new System.EventHandler(this.ScheduledEventsListForm_Load);

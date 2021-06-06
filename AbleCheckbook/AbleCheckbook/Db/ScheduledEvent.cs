@@ -578,7 +578,7 @@ namespace AbleCheckbook.Db
                     long mask = 1 << index;
                     if((_dayOfMonthBits & mask) != 0)
                     {
-                        daysOfMonth = daysOfMonth + delimiter + (index + 1);
+                        daysOfMonth = daysOfMonth + delimiter + UtilityMethods.Ordinal(index + 1);
                         delimiter = ", ";
                     }
                 }
@@ -602,7 +602,7 @@ namespace AbleCheckbook.Db
                     case SchedulePeriod.Weekly:
                         return daysOfWeek;
                     case SchedulePeriod.MonthlySsa:
-                        return Strings.Get("Monthly on") + " " + daysOfWeek + " " + Strings.Get("Occ#") + " " + (1 + _weekOfMonth);
+                        return Strings.Get("Monthly on") + " " + UtilityMethods.Ordinal(1 + _weekOfMonth) + " " + daysOfWeek;
                     case SchedulePeriod.BiWeekly:
                         return Strings.Get("Every") + " " + Strings.Get(_isOddWeeksOnly ? "Odd" : "Even") + " " + daysOfWeek;
                 }

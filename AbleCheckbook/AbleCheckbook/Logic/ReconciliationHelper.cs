@@ -195,10 +195,15 @@ namespace AbleCheckbook.Logic
         /// Return the reconciliation disparity.
         /// </summary>
         /// <param name="closingBalance">Closing balance, 0 to return the sum of checked entries</param>
+        /// <param name="openingBalance">opening balance, omit to use last closing balance</param>
         /// <returns></returns>
-        public long GetDisparity(long closingBalance = 0L)
+        public long GetDisparity(long closingBalance = 0L, long openingBalance = 99999999L)
         {
-            long monthlyStatementCredit = closingBalance - _db.GetReconciliationValues().Balance;
+            if(openingBalance == 99999999L)
+            {
+                openingBalance = _db.GetReconciliationValues().Balance;
+            }
+            long monthlyStatementCredit = closingBalance - openingBalance;
             long checkedEntriesCredit = 0L;
             foreach (KeyValuePair<Guid, OpenEntry> pair in _openEntries)
             {

@@ -1,6 +1,13 @@
-Beta TODO...
+Alpha TODO...
+ - Print Register ignores dates
+ - Date range: End Date out to default to PAST start date, also verify sequence
+ - Print Register Right-just & change font for Balance to be same as Amount
+ - Weekly backups don't get done sometimes and not per the path in preferences
+ - in MainScreen.Reconciler (184-185) is the sign of the adjustment correct?
  - EULA
  - Flesh out online help
+
+Beta TODO...
  - Verify (via pop-up) dates or amounts that are questionable
  - Prevent multiple instances at the same time
  - AreYouSureForm with date/time/user that screen-captures, logs, and read log

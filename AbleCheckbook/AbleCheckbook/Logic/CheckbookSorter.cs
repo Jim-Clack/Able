@@ -33,6 +33,32 @@ namespace AbleCheckbook.Logic
         private List<Guid> _matches = null;
 
         /// <summary>
+        /// How are the entries currently sorted?
+        /// </summary>
+        private SortEntriesBy _sortedBy = SortEntriesBy.TranDate;
+
+        /// <summary>
+        /// Date range start
+        /// </summary>
+        private DateTime _startDate = DateTime.MinValue;
+
+        /// <summary>
+        /// Date range end
+        /// </summary>
+        private DateTime _endDate = DateTime.MaxValue;
+
+        /// <summary>
+        /// Set the date range. (Will be reset to all dates when the sortby is changed)
+        /// </summary>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        public void SetDateRange(DateTime startDate, DateTime endDate)
+        {
+            _startDate = startDate;
+            _endDate = endDate;
+        }
+
+        /// <summary>
         /// Get a list of sorted checkbook entries.
         /// </summary>
         /// <param name="db">Data to be sorted</param>
@@ -42,12 +68,21 @@ namespace AbleCheckbook.Logic
         public List<CheckbookEntry> GetSortedEntries(IDbAccess db, SortEntriesBy sortedBy, List<Guid> matches = null)
         {
             _matches = matches;
+            if (sortedBy != _sortedBy)
+            {
+                _startDate = DateTime.MinValue;
+                _endDate = DateTime.MaxValue;
+                _sortedBy = sortedBy;
+            }
             List<CheckbookEntry> entries = new List<CheckbookEntry>();
             CheckbookEntryIterator iterator = db.CheckbookEntryIterator;
             while (iterator.HasNextEntry())
             {
                 CheckbookEntry entry = iterator.GetNextEntry();
-                entries.Add(entry);
+                if (entry.DateOfTransaction >= _startDate && entry.DateOfTransaction <= _endDate)
+                {
+                    entries.Add(entry);
+                }
             }
             switch (sortedBy)
             {

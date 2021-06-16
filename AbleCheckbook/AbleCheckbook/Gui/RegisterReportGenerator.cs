@@ -21,9 +21,11 @@ namespace AbleCheckbook.Gui
         /// <summary>
         /// For traversing DB.
         /// </summary>
-        private CheckbookEntryIterator _iterator = null;
+        private List<CheckbookEntry> _entries = null;
+        private IEnumerator<CheckbookEntry> _enumerator = null;
 
         // Internal private state...
+        private CheckbookSorter _sorter = null;
         private FontDesc _companyText = null;
         private FontDesc _emphasisText = null;
         private FontDesc _columnText = null;
@@ -67,6 +69,8 @@ namespace AbleCheckbook.Gui
             _db = db;
             _startDate = startDate;
             _endDate = endDate;
+            _sorter = new CheckbookSorter();
+            _sorter.SetDateRange(startDate, endDate);
         }
 
         /// <summary>
@@ -90,7 +94,8 @@ namespace AbleCheckbook.Gui
                 }
                 InitializeVariables();
                 _graphics.FillRectangle(Brushes.White, new RectangleF(_xLeft, _yTop, _width, _height));
-                _iterator = _db.CheckbookEntryIterator;
+                _entries = _sorter.GetSortedEntries(_db, SortEntriesBy.TranDate);
+                _enumerator = _entries.GetEnumerator();
                 _yOnPage = DrawHeaderBlock(_db, _startDate, _endDate);
             }
             return RenderNextPage(graphics);
@@ -114,9 +119,9 @@ namespace AbleCheckbook.Gui
             DrawTextReturnNewX("    " + Strings.Get("Amount"), _monoText, _xChkAmt, _yOnPage);
             DrawTextReturnNewX("   " + Strings.Get("Balance"), _monoText, _xChkBal, _yOnPage);
             _yOnPage = DrawTextReturnNewY("X", _columnText, _xChkCleared, _yOnPage) + 3; 
-            while (_iterator.HasNextEntry())
+            while(_enumerator.MoveNext())
             {
-                CheckbookEntry entry = _iterator.GetNextEntry();
+                CheckbookEntry entry = _enumerator.Current;
                 int places = entry.Amount > 0 ? 10 : 11;
                 Brush boxBrush = entry.Amount > 0 ? _boxCreditBrush : _boxDebitBrush;
                 _graphics.FillRectangle(boxBrush, new RectangleF(_xBox, _yOnPage - 1, _widthBox, _heightBox));

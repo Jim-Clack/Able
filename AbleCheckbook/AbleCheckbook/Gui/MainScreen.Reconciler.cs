@@ -78,6 +78,10 @@ namespace AbleCheckbook
             textBoxThisBalance.Text = balanceAsAString;
             _backend.UpdateCheckedEntries(_reconHelper);
             long disparity = _reconHelper.GetDisparity(closingBalance);
+            if (textBoxLastBalance.Text.Trim().Length > 0)
+            {
+                disparity = _reconHelper.GetDisparity(closingBalance, UtilityMethods.ParseCurrency(textBoxLastBalance.Text));
+            }
             textBoxReconDisparity.Text = UtilityMethods.FormatCurrency(disparity);
             if (disparity == 0)
             {
@@ -170,17 +174,18 @@ namespace AbleCheckbook
         /// </summary>
         private void CommitReconcile()
         {
+            ReconciliationValues reconValues = null;
             long closingBalance = 0L;
             if (textBoxThisBalance.Text.Trim().Length > 0)
             {
                 closingBalance = UtilityMethods.ParseCurrency(textBoxThisBalance.Text.Trim());
             }
             DateTime closingDate = dateTimePickerThisRecon.Value;
-            long disparity = _reconHelper.GetDisparity(closingBalance);
-            AddBalanceAdjustmentEntry(-disparity, closingDate.AddDays(-1));
+            long disparity = UtilityMethods.ParseCurrency(textBoxReconDisparity.Text);
+            AddBalanceAdjustmentEntry(-disparity, closingDate.AddDays(-1)); // is the sign correct?
             _backend.CommitCheckedEntries(_reconHelper);
             _backend.Db.DeleteEntry(_backend.Db.GetReconciliationValues());
-            ReconciliationValues reconValues = new ReconciliationValues(closingBalance, closingDate);
+            reconValues = new ReconciliationValues(closingBalance, closingDate);
             _backend.Db.InsertEntry(reconValues);
         }
 

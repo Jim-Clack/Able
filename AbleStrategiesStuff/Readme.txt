@@ -139,17 +139,14 @@ Notes to developers who are MS/VS virgins:
 
  A ComboBox, in its default configuration, allows the user to type in any
  string they want. But when they leave the ComboBox it changes the user's
- entry back to match an item in the DataSource list. Yes, really. So you'll
- see that the "Leave" event handler for ComboBoxes calls a method named
- AllowTypedInComboItem() that adds the typed-in string to the data source.
+ entry back to match an item in the DataSource list. There's no property to
+ override this behavior. So you'll see that the "Leave" event handler for 
+ ComboBoxes calls a method named AllowTypedInComboItem() that adds the 
+ typed-in string to the data source.
 
  When you add a ComboBox (this.Controls.Add(ComboBoxXxx)) it may screw up
  certain properties of the ComboBox because their activation gets deferred
  until then, so it's important to set SelectIndex, Text, BringToFront/Back, 
  etc. until afterwrd. Also, after changing the DataSource you may have 
- to ComboBoxXxx.BindingContext = new BindingContext(). Safe sequence:
- (1) Instantiate/config ComboBoxXxx, (2) ComboBoxXxx.DataSource = Xxx,
- (3) ComboBoxXxx.BindingContext = new BindingContext(), 
- (4) XxxForm.Controls.Add(ComboBoxXxx), (5) ComboBoxXxx.(eventHandlers),
- (6) ComboBoxXxx.SelectedIndex/SendToBack/BringToFront/Text=Xxx
- You may also need to Suspend/Resume Layout() or even PerformLayout().
+ to ComboBoxXxx.BindingContext = new BindingContext(). You may also need to
+ Suspend/Resume Layout() or even PerformLayout().

@@ -395,6 +395,8 @@ namespace AbleCheckbook.Logic
             AddString(" days");
             AddString("Expired Trial Evaluation Period");
             AddString("Already activated - Do you wish to continue?");
+            AddString("Are you sure you want to change this value?");
+            AddString("Confirm");
             AddString("Add New");
             AddString("Due");
             AddString("Success");

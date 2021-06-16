@@ -81,8 +81,6 @@ namespace AbleCheckbook.Gui
         public void LayoutColumns(DataGridView dataGridView, bool diagsEnabled, bool reconcile)
         {
             CreateStyles();
-            dataGridView.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(dataGridView)).BeginInit();
             dataGridView.Columns["IsChecked"].DisplayIndex = 0;
             dataGridView.Columns["Color"].DisplayIndex = 1;
             if (reconcile)
@@ -143,8 +141,6 @@ namespace AbleCheckbook.Gui
             dataGridView.Columns["Category"].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
             dataGridView.AllowUserToDeleteRows = false;
             dataGridView.RowHeadersVisible = false;
-            ((System.ComponentModel.ISupportInitialize)(dataGridView)).EndInit();
-            dataGridView.ResumeLayout();
             foreach (DataGridViewColumn column in dataGridView.Columns)
             {
                 column.SortMode = DataGridViewColumnSortMode.NotSortable;

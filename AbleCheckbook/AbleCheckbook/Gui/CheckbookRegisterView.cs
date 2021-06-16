@@ -182,65 +182,76 @@ namespace AbleCheckbook.Gui
         /// <returns>success</returns>
         public bool ReloadTransactions(SortEntriesBy sortedBy = SortEntriesBy.NoChange, List<Guid> matches = null)
         {
-            if (sortedBy != SortEntriesBy.NoChange && sortedBy != _sortedBy) // sort changed?
-            {
-                CurrentEntryId = Guid.Empty;
-            }
-            Guid guid = Guid.Empty;
             try
             {
-                if (_dataGridView.CurrentRow != null && _dataGridView.CurrentRow.DataBoundItem != null) {; }
-            }
-            catch (Exception)
-            {
-                _dataGridView.CurrentCell = _dataGridView.Rows[0].Cells[3]; // .NET workaroound
-            }
-            if (_dataGridView.CurrentRow != null && _dataGridView.CurrentRow.DataBoundItem != null)
-            {
-                guid = ((RowOfCheckbook)_dataGridView.CurrentRow.DataBoundItem).Entry.Id;
-            }
-            _layout.LayoutColumns(_dataGridView, _diagsEnabled, _db.InProgress == InProgress.Reconcile);
-            _layout.AdjustWidths(_dataGridView);
-            bool placedNewEntryRow = false;
-            if (sortedBy != SortEntriesBy.NoChange)
-            {
-                _sortedBy = sortedBy;
-            }
-            if (matches != null)
-            {
-                _matches = matches;
-            }
-            _transactions = new List<RowOfCheckbook>();
-            _db.AdjustBalances();
-            List<CheckbookEntry> entries = new CheckbookSorter().GetSortedEntries(_db, _sortedBy, _matches);
-            try
-            {
-                _matchCount = 0;
-                _mutex.WaitOne();
-                foreach (CheckbookEntry entry in entries)
+                ((System.ComponentModel.ISupportInitialize)(_dataGridView)).BeginInit();
+                _dataGridView.SuspendLayout();
+                if (sortedBy != SortEntriesBy.NoChange && sortedBy != _sortedBy) // sort changed?
                 {
-                    if (!placedNewEntryRow && ShouldInsertNewEntryRow(entry))
-                    {
-                        InsertNewEntryRow();
-                        placedNewEntryRow = true;
-                    }
-                    AddTransaction(entry, true, true);
+                    CurrentEntryId = Guid.Empty;
                 }
+                Guid guid = Guid.Empty;
+                try
+                {
+                    if (_dataGridView.CurrentRow != null && _dataGridView.CurrentRow.DataBoundItem != null) {; }
+                }
+                catch (Exception)
+                {
+                    _dataGridView.CurrentCell = _dataGridView.Rows[0].Cells[3]; // .NET workaroound
+                }
+                if (_dataGridView.CurrentRow != null && _dataGridView.CurrentRow.DataBoundItem != null)
+                {
+                    guid = ((RowOfCheckbook)_dataGridView.CurrentRow.DataBoundItem).Entry.Id;
+                }
+                _layout.LayoutColumns(_dataGridView, _diagsEnabled, _db.InProgress == InProgress.Reconcile);
+                _layout.AdjustWidths(_dataGridView);
+                bool placedNewEntryRow = false;
+                if (sortedBy != SortEntriesBy.NoChange)
+                {
+                    _sortedBy = sortedBy;
+                }
+                if (matches != null)
+                {
+                    _matches = matches;
+                }
+                _transactions = new List<RowOfCheckbook>();
+                _db.AdjustBalances();
+                List<CheckbookEntry> entries = new CheckbookSorter().GetSortedEntries(_db, _sortedBy, _matches);
+                try
+                {
+                    _matchCount = 0;
+                    _mutex.WaitOne();
+                    foreach (CheckbookEntry entry in entries)
+                    {
+                        if (!placedNewEntryRow && ShouldInsertNewEntryRow(entry))
+                        {
+                            InsertNewEntryRow();
+                            placedNewEntryRow = true;
+                        }
+                        AddTransaction(entry, true, true);
+                    }
+                }
+                finally
+                {
+                    _mutex.ReleaseMutex();
+                }
+                if (!placedNewEntryRow)
+                {
+                    InsertNewEntryRow();
+                }
+                BindingSource bindingSource1 = new BindingSource();
+                bindingSource1.DataSource = _transactions;
+                _dataGridView.DataSource = bindingSource1;
+                LayoutDataGridView();
+                ScrollToActiveRow();
+                _entriesChanged = false;
             }
             finally
             {
-                _mutex.ReleaseMutex();
+                ((System.ComponentModel.ISupportInitialize)(_dataGridView)).EndInit();
+                _dataGridView.ResumeLayout();
+                _dataGridView.PerformLayout();
             }
-            if (!placedNewEntryRow)
-            {
-                InsertNewEntryRow();
-            }
-            BindingSource bindingSource1 = new BindingSource();
-            bindingSource1.DataSource = _transactions;
-            _dataGridView.DataSource = bindingSource1;
-            LayoutDataGridView();
-            ScrollToActiveRow();
-            _entriesChanged = false;
             return true;
         }
 

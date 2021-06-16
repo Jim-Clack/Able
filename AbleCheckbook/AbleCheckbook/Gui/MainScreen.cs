@@ -1,19 +1,10 @@
-using AbleCheckbook.Logic;
+using AbleCheckbook.Db;
 using AbleCheckbook.Gui;
+using AbleCheckbook.Logic;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Collections;
-using System.Threading;
-using System.IO;
-using AbleCheckbook.Db;
-using AbleLicensing;
 
 namespace AbleCheckbook
 {
@@ -601,6 +592,33 @@ namespace AbleCheckbook
 
         }
 
+        private void dateTimePickerLastRecon_Enter(object sender, EventArgs e)
+        {
+            if (MessageBox.Show(Strings.Get("Are you sure you want to change this value?"), Strings.Get("Confirm"), MessageBoxButtons.YesNo) != DialogResult.Yes)
+            {
+                dateTimePickerLastRecon.Enter -= dateTimePickerLastRecon_Enter;
+                ReconciliationValues reconValues = _backend.Db.GetReconciliationValues();
+                dateTimePickerLastRecon.Value = reconValues.Date;
+                textBoxLastBalance.Text = UtilityMethods.FormatCurrency(reconValues.Balance, 3);
+                dateTimePickerLastRecon.Enter += dateTimePickerLastRecon_Enter;
+            }
+        }
+
+        private void textBoxLastBalance_Enter(object sender, EventArgs e)
+        {
+            if (MessageBox.Show(Strings.Get("Are you sure you want to change this value?"), Strings.Get("Confirm"), MessageBoxButtons.YesNo) != DialogResult.Yes)
+            {
+                textBoxLastBalance.Enter -= textBoxLastBalance_Enter;
+                ReconciliationValues reconValues = _backend.Db.GetReconciliationValues();
+                textBoxLastBalance.Text = UtilityMethods.FormatCurrency(reconValues.Balance, 3);
+                textBoxLastBalance.Enter += textBoxLastBalance_Enter;
+            }
+        }
+
+        private void textBoxLastBalance_Leave(object sender, EventArgs e)
+        {
+            UpdateReconcileControls(false, false);
+        }
     }
 
 }

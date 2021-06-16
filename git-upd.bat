@@ -5,10 +5,14 @@ git add -A .
 git add -u .
 git status
 git commit -m %MESSAGE%     
-@echo (Skip the GUI dialog, then if it asks for your username, enter your email instead)
+@echo #################################################################
+@echo #  (Cancel the GUI dialog. When it asks, enter your git creds)  #
+@echo #################################################################
 git push
 goto DONE
 :USAGE
 @echo Usage: 
-@echo git-upd required commit message
+@echo   git-upd required-commit-message
+@echo Note:
+@echo   up to nine spaces are permitted in the message, due to Windows
 :DONE

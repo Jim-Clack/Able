@@ -51,7 +51,7 @@ namespace AbleCheckbook.Logic
         {
             Backups.BackupNow(_userDataFilename, 8, ".ud", true, false);
             SaveUserData(_userDataFilename);
-            Backups.PeriodicBackup(_userDataFilename, 7, 8, ".uw", false, false);
+            Backups.PeriodicBackup(_userDataFilename, 7, 8, ".uw", false, true);
             _isDirty = false;
         }
 

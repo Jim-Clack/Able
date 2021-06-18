@@ -44,6 +44,7 @@
             this.dateFirst.Name = "dateFirst";
             this.dateFirst.Size = new System.Drawing.Size(259, 22);
             this.dateFirst.TabIndex = 0;
+            this.dateFirst.Leave += new System.EventHandler(this.dateFirst_Leave);
             // 
             // dateLast
             // 
@@ -51,6 +52,7 @@
             this.dateLast.Name = "dateLast";
             this.dateLast.Size = new System.Drawing.Size(259, 22);
             this.dateLast.TabIndex = 1;
+            this.dateLast.Leave += new System.EventHandler(this.dateLast_Leave);
             // 
             // label1
             // 

@@ -200,7 +200,7 @@ namespace AbleCheckbook.Db
             Backups.BackupNow(filepath, 8, ".bu", false, false);
             Configuration.Instance.LastDbName = _underlyingDb.FullPath;
             bool ok = _underlyingDb.Sync();
-            Backups.PeriodicBackup(filepath, 7, 8, ".bw", false, false);
+            Backups.PeriodicBackup(filepath, 7, 8, ".bw", false, true);
             return ok;
         }
 
@@ -646,7 +646,7 @@ namespace AbleCheckbook.Db
         /// <returns>True if successful</returns>
         public bool InsertEntry(CheckbookEntry entry, Highlight highlight = Highlight.Modified)
         {
-            Logger.Trace("Operation: InsertEntry(CheckbookEntry) " + entry.Id);
+            Logger.Trace("Operation: InsertEntry(CheckbookEntry) " + entry.ToShortString());
             return _underlyingDb.InsertEntry(entry, highlight);
         }
 
@@ -659,7 +659,7 @@ namespace AbleCheckbook.Db
         /// <returns>True if successful</returns>
         public bool UpdateEntry(CheckbookEntry newEntry, CheckbookEntry oldEntry, bool updateModDate)
         {
-            Logger.Trace("Operation: UpdateEntry(CheckbookEntry) " + newEntry.Id + ", old=" + oldEntry.Id);
+            Logger.Trace("Operation: UpdateEntry(CheckbookEntry) " + newEntry.ToShortString() + ", old=" + oldEntry.ToShortString());
             return _underlyingDb.UpdateEntry(newEntry, oldEntry, updateModDate);
         }
 
@@ -681,7 +681,7 @@ namespace AbleCheckbook.Db
         /// <returns>True if successful</returns>
         public bool DeleteEntry(CheckbookEntry entry)
         {
-            Logger.Trace("Operation: RemoveEntry(CheckbookEntry) " + entry.Id);
+            Logger.Trace("Operation: RemoveEntry(CheckbookEntry) " + entry.ToShortString());
             return _underlyingDb.DeleteEntry(entry);
         }
 

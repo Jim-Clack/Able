@@ -22,7 +22,7 @@ namespace AbleCheckbook.Logic
         public static string BackupNow(string filename, int count, string extension, bool inPlace, bool buPath2)
         {
             string okay = null;
-            string filenameBase = GetBackupFilenameBase(filename, inPlace, buPath2);
+            string filenameBase = GetBackupFilenameNoSuffix(filename, inPlace, buPath2);
             try
             {
                 string filenameBak1 = filenameBase + extension + (count - 1);
@@ -60,12 +60,12 @@ namespace AbleCheckbook.Logic
         /// <param name="days">How often to perform backups - number of days.</param>
         /// <param name="count">Number of rolling backups to maintain.</param>
         /// <param name="extension">Backup file base extension beginning with a dot. i.e. ".bu"</param>
-        /// <param name="inPlace">True to backup in place, else to a backup path. default = true</param>
+        /// <param name="inPlace">True to backup in place, else to a backup path.</param>
         /// <param name="buPath2">True to backup to backup path 2 instead of 1.</param>
         /// <returns>null if okay, else error message.</returns>
         public static string PeriodicBackup(string filename, int days, int count, string extension, bool inPlace, bool buPath2)
         {
-            string filenameBak1 = GetBackupFilenameBase(filename, inPlace, buPath2) + extension + "1";
+            string filenameBak1 = GetBackupFilenameNoSuffix(filename, inPlace, buPath2) + extension + "1";
             DateTime lastDate = DateTime.Now.AddDays(-1000);
             if (File.Exists(filenameBak1))
             {
@@ -85,7 +85,7 @@ namespace AbleCheckbook.Logic
         /// <param name="inPlace">True to backup in place, else to a backup path. </param>
         /// <param name="buPath2">True to backup to backup path 2 instead of 1. (but only if !inPlace)</param>
         /// <returns>filepath and name with no extension</returns>
-        private static string GetBackupFilenameBase(string filename, bool inPlace, bool buPath2)
+        private static string GetBackupFilenameNoSuffix(string filename, bool inPlace, bool buPath2)
         {
             string buPath = (buPath2 && Configuration.Instance.DirectoryBackup2.Length > 0) ?
                 Configuration.Instance.DirectoryBackup2 : 

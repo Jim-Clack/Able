@@ -57,6 +57,7 @@ namespace AbleCheckbook.Gui
             buttonShowAll.Text = Strings.Get("Sort Matches First");
             buttonCancel.Text = Strings.Get("Cancel");
             label1.Text = Strings.Get("=> Thru =>");
+            dateTimePickerBeforeDate.ShowUpDown = !Configuration.Instance.ShowCalendars;
             dateTimePickerBeforeDate.Value = DateTime.Now.AddYears(1);
             comboBoxPayee.DataSource = _backend.Payees;
             comboBoxCategory.DataSource = _backend.Categories;

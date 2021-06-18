@@ -159,6 +159,7 @@ namespace AbleCheckbook.Gui
             _yTopSplits = textBoxScaling.Top;
             _xScale = textBoxScaling.Width / 500.0;
             _yScale = textBoxScaling.Height / 50.0;
+            datePickerTransaction.ShowUpDown = !Configuration.Instance.ShowCalendars;
             LoadSplitRows();
             _rowCheckbook = (RowOfCheckbook)_dataGridView.Rows[_dataGridIndex].DataBoundItem;
             if (_rowCheckbook.NewEntryRow)

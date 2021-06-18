@@ -128,7 +128,7 @@ namespace AbleCheckbook.Gui
                 string dateString = UtilityMethods.DateTimeToString(entry.DateOfTransaction);
                 string numberString = entry.CheckNumber;
                 string amountString = UtilityMethods.FormatCurrency(entry.Amount, places);
-                string balanceString = UtilityMethods.FormatCurrency(entry.Balance, 9);
+                string balanceString = UtilityMethods.FormatCurrency(entry.Balance, 10);
                 string clearedString = entry.IsCleared ? "X" : "";
                 string categoryName = Strings.Get("(Split)");
                 if(entry.Splits.Length < 2)
@@ -144,7 +144,7 @@ namespace AbleCheckbook.Gui
                 DrawTextReturnNewX(entry.Payee, _bodyText, _xChkPayee, _yOnPage);
                 DrawTextReturnNewX(categoryName, _bodyText, _xChkCateg, _yOnPage);
                 DrawTextReturnNewX(amountString, _monoText, _xChkAmt, _yOnPage);
-                DrawTextReturnNewX(balanceString, _bodyText, _xChkBal, _yOnPage);
+                DrawTextReturnNewX(balanceString, _monoText, _xChkBal, _yOnPage);
                 _yOnPage = DrawTextReturnNewY(clearedString, _bodyText, _xChkCleared, _yOnPage) + 2;
                 if (_yOnPage >= _yTop + _height - (_bodyText.Font.Height + 3))
                 {
@@ -215,7 +215,7 @@ namespace AbleCheckbook.Gui
             _xChkNbr = _xLeft + _width * 0.12F;
             _xChkPayee = _xLeft + _width * 0.20F;
             _xChkCateg = _xLeft + _width * 0.48F;
-            _xChkAmt = _xLeft + _width * 0.71F;
+            _xChkAmt = _xLeft + _width * 0.69F;
             _xChkBal = _xLeft + _width * 0.83F;
             _xChkCleared = _xLeft + _width - _bodyText.Font.Height;
             // other...

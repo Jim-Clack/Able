@@ -296,6 +296,8 @@ namespace AbleCheckbook
                 byCategoryToolStripMenuItem.Enabled = byCheckNumberToolStripMenuItem.Enabled = 
                 byDateToolStripMenuItem.Enabled = byPayeeToolStripMenuItem.Enabled = 
                 searchToolStripMenuItem.Enabled = !reconciling;
+            dateTimePickerLastRecon.ShowUpDown = dateTimePickerThisRecon.ShowUpDown = 
+                !Configuration.Instance.ShowCalendars;
             dateTimePickerLastRecon.Visible = dateTimePickerThisRecon.Visible = 
                 textBoxLastBalance.Visible = textBoxThisBalance.Visible = 
                 buttonAbandonReconcile.Visible =

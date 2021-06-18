@@ -62,6 +62,7 @@ namespace AbleCheckbook.Logic
         private bool _twoAmountColumns = false;
         private bool _highVisibility = false;
         private bool _adminMode = false;
+        private bool _showCalendars = true;
         private int _windowLeft = 0;
         private int _windowTop = 0;
         private int _windowWidth = 630;
@@ -85,6 +86,7 @@ namespace AbleCheckbook.Logic
         public string LoadedFrom { get => _loadedFrom; set => _loadedFrom = value; }
         public string LastDbName { get => _lastDbName; set => _lastDbName = value; }
         public bool HighVisibility { get => _highVisibility; set => _highVisibility = value; }
+        public bool ShowCalendars { get => _showCalendars; set => _showCalendars = value; }
         public int WindowLeft { get => _windowLeft; set => _windowLeft = value; }
         public int WindowTop { get => _windowTop; set => _windowTop = value; }
         public int WindowWidth { get => _windowWidth; set => _windowWidth = value; }
@@ -349,6 +351,7 @@ namespace AbleCheckbook.Logic
             _postEventAdvanceDays = 30;
             _logLevel = LogLevel.Diag;
             _siteDescription = Strings.Get("(Unlicensed)");
+            _showCalendars = true;
             _suppressReconcileAlert = false;
             _suppressYearEndAlert = false;
             _loadedFrom = "LoadedDefaults";

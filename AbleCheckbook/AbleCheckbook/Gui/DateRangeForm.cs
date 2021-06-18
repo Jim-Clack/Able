@@ -130,6 +130,7 @@ namespace AbleCheckbook.Gui
             dateLast.MinDate = DateTime.Now.AddYears(-20);
             dateLast.Format = DateTimePickerFormat.Long;
             dateFirst.Format = DateTimePickerFormat.Long;
+            dateLast.ShowUpDown = dateFirst.ShowUpDown = !Configuration.Instance.ShowCalendars;
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)
@@ -154,6 +155,22 @@ namespace AbleCheckbook.Gui
             if(result == DialogResult.OK)
             {
                 _printDocument.PrinterSettings = printDialog.PrinterSettings;
+            }
+        }
+
+        private void dateFirst_Leave(object sender, EventArgs e)
+        {
+            if(dateFirst.Value > dateLast.Value)
+            {
+                dateLast.Value = dateFirst.Value;
+            }
+        }
+
+        private void dateLast_Leave(object sender, EventArgs e)
+        {
+            if (dateFirst.Value > dateLast.Value)
+            {
+                dateLast.Value = dateFirst.Value;
             }
         }
     }

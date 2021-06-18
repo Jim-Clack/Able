@@ -91,20 +91,6 @@ namespace AbleCheckbook.Gui
         }
 
         /// <summary>
-        /// Update the datagridview in preparation for a repaint.
-        /// </summary>
-        /// <param name="view">To be prepared</param>
-        public void PrepForRepaint()
-        {
-            foreach (DataGridViewRow row in _dataGridView.Rows)
-            {
-                RowOfCheckbook rowEntry = (RowOfCheckbook)row.DataBoundItem;
-                int colorIndex = (int)rowEntry.Color;
-                row.DefaultCellStyle = _layout.Style(colorIndex);
-            }
-        }
-
-        /// <summary>
         /// Handle a click on a row of the datagridview.
         /// </summary>
         /// <param name="parent">Its parent form.</param>

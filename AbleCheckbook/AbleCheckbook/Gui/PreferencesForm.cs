@@ -30,6 +30,7 @@ namespace AbleCheckbook.Gui
             labelLogLevel.Text = Strings.Get("Log Level (Trace = Detailed, Diag = Normal, Warn = Smaller Logs)");
             labelSchedEventDays.Text = Strings.Get("Number of days in advance to post scheduled events to checkbook:");
             labelBadDirectory.Text = Strings.Get("Illegal Directory Path Specified, Reverted...");
+            checkBoxCalendars.Text = Strings.Get("Display calendars for dates instead of day/month/year spinners");
             checkBoxReconcileNote.Text = Strings.Get("Display the Reconcile Overdue notification when appropriate");
             checkBoxYearEndNote.Text = Strings.Get("Display the Year-End Wrap-Up Due notification When appropriate");
             checkBoxTwoColumns.Text = Strings.Get("Display amounts in two columns (Debit/Credit) instead of one (Amount)");
@@ -43,6 +44,7 @@ namespace AbleCheckbook.Gui
             numericUpDownDays.Value = Configuration.Instance.PostEventAdvanceDays;
             comboBoxLogLevel.Text = Enum.GetNames(typeof(Logger.LogLevel))[(int)level];
             comboBoxLogLevel.SelectedIndex = (int)level;
+            checkBoxCalendars.Checked = !Configuration.Instance.ShowCalendars;
             checkBoxReconcileNote.Checked = !Configuration.Instance.SuppressReconcileAlert;
             checkBoxYearEndNote.Checked = !Configuration.Instance.SuppressYearEndAlert;
             checkBoxTwoColumns.Checked = Configuration.Instance.TwoAmountColumns;
@@ -175,6 +177,11 @@ namespace AbleCheckbook.Gui
         private void buttonBrowseBackups_Click(object sender, EventArgs e)
         {
             ChangeBackupsDirectory();
+        }
+
+        private void checkBoxCalendars_CheckedChanged(object sender, EventArgs e)
+        {
+            Configuration.Instance.ShowCalendars = checkBoxCalendars.Checked;
         }
     }
 }

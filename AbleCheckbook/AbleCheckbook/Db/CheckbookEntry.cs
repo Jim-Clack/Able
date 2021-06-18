@@ -349,7 +349,7 @@ namespace AbleCheckbook.Db
         /// <returns></returns>
         public string ToShortString()
         {
-            return DateOfTransaction.ToShortDateString() + " " + Payee + " " + UtilityMethods.FormatCurrency(Amount);
+            return DateOfTransaction.ToShortDateString() + " " + Payee + " " + UtilityMethods.FormatCurrency(Amount) + " " + MadeBy;
         }
 
         /// <summary>

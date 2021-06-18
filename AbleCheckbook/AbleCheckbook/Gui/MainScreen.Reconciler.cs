@@ -132,6 +132,8 @@ namespace AbleCheckbook
             {
                 return;
             }
+            dateTimePickerLastRecon.ShowUpDown = !Configuration.Instance.ShowCalendars;
+            dateTimePickerThisRecon.ShowUpDown = !Configuration.Instance.ShowCalendars;
             _reconHelper = new ReconciliationHelper(_backend.Db);
             _backend.Db.InProgress = InProgress.Reconcile;
             ReconciliationValues reconValues = _backend.Db.GetReconciliationValues();

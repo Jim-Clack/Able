@@ -273,6 +273,7 @@ namespace AbleCheckbook.Logic
             AddString("Illegal Directory Path Specified, Reverted...");
             AddString("Number of days in advance to post scheduled events to checkbook:");
             AddString("Log Level (Trace = Detailed, Diag = Normal, Warn = Smaller Logs)");
+            AddString("Display calendars for dates instead of day/month/year spinners");
             AddString("Display the Reconcile Overdue notification when appropriate");
             AddString("Display the Year-End Wrap-Up Due notification When appropriate");
             AddString("Display amounts in two columns (Debit/Credit) instead of one (Amount)");

@@ -48,6 +48,7 @@ namespace AbleCheckbook.Gui
             labelAsOf.Text = Strings.Get("As of:");
             DateTime now = DateTime.Now;
             dateTimePickerOpeningDate.Value = (new DateTime(now.Year, now.Month, 1)).AddDays(-1);
+            dateTimePickerOpeningDate.ShowUpDown = !Configuration.Instance.ShowCalendars;
         }
 
         private void buttonOk_Click(object sender, EventArgs e)

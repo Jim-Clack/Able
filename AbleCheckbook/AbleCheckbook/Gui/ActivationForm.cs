@@ -23,10 +23,10 @@ namespace AbleCheckbook.Gui
         {
             this.Text = Strings.Get("Activation");
             labelSiteId.Text = Strings.Get("Site Identification Code");
-            labelUserId.Text = Strings.Get("Contact / User Name");
+            labelUserId.Text = Strings.Get("Contact/User Name");
             labelStreetAddress.Text = Strings.Get("Address and Street");
-            labelCityState.Text = Strings.Get("City and State/ Province");
-            labelPostalCode.Text = Strings.Get("Postal / ZIP Code or CC");
+            labelCityState.Text = Strings.Get("City and State/Province");
+            labelPostalCode.Text = Strings.Get("Postal/ZIP Code or CC");
             labelPhoneNumber.Text = Strings.Get("10-12 Digit Phone Nbr");
             labelEmailAddress.Text = Strings.Get("Contact Email Address");
             labelIpAddress.Text = Strings.Get("Computer Identification");
@@ -34,7 +34,8 @@ namespace AbleCheckbook.Gui
             linkLabelEula.Text = Strings.Get("EULA - End User License Agreement");
             buttonActivate.Text = Strings.Get("Activate");
             labelSiteDescription.Text = Strings.Get("Assigned site description");
-            labelPin.Text = Strings.Get("Offline / Manual Activation PIN");
+            labelPin.Text = Strings.Get("Offline/Manual Activation PIN");
+            labelPurchase.Text = Strings.Get("If already paid-for, enter the Purchase Val Code here");
             textBoxSiteId.Text = Activation.Instance.SiteIdentification;
             textBoxUserId.Text = System.Environment.UserName;
             textBoxIpAddress.Text = System.Environment.UserDomainName;

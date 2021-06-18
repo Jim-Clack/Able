@@ -1,16 +1,8 @@
-﻿using AbleCheckbook.Logic;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
+﻿using System;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace AbleCheckbook.Gui
+namespace AbleLicensing
 {
     public partial class BrowserForm : Form
     {
@@ -31,7 +23,7 @@ namespace AbleCheckbook.Gui
             _homeUrl = homeUrl;
             _searchUrlBase = searchUrlBase;
             InitializeComponent();
-            this.Text = Strings.Get(title);
+            this.Text = title;
             if(bounds != null)
             {
                 this.Bounds = bounds.Bounds;
@@ -50,9 +42,9 @@ namespace AbleCheckbook.Gui
 
         private void BrowserForm_Load(object sender, EventArgs e)
         {
-            buttonBack.Text = Strings.Get("←  Back");
-            buttonHome.Text = Strings.Get("⌂  Home");
-            buttonSearch.Text = Strings.Get("Ꙭ  Search");
+            buttonBack.Text = "←  Back";
+            buttonHome.Text = "⌂  Home";
+            buttonSearch.Text = "Ꙭ  Search";
         }
 
         private void textBoxSearchPattern_KeyUp(object sender, KeyEventArgs e)

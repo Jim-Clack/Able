@@ -1,9 +1,10 @@
 Alpha TODO...
  - in MainScreen.Reconciler (184-185) is the sign of the adjustment correct?
+ - Deploy website for testing
  - EULA
  - Flesh out online help
  - Paypal API
- - Implement Activate via Email as is appropriate (?)
+ - Implement Activate via Email/Phone as is appropriate 
  - Web Services for online purchase and self-service activation
 
 Beta TODO...

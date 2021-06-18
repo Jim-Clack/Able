@@ -1,0 +1,77 @@
+﻿@page
+@model AbleStrategiesWebsite.Pages.PushedCheckoutModel
+@{
+    ViewData["Title"] = "PushedCheckout";
+}
+
+<h2>PushedCheckout</h2>
+
+<!DOCTYPE html>
+<html>
+<!-- Query tail for testing: ?sid=12345&user=Jim&ip=22.22.22.22&desc=hjkhkt-34556 -->
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Download</title>
+    <link rel="stylesheet" href="~/css/ablestrategies.css" />
+</head>
+<body>
+    <div class="row able-h3">
+        You are about to purchase AbleCheckbook. Please verify the data below before
+        clicking on the PayPal button.<br />If there is anything incorrect or if you do not
+        want to continue, please go back or close this window.
+    </div><br />
+    <div class="row able-h5">
+        <span class="col-md-2"></span>
+        <span class="col-md-3 grid-col1cell">Site Identification</span>
+        <span class="col-md-3 grid-cell text-right" id="SiteId">??????????</span>
+        <span class="col-md-4"></span>
+    </div>
+    <div class="row able-h5">
+        <span class="col-md-2"></span>
+        <span class="col-md-3 grid-col1cell">Site IP or Host</span>
+        <span class="col-md-3 grid-cell text-right" id="SiteIp">??????????</span>
+        <span class="col-md-4"></span>
+    </div>
+    <div class="row able-h5">
+        <span class="col-md-2"></span>
+        <span class="col-md-3 grid-col1cell">Site Description</span>
+        <span class="col-md-3 grid-cell text-right" id="SiteDesc">??????????</span>
+        <span class="col-md-4"></span>
+    </div>
+    <div class="row able-h5">
+        <span class="col-md-2"></span>
+        <span class="col-md-3 grid-col1cell">User Name</span>
+        <span class="col-md-3 grid-cell text-right" id="UserName">??????????</span>
+        <span class="col-md-4"></span>
+    </div>
+    <div class="row able-h5">
+        <span class="col-md-2"></span>
+        <span class="col-md-3 grid-col1cell">Price</span>
+        <span class="col-md-3 grid-cell text-right" id="SubTotal">??????????</span>
+        <span class="col-md-4"></span>
+    </div><br />
+    <div class="row able-h3">
+        Note that you do <em>not</em> need to have a PayPal account in order to use PayPal.
+        <br />When you click the PayPal link below, you will be allowed to enter credit/debit card information instead.
+    </div>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        var sid = urlParams.get('sid');
+        var ip = urlParams.get('ip');
+        var desc = urlParams.get('desc');
+        var user = urlParams.get('user');
+        var subtot = "$19.00";
+        if (sid == null || sid.trim().length == 0 || desc == null || desc.trim().length == 0) {
+            document.getElementsByTagName("body")[0].innerHTML = "<h2>&nbsp;&nbsp;&nbsp;&nbsp;IMPROPER PARAMETERS - PLEASE GO BACK</h2>";
+        } else {
+            document.getElementById("SiteId").innerHTML = sid;
+            document.getElementById("SiteIp").innerHTML = ip;
+            document.getElementById("SiteDesc").innerHTML = desc;
+            document.getElementById("UserName").innerHTML = user;
+            document.getElementById("SubTotal").innerHTML = subtot;
+        }
+
+    </script>
+</body>
+</html>
+

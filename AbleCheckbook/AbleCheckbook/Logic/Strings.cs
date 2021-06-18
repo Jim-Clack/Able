@@ -1,12 +1,8 @@
-﻿using AbleCheckbook.Logic;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace AbleCheckbook.Logic
 {
@@ -292,6 +288,7 @@ namespace AbleCheckbook.Logic
             AddString("Note: No Importable Entries Read");
             AddString("Open Backup of DB File: ");
             AddString("Save the current DB as ");
+            AddString("If already paid -for, enter the Purchase Val Code here");"
             AddString("; Open the selected backup as ");
             AddString("Search only those Entries before or on:");
             AddString("Search for substring in Payee");
@@ -372,17 +369,17 @@ namespace AbleCheckbook.Logic
             AddString("Activated");
             AddString("(Unlicensed)");
             AddString("Site Identification Code");
-            AddString("Contact / User Name");
+            AddString("Contact/User Name");
             AddString("Address and Street");
-            AddString("City and State/ Province");
-            AddString("Postal / ZIP Code or CC");
+            AddString("City and State/Province");
+            AddString("Postal/ZIP Code or CC");
             AddString("10-12 Digit Phone Nbr");
             AddString("Contact Email Address");
             AddString("Computer Identification");
             AddString("I have read and accept the terms of the EULA");
             AddString("EULA - End User License Agreement");
             AddString("Assigned site description");
-            AddString("Offline / Manual Activation PIN");
+            AddString("Offline/Manual Activation PIN");
             AddString("Use manual activation - Call support for a PIN");
             AddString("Invalid Description and/or PIN");
             AddString("User name too short");

@@ -28,14 +28,17 @@ namespace AbleLicensing
     /// - There must be exactly one class in the entry assembly that implements iSettings.
     /// - The iSettings implementation must persist and restore all data from setters.
     /// - Ths iSettings class should return the same MfrAndAppName as is used during installation.
-    /// - Before accessing anything be sure to set the SiteDescription and ActivationPin.
+    /// - The main steps in activation are setting the SiteDescription and ActivationPin.
     /// - To check "is licensed": if(Activation.Instance.IsLicensed) ...
     /// - SiteDescription is typically 12-chars: 6-char name, 1-char hyphen/punct, 5-char location
     /// - Calc activation PIN: string pin = ResetAllEntries(ChecksumOfString(SiteIdentification));
     /// - PIN must be set correctly before setting features or expiration
-    /// - Set features: SetFeatureBitmask((int)(MyFeatures.B | MyFeatures.E)); where B=2 and E=16
+    /// - i.e. features: SetFeatureBitmask((int)(MyFeatures.B | MyFeatures.E)); where B=2 and E=16
     /// - Check feature: if(Activation.Instance.IsFeatureEnabled((int)MyFeatures.C)...
     /// - Check expiration: int days = UpdateSiteSettings(); note: returns -1 if non-expiring
+    /// - Each site is uniquely ID'd by the combination of siteIdentification and siteDescription
+    /// - Each site is tracked as a site (possibly many-to-one) from a purchase val code
+    /// - When a new site is activated, the most latent one on that purchase gets deactivated
     /// </remarks>
     public class Activation
     {

@@ -189,7 +189,7 @@ namespace AbleLicensing
                 "&ip=" + Uri.EscapeDataString(_ip) +
                 "&feature=" + Uri.EscapeDataString(feature) +
                 "&desc=" + Uri.EscapeDataString(desc);
-            BrowserForm form = new BrowserForm("Buy", url,
+            Browser2Form form = new Browser2Form("Buy", url,
                "https://www.google.com/search?q=site%3Aablestrategies.com+checkbook+help+", null);
             form.Show();
             // Now call the server to see if it was succesful and to fetch the purchase val code.

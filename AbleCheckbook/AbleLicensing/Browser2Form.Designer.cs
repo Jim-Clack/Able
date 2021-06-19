@@ -1,6 +1,6 @@
-﻿namespace AbleCheckbook.Gui
+﻿namespace AbleLicensing
 {
-    partial class BrowserForm
+    partial class Browser2Form
     {
         /// <summary>
         /// Required designer variable.

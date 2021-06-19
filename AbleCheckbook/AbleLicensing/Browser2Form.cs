@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace AbleLicensing
 {
-    public partial class BrowserForm : Form
+    public partial class Browser2Form : Form
     {
 
         private string _homeUrl = "";
@@ -18,11 +18,12 @@ namespace AbleLicensing
         /// <param name="homeUrl">Initial URL</param>
         /// <param name="searchUrlBase">Search prefix, typically ending in a %20 or q= or +</param>
         /// <param name="bounds">optional bounds for the form</param>
-        public BrowserForm(string title, string homeUrl, string searchUrlBase, Form bounds = null)
+        public Browser2Form(string title, string homeUrl, string searchUrlBase, Form bounds = null)
         {
             _homeUrl = homeUrl;
             _searchUrlBase = searchUrlBase;
             InitializeComponent();
+            webBrowser1.ScriptErrorsSuppressed = true;
             this.Text = title;
             if(bounds != null)
             {
@@ -86,7 +87,12 @@ namespace AbleLicensing
             {
                 return;
             }
-            webBrowser1.Navigate(_searchUrlBase + textBoxSearchPattern.Text.Trim());
+            string url = textBoxSearchPattern.Text.Trim();
+            if(!url.Contains("www.") && !url.StartsWith("http") || url.Contains(" "))
+            {
+                url = _searchUrlBase + textBoxSearchPattern.Text.Trim();
+            }
+            webBrowser1.Navigate(url);
         }
 
         private void webBrowser1_Resize(object sender, EventArgs e)

@@ -31,6 +31,7 @@ namespace AbleCheckbook.Gui
             _homeUrl = homeUrl;
             _searchUrlBase = searchUrlBase;
             InitializeComponent();
+            webBrowser1.ScriptErrorsSuppressed = true;
             this.Text = Strings.Get(title);
             if(bounds != null)
             {
@@ -94,7 +95,12 @@ namespace AbleCheckbook.Gui
             {
                 return;
             }
-            webBrowser1.Navigate(_searchUrlBase + textBoxSearchPattern.Text.Trim());
+            string url = textBoxSearchPattern.Text.Trim();
+            if(!url.Contains("www.") && !url.StartsWith("http") || url.Contains(" "))
+            {
+                url = _searchUrlBase + textBoxSearchPattern.Text.Trim();
+            }
+            webBrowser1.Navigate(url);
         }
 
         private void webBrowser1_Resize(object sender, EventArgs e)

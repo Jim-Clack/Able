@@ -288,7 +288,7 @@ namespace AbleCheckbook.Logic
             AddString("Note: No Importable Entries Read");
             AddString("Open Backup of DB File: ");
             AddString("Save the current DB as ");
-            AddString("If already paid -for, enter the Purchase Val Code here");"
+            AddString("If already paid -for, enter the Purchase Val Code here");
             AddString("; Open the selected backup as ");
             AddString("Search only those Entries before or on:");
             AddString("Search for substring in Payee");

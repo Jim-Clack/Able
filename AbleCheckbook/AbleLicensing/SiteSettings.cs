@@ -24,6 +24,12 @@ namespace AbleLicensing
         // public static SiteSettings Instance { get; } // commented-out due to compiler warning anomaly
 
         /// <summary>
+        /// Hook for Activation to call the logger with a DIAG-level mesage.
+        /// </summary>
+        /// <param name="message">To be logged</param>
+        public abstract void LoggerHook(string message);
+
+        /// <summary>
         /// Fetch the product key, a unique string for each application. (typically the app name)
         /// </summary>
         public abstract string MfrAndAppName { get; }

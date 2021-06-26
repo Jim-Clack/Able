@@ -40,7 +40,8 @@ namespace AbleCheckbook.Gui
             for (int colorIndex = 0; colorIndex < (int)EntryColor.Count; colorIndex++)
             {
                 DataGridViewCellStyle style = new DataGridViewCellStyle();
-                style.Font = new Font(FontFamily.GenericSansSerif, fontSize, FontStyle.Regular);
+                style.Font = new Font(FontFamily.GenericSansSerif, fontSize, 
+                    (colorIndex == 15) ? FontStyle.Bold : FontStyle.Regular); // Bold = Insert New Entry
                 style.ForeColor = CellFgColor(colorIndex);
                 style.BackColor = CellBgColor(colorIndex);
                 _styles[colorIndex] = style;

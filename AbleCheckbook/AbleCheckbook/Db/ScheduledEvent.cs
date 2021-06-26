@@ -320,12 +320,12 @@ namespace AbleCheckbook.Db
         /// Set up due dates for monthly events.
         /// </summary>
         /// <param name="isReminder">true if this is just a reminder, false if it's an automatic entry</param>
-        /// <param name="dayOfMonth">1=first day, 2=second day, 32=last day of any month</param>
+        /// <param name="dayOfMonth">bitmask, bit 0 = first, etc.</param>
         /// <param name="endingDate">Last date of occurence.</param>
-        public void SetDueMonthly(bool isReminder, int dayOfMonth, DateTime endingDate)
+        public void SetDueMonthly(bool isReminder, long daysOfMonth, DateTime endingDate)
         {
             _period = SchedulePeriod.Monthly;
-            _dayOfMonthBits = 1 << (dayOfMonth - 1);
+            _dayOfMonthBits = daysOfMonth;
             _endingDate = endingDate.Date;
             _lastPosting = DateTime.Now.AddDays(-1).Date;
             if (_endingDate.Ticks > Eternity.Ticks)

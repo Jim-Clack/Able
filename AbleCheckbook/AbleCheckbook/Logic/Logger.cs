@@ -168,7 +168,7 @@ namespace AbleCheckbook.Logic
             {
                 className = stackTrace.GetFrame(nonLogFrameIndex).GetMethod().ReflectedType.Name;
                 methodName = stackTrace.GetFrame(nonLogFrameIndex).GetMethod().Name;
-                if (!className.Equals("Logger"))
+                if (!className.Equals("Logger") && !methodName.Equals("LoggerHook"))
                 {
                     break;
                 }

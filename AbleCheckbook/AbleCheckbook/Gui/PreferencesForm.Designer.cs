@@ -46,6 +46,7 @@
             this.labelBackupsDir = new System.Windows.Forms.Label();
             this.textBoxBackupsDir = new System.Windows.Forms.TextBox();
             this.checkBoxCalendars = new System.Windows.Forms.CheckBox();
+            this.checkBoxDisableSanity = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDays)).BeginInit();
             this.SuspendLayout();
             // 
@@ -53,7 +54,7 @@
             // 
             this.textBoxBaseDir.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxBaseDir.Location = new System.Drawing.Point(135, 28);
+            this.textBoxBaseDir.Location = new System.Drawing.Point(135, 26);
             this.textBoxBaseDir.Name = "textBoxBaseDir";
             this.textBoxBaseDir.Size = new System.Drawing.Size(337, 22);
             this.textBoxBaseDir.TabIndex = 0;
@@ -63,7 +64,7 @@
             // labelBaseDir
             // 
             this.labelBaseDir.AutoSize = true;
-            this.labelBaseDir.Location = new System.Drawing.Point(13, 32);
+            this.labelBaseDir.Location = new System.Drawing.Point(13, 30);
             this.labelBaseDir.Name = "labelBaseDir";
             this.labelBaseDir.Size = new System.Drawing.Size(105, 17);
             this.labelBaseDir.TabIndex = 1;
@@ -74,7 +75,7 @@
             this.buttonBrowseDb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonBrowseDb.Location = new System.Drawing.Point(485, 25);
             this.buttonBrowseDb.Name = "buttonBrowseDb";
-            this.buttonBrowseDb.Size = new System.Drawing.Size(104, 32);
+            this.buttonBrowseDb.Size = new System.Drawing.Size(104, 25);
             this.buttonBrowseDb.TabIndex = 1;
             this.buttonBrowseDb.Text = "Change";
             this.buttonBrowseDb.UseVisualStyleBackColor = true;
@@ -84,7 +85,7 @@
             // 
             this.labelSchedEventDays.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelSchedEventDays.AutoSize = true;
-            this.labelSchedEventDays.Location = new System.Drawing.Point(13, 112);
+            this.labelSchedEventDays.Location = new System.Drawing.Point(13, 88);
             this.labelSchedEventDays.Name = "labelSchedEventDays";
             this.labelSchedEventDays.Size = new System.Drawing.Size(435, 17);
             this.labelSchedEventDays.TabIndex = 3;
@@ -94,7 +95,7 @@
             // 
             this.labelLogLevel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelLogLevel.AutoSize = true;
-            this.labelLogLevel.Location = new System.Drawing.Point(13, 145);
+            this.labelLogLevel.Location = new System.Drawing.Point(13, 117);
             this.labelLogLevel.Name = "labelLogLevel";
             this.labelLogLevel.Size = new System.Drawing.Size(427, 17);
             this.labelLogLevel.TabIndex = 4;
@@ -104,7 +105,7 @@
             // 
             this.checkBoxReconcileNote.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxReconcileNote.AutoSize = true;
-            this.checkBoxReconcileNote.Location = new System.Drawing.Point(19, 206);
+            this.checkBoxReconcileNote.Location = new System.Drawing.Point(19, 201);
             this.checkBoxReconcileNote.Name = "checkBoxReconcileNote";
             this.checkBoxReconcileNote.Size = new System.Drawing.Size(411, 21);
             this.checkBoxReconcileNote.TabIndex = 4;
@@ -116,17 +117,17 @@
             // 
             this.checkBoxYearEndNote.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxYearEndNote.AutoSize = true;
-            this.checkBoxYearEndNote.Location = new System.Drawing.Point(19, 235);
+            this.checkBoxYearEndNote.Location = new System.Drawing.Point(19, 228);
             this.checkBoxYearEndNote.Name = "checkBoxYearEndNote";
-            this.checkBoxYearEndNote.Size = new System.Drawing.Size(445, 21);
+            this.checkBoxYearEndNote.Size = new System.Drawing.Size(441, 21);
             this.checkBoxYearEndNote.TabIndex = 5;
-            this.checkBoxYearEndNote.Text = "Display the Year-End Wrap-Up Due notification When appropriate";
+            this.checkBoxYearEndNote.Text = "Display the Year-End Wrap-Up Due notification when appropriate";
             this.checkBoxYearEndNote.UseVisualStyleBackColor = true;
             // 
             // numericUpDownDays
             // 
             this.numericUpDownDays.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.numericUpDownDays.Location = new System.Drawing.Point(464, 110);
+            this.numericUpDownDays.Location = new System.Drawing.Point(464, 86);
             this.numericUpDownDays.Name = "numericUpDownDays";
             this.numericUpDownDays.Size = new System.Drawing.Size(124, 22);
             this.numericUpDownDays.TabIndex = 2;
@@ -138,7 +139,7 @@
             this.comboBoxLogLevel.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.comboBoxLogLevel.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.comboBoxLogLevel.FormattingEnabled = true;
-            this.comboBoxLogLevel.Location = new System.Drawing.Point(464, 143);
+            this.comboBoxLogLevel.Location = new System.Drawing.Point(464, 115);
             this.comboBoxLogLevel.Name = "comboBoxLogLevel";
             this.comboBoxLogLevel.Size = new System.Drawing.Size(124, 24);
             this.comboBoxLogLevel.TabIndex = 3;
@@ -147,7 +148,7 @@
             // buttonClose
             // 
             this.buttonClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonClose.Location = new System.Drawing.Point(485, 299);
+            this.buttonClose.Location = new System.Drawing.Point(485, 290);
             this.buttonClose.Name = "buttonClose";
             this.buttonClose.Size = new System.Drawing.Size(103, 32);
             this.buttonClose.TabIndex = 6;
@@ -159,7 +160,7 @@
             // 
             this.labelBadDirectory.AutoSize = true;
             this.labelBadDirectory.ForeColor = System.Drawing.Color.Red;
-            this.labelBadDirectory.Location = new System.Drawing.Point(128, 8);
+            this.labelBadDirectory.Location = new System.Drawing.Point(133, 6);
             this.labelBadDirectory.Name = "labelBadDirectory";
             this.labelBadDirectory.Size = new System.Drawing.Size(278, 17);
             this.labelBadDirectory.TabIndex = 7;
@@ -170,7 +171,7 @@
             // 
             this.checkBoxTwoColumns.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxTwoColumns.AutoSize = true;
-            this.checkBoxTwoColumns.Location = new System.Drawing.Point(19, 264);
+            this.checkBoxTwoColumns.Location = new System.Drawing.Point(19, 255);
             this.checkBoxTwoColumns.Name = "checkBoxTwoColumns";
             this.checkBoxTwoColumns.Size = new System.Drawing.Size(474, 21);
             this.checkBoxTwoColumns.TabIndex = 8;
@@ -182,7 +183,7 @@
             // 
             this.checkBoxHighVisibility.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxHighVisibility.AutoSize = true;
-            this.checkBoxHighVisibility.Location = new System.Drawing.Point(19, 293);
+            this.checkBoxHighVisibility.Location = new System.Drawing.Point(19, 282);
             this.checkBoxHighVisibility.Name = "checkBoxHighVisibility";
             this.checkBoxHighVisibility.Size = new System.Drawing.Size(207, 21);
             this.checkBoxHighVisibility.TabIndex = 9;
@@ -193,9 +194,9 @@
             // buttonBrowseBackups
             // 
             this.buttonBrowseBackups.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonBrowseBackups.Location = new System.Drawing.Point(485, 67);
+            this.buttonBrowseBackups.Location = new System.Drawing.Point(485, 55);
             this.buttonBrowseBackups.Name = "buttonBrowseBackups";
-            this.buttonBrowseBackups.Size = new System.Drawing.Size(104, 32);
+            this.buttonBrowseBackups.Size = new System.Drawing.Size(104, 25);
             this.buttonBrowseBackups.TabIndex = 12;
             this.buttonBrowseBackups.Text = "Change";
             this.buttonBrowseBackups.UseVisualStyleBackColor = true;
@@ -204,7 +205,7 @@
             // labelBackupsDir
             // 
             this.labelBackupsDir.AutoSize = true;
-            this.labelBackupsDir.Location = new System.Drawing.Point(13, 74);
+            this.labelBackupsDir.Location = new System.Drawing.Point(13, 60);
             this.labelBackupsDir.Name = "labelBackupsDir";
             this.labelBackupsDir.Size = new System.Drawing.Size(116, 17);
             this.labelBackupsDir.TabIndex = 11;
@@ -214,7 +215,7 @@
             // 
             this.textBoxBackupsDir.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxBackupsDir.Location = new System.Drawing.Point(135, 70);
+            this.textBoxBackupsDir.Location = new System.Drawing.Point(135, 56);
             this.textBoxBackupsDir.Name = "textBoxBackupsDir";
             this.textBoxBackupsDir.Size = new System.Drawing.Size(337, 22);
             this.textBoxBackupsDir.TabIndex = 10;
@@ -225,19 +226,32 @@
             // 
             this.checkBoxCalendars.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxCalendars.AutoSize = true;
-            this.checkBoxCalendars.Location = new System.Drawing.Point(19, 176);
+            this.checkBoxCalendars.Location = new System.Drawing.Point(19, 174);
             this.checkBoxCalendars.Name = "checkBoxCalendars";
-            this.checkBoxCalendars.Size = new System.Drawing.Size(428, 21);
+            this.checkBoxCalendars.Size = new System.Drawing.Size(400, 21);
             this.checkBoxCalendars.TabIndex = 13;
-            this.checkBoxCalendars.Text = "Display calendars for dates instead of day/month/year spinners";
+            this.checkBoxCalendars.Text = "Edit dates via calendar instead of day/month/year spinners";
             this.checkBoxCalendars.UseVisualStyleBackColor = true;
             this.checkBoxCalendars.CheckedChanged += new System.EventHandler(this.checkBoxCalendars_CheckedChanged);
+            // 
+            // checkBoxDisableSanity
+            // 
+            this.checkBoxDisableSanity.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.checkBoxDisableSanity.AutoSize = true;
+            this.checkBoxDisableSanity.Location = new System.Drawing.Point(19, 146);
+            this.checkBoxDisableSanity.Name = "checkBoxDisableSanity";
+            this.checkBoxDisableSanity.Size = new System.Drawing.Size(453, 21);
+            this.checkBoxDisableSanity.TabIndex = 14;
+            this.checkBoxDisableSanity.Text = "Disable sanity-checks for wild dates and amounts during data-entry";
+            this.checkBoxDisableSanity.UseVisualStyleBackColor = true;
+            this.checkBoxDisableSanity.CheckedChanged += new System.EventHandler(this.checkBoxDisableSanity_CheckedChanged);
             // 
             // PreferencesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(610, 347);
+            this.ClientSize = new System.Drawing.Size(610, 331);
+            this.Controls.Add(this.checkBoxDisableSanity);
             this.Controls.Add(this.checkBoxCalendars);
             this.Controls.Add(this.buttonBrowseBackups);
             this.Controls.Add(this.textBoxBackupsDir);
@@ -256,8 +270,8 @@
             this.Controls.Add(this.labelSchedEventDays);
             this.Controls.Add(this.labelBackupsDir);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximumSize = new System.Drawing.Size(680, 400);
-            this.MinimumSize = new System.Drawing.Size(622, 386);
+            this.MaximumSize = new System.Drawing.Size(680, 378);
+            this.MinimumSize = new System.Drawing.Size(622, 378);
             this.Name = "PreferencesForm";
             this.Text = "PreferencesForm";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PreferencesForm_FormClosing);
@@ -287,5 +301,6 @@
         private System.Windows.Forms.Label labelBackupsDir;
         private System.Windows.Forms.TextBox textBoxBackupsDir;
         private System.Windows.Forms.CheckBox checkBoxCalendars;
+        private System.Windows.Forms.CheckBox checkBoxDisableSanity;
     }
 }

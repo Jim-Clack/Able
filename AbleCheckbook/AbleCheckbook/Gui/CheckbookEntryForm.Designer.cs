@@ -59,6 +59,7 @@
             this.datePickerTransaction.ShowUpDown = true;
             this.datePickerTransaction.Size = new System.Drawing.Size(231, 22);
             this.datePickerTransaction.TabIndex = 0;
+            this.datePickerTransaction.ValueChanged += new System.EventHandler(this.datePickerTransaction_ValueChanged);
             // 
             // labelTransDate
             // 

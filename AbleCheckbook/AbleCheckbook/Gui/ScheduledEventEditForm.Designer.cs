@@ -73,6 +73,7 @@
             this.textBoxMemo = new System.Windows.Forms.TextBox();
             this.labelMemo = new System.Windows.Forms.Label();
             this.checkBoxReminder = new System.Windows.Forms.CheckBox();
+            this.labelMultipleDays = new System.Windows.Forms.Label();
             this.tabControl.SuspendLayout();
             this.tabPageMonthly.SuspendLayout();
             this.tabPageAnnually.SuspendLayout();
@@ -103,6 +104,7 @@
             // 
             // tabPageMonthly
             // 
+            this.tabPageMonthly.Controls.Add(this.labelMultipleDays);
             this.tabPageMonthly.Controls.Add(this.labelExample1);
             this.tabPageMonthly.Controls.Add(this.listBoxDaysOfMonth1);
             this.tabPageMonthly.Location = new System.Drawing.Point(4, 25);
@@ -163,6 +165,7 @@
             "Last day of month"});
             this.listBoxDaysOfMonth1.Location = new System.Drawing.Point(16, 16);
             this.listBoxDaysOfMonth1.Name = "listBoxDaysOfMonth1";
+            this.listBoxDaysOfMonth1.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
             this.listBoxDaysOfMonth1.Size = new System.Drawing.Size(179, 116);
             this.listBoxDaysOfMonth1.TabIndex = 0;
             this.listBoxDaysOfMonth1.SelectedIndexChanged += new System.EventHandler(this.listBoxDaysOfMonth1_SelectedIndexChanged);
@@ -689,6 +692,17 @@
             this.checkBoxReminder.Text = "Highlight Entry as a Reminder";
             this.checkBoxReminder.UseVisualStyleBackColor = true;
             // 
+            // labelMultipleDays
+            // 
+            this.labelMultipleDays.AutoSize = true;
+            this.labelMultipleDays.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelMultipleDays.ForeColor = System.Drawing.Color.Red;
+            this.labelMultipleDays.Location = new System.Drawing.Point(211, 16);
+            this.labelMultipleDays.Name = "labelMultipleDays";
+            this.labelMultipleDays.Size = new System.Drawing.Size(241, 17);
+            this.labelMultipleDays.TabIndex = 3;
+            this.labelMultipleDays.Text = "FYI: Multiple days per month selected.";
+            // 
             // ScheduledEventEditForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -784,5 +798,6 @@
         private System.Windows.Forms.TextBox textBoxMemo;
         private System.Windows.Forms.Label labelMemo;
         private System.Windows.Forms.CheckBox checkBoxReminder;
+        private System.Windows.Forms.Label labelMultipleDays;
     }
 }

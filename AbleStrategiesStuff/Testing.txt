@@ -6,7 +6,7 @@ SQA...
  * Thoroughly test all variations of ScheduledEvent, changing dates in a VM
  * Test various screen resolutions, themes, and font scales (i.e. 100%, 150%)
  * Test keyboard entry, tab-to-controls, non-mouse usage
- * Modify aged SchEvent, is repeat-count updated correctly? All 5 modes?
+ * Modify aged SchEvent, repeat-count correct? All 5 modes? Mult days per mo?
  * Test all ops (delete, edit, splits) on last and first entry of checkbook
  * Check logs after each run to see if there were any stealthy problems
  * Do a Year-End, then a year later do another, check the Balance-Forwards

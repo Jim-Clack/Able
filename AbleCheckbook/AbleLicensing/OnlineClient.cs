@@ -89,6 +89,11 @@ namespace AbleLicensing
         private string _ip = null;
 
         /// <summary>
+        /// A server call may return a user alert.
+        /// </summary>
+        private string _pendingUserAlert = null;
+
+        /// <summary>
         /// Ctor for any kind of usage.
         /// </summary>
         /// <param name="sid">installation site identification</param>
@@ -117,22 +122,30 @@ namespace AbleLicensing
         }
 
         /// <summary>
+        /// Fetch and clear any pending/awaiting user alert that was received on a call to the server.
+        /// </summary>
+        public string PendingUserAlert
+        {
+            get
+            {
+                string alert = _pendingUserAlert;
+                _pendingUserAlert = null;
+                return alert;
+            }
+        }
+
+        /// <summary>
         /// Update the server about activity on this licensed site.
         /// </summary>
         /// <param name="desc">installation assigned description, possibly unknown/null</param>
         /// <returns>ActivationStatus</returns>
-        /// <remarks>
-        /// It is recommended that you do NOT deactive if this returns false. Instead record and
-        /// persist the failure along with its cause, then only deactivate after 10 sequential 
-        /// network failures or 2 DeActivated or NotActivated failures.
-        /// </remarks>
-        public ActivationStatus IsStillActivation(string desc)
+        public ActivationStatus IsStillActivated(string desc)
         {
             return CallServerToVerifyActivation(desc);
         }
 
         /// <summary>
-        /// Request a PIN from the Able Strategies server.
+        /// Request a Purch, Desc, and even a PIN from the Able Strategies server. Main entry point.
         /// </summary>
         /// <param name="addr">installation street address</param>
         /// <param name="zip">installation postal code</param>
@@ -140,29 +153,43 @@ namespace AbleLicensing
         /// <param name="phone">installation phone number</param>
         /// <param name="email">installation email address</param>
         /// <param name="feature">installation edition/features/etc to be purchased, if necessary</param>
-        /// <param name="desc">installation assigned description, null or blank if unknown</param>
-        /// <param name="purchase">null to trigger a Paypal purchase, else the validation code from the prior purchase</param>
+        /// <param name="desc">installation assigned description, null if unknown *</param>
+        /// <param name="purchase">validation code from the purchase, null if unknown *</param>
         /// <returns>Results of the attempt to activate</returns>
-        public ActivationResults RequestPin(string addr, string city, string zip, string phone, string email, 
+        /// <remarks>
+        /// * If both desc and purchase are passed in as null, it will trigger a PayPal purchase.
+        ///   If either are passed in as null, the system will first attempt to find the transaction
+        ///   and then, only if it cannot, will it trigger a PayPal purchase.
+        /// </remarks>
+        public ActivationResults OnlineActivation(string addr, string city, string zip, string phone, string email, 
             string feature, string desc = null, string purchase = null)
         {
             if ((desc == null || desc.Trim().Length < 1) && purchase != null && purchase.Trim().Length > 0)
-            {
+            {   // if we have little to work with, start from scratch - first assemble a desc
                 desc = CallServerForNewSiteDescription(zip, feature, purchase);
             }
             if (desc == null || desc.Trim().Length < 1)
-            {
+            {   // this should never happen, but just in case
                 return new ActivationResults(null, null, purchase, _serverErrorMessage);
             }
-            if (purchase == null || purchase.Trim().Length < 1)
-            {
-                purchase = PurchaseOnline(addr, city, zip, phone, email, feature, desc);
+            if((purchase == null || purchase.Trim().Length < 1) && desc != null && desc.Trim().Length > 0)
+            {   // have a desc but no purch, maybe there was a comm fault during prior CallServerToRegisterPurchase()
+                purchase = CallServerToSearchForPurchase(feature, desc);
             }
             if (purchase == null || purchase.Trim().Length < 1)
-            {
+            {   // it seems that the user has not yet paid, so bring up the paypal screen
+                purchase = PurchaseOnline(addr, city, zip, phone, email, feature, desc); 
+            }
+            if (purchase == null || purchase.Trim().Length < 1)
+            {   // user didn't pay, something was incorrect, or other unexpected issuee
                 return new ActivationResults(desc, null, null, _serverErrorMessage);
             }
             string pin = CallServerForActivationPin(addr, city, zip, phone, email, feature, desc, purchase);
+            if(pin == null)
+            {   // comm error? other processing problem? somehow we got no pin.
+                return new ActivationResults(desc, null, purchase, _serverErrorMessage);
+            }
+            // success!!!
             return new ActivationResults(desc, pin, purchase, _serverErrorMessage);
         }
 
@@ -172,28 +199,33 @@ namespace AbleLicensing
         /// Bring up the "Buy" page and proceed to PayPal or whatever
         /// </summary>
         /// <param name="addr">installation street address</param>
-        /// <param name="zip">installation postal code</param>
         /// <param name="city">installation city</param>
+        /// <param name="zip">installation postal code</param>
         /// <param name="phone">installation phone number</param>
         /// <param name="email">installation email address</param>
         /// <param name="feature">installation edition/features/etc to be purchased</param>
         /// <param name="desc">installation assigned description, null or blank if unknown</param>
-        /// <returns></returns>
+        /// <returns>purch val code, or null on error</returns>
         private string PurchaseOnline(
-            string addr, string zip, string city, string phone, string email, string feature, string desc)
+            string addr, string city, string zip, string phone, string email, string feature, string desc)
         {
-            _serverErrorMessage = null;
+            _serverErrorMessage = null;  // "[I9] ..."
             string url = "https://ablestrategies.com/ablecheckbook/PushedCheckout.html?mode=basic" +
                 "&sid=" + Uri.EscapeDataString(_sid) +
                 "&user=" + Uri.EscapeDataString(_user) +
                 "&ip=" + Uri.EscapeDataString(_ip) +
+                "&addr=" + Uri.EscapeDataString(addr) +
+                "&city=" + Uri.EscapeDataString(city) +
+                "&zip=" + Uri.EscapeDataString(zip) +
+                "&phone=" + Uri.EscapeDataString(phone) +
+                "&email=" + Uri.EscapeDataString(email) +
                 "&feature=" + Uri.EscapeDataString(feature) +
                 "&desc=" + Uri.EscapeDataString(desc);
             Browser2Form form = new Browser2Form("Buy", url,
                "https://www.google.com/search?q=site%3Aablestrategies.com+checkbook+help+", null);
             form.Show();
-            // Now call the server to see if it was succesful and to fetch the purchase val code.
-            return CallServerToConfirmPurchase(feature, desc);
+            // Now call the server to see if it was succesful and to register the purchase val code.
+            return CallServerToRegisterPurchase(addr, city, zip, phone, email, feature, desc);
         }
 
         /////////////////////// Web Service API Calls ////////////////////////
@@ -204,10 +236,26 @@ namespace AbleLicensing
         /// <param name="zip">installation postal code</param>
         /// <param name="feature">installation edition/features/etc to be purchased, if necessary</param>
         /// <param name="purchase">validation code from the prior purchase</param>
-        /// <returns></returns>
+        /// <returns>desc</returns>
+        /// <remarks>
+        ///   If the
+        /// </remarks>
         private string CallServerForNewSiteDescription(string zip, string feature, string purchase)
         {
-            _serverErrorMessage = null;
+            _serverErrorMessage = null; // "[E5] ..."
+
+            return null;
+        }
+
+        /// <summary>
+        /// Call the server to get an activation PIN.
+        /// </summary>
+        /// <param name="feature">installation edition/features/etc to be purchased, if necessary</param>
+        /// <param name="desc">installation assigned description</param>
+        /// <returns>purch val code, or null on error or not found</returns>
+        private string CallServerToSearchForPurchase(string feature, string desc)
+        {
+            _serverErrorMessage = null; // "[D4] ..."
 
             return null;
         }
@@ -227,8 +275,20 @@ namespace AbleLicensing
         private string CallServerForActivationPin(string addr, string city, string zip, 
             string phone, string email, string feature, string desc, string purchase)
         {
-            _serverErrorMessage = null;
+            _serverErrorMessage = null; // "[C3] ..."
+            string purch = "";
+            bool okay = false;
 
+
+            if (okay && purch != null && purch.Trim().Length > 0)
+            {
+                return purch;
+            }
+            _serverErrorMessage =
+                "[C3] Your DESC is " + desc + " - please write it down. The purchase went thru but activation " +
+                "failed. Try again later, using the offline method as described on our website. We tried " +
+                "a few times and we are very sorry, as this really should not happen, but we too are " +
+                "subject to the unpredicable whims and fancies of cloud servers and the Internet itself.";
             return null;
         }
 
@@ -239,21 +299,40 @@ namespace AbleLicensing
         /// <returns>ActivationStatus</returns>
         private ActivationStatus CallServerToVerifyActivation(string desc)
         {
-            _serverErrorMessage = null;
+            _serverErrorMessage = null; // "[B2] ..."
 
+            _pendingUserAlert = null; // ???
             return ActivationStatus.Activated;
         }
 
         /// <summary>
         /// Confirm a purchase.
         /// </summary>
+        /// <param name="addr">installation street address</param>
+        /// <param name="zip">installation postal code</param>
+        /// <param name="city">installation city</param>
+        /// <param name="phone">installation phone number</param>
+        /// <param name="email">installation email address</param>
         /// <param name="feature">installation edition/features/etc that was purchased</param>
-        /// <param name="desc">installation assigned description, possibly unknown/null</param>
-        /// <returns></returns>
-        private string CallServerToConfirmPurchase(string feature, string desc)
+        /// <param name="desc">installation assigned description</param>
+        /// <returns>purch val code, or null on error</returns>
+        private string CallServerToRegisterPurchase(string addr, string city, string zip, 
+            string phone, string email, string feature, string desc)
         {
-            _serverErrorMessage = null;
+            _serverErrorMessage = null; // "[A1] ..."
+            string purch = "";
+            bool okay = false;
 
+
+            if(okay && purch != null && purch.Trim().Length > 0)
+            {
+                return purch;
+            }
+            _serverErrorMessage = 
+                "[A1] Your DESC is " + desc + " - please write it down. The purchase went thru but further " +
+                "server communication failed, despite multiple attempts. Try again later, using the offline " +
+                "method described on our website. We are very sorry, as this should not happen, but we too " +
+                "are subject to the unpredicable whims and fancies of cloud servers and the Internet itself.";
             return null;
         }
 

@@ -8,6 +8,18 @@ namespace AbleLicensing
 {
 
     /// <summary>
+    /// Delimiter in SiteDescription corresponds to user level in Configuration.
+    /// </summary>
+    public enum UserLevelPunct
+    {
+        Unlicensed = 0,
+        Deactivated = (int)'–', // note: en-dash, not a hyphen
+        Standard = (int)'-',
+        ProCPA = (int)'&',
+        SuperUser = (int)'@',
+    }
+
+    /// <summary>
     /// Because this is deliberately obfuscated, you'll have to read the code to figure out some things.
     /// </summary>
     /// <remarks>
@@ -23,8 +35,16 @@ namespace AbleLicensing
     ///  act.SetActivationPin(pin);
     ///  act.SetFeatureBitmask(0x000000000000000FL, act.ChecksumOfString(act.SiteIdentification));
     ///  act.SetExpiration(92, act.ChecksumOfString(act.SiteIdentification));
+    /// Licensing Fields:
+    ///  SiteId: This identifies the host by IP/Domain/Hdwr and may not be unique.
+    ///  Desc: Uniquely identifies the user by nickname/location as well as his/her license level.
+    ///  Purch: Uniquely identifies the transaction in which a license was purchased.
+    ///  PIN: Calculated per a specific combination of SiteId and Desc above.
+    ///  ActivityTracking: Scratch area used by Activation.
+    ///  Feature: Future use, ignored for now.
     /// Notes:
     /// - Be sure to call dummy method VerifyPin() in key places to act as a hacker distraction.
+    /// - Thre must be Different iSettings implementations for the client and the server.
     /// - There must be exactly one class in the entry assembly that implements iSettings.
     /// - The iSettings implementation must persist and restore all data from setters.
     /// - Ths iSettings class should return the same MfrAndAppName as is used during installation.
@@ -39,6 +59,7 @@ namespace AbleLicensing
     /// - Each site is uniquely ID'd by the combination of siteIdentification and siteDescription
     /// - Each site is tracked as a site (possibly many-to-one) from a purchase val code
     /// - When a new site is activated, the most latent one on that purchase gets deactivated
+    /// - A Purch# (Purchase Validation Code) is a "P" followed by the PayPal trasnsaction number
     /// </remarks>
     public class Activation
     {
@@ -127,6 +148,15 @@ namespace AbleLicensing
         }
 
         /// <summary>
+        /// Hook for to call the logger with a DIAG-level mesage.
+        /// </summary>
+        /// <param name="message">To be logged</param>
+        public void LoggerHook(string message)
+        {
+            _iSettings.LoggerHook(message);
+        }
+
+        /// <summary>
         /// Set these default values - to be used if not deliberately set otherwise. 
         /// </summary>
         /// <param name="daysOfUse"></param>
@@ -135,6 +165,16 @@ namespace AbleLicensing
         {
             _defaultDaysOfUse = daysOfUse;
             _defaultDaysSinceInstalled = daysSinceInstallation;
+        }
+
+        /// <summary>
+        /// Too many copies made from this license, so de-activate it.
+        /// </summary>
+        public void DeActivate()
+        {
+            _iSettings.SiteDescription = _iSettings.SiteDescription.Substring(0, 5) +
+                (char)UserLevelPunct.Deactivated + _iSettings.SiteDescription.Substring(7);
+            _iSettings.Save();
         }
 
         /// <summary>
@@ -294,7 +334,7 @@ namespace AbleLicensing
         /// <returns>who knows?</returns>
         public bool VerifyPin(long pin)
         {
-            return pin.ToString().CompareTo(CalculatePin()) == 0;
+            return pin.ToString().CompareTo(DateTime.Now.ToString()) != 0;
         }
 
         /// <summary>
@@ -472,7 +512,7 @@ namespace AbleLicensing
         }
 
         /// <summary>
-        /// Reversibly XOR a value with another value that is based on the Activation PIN.
+        /// Deceptive name: Reversibly XOR a value with another value that is based on the Activation PIN.
         /// </summary>
         private long TranslateLong(long value)
         {

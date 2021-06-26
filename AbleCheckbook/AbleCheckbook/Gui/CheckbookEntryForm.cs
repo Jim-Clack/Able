@@ -23,6 +23,16 @@ namespace AbleCheckbook.Gui
         private const int MaxSplits = 6;
 
         /// <summary>
+        /// Keep track of entry dates to use as a default for subsequent entries.
+        /// </summary>
+        private static DateTime S_PrevDate = DateTime.Now;
+
+        /// <summary>
+        /// If the user wants to type in something crazy, let him/her, but be sure to confirm it at least once
+        /// </summary>
+        private bool _sanityChecked = Configuration.Instance.DisableSanityChecks;
+
+        /// <summary>
         /// This form is based on one row in the following data grid view.
         /// </summary>
         private DataGridView _dataGridView = null;
@@ -332,6 +342,7 @@ namespace AbleCheckbook.Gui
         {
             _isNewEntry = true;
             this.BackColor = Color.FromArgb(232, 248, 255);
+            datePickerTransaction.Value = CheckbookEntryForm.S_PrevDate;
             textBoxAssistance.BackColor = this.BackColor;
             buttonDelete.Enabled = false;
             UpdateVisibilities();
@@ -602,6 +613,34 @@ namespace AbleCheckbook.Gui
             return _readyForSubmit;
         }
 
+        private bool SanityCheck()
+        {
+            this.AcceptButton = null;
+            long daysAgo = DateTime.Now.Subtract(datePickerTransaction.Value).Days;
+            if (_readyForSubmit && !_sanityChecked && Math.Abs(daysAgo) > 29)
+            {
+                _readyForSubmit = MessageBox.Show("" + daysAgo + Strings.Get(" days away from today! Are you sure?"),
+                    Strings.Get("Confirm"), MessageBoxButtons.YesNo) == DialogResult.Yes;
+                _sanityChecked = true;
+            }
+            long amount = 0L;
+            if (_textBoxAmounts != null)
+            {
+                foreach (TextBox textBoxAmount in _textBoxAmounts)
+                {
+                    amount += UtilityMethods.ParseCurrency(textBoxAmount.Text);
+                }
+            }
+            if (_readyForSubmit && !_sanityChecked && Math.Abs(amount) > 999999)
+            {
+                _readyForSubmit = MessageBox.Show("" + UtilityMethods.FormatCurrency(amount) + Strings.Get(" in total currency! Are you sure?"),
+                    Strings.Get("Confirm"), MessageBoxButtons.YesNo) == DialogResult.Yes;
+                _sanityChecked = true;
+            }
+            this.AcceptButton = _readyForSubmit ? buttonOk : null;
+            return _readyForSubmit;
+        }
+
         /// <summary>
         /// Only allow keypresses for currency to be entered.
         /// </summary>
@@ -714,6 +753,7 @@ namespace AbleCheckbook.Gui
         {
             get
             {
+                CheckbookEntryForm.S_PrevDate = datePickerTransaction.Value;
                 return datePickerTransaction.Value;
             }
         }
@@ -835,6 +875,10 @@ namespace AbleCheckbook.Gui
             {
                 return;
             }
+            if(!SanityCheck())
+            {
+                return;
+            }
             if(_rowCheckbook.Entry.MadeBy == EntryMadeBy.Scheduler)
             {
                 _rowCheckbook.Entry.MadeBy = EntryMadeBy.User;
@@ -861,6 +905,7 @@ namespace AbleCheckbook.Gui
             if (sender as TextBox != null)
             {
                 AdjustAmountsPerKinds((TextBox)sender);
+                SanityCheck();
             }
         }
 
@@ -900,6 +945,11 @@ namespace AbleCheckbook.Gui
             _deleteEntry = true;
             DialogResult = DialogResult.OK;
             this.Close();
+        }
+
+        private void datePickerTransaction_ValueChanged(object sender, EventArgs e)
+        {
+            CheckbookEntryForm.S_PrevDate = datePickerTransaction.Value;
         }
 
         private void textBoxCheckNbr_Enter(object sender, EventArgs e)

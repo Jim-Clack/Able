@@ -19,22 +19,10 @@ namespace AbleCheckbook.Logic
     public enum UserLevel
     {
         Unlicensed = 0,
-        Basic = 1,
-        Deluxe = 2,
+        Deactivated = 1,
+        Standard = 2,
         ProCPA = 4,
         SuperUser = 8,
-    }
-
-    /// <summary>
-    /// Delimiter in SiteDescription corresponds to user level in Configuration.
-    /// </summary>
-    public enum UserLevelPunct
-    {
-        Unlicensed = 0,
-        Basic = (int)'-',
-        Deluxe = (int)'~',
-        ProCPA = (int)'&',
-        SuperUser = (int)'@',
     }
 
     /// <summary>
@@ -57,6 +45,7 @@ namespace AbleCheckbook.Logic
         private int _postEventAdvanceDays = 30;
         private LogLevel _logLevel = LogLevel.Diag;
         private string _loadedFrom = "";
+        private bool _disableSanityChecks = false;
         private bool _suppressReconcileAlert = false;
         private bool _suppressYearEndAlert = false;
         private bool _twoAmountColumns = false;
@@ -85,6 +74,7 @@ namespace AbleCheckbook.Logic
         public int PostEventAdvanceDays { get => _postEventAdvanceDays; set => _postEventAdvanceDays = value; }
         public string LoadedFrom { get => _loadedFrom; set => _loadedFrom = value; }
         public string LastDbName { get => _lastDbName; set => _lastDbName = value; }
+        public bool DisableSanityChecks { get => _disableSanityChecks; set => _disableSanityChecks = value; }
         public bool HighVisibility { get => _highVisibility; set => _highVisibility = value; }
         public bool ShowCalendars { get => _showCalendars; set => _showCalendars = value; }
         public int WindowLeft { get => _windowLeft; set => _windowLeft = value; }
@@ -325,10 +315,10 @@ namespace AbleCheckbook.Logic
             // We should augment this with Activation.IsFeatureEnabled().
             switch ((int)_siteDescription[6])
             {
-                case (int)UserLevelPunct.Basic:
-                    return UserLevel.Basic;
-                case (int)UserLevelPunct.Deluxe:
-                    return UserLevel.Deluxe;
+                case (int)UserLevelPunct.Standard:
+                    return UserLevel.Standard;
+                case (int)UserLevelPunct.Deactivated:
+                    return UserLevel.Deactivated;
                 case (int)UserLevelPunct.ProCPA:
                     return UserLevel.ProCPA;
                 case (int)UserLevelPunct.SuperUser:
@@ -451,6 +441,15 @@ namespace AbleCheckbook.Logic
         }
 
         ///////////////////////////// SiteSettings ///////////////////////////
+        
+        /// <summary>
+        /// Hook for Activation to call the logger with a DIAG-level mesage.
+        /// </summary>
+        /// <param name="message">To be logged</param>
+        public override void LoggerHook(string message)
+        {
+            Logger.Diag(message);
+        }
 
         /// <summary>
         /// Fetch the product key, a unique string for each application. (typically the app name)

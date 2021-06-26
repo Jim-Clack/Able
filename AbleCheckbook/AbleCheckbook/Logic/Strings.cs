@@ -269,12 +269,16 @@ namespace AbleCheckbook.Logic
             AddString("Illegal Directory Path Specified, Reverted...");
             AddString("Number of days in advance to post scheduled events to checkbook:");
             AddString("Log Level (Trace = Detailed, Diag = Normal, Warn = Smaller Logs)");
-            AddString("Display calendars for dates instead of day/month/year spinners");
+            AddString("Edit dates via calendar instead of day/month/year spinners");
             AddString("Display the Reconcile Overdue notification when appropriate");
             AddString("Display the Year-End Wrap-Up Due notification When appropriate");
             AddString("Display amounts in two columns (Debit/Credit) instead of one (Amount)");
             AddString("Check off entries that are cleared in bank statement");
-            AddString("Below left: Fill in last balance from bank statement");
+            AddString("Fill in details at left from your bank statement");
+            AddString(" days away from today! Are you sure?");
+            AddString("Confirm");
+            AddString("Disable sanity-checks for wild dates and amounts during data-entry");
+            AddString(" in total currency! Are you sure?");
             AddString("Disparity (should be zero):");
             AddString("Done With Reconciliation");
             AddString("Create Balance Adjustment");
@@ -288,7 +292,7 @@ namespace AbleCheckbook.Logic
             AddString("Note: No Importable Entries Read");
             AddString("Open Backup of DB File: ");
             AddString("Save the current DB as ");
-            AddString("If already paid -for, enter the Purchase Val Code here");
+            AddString("If already paid-for, enter the Purchase Val Code here");
             AddString("; Open the selected backup as ");
             AddString("Search only those Entries before or on:");
             AddString("Search for substring in Payee");
@@ -394,7 +398,6 @@ namespace AbleCheckbook.Logic
             AddString("Expired Trial Evaluation Period");
             AddString("Already activated - Do you wish to continue?");
             AddString("Are you sure you want to change this value?");
-            AddString("Confirm");
             AddString("Add New");
             AddString("Due");
             AddString("Success");
@@ -467,6 +470,7 @@ namespace AbleCheckbook.Logic
             AddString("Select Day of Week");
             AddString("Select Week of Month");
             AddString("Invalid Next Date");
+            AddString("FYI: Multiple days per month selected.");
             AddString("Next Date Not ");
             AddString("Must Specify Payee");
             AddString("Category Required");

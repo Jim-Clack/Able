@@ -47,7 +47,7 @@ namespace AbleCheckbook
             bool showInstructions = true;
             if (textBoxThisBalance.Text.Trim().Length < 3)
             {
-                labelInstructions.Text = Strings.Get("Below left: Fill in last balance from bank statement");
+                labelInstructions.Text = Strings.Get("Fill in details at left from your bank statement");
                 // dataGridView1.Enabled = false; // nope, causes user confusion
             }
             else

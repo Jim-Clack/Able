@@ -147,6 +147,5 @@ Notes to developers who are MS/VS virgins:
  When you add a ComboBox (this.Controls.Add(ComboBoxXxx)) it may screw up
  certain properties of the ComboBox because their activation gets deferred
  until then, so it's important to set SelectIndex, Text, BringToFront/Back, 
- etc. until afterwrd. Also, after changing the DataSource you may have 
- to ComboBoxXxx.BindingContext = new BindingContext(). You may also need to
- Suspend/Resume Layout() or even PerformLayout().
+ etc. until afterward. Also after changing the DataSource you may have 
+ to ComboBoxXxx.BindingContext = new BindingContext(). 

@@ -30,7 +30,8 @@ namespace AbleCheckbook.Gui
             labelLogLevel.Text = Strings.Get("Log Level (Trace = Detailed, Diag = Normal, Warn = Smaller Logs)");
             labelSchedEventDays.Text = Strings.Get("Number of days in advance to post scheduled events to checkbook:");
             labelBadDirectory.Text = Strings.Get("Illegal Directory Path Specified, Reverted...");
-            checkBoxCalendars.Text = Strings.Get("Display calendars for dates instead of day/month/year spinners");
+            checkBoxDisableSanity.Text = Strings.Get("Disable sanity-checks for wild dates and amounts during data-entry");
+            checkBoxCalendars.Text = Strings.Get("Edit dates via calendar instead of day/month/year spinners");
             checkBoxReconcileNote.Text = Strings.Get("Display the Reconcile Overdue notification when appropriate");
             checkBoxYearEndNote.Text = Strings.Get("Display the Year-End Wrap-Up Due notification When appropriate");
             checkBoxTwoColumns.Text = Strings.Get("Display amounts in two columns (Debit/Credit) instead of one (Amount)");
@@ -44,6 +45,7 @@ namespace AbleCheckbook.Gui
             numericUpDownDays.Value = Configuration.Instance.PostEventAdvanceDays;
             comboBoxLogLevel.Text = Enum.GetNames(typeof(Logger.LogLevel))[(int)level];
             comboBoxLogLevel.SelectedIndex = (int)level;
+            checkBoxDisableSanity.Checked = Configuration.Instance.DisableSanityChecks;
             checkBoxCalendars.Checked = !Configuration.Instance.ShowCalendars;
             checkBoxReconcileNote.Checked = !Configuration.Instance.SuppressReconcileAlert;
             checkBoxYearEndNote.Checked = !Configuration.Instance.SuppressYearEndAlert;
@@ -91,6 +93,7 @@ namespace AbleCheckbook.Gui
                 labelBadDirectory.Visible = true;
                 return false;
             }
+            textBoxBackupsDir.Text = Configuration.Instance.DirectoryBackup2; // just in case it was changed too
             return true;
         }
 
@@ -182,6 +185,11 @@ namespace AbleCheckbook.Gui
         private void checkBoxCalendars_CheckedChanged(object sender, EventArgs e)
         {
             Configuration.Instance.ShowCalendars = checkBoxCalendars.Checked;
+        }
+
+        private void checkBoxDisableSanity_CheckedChanged(object sender, EventArgs e)
+        {
+            Configuration.Instance.DisableSanityChecks = checkBoxDisableSanity.Checked;
         }
     }
 }

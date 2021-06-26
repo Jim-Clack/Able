@@ -21,7 +21,7 @@ namespace AbleCheckbook.Logic
         private string _zipCode = "";
         private string _otherContactInfo = "";
         private string _importantNotice = "";
-        private UserLevel _userLevel = UserLevel.Basic;
+        private UserLevel _userLevel = UserLevel.Standard;
         private string _activatedBy = "";
         private string _siteIdentification = "";
         private string _ipAddress = "";

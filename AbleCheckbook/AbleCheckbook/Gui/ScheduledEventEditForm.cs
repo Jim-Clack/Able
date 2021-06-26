@@ -108,7 +108,7 @@ namespace AbleCheckbook.Gui
             if (tabControl.SelectedTab == tabPageMonthly)
             {
                 _schEvent.SetDueMonthly(isReminder,
-                    GetFirstIndex(listBoxDaysOfMonth1), finalDate);
+                    GetBitMask(listBoxDaysOfMonth1), finalDate);
             }
             else if (tabControl.SelectedTab == tabPageAnnually)
             {
@@ -193,6 +193,7 @@ namespace AbleCheckbook.Gui
                     labelNotice.Text = Strings.Get("Select Day(s) of Month");
                     return false;
                 }
+                labelMultipleDays.Visible = (listBoxDaysOfMonth1.SelectedIndices.Count > 1);
             }
             else if (tabControl.SelectedTab == tabPageAnnually)
             {
@@ -432,11 +433,11 @@ namespace AbleCheckbook.Gui
         }
 
         /// <summary>
-        /// Return a bit-map based on the selected indices of a list box.
+        /// Return a bit-mask based on the selected indices of a list box.
         /// </summary>
         /// <param name="listBox">To be analyzed</param>
         /// <returns>corresponding bit-map</returns>
-        private long GetBitmap(ListBox listBox)
+        private long GetBitMask(ListBox listBox)
         {
             long bitmap = 0L;
             long mask = 1L;
@@ -560,6 +561,8 @@ namespace AbleCheckbook.Gui
             labelFinalPayment.Text = Strings.Get("Final Payment if Different");
             labelNotice.Text = "";
             labelMemo.Text = Strings.Get("Memo");
+            labelMultipleDays.Text = Strings.Get("FYI: Multiple days per month selected.");
+            labelMultipleDays.Visible = false;
             buttonOk.Text = Strings.Get("OK");
             buttonCancel.Text = Strings.Get("Cancel");
             buttonDelete.Text = Strings.Get("Delete");

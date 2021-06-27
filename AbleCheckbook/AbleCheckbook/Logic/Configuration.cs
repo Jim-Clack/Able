@@ -111,8 +111,11 @@ namespace AbleCheckbook.Logic
                     }
                     SaveFile();
                     _instance.Verify();
-                    _instance._adminMode = false; // always resets to false on load
-                    Logger.Instance.Level = _instance._logLevel;
+                    _instance._adminMode = false; // resets to false on successful load
+                    if ((int)_instance._logLevel > (int)LogLevel.Diag) // defaults to, at least, Diag
+                    {
+                        _instance._logLevel = LogLevel.Diag;
+                    }
                 }
                 return _instance;
             }
@@ -121,7 +124,8 @@ namespace AbleCheckbook.Logic
         // Where is the config file?
         public static string PathToConfigurationFile()
         {
-            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "AbleStrategies\\ACheckbook\\preferences.cnf");
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), 
+                "AbleStrategies\\ACheckbook\\preferences.cnf");
         }
 
         /// <summary>

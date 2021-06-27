@@ -14,7 +14,6 @@ Beta TODO...
  - Web Services for online reconciliation (Open Banking API)
  - Prevent multiple instances at the same time
  - AreYouSureForm with date/time/user that screen-captures, logs, and read log
- - Expand column widths when form is resized on Scheduled Events List
  - Much testing
 
 Long-term TODO...
@@ -42,3 +41,5 @@ Server DB
  - Purch_T: Purch_Pk, PayPal_Fk, Name, Email, Phone, DateCreated, Status, etc.
  - PayPal_T: PayPal_Pk, Purch, Sid, Desc, Email, Phone, Auth, Amount, Status, etc.
  - Site_T: Site_Pk, Purch_Fk, Sid, Desc, Name, Email, Phone, DateCreated, DatePinged, Status, etc.
+ - PurchStatus: GotPrePurchaseQuery, PurchaseFailed, PurchaseOkay, PurchaseCancelled
+ - SiteStatus: GotPreActivationQuery, ActivationFailed, ActivationOkay, SiteDisabled

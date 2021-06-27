@@ -111,5 +111,30 @@ namespace AbleCheckbook.Gui
             _backend.Db.InsertEntry(form.GetEvent());
             ReloadGrid();
         }
+
+        private void ScheduledEventsListForm_Resize(object sender, EventArgs e)
+        {
+            int width = 32;
+            int height = 32;
+            if(dataGridViewEvents.RowCount < 10)
+            {
+                return;
+            }
+            foreach(DataGridViewColumn col in dataGridViewEvents.Columns)
+            {
+                if(col.Visible)
+                {
+                    width += col.Width + 4;
+                }
+            }
+            foreach (DataGridViewRow row in dataGridViewEvents.Rows)
+            {
+                if (row.Visible)
+                {
+                    height += row.Height + 4;
+                }
+            }
+            this.MaximumSize = new Size(width, height);
+        }
     }
 }

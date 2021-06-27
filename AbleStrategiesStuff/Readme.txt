@@ -3,13 +3,17 @@ Development Notes
 
 Workstation Setup Notes...
  A. Install MS 2019 Visual Studio complete
- A. Install MS 2017 Installer for Application Deployment via MSIX
- B. Install into MS VS via NuGet: System.Text.Json
- C. Add a Pre-Build Event: copy $(ProjectDir)Support\* $(TargetDir)
- D. If you are new to MS VS, see notes at the end of this document
- E. Set Build Configuration Symbols: Debug: SUPERUSER, Release: RELEASE 
- F. Note: C# Bug: DataGridView column called Name will instead apply to Form
- G. Note: VS Fix: See comments at end of MainScreen.Reconciler/Support.cs
+ B. Install MS 2017 Installer for Application Deployment via MSIx
+ C. Install into MS VS via NuGet: System.Text.Json
+ D. Install git and/or GitHub desktop
+ E. You may want to install Postman and WinSCP as well
+ F. AbleCheckbook VS Pre-Build Event: copy $(ProjectDir)Support\* $(TargetDir)
+ G. Set Build Configuration Symbols: Debug: SUPERUSER, Release: RELEASE 
+
+ Caveats...
+ . If you are new to MS VS, see notes at the end of this document
+ . C# Bug: A DataGridView column called "Name" will instead apply to Form
+ . VS Gotcha: See comments at end of MainScreen.Reconciler/Support.cs
 
 Terminology...
  - NewEntryRow refers to the "Insert Entry" row in the checkbook register
@@ -49,23 +53,24 @@ Design of this project...
  * 60% test coverage with 99% of happy-path therein (in non-GUI code)
 
 User Levels (and corresponding Site-Description delimiters)...
- 0. Eval (Unlicensed, 14-Mo Limit, Limited Undo, No Support, No Admin)
- 1. Basic (Minimal licensed version)                                       -
- 2. Deluxe (Online Banking, Mobile Apps, Undo Persisted to Disk)           ~
- 3. ProCPA (Arbitrary Acct Names, SLA, Live Support, Mult Instances)       &
+ 0. Eval (Unlicensed, Time Limited, Limited Undo, No Support, No Admin)
+ 1. Deactivated (abuse deactivates most latent)     en-dash, not a hyphen: –
+ 2. Standard (Regular licensed version)                            hyphen: -
+ 3. ProCPA (Named Accts, SLA, Live Support, Mult Instances)     ampersand: &
  4. SuperUser (UserDb Maint, Log Reader, Activation Codes, etc.)   DEBUG + @
 
 When writing docs/help, explain...
  - See terminology, above
  - Reconcile-in-progress will maintain state across save/open cycles
+ - To undo N-steps of reconcile: undo the last step, then Abandon Reconcile
  - Edits made during reconcile remain even if reconcile is abandoned
  - Translation/i18n, strings (i.e sequence doesn't matter), etc.
  - Licensing, UserLevel, Activation, Expiration, and Admin Mode
- - Time-limited: countdown at 30 days, days of use vs days since installed.
+ - Time-limited: Days of use vs days since installed
 
 Kludge to force your system into Super-User mode...
  Activation.Instance.SetDefaultDays(180, 366); // note1: not needed but shown for completeness
- Activation.Instance.SiteDescription = "MYNAME@99999"; // The @-sign enables SuperUser mode
+ Activation.Instance.SiteDescription = "MYNAME@99999"; // The @-sign (plus compiler/run in DEBUG mode) enables SuperUser mode
  string pin = Activation.Instance.ResetAllEntries(Activation.Instance.ChecksumOfString(Activation.Instance.SiteIdentification));
  Activation.Instance.SetActivationPin(pin);
  Activation.Instance.SetFeatureBitmask(0x000000000000000FL, Activation.Instance.ChecksumOfString(Activation.Instance.SiteIdentification)); // note1
@@ -74,6 +79,9 @@ Kludge to force your system into Super-User mode...
 Open Banking API...
  https://www.openbankingtracker.com/country/united-states
  https://open-bank-project.readthedocs.io/en/latest/
+PayPal
+ https://developer.paypal.com/home
+  https://developer.paypal.com/docs/business/checkout/set-up-standard-payments/
 Info on deploying .NET apps to Linux
   https://docs.microsoft.com/en-us/dotnet/core/deploying/#framework-dependent-deployments-fdd
 Google Drive API...

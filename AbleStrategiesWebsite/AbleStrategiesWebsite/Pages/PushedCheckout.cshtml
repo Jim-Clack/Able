@@ -8,7 +8,7 @@
 
 <!DOCTYPE html>
 <html>
-<!-- Query tail for testing: ?sid=12345&user=Jim&ip=22.22.22.22&desc=hjkhkt-34556 -->
+<!-- Query tail for testing: ?sid=12345&user=Jim&ip=22.22.22.22&desc=hjkhkt-34556&item=AbleCheckbook%20Standard%20Edition&subtot=19.00 -->
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Download</title>
@@ -60,17 +60,17 @@
         <span class="col-md-3 grid-cell text-right" id="SubTotal">??????????</span>
         <span class="col-md-4"></span>
     </div><br />
-          <div class="row able-h3">
-              <span class="col-md-2"></span>
-              <span class="col-md-6 text-center">
-                  Note that you do <em>not</em> need to have a PayPal account in order to use PayPal. When you click 
-                  the PayPal button below, you will be allowed to enter credit/debit card information instead.
-              </span>
-              <span class="col-md-4"></span>
-          </div><br/>
     <div class="row able-h3">
         <span class="col-md-2"></span>
-        <span class="col-md-6">
+        <span class="col-md-6 text-center">
+            Note that you do <em>not</em> need to have a PayPal account in order to use PayPal. When you click
+            the PayPal button below, you will be allowed to enter credit/debit card information instead.
+        </span>
+        <span class="col-md-4"></span>
+    </div><br />
+    <div class="row able-h3">
+        <span class="col-md-2"></span>
+        <span class="col-md-6" id="paypalButton">
             <button type="button" class="btn btn-primary" style="width:100%;">PayPal</button>
         </span>
         <span class="col-md-4"></span>
@@ -81,17 +81,22 @@
         var ip = urlParams.get('ip');
         var desc = urlParams.get('desc');
         var user = urlParams.get('user');
-        var subtot = "$19.00";
-        var item = "AbleCheckbook Standard Edition";
-        if (sid == null || sid.trim().length == 0 || desc == null || desc.trim().length == 0) {
+        var subtot = urlParams.get('subtot');
+        var item = urlParams.get('item');
+        if (sid == null || sid.trim().length == 0 || desc == null || desc.trim().length == 0 || subtot == null || subtot.trim().length == 0) {
             document.getElementsByTagName("body")[0].innerHTML = "<h2>&nbsp;&nbsp;&nbsp;IMPROPER PARAMETERS - PLEASE GO BACK</h2>";
         } else {
+            performOrder();
+        }
+        //////////////////// Here's where it all happens /////////////////////
+        function performOrder() {
             document.getElementById("SiteId").innerHTML = sid;
             document.getElementById("SiteIp").innerHTML = ip;
             document.getElementById("SiteDesc").innerHTML = desc;
             document.getElementById("UserName").innerHTML = user;
             document.getElementById("LineItem").innerHTML = item;
             document.getElementById("SubTotal").innerHTML = subtot;
+ //           document.getElementById("paypalButton").innerHTML = ""; // paypal button, etc.
         }
     </script>
 </body>

@@ -11,20 +11,27 @@ namespace AbleLicensing
     public enum ActivationStatus
     {
         Activated = 0,        // All is well
-        DeActivated = 1,      // Most latent site deactivation due to more recent activation using same purchase 
-        NotActivated = 2,     // Unknown user, siteID, or other activation issue
-        NetworkProblems = 3,  // Cannot communicate with server
+        UnknownAsOfYet = 1,   // Do not yet have enough info or processing incomplete - not sure of the status
+        NetworkProblems = 2,  // Cannot communicate with server
+        NotActivated = 3,     // Unrecognized user, siteID, purchase, or other activation issue
+        DeActivated = 4,      // Most latent site deactivation due to more recent activations on same purchase 
     }
 
     /// <summary>
-    /// Class used only to return results to the caller.
+    /// Data container class used to return results from AbleStrategies server calls.
     /// </summary>
     public class ActivationResults
     {
+
+        /// <summary>
+        /// Activation status
+        /// </summary>
+        private ActivationStatus _status = ActivationStatus.NotActivated;
+
         /// <summary>
         /// Assigned site description.
         /// </summary>
-        private string _siteDescription = null;
+        private string _desc = null;
 
         /// <summary>
         /// Returned PIN.
@@ -44,23 +51,28 @@ namespace AbleLicensing
         /// <summary>
         /// Ctor
         /// </summary>
-        /// <param name="siteDescription">Assigned site description.</param>
+        /// <param name="status">Activation status</param>
+        /// <param name="desc">Assigned site description.</param>
         /// <param name="pin">Returned PIN.</param>
         /// <param name="purchase">Purchase validation code.</param>
         /// <param name="errorMessage">If PIN is null or "", this contains the reason.</param>
-        public ActivationResults(string siteDescription, string pin, string purchase, string errorMessage)
+        public ActivationResults(ActivationStatus status, string desc, string pin, string purchase, string errorMessage)
         {
-            _siteDescription = siteDescription;
+            _status = status;
+            _desc = desc;
             _pin = pin;
             _purchase = purchase;
             _errorMessage = errorMessage;
         }
 
-        public string SiteDescription { get => _siteDescription; set => _siteDescription = value; }
+        public string Desc { get => _desc; set => _desc = value; }
         public string Pin { get => _pin; set => _pin = value; }
         public string Purchase { get => _purchase; set => _purchase = value; }
         public string ErrorMessage { get => _errorMessage; set => _errorMessage = value; }
+        public ActivationStatus Status { get => _status; set => _status = value; }
     }
+
+    ///////////////////////////// Online Client //////////////////////////////
 
     /// <summary>
     /// Main class for this module.
@@ -89,11 +101,6 @@ namespace AbleLicensing
         private string _ip = null;
 
         /// <summary>
-        /// A server call may return a user alert.
-        /// </summary>
-        private string _pendingUserAlert = null;
-
-        /// <summary>
         /// Ctor for any kind of usage.
         /// </summary>
         /// <param name="sid">installation site identification</param>
@@ -115,33 +122,21 @@ namespace AbleLicensing
             _sid = Activation.Instance.SiteIdentification;
             _ip = System.Environment.UserDomainName;
             _user = System.Environment.UserName;
-            if(user != null && user.Trim().Length > 0)
+            if (user != null && user.Trim().Length > 0)
             {
                 _user = user;
             }
         }
 
         /// <summary>
-        /// Fetch and clear any pending/awaiting user alert that was received on a call to the server.
-        /// </summary>
-        public string PendingUserAlert
-        {
-            get
-            {
-                string alert = _pendingUserAlert;
-                _pendingUserAlert = null;
-                return alert;
-            }
-        }
-
-        /// <summary>
-        /// Update the server about activity on this licensed site.
+        /// Ping the server about activity on this licensed site, get user alert, and get activation status.
         /// </summary>
         /// <param name="desc">installation assigned description, possibly unknown/null</param>
+        /// <param name="userAlert">populated with user alert, if one is pending.</param>
         /// <returns>ActivationStatus</returns>
-        public ActivationStatus IsStillActivated(string desc)
+        public ActivationStatus GetActivationStatus(string desc, out string userAlert)
         {
-            return CallServerToVerifyActivation(desc);
+            return CallServerToVerifyActivation(desc, out userAlert);
         }
 
         /// <summary>
@@ -164,33 +159,35 @@ namespace AbleLicensing
         public ActivationResults OnlineActivation(string addr, string city, string zip, string phone, string email, 
             string feature, string desc = null, string purchase = null)
         {
-            if ((desc == null || desc.Trim().Length < 1) && purchase != null && purchase.Trim().Length > 0)
-            {   // if we have little to work with, start from scratch - first assemble a desc
-                desc = CallServerForNewSiteDescription(zip, feature, purchase);
+            // populate unknown desc, feature, purch (reactivate, new activation, or even first activation)
+            if(!CallServerForLicenseInfo(addr, city, zip, phone, email, ref feature, ref desc, ref purchase))
+            {
+                return new ActivationResults(ActivationStatus.UnknownAsOfYet, desc, null, null, _serverErrorMessage);
             }
-            if (desc == null || desc.Trim().Length < 1)
-            {   // this should never happen, but just in case
-                return new ActivationResults(null, null, purchase, _serverErrorMessage);
+
+            // no purchase found, so bring up the PayPal screen and let the user buy it
+            if ((purchase == null || purchase.Trim().Length < 1) && desc != null && desc.Trim().Length > 0)
+            {
+                purchase = PurchaseOnline(addr, city, zip, phone, email, feature, desc);
             }
-            if((purchase == null || purchase.Trim().Length < 1) && desc != null && desc.Trim().Length > 0)
-            {   // have a desc but no purch, maybe there was a comm fault during prior CallServerToRegisterPurchase()
-                purchase = CallServerToSearchForPurchase(feature, desc);
-            }
+
+            // user didn't pay, something was incorrect, or other unexpected issue
             if (purchase == null || purchase.Trim().Length < 1)
-            {   // it seems that the user has not yet paid, so bring up the paypal screen
-                purchase = PurchaseOnline(addr, city, zip, phone, email, feature, desc); 
+            {   
+                return new ActivationResults(ActivationStatus.UnknownAsOfYet, desc, null, null, _serverErrorMessage);
             }
-            if (purchase == null || purchase.Trim().Length < 1)
-            {   // user didn't pay, something was incorrect, or other unexpected issuee
-                return new ActivationResults(desc, null, null, _serverErrorMessage);
-            }
+
+            // fetch the PIN in order to activate
             string pin = CallServerForActivationPin(addr, city, zip, phone, email, feature, desc, purchase);
-            if(pin == null)
-            {   // comm error? other processing problem? somehow we got no pin.
-                return new ActivationResults(desc, null, purchase, _serverErrorMessage);
+
+            // comm error? other processing problem? somehow we got no pin.
+            if (pin == null)
+            {   
+                return new ActivationResults(ActivationStatus.NotActivated, desc, null, purchase, _serverErrorMessage);
             }
+
             // success!!!
-            return new ActivationResults(desc, pin, purchase, _serverErrorMessage);
+            return new ActivationResults(ActivationStatus.Activated, desc, pin, purchase, _serverErrorMessage);
         }
 
         ////////////////////////////// Purchase //////////////////////////////
@@ -221,6 +218,7 @@ namespace AbleLicensing
                 "&email=" + Uri.EscapeDataString(email) +
                 "&feature=" + Uri.EscapeDataString(feature) +
                 "&desc=" + Uri.EscapeDataString(desc);
+            Activation.Instance.LoggerHook("[--] PurchaseOnline() " + feature + " " + desc + " " + _sid);
             Browser2Form form = new Browser2Form("Buy", url,
                "https://www.google.com/search?q=site%3Aablestrategies.com+checkbook+help+", null);
             form.Show();
@@ -231,32 +229,59 @@ namespace AbleLicensing
         /////////////////////// Web Service API Calls ////////////////////////
 
         /// <summary>
-        /// Call the server to get a (existing or possibly new) siteDescription (purchase may be queried this way)
+        /// Call the server to get remaining fields.
         /// </summary>
+        /// <param name="addr">installation street address</param>
         /// <param name="zip">installation postal code</param>
-        /// <param name="feature">installation edition/features/etc to be purchased, if necessary</param>
-        /// <param name="purchase">validation code from the prior purchase</param>
-        /// <returns>desc</returns>
-        /// <remarks>
-        ///   If the
-        /// </remarks>
-        private string CallServerForNewSiteDescription(string zip, string feature, string purchase)
+        /// <param name="city">installation city</param>
+        /// <param name="phone">installation phone number</param>
+        /// <param name="email">installation email address</param>
+        /// <param name="feature">installation edition/features/etc to be purchased (may be updated)</param>
+        /// <param name="desc">installation assigned description ("" if unknown, will be filled-in)</param>
+        /// <param name="purchase">validation code from the purchase ("" if unknown, may be filled-in)</param>
+        /// <returns>The PIN, or null on error</returns>
+        private bool CallServerForLicenseInfo(string addr, string city, string zip, 
+            string phone, string email, ref string feature, ref string desc, ref string purchase)
         {
-            _serverErrorMessage = null; // "[E5] ..."
+            _serverErrorMessage = null; // "[A1] ..."
+            bool okay = false;
 
-            return null;
+
+            Activation.Instance.LoggerHook("[A1] CallServerForLicenseInfo() " + feature + " " + desc + " " + purchase);
+            _serverErrorMessage =
+                "[A1] ???";
+            return okay;
         }
 
         /// <summary>
-        /// Call the server to get an activation PIN.
+        /// Confirm that a purchase has been paid for.
         /// </summary>
-        /// <param name="feature">installation edition/features/etc to be purchased, if necessary</param>
+        /// <param name="addr">installation street address</param>
+        /// <param name="zip">installation postal code</param>
+        /// <param name="city">installation city</param>
+        /// <param name="phone">installation phone number</param>
+        /// <param name="email">installation email address</param>
+        /// <param name="feature">installation edition/features/etc that was purchased</param>
         /// <param name="desc">installation assigned description</param>
-        /// <returns>purch val code, or null on error or not found</returns>
-        private string CallServerToSearchForPurchase(string feature, string desc)
+        /// <returns>purch val code, or null on error</returns>
+        private string CallServerToRegisterPurchase(string addr, string city, string zip,
+            string phone, string email, string feature, string desc)
         {
-            _serverErrorMessage = null; // "[D4] ..."
+            _serverErrorMessage = null; // "[B2] ..."
+            string purchase = "";
+            bool okay = false;
 
+
+            Activation.Instance.LoggerHook("[B2] CallServerToRegisterPurchase() " + feature + " " + desc + " " + purchase);
+            if (okay && purchase != null && purchase.Trim().Length > 0)
+            {
+                return purchase;
+            }
+            _serverErrorMessage =
+                "[B2] Your DESC is " + desc + " - please write it down. The purchase went thru but further " +
+                "server communication failed, despite multiple attempts. Try again later, using the offline " +
+                "method described on our website. We are very sorry, as this should not happen, but we too " +
+                "are subject to the unpredicable whims and fancies of cloud servers and the Internet itself.";
             return null;
         }
 
@@ -272,7 +297,7 @@ namespace AbleLicensing
         /// <param name="desc">installation assigned description</param>
         /// <param name="purchase">validation code from the purchase</param>
         /// <returns>The PIN, or null on error</returns>
-        private string CallServerForActivationPin(string addr, string city, string zip, 
+        private string CallServerForActivationPin(string addr, string city, string zip,
             string phone, string email, string feature, string desc, string purchase)
         {
             _serverErrorMessage = null; // "[C3] ..."
@@ -280,10 +305,7 @@ namespace AbleLicensing
             bool okay = false;
 
 
-            if (okay && purch != null && purch.Trim().Length > 0)
-            {
-                return purch;
-            }
+            Activation.Instance.LoggerHook("[C3] CallServerForActivationPin() " + feature + " " + desc + " " + purchase);
             _serverErrorMessage =
                 "[C3] Your DESC is " + desc + " - please write it down. The purchase went thru but activation " +
                 "failed. Try again later, using the offline method as described on our website. We tried " +
@@ -293,47 +315,21 @@ namespace AbleLicensing
         }
 
         /// <summary>
-        /// Update the server about activity on this licensed site.
+        /// Check to see if this site is still activated and populate pending userAlert as well.
         /// </summary>
-        /// <param name="desc">installation assigned description, possibly unknown/null</param>
+        /// <param name="desc">Current desc</param>
+        /// <param name="userAlert">populated with user alert, if one is pending.</param>
         /// <returns>ActivationStatus</returns>
-        private ActivationStatus CallServerToVerifyActivation(string desc)
+        private ActivationStatus CallServerToVerifyActivation(string desc, out string userAlert)
         {
-            _serverErrorMessage = null; // "[B2] ..."
+            _serverErrorMessage = null; // "[D4] ..."
+            ActivationStatus status = ActivationStatus.NetworkProblems;
 
-            _pendingUserAlert = null; // ???
-            return ActivationStatus.Activated;
-        }
-
-        /// <summary>
-        /// Confirm a purchase.
-        /// </summary>
-        /// <param name="addr">installation street address</param>
-        /// <param name="zip">installation postal code</param>
-        /// <param name="city">installation city</param>
-        /// <param name="phone">installation phone number</param>
-        /// <param name="email">installation email address</param>
-        /// <param name="feature">installation edition/features/etc that was purchased</param>
-        /// <param name="desc">installation assigned description</param>
-        /// <returns>purch val code, or null on error</returns>
-        private string CallServerToRegisterPurchase(string addr, string city, string zip, 
-            string phone, string email, string feature, string desc)
-        {
-            _serverErrorMessage = null; // "[A1] ..."
-            string purch = "";
-            bool okay = false;
-
-
-            if(okay && purch != null && purch.Trim().Length > 0)
-            {
-                return purch;
-            }
-            _serverErrorMessage = 
-                "[A1] Your DESC is " + desc + " - please write it down. The purchase went thru but further " +
-                "server communication failed, despite multiple attempts. Try again later, using the offline " +
-                "method described on our website. We are very sorry, as this should not happen, but we too " +
-                "are subject to the unpredicable whims and fancies of cloud servers and the Internet itself.";
-            return null;
+            userAlert = "???";
+            Activation.Instance.LoggerHook("[D4] CallServerToVerifyActivation() " + desc + " " + status);
+            _serverErrorMessage =
+                "[D4] ...";
+            return status;
         }
 
     }

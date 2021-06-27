@@ -118,6 +118,7 @@ namespace AbleLicensing
                 {
                     if(_iSettings != null)
                     {
+                        LoggerHook("[V5a] Activation() ERROR - " + _iSettings.GetType().Name + " " + clazz.Name);
                         throw new ApplicationException("More than one class implements SiteSettings");
                     }
                     PropertyInfo property = clazz.GetProperty("Instance", 
@@ -128,6 +129,7 @@ namespace AbleLicensing
             }
             if (_iSettings == null)
             {
+                LoggerHook("[V5b] Activation() ERROR");
                 throw new ApplicationException("No class found that implements SiteSettings");
             }
         }
@@ -172,6 +174,7 @@ namespace AbleLicensing
         /// </summary>
         public void DeActivate()
         {
+            LoggerHook("[W6] DeActivate() ");
             _iSettings.SiteDescription = _iSettings.SiteDescription.Substring(0, 5) +
                 (char)UserLevelPunct.Deactivated + _iSettings.SiteDescription.Substring(7);
             _iSettings.Save();
@@ -194,6 +197,7 @@ namespace AbleLicensing
                     return true;
                 }
                 long verificationCode = ChecksumOfString(SiteIdentification);
+                LoggerHook("[X7] IsLicensed() " + verificationCode);
                 string pin = ResetAllEntries(verificationCode);
                 bool ok = CheckVerificationCode(verificationCode, _lastAttempt.Ticks); // no-op: hacker diversion
                 _isLicensed = (pin == _iSettings.ActivationPin);
@@ -393,7 +397,9 @@ namespace AbleLicensing
             {
                 accumulator += ((int)buffer[index] % 32) * (1 + index % 32);
             }
-            return "" + (1000 + accumulator % 9000);
+            string pin = "" + (1000 + accumulator % 9000);
+            LoggerHook("[Y8] ResetAllEntries() " + sid + " " + desc + " " + pin);
+            return pin;
         }
 
         /// <summary>
@@ -417,6 +423,7 @@ namespace AbleLicensing
                 return 10000;
             }
             string tracking = XorString(_iSettings.ActivityTracking).Trim();
+            LoggerHook("[Z9a] UpdateSiteSettings() " + tracking);
             string[] daysAndDate = tracking.Split(new string[] { "||" }, StringSplitOptions.RemoveEmptyEntries);
             int daysRemaining = _defaultDaysOfUse;
             // populate daysRemaining and lastChecked from activity tracking data
@@ -451,6 +458,7 @@ namespace AbleLicensing
             _iSettings.ActivityTracking = XorString(
                 daysRemaining.ToString() + "||" + DateTime.Now.ToShortDateString());
             _iSettings.Save();
+            LoggerHook("[Z9b] UpdateSiteSettings() " + daysRemaining.ToString() + "||" + DateTime.Now.ToShortDateString());
             return daysRemaining;
         }
 

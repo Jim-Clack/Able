@@ -161,6 +161,7 @@
             this.Name = "ScheduledEventsListForm";
             this.Text = "Scheduled Events";
             this.Load += new System.EventHandler(this.ScheduledEventsListForm_Load);
+            this.Resize += new System.EventHandler(this.ScheduledEventsListForm_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewEvents)).EndInit();
             this.ResumeLayout(false);
 

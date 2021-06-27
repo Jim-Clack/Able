@@ -28,3 +28,110 @@ Programmatic Connection to IONOS Server
     session.Open(sessionOptions);
     // etc.
   }
+
+          /////////////////////// Web Service API Calls ////////////////////////
+
+        /// <summary>
+        /// Call the server to get remaining fields.
+        /// </summary>
+        /// <param name="addr">installation street address</param>
+        /// <param name="zip">installation postal code</param>
+        /// <param name="city">installation city</param>
+        /// <param name="phone">installation phone number</param>
+        /// <param name="email">installation email address</param>
+        /// <param name="feature">installation edition/features/etc to be purchased (may be updated)</param>
+        /// <param name="desc">installation assigned description ("" if unknown, will be filled-in)</param>
+        /// <param name="purchase">validation code from the purchase ("" if unknown, may be filled-in)</param>
+        /// <returns>The PIN, or null on error</returns>
+        private bool CallServerForLicenseInfo(string addr, string city, string zip, 
+            string phone, string email, ref string feature, ref string desc, ref string purchase)
+        {
+            _serverErrorMessage = null; // "[A1] ..."
+            bool okay = false;
+
+
+            Activation.Instance.LoggerHook("[A1] CallServerForLicenseInfo() " + feature + " " + desc + " " + purchase);
+            _serverErrorMessage =
+                "[A1] ???";
+            return okay;
+        }
+
+        /// <summary>
+        /// Confirm that a purchase has been paid for.
+        /// </summary>
+        /// <param name="addr">installation street address</param>
+        /// <param name="zip">installation postal code</param>
+        /// <param name="city">installation city</param>
+        /// <param name="phone">installation phone number</param>
+        /// <param name="email">installation email address</param>
+        /// <param name="feature">installation edition/features/etc that was purchased</param>
+        /// <param name="desc">installation assigned description</param>
+        /// <returns>purch val code, or null on error</returns>
+        private string CallServerToRegisterPurchase(string addr, string city, string zip,
+            string phone, string email, string feature, string desc)
+        {
+            _serverErrorMessage = null; // "[B2] ..."
+            string purchase = "";
+            bool okay = false;
+
+
+            Activation.Instance.LoggerHook("[B2] CallServerToRegisterPurchase() " + feature + " " + desc + " " + purchase);
+            if (okay && purchase != null && purchase.Trim().Length > 0)
+            {
+                return purchase;
+            }
+            _serverErrorMessage =
+                "[B2] Your DESC is " + desc + " - please write it down. The purchase went thru but further " +
+                "server communication failed, despite multiple attempts. Try again later, using the offline " +
+                "method described on our website. We are very sorry, as this should not happen, but we too " +
+                "are subject to the unpredicable whims and fancies of cloud servers and the Internet itself.";
+            return null;
+        }
+
+        /// <summary>
+        /// Call the server to get an activation PIN.
+        /// </summary>
+        /// <param name="addr">installation street address</param>
+        /// <param name="zip">installation postal code</param>
+        /// <param name="city">installation city</param>
+        /// <param name="phone">installation phone number</param>
+        /// <param name="email">installation email address</param>
+        /// <param name="feature">installation edition/features/etc to be purchased, if necessary</param>
+        /// <param name="desc">installation assigned description</param>
+        /// <param name="purchase">validation code from the purchase</param>
+        /// <returns>The PIN, or null on error</returns>
+        private string CallServerForActivationPin(string addr, string city, string zip,
+            string phone, string email, string feature, string desc, string purchase)
+        {
+            _serverErrorMessage = null; // "[C3] ..."
+            string purch = "";
+            bool okay = false;
+
+
+            Activation.Instance.LoggerHook("[C3] CallServerForActivationPin() " + feature + " " + desc + " " + purchase);
+            _serverErrorMessage =
+                "[C3] Your DESC is " + desc + " - please write it down. The purchase went thru but activation " +
+                "failed. Try again later, using the offline method as described on our website. We tried " +
+                "a few times and we are very sorry, as this really should not happen, but we too are " +
+                "subject to the unpredicable whims and fancies of cloud servers and the Internet itself.";
+            return null;
+        }
+
+        /// <summary>
+        /// Check to see if this site is still activated and populate pending userAlert as well.
+        /// </summary>
+        /// <param name="desc">Current desc</param>
+        /// <param name="userAlert">populated with user alert, if one is pending.</param>
+        /// <returns>ActivationStatus</returns>
+        private ActivationStatus CallServerToVerifyActivation(string desc, out string userAlert)
+        {
+            _serverErrorMessage = null; // "[D4] ..."
+            ActivationStatus status = ActivationStatus.NetworkProblems;
+
+            userAlert = "???";
+            Activation.Instance.LoggerHook("[D4] CallServerToVerifyActivation() " + desc + " " + status);
+            _serverErrorMessage =
+                "[D4] ...";
+            return status;
+        }
+

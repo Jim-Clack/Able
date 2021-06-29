@@ -11,12 +11,12 @@ Workstation Setup Notes...
  G. Set Build Configuration Symbols: Debug: SUPERUSER, Release: RELEASE 
 
  Caveats...
- . If you are new to MS VS, see notes at the end of this document
+ . If you are new to MS VS, see the notes at the end of this document
  . C# Bug: A DataGridView column called "Name" will instead apply to Form
  . VS Gotcha: See comments at end of MainScreen.Reconciler/Support.cs
 
 Terminology...
- - NewEntryRow refers to the "Insert Entry" row in the checkbook register
+ - New-Entry-Row refers to the "Insert Entry" row in the checkbook register
  - Debit v Credit (Payment v Deposit) - amounts are stored as signed values
  - Admin mode vs Standard/ProCPA vs SuperUser levels are Different Things
  - Cleared == Reconciled == Archived (transaction locked unless admin mode)
@@ -79,11 +79,12 @@ Kludge to force your system into Super-User mode...
 Open Banking API...
  https://www.openbankingtracker.com/country/united-states
  https://open-bank-project.readthedocs.io/en/latest/
+ https://www.programmableweb.com/api/
 PayPal
  https://developer.paypal.com/home
-  https://developer.paypal.com/docs/business/checkout/set-up-standard-payments/
+ https://developer.paypal.com/docs/business/checkout/set-up-standard-payments/
 Info on deploying .NET apps to Linux
-  https://docs.microsoft.com/en-us/dotnet/core/deploying/#framework-dependent-deployments-fdd
+ https://docs.microsoft.com/en-us/dotnet/core/deploying/#framework-dependent-deployments-fdd
 Google Drive API...
  https://developers.google.com/drive/api/v2/about-sdk
 Attribution on Website/About:
@@ -101,14 +102,14 @@ MS VS Installers/Setup...
  https://docs.microsoft.com/en-us/windows/win32/msi/windows-installer-guide
 
 Note to critics:
- Yes, I know the live data backend sucks. Yes, I know that I should have used
+ Yes, I know the live-data backend sucks. Yes, I know that I should have used
  a real DBMS. But I wanted to ensure that it was portable, did not want to
  expect the customer to have SQL Server on their host, and researched embedded
  DBMS's and found that all good solutions were either clunky, non-portable,
- or expected royalties. I knnew that this app did not need the scale of a
- DB and that all data could easily fit into memory for any expected user
+ or expected royalties. I also knew that this app did not need the scale of a
+ full DB and that all data could easily fit into memory for any expected user
  checkbook register. So I chose the JSON format as a temporary cheat, with
- live data records in memory, but put a neutral DB interface on it so it 
+ live data records in memory. But put a neutral DB interface on it so it 
  could be changed later. Do I regret it? Yes. And no. It's fast and achieves
  its objectives. But it's error-prone and non-standard. Yet for now, don't
  fix it if it ain't broke.

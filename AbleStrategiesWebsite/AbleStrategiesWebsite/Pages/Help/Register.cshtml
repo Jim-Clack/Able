@@ -2,9 +2,8 @@
 @model AbleStrategiesWebsite.Pages.Help.RegisterModel
 @{
     Layout = "Help/_Layout";
-    ViewData["Title"] = "Checkbook Register View";
+    ViewData["Title"] = "Checkbook Register Area";
 }
-
 
 <!DOCTYPE html>
 
@@ -18,7 +17,51 @@
 </head>
 <body class="ablestrategies-helpchapter">
     <h2><span class="glyphicon glyphicon-book"></span>&nbsp;@ViewData["Title"]</h2>
-    Nothing Here Yet
+    <div class="container">
+
+        <div class="row able-h2">
+            The Register Area
+        </div>
+        <div class="row img-responsive">
+            <img class="img-responsive" src="~/images/fig-register.png" />
+        </div><br />
+        <div class="row able-h3">
+            In the register area, you may notice that each row has a distinctive color-scheme. This helps you to understand and
+            find entries quickly. For instance, the <b>cursor</b>, which is the row that you are currently working on, is always
+            shown in bright blue. When you want to make a new entry, you can click the bright green row with the bold text.
+            Current entries have a plain white background whereas future entries are in pink and archived entries are in grey.
+            Adjustments are shown in maize and reminders are in dark red. When you modify an entry it will be shown with a sky
+            blue background for the next couple of minutes - very handy. The foreground color is normally red for
+            withdrawals/debit/payments whereas the foreground color is generally green for deposits/credits/income.  Various
+            combinations of these colors appear where applicable.
+        </div><br />
+        <div class="row img-responsive">
+            <div class="col-md-2"></div>
+            <div class="col-md-4"><img class="img-responsive" src="~/images/fig-bg-colors.png" /></div>
+            <div class="col-md-4"><img class="img-responsive" src="~/images/fig-color-scheme.png" /></div>
+            <div class="col-md-2"></div>
+        </div><br />
+        <div class="row able-h3">
+            You can use the up-arrow and down-arrow keys to move the <b>cursor</b> through the register. For quicker movement,
+            use page-down or page-up keys.
+        </div><br />
+
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-4 text-left">
+                <a asp-page="/Help/Intro">
+                    <button type="button" class="btn-primary">Prev Page&nbsp;&nbsp;<span class="glyphicon glyphicon-hand-left"></span>&nbsp;&nbsp;Introduction</button>
+                </a>
+            </div>
+            <div class="col-md-5 text-right">
+                <a asp-page="/Help/Entries">
+                    <button type="button" class="btn-primary">Next Page&nbsp;&nbsp;<span class="glyphicon glyphicon-hand-right"></span>&nbsp;&nbsp;Entries</button>
+                </a>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+
+    </div>
 </body>
 </html>
 

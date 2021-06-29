@@ -81,7 +81,7 @@ namespace AbleCheckbook
             {
                 return;
             }
-            BeforeOperation(rowEntry.NewEntryRow ? "New Entry" : "Edit Entry", true);
+            BeforeOperation(rowEntry.NewEntryRow ? "New Entry" : "Edit/Del Entry", true);
             _backend.EditTransaction(this, e.RowIndex);
             AfterOperation();
             if (_backend.Db.InProgress == InProgress.Reconcile && _reconHelper != null)

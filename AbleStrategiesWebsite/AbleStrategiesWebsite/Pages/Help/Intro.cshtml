@@ -17,6 +17,59 @@
 </head>
 <body class="ablestrategies-helpchapter">
     <h2><span class="glyphicon glyphicon-book"></span>&nbsp;@ViewData["Title"]</h2>
-    <h3>Nothing Here Yet</h3>
+    <div class="container">
+
+        <div class="row able-h2">
+            The Main Screen
+        </div>
+        <div class="row able-h3">
+            The AbleCheckbook main screen is composed of several areas:
+        </div>
+        <div class="row able-h4">
+            <ul class="list-group">
+                <li class="list-group-item">&nbsp;<span class="col-md-2">Title Bar</span><span class="col-md-9">This shows the name of the account DB file that is loaded</span></li>
+                <li class="list-group-item">&nbsp;<span class="col-md-2">Main Menu</span><span class="col-md-9">Most of your operations will begin by clicking this menu</span></li>
+                <li class="list-group-item">&nbsp;<span class="col-md-2">Tool Bar</span><span class="col-md-9">These are shortcuts to the most commonly-used menu items</span></li>
+                <li class="list-group-item">&nbsp;<span class="col-md-2">Register Area</span><span class="col-md-9">The checkbook register for this account DB is shown here</span></li>
+                <li class="list-group-item">&nbsp;<span class="col-md-2">Reconcile Area</span><span class="col-md-9">This only appears when you are reconciling the checkbook</span></li>
+            </ul>
+        </div>
+        <div class="row img-responsive">
+            <img class="img-responsive" src="~/images/fig-mainscreen.png" />
+        </div><br />
+
+        <div class="row able-h2">
+            Terminology
+        </div>
+        <div class="row able-h3">
+            It's important that you understand the following basic terms...
+        </div><br />
+        <div class="row able-h4">
+            <ul class="list-group">
+                <li class="list-group-item">&nbsp;<span class="col-md-2">Checkbook Entry</span><span class="col-md-9">Each row that is shown in the register area is referred to as a <b>Checkook Entry</b></span></li>
+                <li class="list-group-item">&nbsp;<span class="col-md-2">Debit/Payment</span><span class="col-md-9">Checks, EFT payments, bill payments, and other expenses are called <b>debits</b></span></li>
+                <li class="list-group-item">&nbsp;<span class="col-md-2">Credit/Deposit</span><span class="col-md-9">Income, deposits, and other sources of money are referred to as <b>credits</b></span></li>
+                <li class="list-group-item">&nbsp;<span class="col-md-2">New Entry</span><span class="col-md-9">You can create a new register entry by clicking the <b>New Entry</b> row the register</span></li>
+                <li class="list-group-item">&nbsp;<span class="col-md-2">Archived Entry</span><span class="col-md-9">Once an entry has been cleared (during reconciliation) it becomes <b>archived</b>, or locked</span></li>
+                <li class="list-group-item">&nbsp;<span class="col-md-2">Reconcile</span><span class="col-md-9">Involves comparing entries you made in the <b>register</b> with your monthly <b>bank statement</b></span></li>
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-4 text-left">
+                <a asp-page="/Help/HelpIndex">
+                    <button type="button" class="btn-primary">Prev Page&nbsp;&nbsp;<span class="glyphicon glyphicon-hand-left"></span>&nbsp;&nbsp;Help Contents</button>
+                </a>
+            </div>
+            <div class="col-md-5 text-right">
+                <a asp-page="/Help/Register">
+                    <button type="button" class="btn-primary">Next Page&nbsp;&nbsp;<span class="glyphicon glyphicon-hand-right"></span>&nbsp;&nbsp;Register Area</button>
+                </a>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+
+    </div>
 </body>
 </html>
+

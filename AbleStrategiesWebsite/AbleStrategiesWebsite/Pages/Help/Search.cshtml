@@ -18,7 +18,26 @@
 </head>
 <body class="ablestrategies-helpchapter">
     <h2><span class="glyphicon glyphicon-book"></span>&nbsp;@ViewData["Title"]</h2>
-    Nothing Here Yet
+    <div class="container">
+        Nothing Here Yet
+
+
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-4 text-left">
+                <a asp-page="/Help/Reports">
+                    <button type="button" class="btn-primary">Prev Page&nbsp;&nbsp;<span class="glyphicon glyphicon-hand-left"></span>&nbsp;&nbsp;Reports</button>
+                </a>
+            </div>
+            <div class="col-md-5 text-right">
+                <a asp-page="/Help/Undo">
+                    <button type="button" class="btn-primary">Next Page&nbsp;&nbsp;<span class="glyphicon glyphicon-hand-right"></span>&nbsp;&nbsp;Undo and Redo</button>
+                </a>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+
+    </div>
 </body>
 </html>
 

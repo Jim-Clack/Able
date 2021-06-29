@@ -29,6 +29,18 @@ Programmatic Connection to IONOS Server
     // etc.
   }
 
+Help...
+ - Reconcile-in-progress will maintain state across save/open cycles
+ - To undo N-steps of reconcile: undo the last step, then Abandon Reconcile
+ - Edits made during reconcile remain even if reconcile is abandoned
+ - Translation/i18n, strings (i.e sequence doesn't matter), etc.
+ - Licensing, UserLevel, Activation, Expiration, and Admin Mode
+ - Time-limited: Days of use vs days since installed
+ - Admin mode vs Standard/ProCPA vs SuperUser levels are Different Things
+ - During reconcile, entry check-off "IsChecked" means "IsCleared Tentatively"
+ - Technical details: ".adb", auto-save, rolling-backups, weekly-backups, etc.
+
+
           /////////////////////// Web Service API Calls ////////////////////////
 
         /// <summary>

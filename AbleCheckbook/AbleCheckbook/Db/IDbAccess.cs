@@ -238,51 +238,5 @@ namespace AbleCheckbook.Db
         /// <returns>True if successful</returns>
         bool DeleteEntry(FinancialCategory entry);
 
-        /////////////////////////// MemorizedPayee ///////////////////////////
-
-        /// <summary>
-        /// Iterator to travese entries by next due date.
-        /// </summary>
-        MemorizedPayeeIterator MemorizedPayeeIterator
-        {
-            get;
-        }
-
-        /// <summary>
-        /// Add a new entry into the scheduled events
-        /// </summary>
-        /// <param name="entry">To be saved to the DB; note that it's ID may be updated</param>
-        /// <returns>True if successful</returns>
-        bool InsertEntry(MemorizedPayee entry);
-
-        /// <summary>
-        /// Flag an entry as "Updated."
-        /// </summary>
-        /// <param name="newEntry">Modified version; note that it will be updated by Id</param>
-        /// <param name="oldEntry">Prior unchanged version; note that it will be updated by Id</param>
-        /// <returns>True if successful</returns>
-        bool UpdateEntry(MemorizedPayee newEntry, MemorizedPayee oldEntry);
-
-        /// <summary>
-        /// Get an entry based on the ID.
-        /// </summary>
-        /// <param name="id">The GUID to look-up</param>
-        /// <returns>The entry with that GUID, null on error or on attempt to read past end</returns>
-        MemorizedPayee GetMemorizedPayeeById(Guid id);
-
-        /// <summary>
-        /// Get an entry based on the payee name.
-        /// </summary>
-        /// <param name="name">The full name of the payee to look-up</param>
-        /// <returns>The entry with that GUID, null on error or on attempt to read past end</returns>
-        MemorizedPayee GetMemorizedPayeeByName(string name);
-
-        /// <summary>
-        /// Remove an entry from the DB.
-        /// </summary>
-        /// <param name="entry">To be removed from the DB; note that it will be done by Id</param>
-        /// <returns>True if successful</returns>
-        bool DeleteEntry(MemorizedPayee entry);
-
     }
 }

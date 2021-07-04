@@ -412,7 +412,7 @@ namespace AbleCheckbook
             {
                 amount = schEvent.FinalPaymentAmount;
             }
-            return amount;
+            return Math.Abs(amount) * (schEvent.IsCredit ? 1 : -1);
         }
 
         /// <summary>

@@ -388,8 +388,8 @@ namespace AbleCheckbook.Gui
             }
             comboBoxCategory.SelectedItem = _schEvent.CategoryName;
             comboBoxCategory.Text = _schEvent.CategoryName;
+            comboBoxDebitCredit.SelectedItem = kinds[_schEvent.IsCredit ? 1 : 0];
             comboBoxDebitCredit.SelectedIndex = _schEvent.IsCredit ? 1 : 0;
-            comboBoxDebitCredit.SelectedText = kinds[_schEvent.IsCredit ? 1 : 0];
             checkBoxReminder.Checked = _schEvent.IsReminder;
             dateTimePickerFinal.ShowUpDown = !Configuration.Instance.ShowCalendars;
             dateTimePickerNextOccurrence5.ShowUpDown = !Configuration.Instance.ShowCalendars;

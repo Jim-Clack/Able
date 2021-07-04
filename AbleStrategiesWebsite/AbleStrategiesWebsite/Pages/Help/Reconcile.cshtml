@@ -19,8 +19,40 @@
 <body class="ablestrategies-helpchapter">
     <h2><span class="glyphicon glyphicon-book"></span>&nbsp;@ViewData["Title"]</h2>
     <div class="container">
-        Nothing Here Yet
 
+        <div class="row able-h2">
+            Monthly Reconciliation
+        </div>
+        <div class="row able-h3">
+            When you get your monthly bank statement, you may wish to reconcile the account. This is done in steps...
+        </div>
+        <div class="row able-h4">
+            <ul class="list-group">
+                <li class="list-group-item">&nbsp;<span class="col-md-2">Reconcile</span><span class="col-md-9">To begin, select the <b>Reconcile</b> operation</span></li>
+                <li class="list-group-item">&nbsp;<span class="col-md-2">Dates/Balances</span><span class="col-md-9">At lower left, enter the <b>dates</b> and <b>balances</b> from your bank statement</span></li>
+                <li class="list-group-item">&nbsp;<span class="col-md-2">Update Entries</span><span class="col-md-9">Look for missing or incorrect entries per the statement and correct them in the register</span></li>
+                <li class="list-group-item">&nbsp;<span class="col-md-2">Check-Off Entries</span><span class="col-md-9">Check-off any entries that match corresponding entries in the bank statement</span></li>
+                <li class="list-group-item">&nbsp;<span class="col-md-2">Check Tips</span><span class="col-md-9">As you near completion, you may click the <b>Tips</b> button for specific assistance</span></li>
+                <li class="list-group-item">&nbsp;<span class="col-md-2">Done</span><span class="col-md-9">Once the disparity is zero, click <b>Done with Reconcile</b></span></li>
+                <li class="list-group-item">&nbsp;<span class="col-md-2">Adjust</span><span class="col-md-9">If you cannot figure out a non-zero disparity, you can click <b>Enter Balance Adjustment</b></span></li>
+            </ul>
+        </div>
+        <div class="row img-responsive">
+            <img class="img-responsive" src="~/images/fig-reconcile.png" />
+        </div><br />
+        <div class="row able-h3">
+            Note that you can freely intermix <b>Undo</b> and <b>Redo</b> with the many steps during a Reconcile operation. You may also save
+            the account DB and come back to it later while in the middle of reconciliation.
+        </div>
+        <div class="row able-h3">
+            The entries that you check-off during reconcile are referred to as <b>Tentatively Cleared.</b> When you are done with
+            reconcile, they become <b>Cleared</b> which also locks them, making htme archival entries.
+        </div>
+        <div class="row able-h4">
+            BTW - After having done a complete reconcile operation as listed above, you can undo all of the steps without having to
+            hit <b>Undo</b> so many times - simply <b>Undo</b> the <b>Done with Reconcile</b> step then click <b>Abandon Reconcile.</b>
+            This will discard all of the check-offs, reverse out the steps of <b>Reconcile,</b> but retain any edits that you have done to entries.
+        </div><br />
 
         <div class="row">
             <div class="col-md-1"></div>

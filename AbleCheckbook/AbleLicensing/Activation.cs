@@ -33,6 +33,7 @@ namespace AbleLicensing
     ///  act.SiteDescription = "JonDoe-60606";
     ///  string pin = act.ResetAllEntries(act.ChecksumOfString(act.SiteIdentification));
     ///  act.SetActivationPin(pin);
+    ///  // And optionally...
     ///  act.SetFeatureBitmask(0x000000000000000FL, act.ChecksumOfString(act.SiteIdentification));
     ///  act.SetExpiration(92, act.ChecksumOfString(act.SiteIdentification));
     /// Licensing Fields:

@@ -24,7 +24,7 @@ namespace AbleCheckbook.Gui
         JustUndoRedo = 10,        // Just Now Changed by Undo/Redo Typ Blue on Torq
         JustModified = 11,        // Just Now Changed by User      Typ Blue on Cyan
         JustModCredit = 12,       // Just Now Changed Credit       Typ Red on Aqua
-        NonDebitCredit = 13,      // Such as Balance Adjustment    Typ Black on Chartr
+        NonDebitCredit = 13,      // Such as Balance Adjustment    Typ Blue on Chartr
         CheckedOff = 14,          // Check-Mark Clicked            Typ Slate on Grey
         NewEntryRow = 15,         // Click to Insert New Entry     Typ Yellow on Green
         Reminder = 16,            // Reminder to do                Typ White on Red

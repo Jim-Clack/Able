@@ -18,8 +18,32 @@
 <body class="ablestrategies-helpchapter">
     <h2><span class="glyphicon glyphicon-book"></span>&nbsp;@ViewData["Title"]</h2>
     <div class="container">
-        Nothing Here Yet
 
+        <div class="row able-h2">
+            Data Entry into the Register
+        </div>
+        <div class="row able-h3">
+            When you click a row of the checkbook register, this form appears. If you click the New Entry row, this form
+            will be blank - ready for you to fill in. If instead you click a row that has an existing entry, this will be
+            filled-in with the values from that entry so that you can edit them. When you are done, click <b>Ok</b> to
+            accept the data you've entered or <b>Cancel</b> to discard it.
+        </div>
+        <div class="row able-h3">
+            Entries that are archived (locked) cannot be edited unless you are in <b>Admin Mode.</b> This includes most
+            balance adjustments and entries that have been cleared by reconciliation.
+        </div><br />
+        <div class="row img-responsive">
+            <img class="img-responsive" src="~/images/fig-checkbookentry.png" />
+        </div><br />
+        <div class="row able-h3">
+            The background is sky blue for new entries, pink for debits, and pale green for credits. As you enter
+            more items, another split will appear, and the total will be updated. Each categorized amount is
+            referred to as a <b>split.</b>
+        </div>
+        <div class="row able-h3">
+            Notice that this is the same screen that is used for deleting rows of the register - simply by clicking
+            the row so that this form comes up, then clicking on the <b>Delete</b> button.
+        </div><br />
 
         <div class="row">
             <div class="col-md-1"></div>

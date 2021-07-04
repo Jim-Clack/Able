@@ -667,7 +667,7 @@ namespace AbleCheckbook.Gui
                 return;
             }
             // Populate the first split if we can
-            MemorizedPayee payee = _backend.Db.GetMemorizedPayeeByName(comboBoxPayee.Text);
+            MemorizedPayee payee = _backend.LookupPayeeBySubstring(comboBoxPayee.Text);
             if (payee == null)
             {
                 _comboCategories[0].Text = UtilityMethods.GuessAtCategory(comboBoxPayee.Text);

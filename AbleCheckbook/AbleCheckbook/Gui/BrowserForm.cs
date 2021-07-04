@@ -15,6 +15,24 @@ namespace AbleCheckbook.Gui
     public partial class BrowserForm : Form
     {
 
+        /// <summary>
+        /// For comm between browser and app.
+        /// </summary>
+        public class BrowserScripting
+        {
+            private Form _form;
+
+            public BrowserScripting(Form form)
+            {
+                _form = form;
+            }
+
+            public void Test(string message)
+            {
+                MessageBox.Show(message, "client code");
+            }
+        }
+
         private string _homeUrl = "";
 
         private string _searchUrlBase = "";
@@ -32,6 +50,10 @@ namespace AbleCheckbook.Gui
             _searchUrlBase = searchUrlBase;
             InitializeComponent();
             webBrowser1.ScriptErrorsSuppressed = true;
+            webBrowser1.IsWebBrowserContextMenuEnabled = false;
+            webBrowser1.AllowWebBrowserDrop = false;
+            webBrowser1.WebBrowserShortcutsEnabled = false;
+            webBrowser1.ObjectForScripting = new BrowserScripting(this);
             this.Text = Strings.Get(title);
             if(bounds != null)
             {

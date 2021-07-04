@@ -317,16 +317,8 @@ namespace AbleCheckbook.Logic
             string categoryName = GetField('L');
             Guid catId = UtilityMethods.GetOrCreateCategory(_db, categoryName, isCredit).Id;
             TransactionKind kind = isCredit ? TransactionKind.Deposit : TransactionKind.Payment;
-            MemorizedPayee oldPayee = _db.GetMemorizedPayeeByName(payee);
             MemorizedPayee newPayee = new MemorizedPayee(payee, catId, kind, StringToMoney(amount));
-            if (oldPayee == null)
-            {
-                _db.InsertEntry(newPayee);
-            }
-            else
-            {
-                _db.UpdateEntry(newPayee, oldPayee);
-            }
+            // Do nothing with it at this time
         }
 
         /// <summary>

@@ -4,8 +4,27 @@ using System.Windows.Forms;
 
 namespace AbleLicensing
 {
+
     public partial class Browser2Form : Form
     {
+
+        /// <summary>
+        /// For comm between browser and app.
+        /// </summary>
+        public class BrowserScripting
+        {
+            private Form _form;
+
+            public BrowserScripting(Form form)
+            {
+                _form = form;
+            }
+
+            public void Test(string message)
+            {
+                MessageBox.Show(message, "client code");
+            }
+        }
 
         private string _homeUrl = "";
 
@@ -24,6 +43,10 @@ namespace AbleLicensing
             _searchUrlBase = searchUrlBase;
             InitializeComponent();
             webBrowser1.ScriptErrorsSuppressed = true;
+            webBrowser1.IsWebBrowserContextMenuEnabled = false;
+            webBrowser1.AllowWebBrowserDrop = false;
+            webBrowser1.WebBrowserShortcutsEnabled = false;
+            webBrowser1.ObjectForScripting = new BrowserScripting(this);
             this.Text = title;
             if(bounds != null)
             {

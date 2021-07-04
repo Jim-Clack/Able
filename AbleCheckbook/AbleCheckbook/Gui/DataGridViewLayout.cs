@@ -211,8 +211,8 @@ namespace AbleCheckbook.Gui
                     return Color.FromArgb(0, 0, 160);
                 case 12:           // Typ Red on Aqua
                     return Color.FromArgb(160, 0, 0);
-                case 13:           // Typ Black on Chartr
-                    return Color.FromArgb(100, 80, 80);
+                case 13:           // Typ Blue on Chartr
+                    return Color.FromArgb(80, 80, 100);
                 case 14:           // Typ Slate on Grey
                     return Color.FromArgb(100, 100, 100);
                 case 15:           // Typ Yellow on Green 
@@ -259,7 +259,7 @@ namespace AbleCheckbook.Gui
                     return Color.FromArgb(210, 230, 250);
                 case 12:           // Typ Red on Aqua
                     return Color.FromArgb(210, 250, 230);
-                case 13:           // Typ Black on Chartr
+                case 13:           // Typ Blue on Chartr
                     return Color.FromArgb(240, 250, 210);
                 case 14:           // Typ Slate on Grey
                     return Color.FromArgb(175, 175, 175);

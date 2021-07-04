@@ -9,11 +9,6 @@ namespace AbleCheckbook.Db
     public class MemorizedPayee
     {
         /// <summary>
-        /// This uniquely identifies a scheduled event.
-        /// </summary>
-        private Guid _id = new Guid();
-
-        /// <summary>
         /// Keep track of payees and their last transaction per category
         /// </summary>
         private string _payee = "";
@@ -41,7 +36,6 @@ namespace AbleCheckbook.Db
         /// <param name="amount">Monetary amt.</param>
         public MemorizedPayee(string payee, Guid categoryId, TransactionKind kind, long amount)
         {
-            _id = Guid.NewGuid();
             _payee = payee;
             _categoryId = categoryId;
             _kind = kind;
@@ -49,7 +43,6 @@ namespace AbleCheckbook.Db
         }
 
         // Getters/Setters
-        public Guid Id { get => _id; set => _id = value; }
         public string Payee { get => _payee; set => _payee = value; }
         public Guid CategoryId { get => _categoryId; set => _categoryId = value; }
         public long Amount { get => _amount; set => _amount = value; }
@@ -62,7 +55,6 @@ namespace AbleCheckbook.Db
         public MemorizedPayee Clone()
         {
             MemorizedPayee payee = new MemorizedPayee(this.Payee, this.CategoryId, this.Kind, this.Amount);
-            payee._id = Guid.NewGuid();
             return payee;
         }
 
@@ -72,7 +64,7 @@ namespace AbleCheckbook.Db
         /// <returns></returns>
         public override string ToString()
         {
-            return "MemorizedPayee" + Id.ToString() + " - " + Payee;
+            return "MemorizedPayee" + " - " + Payee;
         }
 
         /// <summary>
@@ -81,7 +73,7 @@ namespace AbleCheckbook.Db
         /// <returns>Collatable key.</returns>
         public string UniqueKey()
         {
-            return _payee + "-" + _id;
+            return _payee;
         }
 
     }

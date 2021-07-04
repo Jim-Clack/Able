@@ -321,12 +321,6 @@ namespace AbleCheckbook.Db
                         case UndoStepKind.InsertScheduledEvent:
                             DeleteEntry((ScheduledEvent)step.Record);
                             break;
-                        case UndoStepKind.DeleteMemorizedPayee:
-                            InsertEntry((MemorizedPayee)step.Record);
-                            break;
-                        case UndoStepKind.InsertMemorizedPayee:
-                            DeleteEntry((MemorizedPayee)step.Record);
-                            break;
                     }
                     _trackUndo = true;
                 }
@@ -425,12 +419,6 @@ namespace AbleCheckbook.Db
                             break;
                         case UndoStepKind.InsertScheduledEvent:
                             InsertEntry((ScheduledEvent)step.Record);
-                            break;
-                        case UndoStepKind.DeleteMemorizedPayee:
-                            DeleteEntry((MemorizedPayee)step.Record);
-                            break;
-                        case UndoStepKind.InsertMemorizedPayee:
-                            InsertEntry((MemorizedPayee)step.Record);
                             break;
                     }
                     _trackUndo = true;
@@ -820,76 +808,6 @@ namespace AbleCheckbook.Db
         public bool DeleteEntry(FinancialCategory entry)
         {
             Logger.Trace("Operation: RemoveEntry(FinancialCategory)");
-            return _underlyingDb.DeleteEntry(entry);
-        }
-
-        /////////////////////////// MemorizedPayee ///////////////////////////
-
-        /// <summary>
-        /// Iterator to travese Memorized Payees
-        /// </summary>
-        public MemorizedPayeeIterator MemorizedPayeeIterator
-        {
-            get
-            {
-                Logger.Trace("Operation: MemorizedPayeeIterator");
-                return _underlyingDb.MemorizedPayeeIterator;
-            }
-        }
-
-        /// <summary>
-        /// Add a new entry into the Memorized Payees
-        /// </summary>
-        /// <param name="entry">To be saved to the DB; note that it's ID may be updated</param>
-        /// <returns>True if successful</returns>
-        public bool InsertEntry(MemorizedPayee entry)
-        {
-            Logger.Trace("Operation: InsertEntry(MemorizedPayee)");
-            return _underlyingDb.InsertEntry(entry);
-        }
-
-        /// <summary>
-        /// Flag an entry as "Updated."
-        /// </summary>
-        /// <param name="newEntry">Modified version; note that it will be updated by Id</param>
-        /// <param name="oldEntry">Prior unchanged version; note that it will be updated by Id</param>
-        /// <returns>True if successful</returns>
-        public bool UpdateEntry(MemorizedPayee newEntry, MemorizedPayee oldEntry)
-        {
-            // Logger.Trace("Operation: UpdateEntry(MemorizedPayee)"); // commented-out due to avalanche!
-            return _underlyingDb.UpdateEntry(newEntry, oldEntry);
-        }
-
-        /// <summary>
-        /// Get an entry based on the ID.
-        /// </summary>
-        /// <param name="id">The GUID to look-up</param>
-        /// <returns>The entry with that GUID, null on error or on attempt to read past end</returns>
-        public MemorizedPayee GetMemorizedPayeeById(Guid id)
-        {
-            Logger.Trace("Operation: GetMemorizedPayeeById");
-            return _underlyingDb.GetMemorizedPayeeById(id);
-        }
-
-        /// <summary>
-        /// Get an entry based on the payee name.
-        /// </summary>
-        /// <param name="name">The full name of the payee to look-up</param>
-        /// <returns>The entry with that GUID, null on error or on attempt to read past end</returns>
-        public MemorizedPayee GetMemorizedPayeeByName(string name)
-        {
-            // Logger.Trace("Operation: GetMemorizedPayeeByName"); // commented-out due to avalanche!
-            return _underlyingDb.GetMemorizedPayeeByName(name);
-        }
-
-        /// <summary>
-        /// Remove an entry from the DB.
-        /// </summary>
-        /// <param name="entry">To be removed from the DB; note that it will be done by Id</param>
-        /// <returns>True if successful</returns>
-        public bool DeleteEntry(MemorizedPayee entry)
-        {
-            Logger.Trace("Operation: RemoveEntry(MemorizedPayee)");
             return _underlyingDb.DeleteEntry(entry);
         }
 

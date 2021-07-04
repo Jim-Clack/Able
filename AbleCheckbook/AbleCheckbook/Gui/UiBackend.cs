@@ -50,6 +50,21 @@ namespace AbleCheckbook.Gui
         }
 
         /// <summary>
+        /// Lookup a payee by substirng
+        /// </summary>
+        /// <param name="name">starts with</param>
+        /// <returns>best match or null</returns>
+        public MemorizedPayee LookupPayeeBySubstring(string name)
+        {
+            List<MemorizedPayee> payees = _autofillPayee.LookUp(name);
+            if(payees.Count > 0)
+            {
+                return payees[0];
+            }
+            return null;
+        }
+
+        /// <summary>
         /// List of potential categories.
         /// </summary>
         public List<string> Categories
@@ -301,23 +316,6 @@ namespace AbleCheckbook.Gui
                     ScheduledEvent newEvent = oldEvent.Clone();
                     newEvent.Payee = newName;
                     _db.UpdateEntry(newEvent, oldEvent);
-                }
-                // Rename occurences in MemorizedPayees...
-                List<MemorizedPayee> payees = new List<MemorizedPayee>();
-                MemorizedPayeeIterator iterator3 = _db.MemorizedPayeeIterator;
-                while (iterator3.HasNextEntry())
-                {
-                    MemorizedPayee payee = iterator3.GetNextEntry();
-                    if (payee.Payee.Trim().ToUpper().Equals(oldName))
-                    {
-                        payees.Add(payee);
-                    }
-                }
-                foreach (MemorizedPayee oldPayee in payees)
-                {
-                    MemorizedPayee newPayee = oldPayee.Clone();
-                    newPayee.Payee = newName;
-                    _db.UpdateEntry(newPayee, oldPayee);
                 }
             }
             finally

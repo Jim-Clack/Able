@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScheduledEventEditForm));
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPageMonthly = new System.Windows.Forms.TabPage();
+            this.labelMultipleDays = new System.Windows.Forms.Label();
             this.labelExample1 = new System.Windows.Forms.Label();
             this.listBoxDaysOfMonth1 = new System.Windows.Forms.ListBox();
             this.tabPageAnnually = new System.Windows.Forms.TabPage();
@@ -73,7 +74,6 @@
             this.textBoxMemo = new System.Windows.Forms.TextBox();
             this.labelMemo = new System.Windows.Forms.Label();
             this.checkBoxReminder = new System.Windows.Forms.CheckBox();
-            this.labelMultipleDays = new System.Windows.Forms.Label();
             this.tabControl.SuspendLayout();
             this.tabPageMonthly.SuspendLayout();
             this.tabPageAnnually.SuspendLayout();
@@ -114,6 +114,17 @@
             this.tabPageMonthly.TabIndex = 0;
             this.tabPageMonthly.Text = "Monthly";
             this.tabPageMonthly.UseVisualStyleBackColor = true;
+            // 
+            // labelMultipleDays
+            // 
+            this.labelMultipleDays.AutoSize = true;
+            this.labelMultipleDays.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelMultipleDays.ForeColor = System.Drawing.Color.Red;
+            this.labelMultipleDays.Location = new System.Drawing.Point(211, 16);
+            this.labelMultipleDays.Name = "labelMultipleDays";
+            this.labelMultipleDays.Size = new System.Drawing.Size(285, 17);
+            this.labelMultipleDays.TabIndex = 3;
+            this.labelMultipleDays.Text = "FYI: Multiple days per month selected.";
             // 
             // labelExample1
             // 
@@ -451,7 +462,7 @@
             // 
             this.comboBoxDebitCredit.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboBoxDebitCredit.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.comboBoxDebitCredit.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.comboBoxDebitCredit.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.comboBoxDebitCredit.FormattingEnabled = true;
             this.comboBoxDebitCredit.Location = new System.Drawing.Point(105, 266);
@@ -691,17 +702,6 @@
             this.checkBoxReminder.TabIndex = 20;
             this.checkBoxReminder.Text = "Highlight Entry as a Reminder";
             this.checkBoxReminder.UseVisualStyleBackColor = true;
-            // 
-            // labelMultipleDays
-            // 
-            this.labelMultipleDays.AutoSize = true;
-            this.labelMultipleDays.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelMultipleDays.ForeColor = System.Drawing.Color.Red;
-            this.labelMultipleDays.Location = new System.Drawing.Point(211, 16);
-            this.labelMultipleDays.Name = "labelMultipleDays";
-            this.labelMultipleDays.Size = new System.Drawing.Size(241, 17);
-            this.labelMultipleDays.TabIndex = 3;
-            this.labelMultipleDays.Text = "FYI: Multiple days per month selected.";
             // 
             // ScheduledEventEditForm
             // 

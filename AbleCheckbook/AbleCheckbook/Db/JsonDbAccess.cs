@@ -465,10 +465,9 @@ namespace AbleCheckbook.Db
             JsonDbAccess.Mutex.WaitOne();
             try
             {
-                int index = _dbHeader.CheckbookEntries.IndexOfKey(entry.UniqueKey());
-                if (index >= 0)
-                {
-                    _dbHeader.CheckbookEntries.RemoveAt(index);
+                if(_dbHeader.CheckbookEntries.ContainsKey(entry.UniqueKey()))
+                { 
+                    _dbHeader.CheckbookEntries.Remove(entry.UniqueKey());
                     if (_undoTracker != null)
                     {
                         _undoTracker.TrackDeletion(entry);
@@ -617,10 +616,9 @@ namespace AbleCheckbook.Db
             JsonDbAccess.Mutex.WaitOne();
             try
             {
-                int index = _dbHeader.ScheduledEvents.IndexOfKey(entry.UniqueKey());
-                if (index >= 0)
-                {
-                    _dbHeader.ScheduledEvents.RemoveAt(index);
+                if(_dbHeader.ScheduledEvents.ContainsKey(entry.UniqueKey()))
+                { 
+                    _dbHeader.ScheduledEvents.Remove(entry.UniqueKey());
                     if (_undoTracker != null)
                     {
                         _undoTracker.TrackDeletion(entry);
@@ -701,6 +699,10 @@ namespace AbleCheckbook.Db
         /// <returns>True if successful</returns>
         public bool InsertEntry(FinancialCategory entry)
         {
+            if(entry.Name.Trim().Length < 1)
+            {
+                return false;
+            }
             _errorMessage = "";
             if (entry.Id == null || entry.Id.Equals(Guid.Empty))
             {
@@ -709,6 +711,14 @@ namespace AbleCheckbook.Db
             JsonDbAccess.Mutex.WaitOne();
             try
             {
+                if (_dbHeader.FinancialCategories.ContainsKey(entry.UniqueKey()))
+                {
+                    if (_undoTracker != null)
+                    {
+                        _undoTracker.TrackDeletion(entry);
+                    }
+                    _dbHeader.FinancialCategories.Remove(entry.UniqueKey()); // Just in case
+                }
                 _dbHeader.FinancialCategories.Add(entry.UniqueKey(), entry);
                 if (_undoTracker != null)
                 {
@@ -833,10 +843,9 @@ namespace AbleCheckbook.Db
             JsonDbAccess.Mutex.WaitOne();
             try
             {
-                int index = _dbHeader.FinancialCategories.IndexOfKey(entry.UniqueKey());
-                if (index >= 0)
-                {
-                    _dbHeader.FinancialCategories.RemoveAt(index);
+                if(_dbHeader.FinancialCategories.ContainsKey(entry.UniqueKey()))
+                { 
+                    _dbHeader.FinancialCategories.Remove(entry.UniqueKey());
                     if (_undoTracker != null)
                     {
                         _undoTracker.TrackDeletion(entry);

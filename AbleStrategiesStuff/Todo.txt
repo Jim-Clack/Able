@@ -1,7 +1,6 @@
 Alpha TODO...
  - Scheduled Events - Sign of Deposits Wrong - Fixed???
  - in MainScreen.Reconciler (184-185) is the sign of the adjustment correct?
- - Really, MemorizedPayees should not be persisted, as AutoFillPayee does it on load
  - Flesh out online help
  - Deploy website for testing
  - EULA

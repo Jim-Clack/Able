@@ -64,7 +64,7 @@ namespace AbleCheckbook.Db
         /// <returns></returns>
         public override string ToString()
         {
-            return "FinancialCategory" + Id.ToString() + " - " + Name;
+            return "FinancialCategory" + Id.ToString() + " - " + Name + "-" + (_isCredit ? "Credit" : "Debit");
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace AbleCheckbook.Db
         /// <returns>Collatable key.</returns>
         public string UniqueKey()
         {
-            return _name.ToLower() + "-" + _id;
+            return _name.ToLower() + "-" + (_isCredit ? "C" : "D");
         }
 
     }

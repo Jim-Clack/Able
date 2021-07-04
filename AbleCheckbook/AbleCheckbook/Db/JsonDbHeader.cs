@@ -52,22 +52,17 @@ namespace AbleCheckbook.Db
         /// <summary>
         /// In-memory store of checkbook entries.
         /// </summary>
-        private SortedList<string, CheckbookEntry> _checkbookEntries = new SortedList<string, CheckbookEntry>();
+        private Dictionary<string, CheckbookEntry> _checkbookEntries = new Dictionary<string, CheckbookEntry>();
 
         /// <summary>
         /// In-memory store of financial categories.
         /// </summary>
-        private SortedList<string, FinancialCategory> _financialCategories = new SortedList<string, FinancialCategory>();
+        private Dictionary<string, FinancialCategory> _financialCategories = new Dictionary<string, FinancialCategory>();
 
         /// <summary>
         /// In-memory store of scheduled events.
         /// </summary>
-        private SortedList<string, ScheduledEvent> _scheduledEvents = new SortedList<string, ScheduledEvent>();
-
-        /// <summary>
-        /// In-memory store of memorized payees.
-        /// </summary>
-        private SortedList<string, MemorizedPayee> _memorizedPayees = new SortedList<string, MemorizedPayee>();
+        private Dictionary<string, ScheduledEvent> _scheduledEvents = new Dictionary<string, ScheduledEvent>();
 
         // Getters/Setters for serialization
         public string DbName { get => _dbName; set => _dbName = value; }
@@ -77,9 +72,8 @@ namespace AbleCheckbook.Db
         public InProgress InProgress { get => _inProgress; set => _inProgress = value; }
         public DateTime ReconciliationDate { get => _reconciliationDate; set => _reconciliationDate = value; }
         public long ReconciliationBalance { get => _reconciliationBalance; set => _reconciliationBalance = value; }
-        public SortedList<string, CheckbookEntry> CheckbookEntries { get => _checkbookEntries; set => _checkbookEntries = value; }
-        public SortedList<string, FinancialCategory> FinancialCategories { get => _financialCategories; set => _financialCategories = value; }
-        public SortedList<string, ScheduledEvent> ScheduledEvents { get => _scheduledEvents; set => _scheduledEvents = value; }
-        public SortedList<string, MemorizedPayee> MemorizedPayees { get => _memorizedPayees; set => _memorizedPayees = value; }
+        public Dictionary<string, CheckbookEntry> CheckbookEntries { get => _checkbookEntries; set => _checkbookEntries = value; }
+        public Dictionary<string, FinancialCategory> FinancialCategories { get => _financialCategories; set => _financialCategories = value; }
+        public Dictionary<string, ScheduledEvent> ScheduledEvents { get => _scheduledEvents; set => _scheduledEvents = value; }
     }
 }

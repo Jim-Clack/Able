@@ -336,7 +336,7 @@ namespace AbleCheckbook
         /// <summary>
         /// Check for scheduled events that are due and insert them into the checkbook.
         /// </summary>
-        /// <returns>true if any events were due and, therefore, added</returns>
+        /// <returns>true if any events were due and therefore inserted</returns>
         private bool ProcessScheduledEvents()
         {
             bool didSomething = false;
@@ -356,9 +356,9 @@ namespace AbleCheckbook
                 entry.MadeBy = schEvent.IsReminder ? EntryMadeBy.Reminder : EntryMadeBy.Scheduler;
                 entry.DateOfTransaction = schEventAfterEdit.DueNext();
                 entry.AppendMemo(schEvent.Memo);
-                _backend.Db.InsertEntry(entry, Highlight.Processed);
+                _backend.Db.InsertEntry(entry, Highlight.Processed); // insert checkbook entry
                 schEventAfterEdit.LastPosting = entry.DateOfTransaction;
-                _backend.Db.UpdateEntry(schEventAfterEdit, schEventBeforeEdit);
+                _backend.Db.UpdateEntry(schEventAfterEdit, schEventBeforeEdit); // update scheduled event
                 didSomething = true;
             }
             return didSomething;

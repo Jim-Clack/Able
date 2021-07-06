@@ -15,13 +15,13 @@ namespace AbleCheckbook.Gui
     public partial class SearchEntriesForm : Form
     {
 
-        private UiBackend _backend = null;
+        private CheckbookRegisterBackend _backend = null;
 
         private List<Guid> _matches = new List<Guid>();
 
         private bool _showAll = true;
 
-        public SearchEntriesForm(UiBackend backend)
+        public SearchEntriesForm(CheckbookRegisterBackend backend)
         {
             _backend = backend;
             InitializeComponent();

@@ -200,7 +200,6 @@ namespace AbleCheckbook.Logic
             AddString("Date Range");
             AddString("Checkbook Entry");
             AddString("Click to Insert");
-            AddString("New Entry");
             AddString("Delete");
             AddString("Cleared");
             AddString("Cleared / Reconciled");
@@ -279,8 +278,13 @@ namespace AbleCheckbook.Logic
             AddString("Confirm");
             AddString("Disable sanity-checks for wild dates and amounts during data-entry");
             AddString("Account Settings - ");
-            AddString("Live sync with bank online (instead of only for statement reconcile)");
-            AddString("Aggressively merge transactions (you can still un-merge if necessary)");
+            AddString("Live sync to bank acct online (instead of only for monthly reconcile)");
+            AddString("Aggressively merge transactions (you can still un-merge if desired)");
+            AddString("Bank/branch req'd");
+            AddString("Acct type required");
+            AddString("Bank login required");
+            AddString("Bank password req'd");
+            AddString("Click Test...");
             AddString("Select Bank");
             AddString("Account");
             AddString("Your Login");
@@ -292,6 +296,10 @@ namespace AbleCheckbook.Logic
             AddString("Create Balance Adjustment");
             AddString("Tips");
             AddString("High Visibility - Larger Fonts");
+            AddString("Edit/Del Entry");
+            AddString("Search");
+            AddString("Year End");
+            AddString("Rename Payee");
             AddString("Import CSV");
             AddString("Import QIF");
             AddString("Export CSV");

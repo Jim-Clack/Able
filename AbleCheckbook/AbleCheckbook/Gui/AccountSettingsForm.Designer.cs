@@ -41,16 +41,17 @@
             this.comboBoxAcct = new System.Windows.Forms.ComboBox();
             this.textBoxUser = new System.Windows.Forms.TextBox();
             this.textBoxPwd = new System.Windows.Forms.TextBox();
+            this.labelAssistance = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // checkBoxLiveSync
             // 
             this.checkBoxLiveSync.AutoSize = true;
-            this.checkBoxLiveSync.Location = new System.Drawing.Point(13, 12);
+            this.checkBoxLiveSync.Location = new System.Drawing.Point(13, 13);
             this.checkBoxLiveSync.Name = "checkBoxLiveSync";
-            this.checkBoxLiveSync.Size = new System.Drawing.Size(448, 21);
+            this.checkBoxLiveSync.Size = new System.Drawing.Size(453, 21);
             this.checkBoxLiveSync.TabIndex = 0;
-            this.checkBoxLiveSync.Text = "Live sync with bank online (instead of only for statement reconcile)";
+            this.checkBoxLiveSync.Text = "Live sync to bank acct online (instead of only for monthly reconcile)";
             this.checkBoxLiveSync.UseVisualStyleBackColor = true;
             // 
             // checkBoxAggressive
@@ -58,9 +59,9 @@
             this.checkBoxAggressive.AutoSize = true;
             this.checkBoxAggressive.Location = new System.Drawing.Point(13, 41);
             this.checkBoxAggressive.Name = "checkBoxAggressive";
-            this.checkBoxAggressive.Size = new System.Drawing.Size(468, 21);
+            this.checkBoxAggressive.Size = new System.Drawing.Size(450, 21);
             this.checkBoxAggressive.TabIndex = 1;
-            this.checkBoxAggressive.Text = "Aggressively merge transactions (you can still un-merge if necessary)";
+            this.checkBoxAggressive.Text = "Aggressively merge transactions (you can still un-merge if desired)";
             this.checkBoxAggressive.UseVisualStyleBackColor = true;
             // 
             // labelBank
@@ -102,32 +103,35 @@
             // buttonTest
             // 
             this.buttonTest.Enabled = false;
-            this.buttonTest.Location = new System.Drawing.Point(20, 210);
+            this.buttonTest.Location = new System.Drawing.Point(20, 208);
             this.buttonTest.Name = "buttonTest";
-            this.buttonTest.Size = new System.Drawing.Size(102, 32);
+            this.buttonTest.Size = new System.Drawing.Size(76, 32);
             this.buttonTest.TabIndex = 6;
             this.buttonTest.Text = "Test";
             this.buttonTest.UseVisualStyleBackColor = true;
+            this.buttonTest.Click += new System.EventHandler(this.buttonTest_Click);
             // 
             // buttonCancel
             // 
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(243, 210);
+            this.buttonCancel.Location = new System.Drawing.Point(278, 208);
             this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(96, 32);
+            this.buttonCancel.Size = new System.Drawing.Size(88, 32);
             this.buttonCancel.TabIndex = 7;
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
+            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
             // buttonOk
             // 
             this.buttonOk.Enabled = false;
-            this.buttonOk.Location = new System.Drawing.Point(363, 210);
+            this.buttonOk.Location = new System.Drawing.Point(381, 208);
             this.buttonOk.Name = "buttonOk";
-            this.buttonOk.Size = new System.Drawing.Size(98, 32);
+            this.buttonOk.Size = new System.Drawing.Size(80, 32);
             this.buttonOk.TabIndex = 8;
             this.buttonOk.Text = "Ok";
             this.buttonOk.UseVisualStyleBackColor = true;
+            this.buttonOk.Click += new System.EventHandler(this.buttonOk_Click);
             // 
             // comboBoxBank
             // 
@@ -136,6 +140,7 @@
             this.comboBoxBank.Name = "comboBoxBank";
             this.comboBoxBank.Size = new System.Drawing.Size(344, 24);
             this.comboBoxBank.TabIndex = 9;
+            this.comboBoxBank.SelectedIndexChanged += new System.EventHandler(this.comboBoxBank_SelectedIndexChanged);
             // 
             // comboBoxAcct
             // 
@@ -144,6 +149,7 @@
             this.comboBoxAcct.Name = "comboBoxAcct";
             this.comboBoxAcct.Size = new System.Drawing.Size(344, 24);
             this.comboBoxAcct.TabIndex = 10;
+            this.comboBoxAcct.SelectedIndexChanged += new System.EventHandler(this.comboBoxAcct_SelectedIndexChanged);
             // 
             // textBoxUser
             // 
@@ -151,17 +157,30 @@
             this.textBoxUser.Name = "textBoxUser";
             this.textBoxUser.Size = new System.Drawing.Size(344, 22);
             this.textBoxUser.TabIndex = 11;
+            this.textBoxUser.TextChanged += new System.EventHandler(this.textBoxUser_TextChanged);
             // 
             // textBoxPwd
             // 
             this.textBoxPwd.Location = new System.Drawing.Point(117, 169);
             this.textBoxPwd.Name = "textBoxPwd";
+            this.textBoxPwd.PasswordChar = '*';
             this.textBoxPwd.Size = new System.Drawing.Size(344, 22);
             this.textBoxPwd.TabIndex = 12;
+            this.textBoxPwd.TextChanged += new System.EventHandler(this.textBoxPwd_TextChanged);
+            // 
+            // labelAssistance
+            // 
+            this.labelAssistance.AutoSize = true;
+            this.labelAssistance.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelAssistance.ForeColor = System.Drawing.Color.Red;
+            this.labelAssistance.Location = new System.Drawing.Point(101, 213);
+            this.labelAssistance.Name = "labelAssistance";
+            this.labelAssistance.Size = new System.Drawing.Size(26, 17);
+            this.labelAssistance.TabIndex = 13;
+            this.labelAssistance.Text = "---";
             // 
             // AccountSettingsForm
             // 
-            this.AcceptButton = this.buttonOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
@@ -179,6 +198,7 @@
             this.Controls.Add(this.labelBank);
             this.Controls.Add(this.checkBoxAggressive);
             this.Controls.Add(this.checkBoxLiveSync);
+            this.Controls.Add(this.labelAssistance);
             this.MaximumSize = new System.Drawing.Size(506, 302);
             this.MinimumSize = new System.Drawing.Size(506, 302);
             this.Name = "AccountSettingsForm";
@@ -204,5 +224,6 @@
         private System.Windows.Forms.ComboBox comboBoxAcct;
         private System.Windows.Forms.TextBox textBoxUser;
         private System.Windows.Forms.TextBox textBoxPwd;
+        private System.Windows.Forms.Label labelAssistance;
     }
 }

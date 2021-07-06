@@ -1,6 +1,7 @@
 Alpha TODO...
  - Scheduled Events - Sign of Deposits Wrong - Fixed???
  - in MainScreen.Reconciler (184-185) is the sign of the adjustment correct?
+ - Undo Reconcile leaves it sorted by reconcile
  - Flesh out online help
  - Deploy website for testing
  - EULA
@@ -9,6 +10,7 @@ Alpha TODO...
  - Implement Activate via Email/Phone as is appropriate 
  - Web Services for online purchase and self-service activation
  - Move SU user data to website instead of file
+ - Refactor Due-Notice, default message to Forecast-Low-Balance
 
 Beta TODO...
  - Prevent multiple instances at the same time
@@ -36,8 +38,6 @@ Long-term TODO...
 THOUGHTS ---
 
 Online Banking
- - Live Sync v Reconcile
- - Aggressive v Conservative Entry-Merge
  - Accomodate either sequence: User-First, Sync-First
  - Accomodate delayed amt-updates (Tips, Held-Funds, etc.)
  - Check past 30 days for bank corrections

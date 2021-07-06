@@ -35,7 +35,7 @@ namespace AbleCheckbook
         /// <summary>
         /// The client backend here has significant support functionality.
         /// </summary>
-        private UiBackend _backend = null;
+        private CheckbookRegisterBackend _backend = null;
 
         /// <summary>
         /// Indicates that the screen is being shown for the first time since it was launched.
@@ -90,7 +90,7 @@ namespace AbleCheckbook
         /// <summary>
         /// Getters
         /// </summary>
-        public UiBackend Backend { get => _backend; }
+        public CheckbookRegisterBackend Backend { get => _backend; }
 
         /// <summary>
         /// Load, set up menu, toolbar, etc.
@@ -106,7 +106,7 @@ namespace AbleCheckbook
             superToolStripMenuItem.Visible = superToolStripMenuItem.Enabled = (Configuration.Instance.GetUserLevel() == UserLevel.SuperUser);
 #endif
 #endif
-            _backend = new UiBackend(dataGridView1);
+            _backend = new CheckbookRegisterBackend(dataGridView1);
             this.Text = Strings.Get("Able Strategies AbleCheckbook") + " - " + _backend.Db.Name;
             int left, top, width, height;
             Configuration.Instance.GetWindowBounds(out left, out top, out width, out height);
@@ -239,7 +239,7 @@ namespace AbleCheckbook
             toolStripButtonUndo.Enabled = false;
             if (_backend.Db.DescriptionOfNextUndo.Length > 0)
             {
-                undoDesc = undoDesc + " " + _backend.Db.DescriptionOfNextUndo;
+                undoDesc = undoDesc + " " + Strings.Get(_backend.Db.DescriptionOfNextUndo);
                 undoToolStripMenuItem.Enabled = true;
                 toolStripButtonUndo.Enabled = true;
             }
@@ -259,7 +259,7 @@ namespace AbleCheckbook
             toolStripButtonRedo.Enabled = false;
             if (_backend.Db.DescriptionOfNextRedo.Length > 0)
             {
-                redoDesc = redoDesc + " " + _backend.Db.DescriptionOfNextRedo;
+                redoDesc = redoDesc + " " + Strings.Get(_backend.Db.DescriptionOfNextRedo);
                 redoToolStripMenuItem.Enabled = true;
                 toolStripButtonRedo.Enabled = true;
             }

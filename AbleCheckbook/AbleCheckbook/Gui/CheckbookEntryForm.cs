@@ -45,7 +45,7 @@ namespace AbleCheckbook.Gui
         /// <summary>
         /// Support methods.
         /// </summary>
-        private UiBackend _backend = null;
+        private CheckbookRegisterBackend _backend = null;
 
         /// <summary>
         /// This is the displayed checkbook entry (grid row) that we're dealing with.
@@ -140,7 +140,7 @@ namespace AbleCheckbook.Gui
         /// <param name="backend">Source of data and support methods.</param>
         /// <param name="dataGridView">Source of displayed rows of data.</param>
         /// <param name="dataGridIndex">The corresponding row in the datagridview.</param>
-        public CheckbookEntryForm(UiBackend backend, DataGridView dataGridView, int dataGridIndex)
+        public CheckbookEntryForm(CheckbookRegisterBackend backend, DataGridView dataGridView, int dataGridIndex)
         {
             _backend = backend;
             _dataGridView = dataGridView;

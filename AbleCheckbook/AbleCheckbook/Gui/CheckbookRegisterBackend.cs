@@ -27,14 +27,14 @@ namespace AbleCheckbook.Gui
     /// <summary>
     /// Provides support for Main GUI - This is, essentially, the main app.
     /// </summary>
-    public class UiBackend : CheckbookRegisterView
+    public class CheckbookRegisterBackend : CheckbookRegisterView
     {
 
         /// <summary>
         /// Ctor.
         /// </summary>
         /// <param name="dataGridView">To be managed by this class</param>
-        public UiBackend(DataGridView dataGridView) : base(dataGridView)
+        public CheckbookRegisterBackend(DataGridView dataGridView) : base(dataGridView)
         {
         }
 

@@ -234,7 +234,7 @@
       <DependentUpon>DateRangeForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\RowOfCheckbook.cs" />
-    <Compile Include="Gui\UiBackend.cs" />
+    <Compile Include="Gui\CheckbookRegisterBackend.cs" />
     <Compile Include="Gui\NotificationForm.cs">
       <SubType>Form</SubType>
     </Compile>

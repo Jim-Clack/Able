@@ -10,6 +10,7 @@ SQA...
  * Test all ops (delete, edit, splits) on last and first entry of checkbook
  * Check logs after each run to see if there were any stealthy problems
  * Do a Year-End, then a year later do another, check the Balance-Forwards
+ * Do a Year-End, verify that new year acct settings are ok, prev are cleared
 Basic Functionality Test Script...
  Note that this script should be improved by running it in a VM with
  the OS set to prescribed dates in order to evaluate both reconciling

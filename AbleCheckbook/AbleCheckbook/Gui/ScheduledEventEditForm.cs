@@ -40,14 +40,14 @@ namespace AbleCheckbook.Gui
         /// <summary>
         /// DB and support methods.
         /// </summary>
-        private UiBackend _backend = null;
+        private CheckbookRegisterBackend _backend = null;
 
         /// <summary>
         /// Ctor.
         /// </summary>
-        /// <param name="backend">UIBackend for DB and support methods</param>
+        /// <param name="backend">Backend for DB and support methods</param>
         /// <param name="schEvent">Original scheduled event; null for a new event.</param>
-        public ScheduledEventEditForm(UiBackend backend, RowOfSchEvents rowEvent)
+        public ScheduledEventEditForm(CheckbookRegisterBackend backend, RowOfSchEvents rowEvent)
         {
             _backend = backend;
             _rowEvent = rowEvent;

@@ -326,6 +326,12 @@ namespace AbleCheckbook
             }
         }
 
+        private void toolStripMenuItemAcctSettings_Click(object sender, EventArgs e)
+        {
+            AccountSettingsForm form = new AccountSettingsForm(_backend.Db);
+            form.ShowDialog();
+        }
+
         private void importQifToolStripMenuItem_Click(object sender, EventArgs e)
         {
             BeforeOperation("Import QIF", true);
@@ -620,6 +626,7 @@ namespace AbleCheckbook
         {
             UpdateReconcileControls(false, false);
         }
+
     }
 
 }

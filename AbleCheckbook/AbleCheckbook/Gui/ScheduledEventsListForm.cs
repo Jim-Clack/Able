@@ -17,9 +17,9 @@ namespace AbleCheckbook.Gui
 
         private List<RowOfSchEvents> _schEvents = null;
 
-        private UiBackend _backend = null;
+        private CheckbookRegisterBackend _backend = null;
 
-        public ScheduledEventsListForm(UiBackend backend)
+        public ScheduledEventsListForm(CheckbookRegisterBackend backend)
         {
             _backend = backend;
             InitializeComponent();

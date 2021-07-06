@@ -12,7 +12,7 @@ namespace AbleCheckbook.Db
         Reconcile = 1,     // reconcile in-progress
     }
 
-    public class JsonDbHeader
+    public class JsonDbHeader : IAccount
     {
         /// <summary>
         /// Name of the db (i.e. Checking, Personal, Business, Alternate).
@@ -50,6 +50,36 @@ namespace AbleCheckbook.Db
         private long _reconciliationBalance = 0L;
 
         /// <summary>
+        /// For online banking.
+        /// </summary>
+        private string _onlineBankingAcct = "";
+
+        /// <summary>
+        /// For online banking.
+        /// </summary>
+        private string _onlineBankingUrl = "";
+
+        /// <summary>
+        /// For online banking.
+        /// </summary>
+        private string _onlineBankingUser = "";
+
+        /// <summary>
+        /// For online banking.
+        /// </summary>
+        private string _onlineBankingPwd = "";
+
+        /// <summary>
+        /// For online banking.
+        /// </summary>
+        private bool _onlineBankingLive = true;
+
+        /// <summary>
+        /// For online banking.
+        /// </summary>
+        private bool _onlineBankingAggressive = true;
+
+        /// <summary>
         /// In-memory store of checkbook entries.
         /// </summary>
         private Dictionary<string, CheckbookEntry> _checkbookEntries = new Dictionary<string, CheckbookEntry>();
@@ -75,5 +105,11 @@ namespace AbleCheckbook.Db
         public Dictionary<string, CheckbookEntry> CheckbookEntries { get => _checkbookEntries; set => _checkbookEntries = value; }
         public Dictionary<string, FinancialCategory> FinancialCategories { get => _financialCategories; set => _financialCategories = value; }
         public Dictionary<string, ScheduledEvent> ScheduledEvents { get => _scheduledEvents; set => _scheduledEvents = value; }
+        public string OnlineBankingAcct { get => _onlineBankingAcct; set => _onlineBankingAcct = value; }
+        public string OnlineBankingUrl { get => _onlineBankingUrl; set => _onlineBankingUrl = value; }
+        public string OnlineBankingUser { get => _onlineBankingUser; set => _onlineBankingUser = value; }
+        public string OnlineBankingPwd { get => _onlineBankingPwd; set => _onlineBankingPwd = value; }
+        public bool OnlineBankingLive { get => _onlineBankingLive; set => _onlineBankingLive = value; }
+        public bool OnlineBankingAggressive { get => _onlineBankingAggressive; set => _onlineBankingAggressive = value; }
     }
 }

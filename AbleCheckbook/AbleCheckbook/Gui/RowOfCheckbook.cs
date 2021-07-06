@@ -66,6 +66,11 @@ namespace AbleCheckbook.Gui
         private string _splits = "";
 
         /// <summary>
+        /// From online bank inquiry.
+        /// </summary>
+        private string _bankInfo = "";
+
+        /// <summary>
         /// Access to DB, etc.
         /// </summary>
         private IDbAccess _db = null;
@@ -290,6 +295,22 @@ namespace AbleCheckbook.Gui
             set
             {
                 throw new MissingMethodException("Credit.set");
+            }
+        }
+
+        /// <summary>
+        /// Get the bank info.
+        /// </summary>
+        public string BankInfo
+        {
+            get
+            {
+                if(_entry.BankPayee.Trim().Length < 1)
+                {
+                    return "";
+                }
+                return _entry.BankPayee + " " + _entry.BankTransaction + " " + 
+                    _entry.BankTranDate.ToShortDateString() + " " + UtilityMethods.FormatCurrency(_entry.BankAmount);
             }
         }
 

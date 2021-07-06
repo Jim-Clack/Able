@@ -278,6 +278,14 @@ namespace AbleCheckbook.Logic
             AddString(" days away from today! Are you sure?");
             AddString("Confirm");
             AddString("Disable sanity-checks for wild dates and amounts during data-entry");
+            AddString("Account Settings - ");
+            AddString("Live sync with bank online (instead of only for statement reconcile)");
+            AddString("Aggressively merge transactions (you can still un-merge if necessary)");
+            AddString("Select Bank");
+            AddString("Account");
+            AddString("Your Login");
+            AddString("Password");
+            AddString("Test");
             AddString(" in total currency! Are you sure?");
             AddString("Disparity (should be zero):");
             AddString("Done With Reconciliation");
@@ -339,6 +347,7 @@ namespace AbleCheckbook.Logic
             AddString("←  Back");
             AddString("⌂  Home");
             AddString("Ꙭ  Search");
+            AddString("◀ No: Un-Merge");
             AddString("New DB Acct");
             AddString("Select Acct");
             AddString("New Account, Starting Balance");

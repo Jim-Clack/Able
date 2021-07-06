@@ -47,6 +47,8 @@
             this.labelPointer = new System.Windows.Forms.Label();
             this.comboBoxPayee = new System.Windows.Forms.ComboBox();
             this.textBoxScaling = new System.Windows.Forms.TextBox();
+            this.textBoxBankInfo = new System.Windows.Forms.TextBox();
+            this.buttonUnMerge = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // datePickerTransaction
@@ -134,7 +136,7 @@
             this.checkBoxCleared.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.checkBoxCleared.AutoSize = true;
             this.checkBoxCleared.ForeColor = System.Drawing.Color.Black;
-            this.checkBoxCleared.Location = new System.Drawing.Point(409, 202);
+            this.checkBoxCleared.Location = new System.Drawing.Point(409, 201);
             this.checkBoxCleared.Name = "checkBoxCleared";
             this.checkBoxCleared.Size = new System.Drawing.Size(161, 21);
             this.checkBoxCleared.TabIndex = 0;
@@ -146,7 +148,7 @@
             // buttonDelete
             // 
             this.buttonDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonDelete.Location = new System.Drawing.Point(12, 251);
+            this.buttonDelete.Location = new System.Drawing.Point(12, 281);
             this.buttonDelete.Name = "buttonDelete";
             this.buttonDelete.Size = new System.Drawing.Size(125, 32);
             this.buttonDelete.TabIndex = 13;
@@ -159,7 +161,7 @@
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(299, 251);
+            this.buttonCancel.Location = new System.Drawing.Point(293, 281);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(124, 32);
             this.buttonCancel.TabIndex = 12;
@@ -169,9 +171,9 @@
             // buttonOk
             // 
             this.buttonOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOk.Location = new System.Drawing.Point(446, 251);
+            this.buttonOk.Location = new System.Drawing.Point(438, 281);
             this.buttonOk.Name = "buttonOk";
-            this.buttonOk.Size = new System.Drawing.Size(116, 32);
+            this.buttonOk.Size = new System.Drawing.Size(124, 32);
             this.buttonOk.TabIndex = 6;
             this.buttonOk.Text = "Ok";
             this.buttonOk.UseVisualStyleBackColor = true;
@@ -180,7 +182,7 @@
             // textBoxTotalAmt
             // 
             this.textBoxTotalAmt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxTotalAmt.Location = new System.Drawing.Point(458, 171);
+            this.textBoxTotalAmt.Location = new System.Drawing.Point(458, 170);
             this.textBoxTotalAmt.Name = "textBoxTotalAmt";
             this.textBoxTotalAmt.ReadOnly = true;
             this.textBoxTotalAmt.Size = new System.Drawing.Size(103, 22);
@@ -193,7 +195,7 @@
             this.labelTotal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelTotal.AutoSize = true;
             this.labelTotal.ForeColor = System.Drawing.Color.Black;
-            this.labelTotal.Location = new System.Drawing.Point(408, 172);
+            this.labelTotal.Location = new System.Drawing.Point(408, 171);
             this.labelTotal.Name = "labelTotal";
             this.labelTotal.Size = new System.Drawing.Size(40, 17);
             this.labelTotal.TabIndex = 21;
@@ -218,7 +220,7 @@
             this.textBoxAssistance.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBoxAssistance.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxAssistance.ForeColor = System.Drawing.Color.Red;
-            this.textBoxAssistance.Location = new System.Drawing.Point(11, 227);
+            this.textBoxAssistance.Location = new System.Drawing.Point(11, 259);
             this.textBoxAssistance.Multiline = true;
             this.textBoxAssistance.Name = "textBoxAssistance";
             this.textBoxAssistance.ReadOnly = true;
@@ -261,12 +263,41 @@
             this.textBoxScaling.Text = "   \r\n500x50 @ (12, 83) - DON\'T MODIFY THIS - IT\'S USED FOR CALCULATING SCALE";
             this.textBoxScaling.Visible = false;
             // 
+            // textBoxBankInfo
+            // 
+            this.textBoxBankInfo.AllowDrop = true;
+            this.textBoxBankInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxBankInfo.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBoxBankInfo.Location = new System.Drawing.Point(12, 235);
+            this.textBoxBankInfo.Name = "textBoxBankInfo";
+            this.textBoxBankInfo.ReadOnly = true;
+            this.textBoxBankInfo.Size = new System.Drawing.Size(411, 15);
+            this.textBoxBankInfo.TabIndex = 26;
+            this.textBoxBankInfo.Visible = false;
+            // 
+            // buttonUnMerge
+            // 
+            this.buttonUnMerge.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonUnMerge.Enabled = false;
+            this.buttonUnMerge.Location = new System.Drawing.Point(438, 227);
+            this.buttonUnMerge.Name = "buttonUnMerge";
+            this.buttonUnMerge.Size = new System.Drawing.Size(124, 32);
+            this.buttonUnMerge.TabIndex = 27;
+            this.buttonUnMerge.Text = "◀ No: Un-Merge";
+            this.buttonUnMerge.UseVisualStyleBackColor = true;
+            this.buttonUnMerge.Visible = false;
+            this.buttonUnMerge.Click += new System.EventHandler(this.buttonUnMerge_Click);
+            // 
             // CheckbookEntryForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(583, 296);
+            this.ClientSize = new System.Drawing.Size(583, 326);
+            this.Controls.Add(this.checkBoxCleared);
+            this.Controls.Add(this.buttonUnMerge);
+            this.Controls.Add(this.textBoxBankInfo);
             this.Controls.Add(this.textBoxScaling);
             this.Controls.Add(this.labelMemoOverlay);
             this.Controls.Add(this.comboBoxPayee);
@@ -274,7 +305,6 @@
             this.Controls.Add(this.buttonOk);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonDelete);
-            this.Controls.Add(this.checkBoxCleared);
             this.Controls.Add(this.textBoxCheckNbr);
             this.Controls.Add(this.datePickerTransaction);
             this.Controls.Add(this.labelPointer);
@@ -286,8 +316,8 @@
             this.Controls.Add(this.textBoxMemo);
             this.Controls.Add(this.textBoxAssistance);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximumSize = new System.Drawing.Size(640, 480);
-            this.MinimumSize = new System.Drawing.Size(599, 323);
+            this.MaximumSize = new System.Drawing.Size(640, 510);
+            this.MinimumSize = new System.Drawing.Size(599, 353);
             this.Name = "CheckbookEntryForm";
             this.Text = "Checkbook Entry";
             this.Load += new System.EventHandler(this.CheckbookEntryForm_Load);
@@ -316,5 +346,7 @@
         private System.Windows.Forms.Label labelPointer;
         private System.Windows.Forms.ComboBox comboBoxPayee;
         private System.Windows.Forms.TextBox textBoxScaling;
+        private System.Windows.Forms.TextBox textBoxBankInfo;
+        private System.Windows.Forms.Button buttonUnMerge;
     }
 }

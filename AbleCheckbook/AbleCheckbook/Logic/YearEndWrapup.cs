@@ -138,15 +138,16 @@ namespace AbleCheckbook.Logic
             string dbName = _oldFilename + ".acb";
             File.Delete(Path.Combine(Configuration.Instance.DirectoryDatabase, dbName));
             _newStartingBalance = 0L;
-            _oldDb = new JsonDbAccess(_oldFilename, null);
+            _oldDb = new JsonDbAccess(_oldFilename, null); // do not put bank creds in old db
             _newDb.Name = Path.GetFileNameWithoutExtension(_newFilename);
             try
             {
                 bool okay = MoveInactiveEntries();
                 _oldDb.Sync();
                 InsertStartingBalance();
+                _newDb.Sync(); // JBC added 7-5-2021 (correct?)
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Logger.Error("Problem with Year-End Wrap-Up.", ex);
                 _message = Strings.Get("Problem with Year-End Wrap-Up (Suggest Undo) ") + ex.Message;

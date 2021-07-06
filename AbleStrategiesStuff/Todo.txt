@@ -38,8 +38,6 @@ THOUGHTS ---
 Online Banking
  - Live Sync v Reconcile
  - Aggressive v Conservative Entry-Merge
- - ChkbkEntry: BankPayee, BankTran#, BankDate, BankAmt
- - CheckbookEntryForm: (Show 4 new fields), Entry-UnMerge
  - Accomodate either sequence: User-First, Sync-First
  - Accomodate delayed amt-updates (Tips, Held-Funds, etc.)
  - Check past 30 days for bank corrections

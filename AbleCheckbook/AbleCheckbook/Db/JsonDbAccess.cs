@@ -154,6 +154,17 @@ namespace AbleCheckbook.Db
         }
 
         /// <summary>
+        /// Get account info, i.e. online connection settings.)
+        /// </summary>
+        public IAccount Account
+        {
+            get
+            {
+                return _dbHeader;
+            }
+        }
+
+        /// <summary>
         /// Iterate over the checkbook entries, updating the balance in each.
         /// </summary>
         /// <returns>Final balance.</returns>
@@ -335,6 +346,7 @@ namespace AbleCheckbook.Db
         /// <summary>
         /// Iterator to travese checkbook entries.
         /// </summary>
+        /// <param name="sortEntriesBy">currently ignored</param>
         public CheckbookEntryIterator GetCheckbookEntryIterator(SortEntriesBy sortEntriesBy)
         {
             _errorMessage = "";

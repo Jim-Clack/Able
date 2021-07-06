@@ -300,6 +300,7 @@ namespace AbleCheckbook.Gui
             buttonDelete.Text = Strings.Get("Delete");
             buttonCancel.Text = Strings.Get("Cancel");
             buttonOk.Text = Strings.Get("OK");
+            buttonUnMerge.Text = Strings.Get("◀ No: Un-Merge");
             comboBoxPayee.DataSource = _backend.Payees;
             comboBoxPayee.Text = "";
             ValidateReadyForSubmit();
@@ -323,7 +324,15 @@ namespace AbleCheckbook.Gui
             {
                 control.Top = _yOffsets[controlNumber++] + yOffset;
             }
-            textBoxMemo.Height = (int)(this.Height - (116 * _yScale + textBoxMemo.Top));
+            int allowance = 120;
+            textBoxBankInfo.Visible = buttonUnMerge.Visible = false;
+            if(_rowCheckbook.BankInfo.Length > 10)
+            {
+                allowance = 144;
+                textBoxBankInfo.Visible = buttonUnMerge.Visible = true;
+                textBoxBankInfo.Text = _rowCheckbook.BankInfo;
+            }
+            textBoxMemo.Height = (int)(this.Height - (allowance * _yScale + textBoxMemo.Top));
             _visibleSplitCount = rowNumber + 1;
             for(int checkRow = 0; checkRow < MaxSplits; ++checkRow)
             {
@@ -950,6 +959,13 @@ namespace AbleCheckbook.Gui
         private void datePickerTransaction_ValueChanged(object sender, EventArgs e)
         {
             CheckbookEntryForm.S_PrevDate = datePickerTransaction.Value;
+        }
+
+        private void buttonUnMerge_Click(object sender, EventArgs e)
+        {
+            // TODO...
+
+            // this must return DialogResult.OK
         }
 
         private void textBoxCheckNbr_Enter(object sender, EventArgs e)

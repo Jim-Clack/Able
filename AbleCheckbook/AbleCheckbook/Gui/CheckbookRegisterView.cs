@@ -98,10 +98,7 @@ namespace AbleCheckbook.Gui
             {
                 dbFilename = "Checking";
             }
-            _db = new UndoableDbAccess(dbFilename);
-            Configuration.Instance.LastDbName = dbFilename;
-            _layout = new DataGridViewLayout();
-            _autofillPayee = new AutofillPayee(_db);
+            OpenDb(dbFilename);
         }
 
         /// <summary>

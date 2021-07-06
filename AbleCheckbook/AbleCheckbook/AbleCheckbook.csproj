@@ -97,6 +97,7 @@
   <ItemGroup>
     <Compile Include="Db\CheckbookEntryIterator.cs" />
     <Compile Include="Db\FinancialCategoryIterator.cs" />
+    <Compile Include="Db\IAccount.cs" />
     <Compile Include="Db\IUndoTracker.cs" />
     <Compile Include="Db\JsonDbAccess.cs" />
     <Compile Include="Db\IDbIterator.cs" />
@@ -111,6 +112,12 @@
     </Compile>
     <Compile Include="Gui\AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\AccountSettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\AccountSettingsForm.Designer.cs">
+      <DependentUpon>AccountSettingsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\ActivationForm.cs">
       <SubType>Form</SubType>
@@ -271,6 +278,9 @@
     <Compile Include="Db\UndoableDbAccess.cs" />
     <EmbeddedResource Include="Gui\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\AccountSettingsForm.resx">
+      <DependentUpon>AccountSettingsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ActivationForm.resx">
       <DependentUpon>ActivationForm.cs</DependentUpon>

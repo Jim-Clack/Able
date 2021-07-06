@@ -216,6 +216,17 @@ namespace AbleCheckbook.Db
         }
 
         /// <summary>
+        /// Get account info, i.e. online connection settings.)
+        /// </summary>
+        public IAccount Account
+        {
+            get
+            {
+                return _underlyingDb.Account;
+            }
+        }
+
+        /// <summary>
         /// Iterate over the checkbook entries, updating the balance in each.
         /// </summary>
         /// <returns>Final balance.</returns>

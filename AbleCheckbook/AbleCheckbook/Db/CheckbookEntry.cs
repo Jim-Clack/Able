@@ -114,6 +114,26 @@ namespace AbleCheckbook.Db
         private long _balance = 0;
 
         /// <summary>
+        /// From online bank inquiry.
+        /// </summary>
+        private string _bankPayee = "";
+
+        /// <summary>
+        /// From online bank inquiry.
+        /// </summary>
+        private string _bankTransaction = "";
+
+        /// <summary>
+        /// From online bank inquiry.
+        /// </summary>
+        private DateTime _bankTranDate = DateTime.Now;
+
+        /// <summary>
+        /// From online bank inquiry.
+        /// </summary>
+        private long _bankAmount = 0L;
+
+        /// <summary>
         /// For GUI usage. NOT PERSISTED.
         /// </summary>
         private Highlight _highlight = Highlight.None;
@@ -137,6 +157,10 @@ namespace AbleCheckbook.Db
         public string Payee { get => _payee; set => _payee = value; }
         public long Balance { get => _balance; set => _balance = value; }
         public SplitEntry[] Splits { get => _splits; set => _splits = value; }
+        public string BankPayee { get => _bankPayee; set => _bankPayee = value; }
+        public string BankTransaction { get => _bankTransaction; set => _bankTransaction = value; }
+        public DateTime BankTranDate { get => _bankTranDate; set => _bankTranDate = value; }
+        public long BankAmount { get => _bankAmount; set => _bankAmount = value; }
         public Highlight Highlight { get => _highlight; }
 
         /// <summary>

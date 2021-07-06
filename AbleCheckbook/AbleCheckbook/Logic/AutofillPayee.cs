@@ -60,6 +60,10 @@ namespace AbleCheckbook.Logic
             if (entry.Splits[0].Kind == TransactionKind.Payment || entry.Splits[0].Kind == TransactionKind.Deposit)
             {   // only do the first split, in order to avoid incidentals such as cash-back
                 MemorizedPayee payee = new MemorizedPayee(entry.Payee, entry.Splits[0].CategoryId, entry.Splits[0].Kind, entry.Splits[0].Amount);
+                if(_payees.ContainsKey(entry.Payee))
+                {
+                    _payees.Remove(entry.Payee);
+                }
                 _payees.Add(entry.Payee, payee);
             }
         }
@@ -117,29 +121,6 @@ namespace AbleCheckbook.Logic
             return matches;
         }
 
-        /// <summary>
-        /// Search for an autofill entry.
-        /// </summary>
-        /// <param name="payeeSubstring">Payee name.</param>
-        /// <param name="categoryId">ID of category</param>
-        /// <returns>List of matches, possiobly empty.</returns>
-        public List<MemorizedPayee> LookUp(string name, Guid categoryId)
-        {
-            List<MemorizedPayee> matches = new List<MemorizedPayee>();
-            if (name.Length < 1)
-            {
-                return matches;
-            }
-            string pattern = name.ToLower();
-            foreach (MemorizedPayee payee in _payees.Values)
-            { 
-                if (payee.Payee.ToLower().Equals(pattern) && payee.CategoryId == categoryId)
-                {
-                    matches.Add(payee);
-                }
-            }
-            return matches;
-        }
-
     }
+
 }

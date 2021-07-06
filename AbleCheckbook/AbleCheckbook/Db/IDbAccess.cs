@@ -25,6 +25,11 @@ namespace AbleCheckbook.Db
         string FullPath { get; }
 
         /// <summary>
+        /// Get account info, i.e. online connection settings.)
+        /// </summary>
+        IAccount Account { get; }
+
+        /// <summary>
         /// Iterate over the checkbook entries, updating the balance in each.
         /// </summary>
         /// <returns>Final balance.</returns>

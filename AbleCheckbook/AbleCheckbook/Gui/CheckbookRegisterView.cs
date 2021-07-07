@@ -2,6 +2,7 @@
 using AbleCheckbook.Logic;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -119,11 +120,38 @@ namespace AbleCheckbook.Gui
         /// <param name="view">To be prepared</param>
         public void PrepForRepaint()
         {
+            int lowBalanceRow = -1;
+            long lowBalance = 9999999;
+            int scheduledEntries = 0;
             foreach (DataGridViewRow row in _dataGridView.Rows)
             {
                 RowOfCheckbook rowEntry = (RowOfCheckbook)row.DataBoundItem;
                 int colorIndex = (int)rowEntry.Color;
                 row.DefaultCellStyle = _layout.Style(colorIndex);
+                row.Cells["Amount"].Style = _layout.Style(colorIndex, true);
+                row.Cells["Debit"].Style = _layout.Style(colorIndex, true);
+                row.Cells["Credit"].Style = _layout.Style(colorIndex, true);
+                // Forcast an impending lowest balance
+                if (_sortedBy == SortEntriesBy.TranDate && rowEntry.DateOfTransaction > DateTime.Now)
+                {
+                    if(rowEntry.Entry.MadeBy == EntryMadeBy.Scheduler || rowEntry.Entry.MadeBy == EntryMadeBy.Reminder)
+                    {
+                        scheduledEntries++;
+                    }
+                    if (rowEntry.Entry.Balance < lowBalance)
+                    {
+                        lowBalanceRow = row.Index;
+                        lowBalance = rowEntry.Entry.Balance;
+                    }
+                }
+            }
+            // Highlight lowest balance
+            if (scheduledEntries > 3 && lowBalanceRow > 0)
+            {
+                DataGridViewCellStyle cellStyle = _dataGridView.Rows[lowBalanceRow].Cells["Balance"].Style.Clone();
+                cellStyle.BackColor = Color.LightPink;
+                cellStyle.ForeColor = Color.DarkRed;
+                _dataGridView.Rows[lowBalanceRow].Cells["Balance"].Style = cellStyle;
             }
         }
 

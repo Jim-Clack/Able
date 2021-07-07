@@ -18,6 +18,11 @@ namespace AbleCheckbook.Gui
         private DataGridViewCellStyle[] _styles = null;
 
         /// <summary>
+        /// Row styles "amount" column.
+        /// </summary>
+        private DataGridViewCellStyle[] _boldStyles = null;
+
+        /// <summary>
         /// Use this style to alert the user.
         /// </summary>
         private DataGridViewCellStyle _alertStyle = null;
@@ -37,6 +42,7 @@ namespace AbleCheckbook.Gui
         { 
             int fontSize = Configuration.Instance.HighVisibility ? 10 : 9;
             _styles = new DataGridViewCellStyle[(int)EntryColor.Count];
+            _boldStyles = new DataGridViewCellStyle[(int)EntryColor.Count];
             for (int colorIndex = 0; colorIndex < (int)EntryColor.Count; colorIndex++)
             {
                 DataGridViewCellStyle style = new DataGridViewCellStyle();
@@ -45,6 +51,10 @@ namespace AbleCheckbook.Gui
                 style.ForeColor = CellFgColor(colorIndex);
                 style.BackColor = CellBgColor(colorIndex);
                 _styles[colorIndex] = style;
+                _boldStyles[colorIndex] = style.Clone();
+                Font font = _boldStyles[colorIndex].Font;
+                font = new Font(font, FontStyle.Bold);
+                _boldStyles[colorIndex].Font = font;
             }
             _alertStyle = new DataGridViewCellStyle();
             _alertStyle.Font = new Font(FontFamily.GenericSansSerif, fontSize, FontStyle.Bold);
@@ -67,9 +77,14 @@ namespace AbleCheckbook.Gui
         /// Get a row style.
         /// </summary>
         /// <param name="index"></param>
-        /// <returns></returns>
-        public DataGridViewCellStyle Style(int index)
+        /// <param name="isBold">true for BOLD font</param>
+        /// <returns>the cell style</returns>
+        public DataGridViewCellStyle Style(int index, bool isBold = false)
         {
+            if(isBold)
+            {
+                return _boldStyles[index];
+            }
             return _styles[index];
         }
 

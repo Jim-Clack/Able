@@ -624,7 +624,11 @@ namespace AbleCheckbook
                     EndReconciliation(false);
                 }
             }
-            if (_reconHelper != null)
+            if (_reconHelper == null)
+            {
+                _backend.ReloadTransactions(SortEntriesBy.TranDate);
+            }
+            else
             {
                 _reconHelper.UpdateOpenEntries();
                 List<Guid> matches = _reconHelper.OpenEntries.Keys.ToList();
@@ -659,7 +663,11 @@ namespace AbleCheckbook
                     EndReconciliation(false);
                 }
             }
-            if (_reconHelper != null)
+            if (_reconHelper == null)
+            {
+                _backend.ReloadTransactions(SortEntriesBy.TranDate);
+            }
+            else
             {
                 _reconHelper.UpdateOpenEntries();
                 List<Guid> matches = _reconHelper.OpenEntries.Keys.ToList();

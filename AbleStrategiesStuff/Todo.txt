@@ -1,7 +1,6 @@
 Alpha TODO...
  - Scheduled Events - Sign of Deposits Wrong - Fixed???
- - in MainScreen.Reconciler (184-185) is the sign of the adjustment correct?
- - Undo Reconcile leaves it sorted by reconcile
+ - in MainScreen.Reconciler (184-185) is the sign of the adjustment correct - Fixed???
  - Flesh out online help
  - Deploy website for testing
  - EULA
@@ -10,7 +9,6 @@ Alpha TODO...
  - Implement Activate via Email/Phone as is appropriate 
  - Web Services for online purchase and self-service activation
  - Move SU user data to website instead of file
- - Refactor Due-Notice, default message to Forecast-Low-Balance
 
 Beta TODO...
  - Prevent multiple instances at the same time
@@ -31,6 +29,7 @@ Long-term TODO...
  - More fine-grained unit tests
  - Overflow Undo-Queues to disk - sync to db via GUID
  - View: Load Custom View, Save Custom View (Sort, ColWdts, ColSeq)
+ - Refactor Due-Notice, _alertType
  - Performance: Cache and maintain collections, optimize for speed
  - Mobile App
  - Mac edition

@@ -199,6 +199,7 @@
             this.Controls.Add(this.checkBoxAggressive);
             this.Controls.Add(this.checkBoxLiveSync);
             this.Controls.Add(this.labelAssistance);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximumSize = new System.Drawing.Size(506, 302);
             this.MinimumSize = new System.Drawing.Size(506, 302);
             this.Name = "AccountSettingsForm";

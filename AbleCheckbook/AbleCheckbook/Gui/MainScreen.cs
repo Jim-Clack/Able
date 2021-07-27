@@ -326,7 +326,7 @@ namespace AbleCheckbook
             }
         }
 
-        private void toolStripMenuItemAcctSettings_Click(object sender, EventArgs e)
+        private void acctSettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AccountSettingsForm form = new AccountSettingsForm(_backend.Db);
             form.ShowDialog();

@@ -205,7 +205,7 @@
             // 
             this.buttonBar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonBar.Enabled = false;
-            this.buttonBar.Location = new System.Drawing.Point(458, 155);
+            this.buttonBar.Location = new System.Drawing.Point(458, 154);
             this.buttonBar.Name = "buttonBar";
             this.buttonBar.Size = new System.Drawing.Size(103, 4);
             this.buttonBar.TabIndex = 22;

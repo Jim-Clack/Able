@@ -626,7 +626,7 @@ namespace AbleCheckbook.Gui
         {
             this.AcceptButton = null;
             long daysAgo = DateTime.Now.Subtract(datePickerTransaction.Value).Days;
-            if (_readyForSubmit && !_sanityChecked && Math.Abs(daysAgo) > 29)
+            if (_readyForSubmit && !_sanityChecked && Math.Abs(daysAgo) > 39)
             {
                 _readyForSubmit = MessageBox.Show("" + daysAgo + Strings.Get(" days away from today! Are you sure?"),
                     Strings.Get("Confirm"), MessageBoxButtons.YesNo) == DialogResult.Yes;

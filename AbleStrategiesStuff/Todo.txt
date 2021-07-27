@@ -1,6 +1,4 @@
 Alpha TODO...
- - Scheduled Events - Sign of Deposits Wrong - Fixed???
- - in MainScreen.Reconciler (184-185) is the sign of the adjustment correct - Fixed???
  - Flesh out online help
  - Deploy website for testing
  - EULA
@@ -9,6 +7,7 @@ Alpha TODO...
  - Implement Activate via Email/Phone as is appropriate 
  - Web Services for online purchase and self-service activation
  - Move SU user data to website instead of file
+ - in MainScreen.Reconciler (184-185) is the sign of the adjustment correct - Fixed???
 
 Beta TODO...
  - Prevent multiple instances at the same time

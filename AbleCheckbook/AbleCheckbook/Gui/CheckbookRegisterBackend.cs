@@ -404,6 +404,7 @@ namespace AbleCheckbook.Gui
             }
             int rowNum = AddTransaction(entry, false, form.IsNewEntry);
             _entriesChanged = true;
+            _autofillPayee.UpdateFromCheckbookEntry(entry);
             ReloadTransactions();
         }
 

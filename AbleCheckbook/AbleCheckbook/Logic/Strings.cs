@@ -195,6 +195,7 @@ namespace AbleCheckbook.Logic
             AddString("Id");
             AddString("Cancel");
             AddString("OK");
+            AddString("Ok");
             AddString("Notice");
             AddString("Transaction Date");
             AddString("Date Range");
@@ -493,6 +494,7 @@ namespace AbleCheckbook.Logic
             AddString("Category Required");
             AddString("Set Debit/Credit");
             AddString("Amount is Needed");
+            AddString("Autosaving...");
             AddString("Set Occurrences Count");
             AddString("Invalid Final Date");
             AddString("Must be Within 2 Wks");

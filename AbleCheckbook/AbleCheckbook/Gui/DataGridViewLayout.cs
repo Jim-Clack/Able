@@ -120,10 +120,10 @@ namespace AbleCheckbook.Gui
                 dataGridView.Columns["Credit"].DisplayIndex = 8;
             }
             dataGridView.Columns["Balance"].DisplayIndex = 9;
-            dataGridView.Columns["IsCleared"].DisplayIndex = 10;
-            dataGridView.Columns["DateCleared"].DisplayIndex = 11;
-            dataGridView.Columns["Memo"].DisplayIndex = 12;
-            dataGridView.Columns["Status"].DisplayIndex = 13;
+            dataGridView.Columns["Memo"].DisplayIndex = 10;
+            dataGridView.Columns["Status"].DisplayIndex = 11;
+            dataGridView.Columns["IsCleared"].DisplayIndex = 12;
+            dataGridView.Columns["DateCleared"].DisplayIndex = 13;
             dataGridView.Columns["DateModified"].DisplayIndex = 14;
             dataGridView.Columns["ModifiedBy"].DisplayIndex = 15;
             dataGridView.Columns["NewEntryRow"].DisplayIndex = 16;
@@ -138,9 +138,9 @@ namespace AbleCheckbook.Gui
             dataGridView.Columns["Credit"].HeaderText = Strings.Get("Credit");
             dataGridView.Columns["Balance"].HeaderText = Strings.Get("Balance");
             dataGridView.Columns["IsCleared"].HeaderText = "x";
-            dataGridView.Columns["DateCleared"].HeaderText = Strings.Get("Cleared");
             dataGridView.Columns["Memo"].HeaderText = Strings.Get("Memo");
             dataGridView.Columns["Status"].HeaderText = Strings.Get("Status");
+            dataGridView.Columns["DateCleared"].HeaderText = Strings.Get("Cleared");
             dataGridView.Columns["DateModified"].HeaderText = Strings.Get("Modified");
             dataGridView.Columns["ModifiedBy"].HeaderText = Strings.Get("By");
             dataGridView.Columns["Id"].HeaderText = Strings.Get("Id");
@@ -180,8 +180,8 @@ namespace AbleCheckbook.Gui
             }
             int plus = Configuration.Instance.HighVisibility ? 10 : 0;
             int difference = rectWidth - rowsWidth;
-            int rowsAdjust = difference / 8;
-            int residual = difference - rowsAdjust * 8;
+            int rowsAdjust = difference / 10;
+            int residual = difference - rowsAdjust * 10;
             dataGridView.Columns["IsChecked"].Width = 30;
             dataGridView.Columns["Payee"].Width = Math.Max(100 + plus, dataGridView.Columns["Payee"].Width + rowsAdjust * 2 + residual);
             dataGridView.Columns["Category"].Width = Math.Max(84 + plus, dataGridView.Columns["Category"].Width + rowsAdjust * 2);
@@ -189,6 +189,7 @@ namespace AbleCheckbook.Gui
             dataGridView.Columns["Amount"].Width = Math.Max(84 + plus, dataGridView.Columns["Amount"].Width + rowsAdjust);
             dataGridView.Columns["Debit"].Width = Math.Max(84 + plus, dataGridView.Columns["Debit"].Width + rowsAdjust);
             dataGridView.Columns["Balance"].Width = Math.Max(84 + plus, dataGridView.Columns["Balance"].Width + rowsAdjust);
+            dataGridView.Columns["BankInfo"].Width = Math.Max(84 + plus, dataGridView.Columns["BankInfo"].Width + rowsAdjust * 2);
         }
 
         /// <summary>

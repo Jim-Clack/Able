@@ -9,7 +9,6 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
 
@@ -176,6 +175,14 @@ namespace AbleCheckbook
         }
 
         /// <summary>
+        /// Call this after the splash screen vanishes.
+        /// </summary>
+        public void AfterSplash()
+        {
+            this.Opacity = 1.00;
+        }
+
+        /// <summary>
         /// Call this before each operation that the user initiates (i.e. Menu/Toolbar item)
         /// </summary>
         /// <param name="description">Very brief description, ~12 chars max</param>
@@ -302,6 +309,11 @@ namespace AbleCheckbook
                 textBoxLastBalance.Visible = textBoxThisBalance.Visible = 
                 buttonAbandonReconcile.Visible =
                 buttonAllDone.Visible = reconciling;
+            pictureBoxLogo.BackColor = System.Drawing.Color.Transparent;
+            pictureBoxLogo.Location = new Point(
+                (toolStripButtonPreferences.Bounds.Left + 34 + toolStripButtonHelp.Bounds.Left) / 2 
+                    - this.SizeFromClientSize(new Size(160, 0)).Width, 2);
+            pictureBoxLogo.Visible = (this.Width > this.SizeFromClientSize(new Size(820, 0)).Width);
         }
 
         /// <summary>
@@ -530,6 +542,16 @@ namespace AbleCheckbook
             CheckbookEntry entry = rowCheckbook.EntryBeforeEdit;
             _backend.Db.DeleteEntry(entry);
             _backend.DeleteTransaction(rowCheckbook);
+            AfterOperation();
+            DataGridContentChanged();
+            return true;
+        }
+
+        /// <summary>
+        /// Data grid was updated.
+        /// </summary>
+        public void DataGridContentChanged()
+        {
             if (_backend.Db.InProgress == InProgress.Reconcile && _reconHelper != null)
             {
                 _reconHelper = new ReconciliationHelper(_backend.Db);
@@ -541,8 +563,6 @@ namespace AbleCheckbook
             {
                 _backend.ReloadTransactions();
             }
-            AfterOperation();
-            return true;
         }
 
         /// <summary>

@@ -115,17 +115,18 @@
             this.textBoxMemo.Multiline = true;
             this.textBoxMemo.Name = "textBoxMemo";
             this.textBoxMemo.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxMemo.Size = new System.Drawing.Size(374, 68);
+            this.textBoxMemo.Size = new System.Drawing.Size(374, 62);
             this.textBoxMemo.TabIndex = 11;
             this.textBoxMemo.TextChanged += new System.EventHandler(this.textBoxMemo_TextChanged);
             // 
             // labelMemoOverlay
             // 
+            this.labelMemoOverlay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelMemoOverlay.AutoSize = true;
             this.labelMemoOverlay.BackColor = System.Drawing.SystemColors.Window;
             this.labelMemoOverlay.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.labelMemoOverlay.ForeColor = System.Drawing.Color.Silver;
-            this.labelMemoOverlay.Location = new System.Drawing.Point(174, 180);
+            this.labelMemoOverlay.Location = new System.Drawing.Point(174, 174);
             this.labelMemoOverlay.Name = "labelMemoOverlay";
             this.labelMemoOverlay.Size = new System.Drawing.Size(46, 17);
             this.labelMemoOverlay.TabIndex = 14;
@@ -269,7 +270,7 @@
             this.textBoxBankInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxBankInfo.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBoxBankInfo.Location = new System.Drawing.Point(12, 235);
+            this.textBoxBankInfo.Location = new System.Drawing.Point(12, 234);
             this.textBoxBankInfo.Name = "textBoxBankInfo";
             this.textBoxBankInfo.ReadOnly = true;
             this.textBoxBankInfo.Size = new System.Drawing.Size(411, 15);

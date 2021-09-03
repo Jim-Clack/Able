@@ -336,12 +336,18 @@ namespace AbleCheckbook.Logic
         /// </summary>
         private void SetDefaults()
         {
+            String backup2DefaultPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), 
+                "/Google Drive/Backups/ACheckbook");
             _directoryLogs = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ACheckbook");
             _directoryImportExport = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             _directorySupportFiles = AppContext.BaseDirectory;
             _directoryDatabase = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ACheckbook");
             _directoryBackup1 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ACheckbook");
             _directoryBackup2 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ACheckbook/Backups");
+            if(File.Exists(backup2DefaultPath))
+            {
+                _directoryBackup2 = backup2DefaultPath;
+            }
             _postEventAdvanceDays = 30;
             _logLevel = LogLevel.Diag;
             _siteDescription = Strings.Get("(Unlicensed)");

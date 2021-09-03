@@ -157,9 +157,11 @@ namespace AbleCheckbook
             this.buttonAbandonReconcile = new System.Windows.Forms.Button();
             this.labelLastClosing = new System.Windows.Forms.Label();
             this.labelThisClosing = new System.Windows.Forms.Label();
+            this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).BeginInit();
             this.SuspendLayout();
             // 
             // BgWorkerThread
@@ -502,14 +504,14 @@ namespace AbleCheckbook
             // newAcctToolStripMenuItem
             // 
             this.newAcctToolStripMenuItem.Name = "newAcctToolStripMenuItem";
-            this.newAcctToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.newAcctToolStripMenuItem.Size = new System.Drawing.Size(199, 26);
             this.newAcctToolStripMenuItem.Text = "&New Acct";
             this.newAcctToolStripMenuItem.Click += new System.EventHandler(this.newAcctToolStripMenuItem_Click);
             // 
             // openAcctToolStripMenuItem
             // 
             this.openAcctToolStripMenuItem.Name = "openAcctToolStripMenuItem";
-            this.openAcctToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.openAcctToolStripMenuItem.Size = new System.Drawing.Size(199, 26);
             this.openAcctToolStripMenuItem.Text = "&Open Acct";
             this.openAcctToolStripMenuItem.Click += new System.EventHandler(this.openAcctToolStripMenuItem_Click);
             // 
@@ -518,71 +520,71 @@ namespace AbleCheckbook
             this.saveAcctToolStripMenuItem.Name = "saveAcctToolStripMenuItem";
             this.saveAcctToolStripMenuItem.ShortcutKeyDisplayString = "";
             this.saveAcctToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveAcctToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.saveAcctToolStripMenuItem.Size = new System.Drawing.Size(199, 26);
             this.saveAcctToolStripMenuItem.Text = "&Save Acct";
             this.saveAcctToolStripMenuItem.Click += new System.EventHandler(this.saveAcctToolStripMenuItem_Click);
             // 
             // openBackupToolStripMenuItem
             // 
             this.openBackupToolStripMenuItem.Name = "openBackupToolStripMenuItem";
-            this.openBackupToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.openBackupToolStripMenuItem.Size = new System.Drawing.Size(199, 26);
             this.openBackupToolStripMenuItem.Text = "Open &Backup File";
             this.openBackupToolStripMenuItem.Click += new System.EventHandler(this.openBackupToolStripMenuItem_Click);
             // 
             // acctSettingsToolStripMenuItem
             // 
             this.acctSettingsToolStripMenuItem.Name = "acctSettingsToolStripMenuItem";
-            this.acctSettingsToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.acctSettingsToolStripMenuItem.Size = new System.Drawing.Size(199, 26);
             this.acctSettingsToolStripMenuItem.Text = "&Acct Settings";
             this.acctSettingsToolStripMenuItem.Click += new System.EventHandler(this.acctSettingsToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(213, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(196, 6);
             // 
             // importQifToolStripMenuItem
             // 
             this.importQifToolStripMenuItem.Name = "importQifToolStripMenuItem";
-            this.importQifToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.importQifToolStripMenuItem.Size = new System.Drawing.Size(199, 26);
             this.importQifToolStripMenuItem.Text = "Import &QIF";
             this.importQifToolStripMenuItem.Click += new System.EventHandler(this.importQifToolStripMenuItem_Click);
             // 
             // exportQifToolStripMenuItem
             // 
             this.exportQifToolStripMenuItem.Name = "exportQifToolStripMenuItem";
-            this.exportQifToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.exportQifToolStripMenuItem.Size = new System.Drawing.Size(199, 26);
             this.exportQifToolStripMenuItem.Text = "&Export QIF";
             this.exportQifToolStripMenuItem.Click += new System.EventHandler(this.exportQifToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(213, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(196, 6);
             // 
             // importCsvToolStripMenuItem
             // 
             this.importCsvToolStripMenuItem.Name = "importCsvToolStripMenuItem";
-            this.importCsvToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.importCsvToolStripMenuItem.Size = new System.Drawing.Size(199, 26);
             this.importCsvToolStripMenuItem.Text = "Import &CSV";
             this.importCsvToolStripMenuItem.Click += new System.EventHandler(this.importCsvToolStripMenuItem_Click);
             // 
             // exportCsvToolStripMenuItem
             // 
             this.exportCsvToolStripMenuItem.Name = "exportCsvToolStripMenuItem";
-            this.exportCsvToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.exportCsvToolStripMenuItem.Size = new System.Drawing.Size(199, 26);
             this.exportCsvToolStripMenuItem.Text = "Expo&rt CSV";
             this.exportCsvToolStripMenuItem.Click += new System.EventHandler(this.exportCsvToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(213, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(196, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(199, 26);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -1242,12 +1244,25 @@ namespace AbleCheckbook
             this.labelThisClosing.Text = "This Closing:";
             this.labelThisClosing.Visible = false;
             // 
+            // pictureBoxLogo
+            // 
+            this.pictureBoxLogo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBoxLogo.BackgroundImage")));
+            this.pictureBoxLogo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pictureBoxLogo.Location = new System.Drawing.Point(543, 99);
+            this.pictureBoxLogo.Name = "pictureBoxLogo";
+            this.pictureBoxLogo.Size = new System.Drawing.Size(272, 55);
+            this.pictureBoxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBoxLogo.TabIndex = 47;
+            this.pictureBoxLogo.TabStop = false;
+            this.pictureBoxLogo.Visible = false;
+            // 
             // MainScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(622, 433);
+            this.Controls.Add(this.pictureBoxLogo);
             this.Controls.Add(this.buttonAbandonReconcile);
             this.Controls.Add(this.textBoxReconDisparity);
             this.Controls.Add(this.buttonAllDone);
@@ -1268,6 +1283,7 @@ namespace AbleCheckbook
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.MinimumSize = new System.Drawing.Size(632, 280);
             this.Name = "MainScreen";
+            this.Opacity = 0.4D;
             this.StartPosition = System.Windows.Forms.FormStartPosition.WindowsDefaultBounds;
             this.Text = "Form1";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainScreen_FormClosed);
@@ -1279,6 +1295,7 @@ namespace AbleCheckbook
             this.menuStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1396,6 +1413,7 @@ namespace AbleCheckbook
         private System.Windows.Forms.DataGridViewTextBoxColumn Id;
         private System.Windows.Forms.DataGridViewTextBoxColumn ShowSplits;
         private System.Windows.Forms.DataGridViewTextBoxColumn BankInfo;
+        private System.Windows.Forms.PictureBox pictureBoxLogo;
     }
 }
 

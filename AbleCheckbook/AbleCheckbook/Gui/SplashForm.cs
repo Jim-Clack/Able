@@ -1,15 +1,7 @@
 ﻿using AbleCheckbook.Logic;
 using AbleLicensing;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
 
@@ -21,7 +13,7 @@ namespace AbleCheckbook.Gui
         /// <summary>
         /// How long to display the splash screen in milliseconds
         /// </summary>
-        private const int ShutDownMillis = 5000;
+        private const int DisplayMillis = 3600;
 
         /// <summary>
         /// Used to shut down this form after the set number of millis. 
@@ -34,12 +26,18 @@ namespace AbleCheckbook.Gui
         private static SplashForm _splashForm = null;
 
         /// <summary>
+        /// Our parent.
+        /// </summary>
+        private static MainScreen _mainScreen = null;
+
+        /// <summary>
         /// Ctor.
         /// </summary>
-        public SplashForm()
+        public SplashForm(MainScreen mainScreen)
         {
             InitializeComponent();
             _splashForm = this;
+            _mainScreen = mainScreen;
             Point screenCenter = this.PointToClient(new Point(Screen.PrimaryScreen.Bounds.Width / 2, Screen.PrimaryScreen.Bounds.Height / 2));
             Point splashCenter = new Point(this.Width / 2, this.Height / 2);
             this.Location = new Point(screenCenter.X - splashCenter.X, screenCenter.Y - splashCenter.Y);
@@ -57,7 +55,7 @@ namespace AbleCheckbook.Gui
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.BackgroundImageLayout = ImageLayout.Stretch;
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            textBoxHeading.Text = Strings.Get("Able Strategies AbleCheckbook - See Terms of License");
+            this.Text = textBoxHeading.Text = Strings.Get("Able Strategies AbleCheckbook - See Terms of License");
             textBox2.Text = Strings.Get("Time-Limited Evaluation Copy");
             if (Configuration.Instance.GetIsLicensedVersion())
             {
@@ -77,10 +75,7 @@ namespace AbleCheckbook.Gui
                 }
             }
             textBox3.Text = Strings.Get("Level: ") + Configuration.Instance.GetUserLevel().ToString();
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            FileVersionInfo fileVersionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
-            string version = fileVersionInfo.ProductVersion;
-            textBox4.Text = Strings.Get("Version: ") + version.ToString();
+            textBox4.Text = Strings.Get("Version: ") + AbleCheckbook.Logic.Version.AppVersion;
             SetTimer();
         }
 
@@ -89,7 +84,7 @@ namespace AbleCheckbook.Gui
         /// </summary>
         private static void SetTimer()
         {
-            _delayTimer = new System.Timers.Timer(ShutDownMillis);
+            _delayTimer = new System.Timers.Timer(DisplayMillis);
             _delayTimer.Elapsed += OnTimedEvent1;
             _delayTimer.AutoReset = true;
             _delayTimer.Enabled = true;
@@ -103,7 +98,7 @@ namespace AbleCheckbook.Gui
         private static void OnTimedEvent1(Object source, ElapsedEventArgs e)
         {
             _delayTimer.Enabled = false;
-            _splashForm.Invoke(new ShutDownDelegate(_splashForm.ShutDown), 0);
+            _splashForm.Invoke(new ShutDownDelegate(_splashForm.AllDone), 0);
         }
 
         /// <summary>
@@ -116,10 +111,11 @@ namespace AbleCheckbook.Gui
         /// Shut down this form
         /// </summary>
         /// <param name="dummy">Unused at this time</param>
-        private void ShutDown(int dummy)
+        private void AllDone(int dummy)
         { 
             _splashForm.Hide();
             _splashForm.Close();
+            _mainScreen.AfterSplash();
         }
     }
 }

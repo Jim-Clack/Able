@@ -248,6 +248,7 @@ namespace AbleCheckbook.Gui
                 comboKind.BindingContext = new BindingContext();
                 this.Controls.Add(comboKind);
                 comboKind.BringToFront();
+                comboKind.SelectedIndexChanged += new System.EventHandler(comboKind_SelectedIndexChanged);
 
                 Label labelAmount = new Label();
                 labelAmount.Location = new Point((int)(392 * _xScale), (int)(yOffset + 2 * _yScale));
@@ -324,11 +325,11 @@ namespace AbleCheckbook.Gui
             {
                 control.Top = _yOffsets[controlNumber++] + yOffset;
             }
-            int allowance = 120;
+            int allowance = 124;
             textBoxBankInfo.Visible = buttonUnMerge.Visible = false;
             if(_rowCheckbook.BankInfo.Length > 10)
             {
-                allowance = 144;
+                allowance = 150;
                 textBoxBankInfo.Visible = buttonUnMerge.Visible = true;
                 textBoxBankInfo.Text = _rowCheckbook.BankInfo;
             }

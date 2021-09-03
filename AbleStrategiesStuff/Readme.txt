@@ -9,6 +9,7 @@ Workstation Setup Notes...
  E. You may want to install Postman and WinSCP as well
  F. AbleCheckbook VS Pre-Build Event: copy $(ProjectDir)Support\* $(TargetDir)
  G. Set Build Configuration Symbols: Debug: SUPERUSER, Release: RELEASE 
+ H. In AssemblyInfo.cs, if necessary, change to [assembly: AssemblyVersion("1.0.*")]
 
  Caveats...
  . If you are new to MS VS, see the notes at the end of this document
@@ -68,7 +69,7 @@ When writing docs/help, explain...
  - Licensing, UserLevel, Activation, Expiration, and Admin Mode
  - Time-limited: Days of use vs days since installed
 
-Kludge to force your system into Super-User mode...
+Kludge to force your system (via Able Licensing) into Super-User mode...
  Activation.Instance.SetDefaultDays(180, 366); // note1: not needed but shown for completeness
  Activation.Instance.SiteDescription = "MYNAME@99999"; // The @-sign (plus compiler/run in DEBUG mode) enables SuperUser mode
  string pin = Activation.Instance.ResetAllEntries(Activation.Instance.ChecksumOfString(Activation.Instance.SiteIdentification));

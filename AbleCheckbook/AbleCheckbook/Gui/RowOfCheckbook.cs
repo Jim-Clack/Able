@@ -66,11 +66,6 @@ namespace AbleCheckbook.Gui
         private string _splits = "";
 
         /// <summary>
-        /// From online bank inquiry.
-        /// </summary>
-        private string _bankInfo = "";
-
-        /// <summary>
         /// Access to DB, etc.
         /// </summary>
         private IDbAccess _db = null;
@@ -310,7 +305,8 @@ namespace AbleCheckbook.Gui
                     return "";
                 }
                 return _entry.BankPayee + " " + _entry.BankTransaction + " " + 
-                    _entry.BankTranDate.ToShortDateString() + " " + UtilityMethods.FormatCurrency(_entry.BankAmount);
+                    _entry.BankTranDate.ToShortDateString() + " " + UtilityMethods.FormatCurrency(_entry.BankAmount) +
+                    (_entry.BankMergeAccepted ? " X" : "");
             }
         }
 

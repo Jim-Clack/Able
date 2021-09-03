@@ -1,7 +1,6 @@
 using AbleCheckbook.Db;
 using AbleCheckbook.Gui;
 using AbleCheckbook.Logic;
-using AbleLicensing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +20,8 @@ namespace AbleCheckbook
         /// </summary>
         public MainScreen()
         {
-            new SplashForm().Show(this);
+            this.Opacity = 0.35;
+            new SplashForm(this).Show(this);
             InitializeComponent();
             BgWorkerThread.WorkerReportsProgress = false;
             BgWorkerThread.WorkerSupportsCancellation = true;
@@ -77,25 +77,36 @@ namespace AbleCheckbook
             {
                 return;
             }
+            if (e.RowIndex < 0 && _backend.Db.InProgress == InProgress.Nothing)
+            {
+                string columnName = dataGridView1.Columns[e.ColumnIndex].Name;
+                if (columnName == "CheckNumber")
+                {
+                    _backend.ReloadTransactions(SortEntriesBy.CheckNumber, null);
+                }
+                else if (columnName == "Payee")
+                {
+                    _backend.ReloadTransactions(SortEntriesBy.Payee, null);
+                }
+                else if (columnName == "Category")
+                {
+                    _backend.ReloadTransactions(SortEntriesBy.Category, null);
+                }
+                else
+                {
+                    _backend.ReloadTransactions(SortEntriesBy.TranDate, null);
+                }
+                return;
+            }
             RowOfCheckbook rowEntry = (RowOfCheckbook)dataGridView1.CurrentRow.DataBoundItem;
-            if(rowEntry.Entry.IsCleared && !Configuration.Instance.GetAdminMode())
+            if (rowEntry.Entry.IsCleared && !Configuration.Instance.GetAdminMode())
             {
                 return;
             }
             BeforeOperation(rowEntry.NewEntryRow ? "New Entry" : "Edit/Del Entry", true);
             _backend.EditTransaction(this, e.RowIndex);
             AfterOperation();
-            if (_backend.Db.InProgress == InProgress.Reconcile && _reconHelper != null)
-            {
-                _reconHelper = new ReconciliationHelper(_backend.Db);
-                List<Guid> matches = _reconHelper.OpenEntries.Keys.ToList();
-                UpdateReconcileControls(false, false);
-                _backend.ReloadTransactions(SortEntriesBy.CheckBox, matches);
-            }
-            else
-            {
-                _backend.ReloadTransactions();
-            }
+            DataGridContentChanged();        
         }
 
         private void dataGridView1_KeyDown(object sender, KeyEventArgs e)
@@ -394,6 +405,7 @@ namespace AbleCheckbook
             BeforeOperation("New Entry", true);
             _backend.NewEntry(this);
             AfterOperation();
+            DataGridContentChanged();
         }
 
         private void copyToolStripMenuItem_Click(object sender, EventArgs e)

@@ -31,9 +31,7 @@ namespace AbleCheckbook.Gui
             textBoxSiteDesc.Text = Activation.Instance.SiteDescription;
             textBoxUserId.Text = System.Environment.UserName;
             Assembly assembly = Assembly.GetExecutingAssembly();
-            FileVersionInfo fileVersionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
-            string version = fileVersionInfo.ProductVersion;
-            textBoxVersion.Text = Strings.Get("Version: ") + version.ToString();
+            textBoxVersion.Text = Strings.Get("Version: ") + AbleCheckbook.Logic.Version.AppVersion;
             linkLabelEula.Text = Strings.Get("EULA - End User License Agreement");
             int expDays = Activation.Instance.UpdateSiteSettings();
             if (expDays < 0)

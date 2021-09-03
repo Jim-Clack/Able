@@ -134,6 +134,11 @@ namespace AbleCheckbook.Db
         private long _bankAmount = 0L;
 
         /// <summary>
+        /// Is the bank info merged with the correct manually-entered data?
+        /// </summary>
+        private bool _bankMergeAccepted = false;
+
+        /// <summary>
         /// For GUI usage. NOT PERSISTED.
         /// </summary>
         private Highlight _highlight = Highlight.None;
@@ -161,6 +166,7 @@ namespace AbleCheckbook.Db
         public string BankTransaction { get => _bankTransaction; set => _bankTransaction = value; }
         public DateTime BankTranDate { get => _bankTranDate; set => _bankTranDate = value; }
         public long BankAmount { get => _bankAmount; set => _bankAmount = value; }
+        public bool BankMergeAccepted { get => _bankMergeAccepted; set => _bankMergeAccepted = value; }
         public Highlight Highlight { get => _highlight; }
 
         /// <summary>

@@ -161,7 +161,7 @@
             // 
             // textBoxPwd
             // 
-            this.textBoxPwd.Location = new System.Drawing.Point(117, 169);
+            this.textBoxPwd.Location = new System.Drawing.Point(117, 170);
             this.textBoxPwd.Name = "textBoxPwd";
             this.textBoxPwd.PasswordChar = '*';
             this.textBoxPwd.Size = new System.Drawing.Size(344, 22);

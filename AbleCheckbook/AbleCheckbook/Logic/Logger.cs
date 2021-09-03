@@ -95,13 +95,13 @@ namespace AbleCheckbook.Logic
                 if (File.Exists(filename))
                 {
                     FileInfo fileInfo = new FileInfo(filename);
-                    if (fileInfo.Length > 200000L) // 200K
+                    if (fileInfo.Length > 3000000L) // 3MB
                     {
                         if (File.Exists(filename + ".bak"))
                         {
                             File.Delete(filename + ".bak");
                         }
-                        File.Copy(filename, filename + ".bak");
+                        File.Move(filename, filename + ".bak");
                     }
                 }
                 _writer = new StreamWriter(filename, true);

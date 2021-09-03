@@ -8,6 +8,7 @@ Alpha TODO...
  - Web Services for online purchase and self-service activation
  - Move SU user data to website instead of file
  - in MainScreen.Reconciler (184-185) is the sign of the adjustment correct - Fixed???
+ - Fix desktop Icon
 
 Beta TODO...
  - Prevent multiple instances at the same time
@@ -25,6 +26,7 @@ Long-term TODO...
  - Need a "rename category" that will, if required, merge categories
  - Fix piggish memory usage, especially unecessary duplications
  - Make CsvImporter more flexible for various column sequences
+ - CheckbookEntryForm change multiple arrays to an array of LineItem
  - More fine-grained unit tests
  - Overflow Undo-Queues to disk - sync to db via GUID
  - View: Load Custom View, Save Custom View (Sort, ColWdts, ColSeq)

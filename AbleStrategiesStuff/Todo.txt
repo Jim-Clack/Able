@@ -1,4 +1,5 @@
 Alpha TODO...
+ - Low balance highlight start search today, not tomorrow
  - Flesh out online help
  - Deploy website for testing
  - EULA

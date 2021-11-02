@@ -1,5 +1,4 @@
 Alpha TODO...
- - Low balance highlight start search today, not tomorrow
  - Flesh out online help
  - Deploy website for testing
  - EULA
@@ -8,7 +7,6 @@ Alpha TODO...
  - Implement Activate via Email/Phone as is appropriate 
  - Web Services for online purchase and self-service activation
  - Move SU user data to website instead of file
- - in MainScreen.Reconciler (184-185) is the sign of the adjustment correct - Fixed???
  - Fix desktop Icon
 
 Beta TODO...

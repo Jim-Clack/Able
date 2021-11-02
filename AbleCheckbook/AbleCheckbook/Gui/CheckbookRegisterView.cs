@@ -132,7 +132,7 @@ namespace AbleCheckbook.Gui
                 row.Cells["Debit"].Style = _layout.Style(colorIndex, true);
                 row.Cells["Credit"].Style = _layout.Style(colorIndex, true);
                 // Forcast an impending lowest balance
-                if (_sortedBy == SortEntriesBy.TranDate && rowEntry.DateOfTransaction > DateTime.Now)
+                if (_sortedBy == SortEntriesBy.TranDate && rowEntry.DateOfTransaction.Date >= DateTime.Now.Date)
                 {
                     if(rowEntry.Entry.MadeBy == EntryMadeBy.Scheduler || rowEntry.Entry.MadeBy == EntryMadeBy.Reminder)
                     {
@@ -146,7 +146,7 @@ namespace AbleCheckbook.Gui
                 }
             }
             // Highlight lowest balance
-            if (scheduledEntries > 3 && lowBalanceRow > 0)
+            if (scheduledEntries >= 3 && lowBalanceRow > 0)
             {
                 DataGridViewCellStyle cellStyle = _dataGridView.Rows[lowBalanceRow].Cells["Balance"].Style.Clone();
                 cellStyle.BackColor = Color.LightPink;

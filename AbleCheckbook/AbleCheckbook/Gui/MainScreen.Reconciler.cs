@@ -96,7 +96,7 @@ namespace AbleCheckbook
             buttonAllDone.Enabled = textBoxThisBalance.Text.Trim().Length > 1;
             buttonReconcileTips.Enabled = false;
             List<CandidateEntry> candidates =
-                _reconHelper.FindTipCandidates(-disparity, dateTimePickerThisRecon.Value);
+                _reconHelper.FindTipCandidates(-disparity, dateTimePickerThisRecon.Value.AddDays(1));
             if (candidates.Count == 0)
             {
                 _tipsForm.Hide();
@@ -140,6 +140,10 @@ namespace AbleCheckbook
             dateTimePickerLastRecon.Value = reconValues.Date;
             DateTime now = DateTime.Now;
             dateTimePickerThisRecon.Value = new DateTime(now.Year, now.Month, 1);
+            if(dateTimePickerThisRecon.Value.Date == dateTimePickerLastRecon.Value.Date)
+            {
+                dateTimePickerThisRecon.Value = dateTimePickerThisRecon.Value.AddMonths(1);
+            }
             textBoxLastBalance.Text = UtilityMethods.FormatCurrency(reconValues.Balance, 3);
             textBoxThisBalance.Text = "";
             List<Guid> matches = _reconHelper.OpenEntries.Keys.ToList();
@@ -235,6 +239,12 @@ namespace AbleCheckbook
             RowOfCheckbook rowCheckbook = (RowOfCheckbook)dataGridView1.Rows[rowIndex].DataBoundItem;
             if (rowCheckbook != null)
             {
+                if (rowCheckbook.IsCleared == "X")
+                {
+                    DataGridViewCheckBoxCell cell = dataGridView1.Rows[rowIndex].Cells["IsChecked"] as DataGridViewCheckBoxCell;
+                    dataGridView1.Rows[rowIndex].Cells["IsChecked"].Value = cell.FalseValue;
+                    return;
+                }
                 UpdateReconcileControls(true, false);
                 BeforeOperation("Checkbox", true);
                 ReconcileCheckboxClicked(rowIndex, columnIndex);

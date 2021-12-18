@@ -102,7 +102,7 @@ namespace AbleCheckbook.Logic
                             ++numNewUncleared;
                         }
                     }
-                    else
+                    else if(entry.DateOfTransaction.Year < year)
                     {
                         ++numOld;
                         if (!entry.IsCleared)
@@ -111,7 +111,7 @@ namespace AbleCheckbook.Logic
                         }
                     }
                 }
-                if (numOldUncleared * 3 < numNewUncleared && numOldUncleared * 16 < numOld) // last year mostly reconciled?
+                if (numOldUncleared * 3 + 1 < numNewUncleared && numOldUncleared * 20 < numOld) // last year mostly reconciled?
                 {
                     return true;
                 }

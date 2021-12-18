@@ -1,4 +1,5 @@
 Alpha TODO...
+ - Don't set "default date" if edited (existing) transaction is deleted or unchanged
  - Flesh out online help
  - Deploy website for testing
  - EULA
@@ -12,6 +13,7 @@ Alpha TODO...
 Beta TODO...
  - Prevent multiple instances at the same time
  - AreYouSureForm with date/time/user that screen-captures, logs, and read log
+ - Quick yesterday-thru-future condensed report as jpg file (date, payee, amt, bal)
  - Much testing
 
 Long-term TODO...

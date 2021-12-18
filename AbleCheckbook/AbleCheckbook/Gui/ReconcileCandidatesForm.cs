@@ -76,10 +76,13 @@ namespace AbleCheckbook.Gui
                 case CandidateIssue.TransposedDollars:
                     AppendLine(Strings.Get("Transposed Monetary Digits:"));
                     break;
+                case CandidateIssue.WrongSignOnAmount:
+                    AppendLine(Strings.Get("Sign (Payment/Deposit) Wrong:"));
+                    break;
             }
             foreach(OpenEntry openEntry in candidate.OpenEntries)
             {
-                AppendLine("  " + openEntry.CheckbookEntry.ToShortString());
+                AppendLine("  " + openEntry.CheckbookEntry.ToShortString() + (openEntry.CheckbookEntry.IsChecked ? " [X]" : ""));
             }
         }
 

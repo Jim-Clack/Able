@@ -763,7 +763,10 @@ namespace AbleCheckbook.Gui
         {
             get
             {
-                CheckbookEntryForm.S_PrevDate = datePickerTransaction.Value;
+                if (this.DialogResult == DialogResult.OK)
+                {
+                    CheckbookEntryForm.S_PrevDate = datePickerTransaction.Value;
+                }
                 return datePickerTransaction.Value;
             }
         }
@@ -959,7 +962,7 @@ namespace AbleCheckbook.Gui
 
         private void datePickerTransaction_ValueChanged(object sender, EventArgs e)
         {
-            CheckbookEntryForm.S_PrevDate = datePickerTransaction.Value;
+            // CheckbookEntryForm.S_PrevDate = datePickerTransaction.Value;
         }
 
         private void buttonUnMerge_Click(object sender, EventArgs e)

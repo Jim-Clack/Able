@@ -36,6 +36,7 @@ namespace AbleCheckbook.Logic
         SumsToDifference =  1,
         TransposedCents =   2,
         TransposedDollars = 3,
+        WrongSignOnAmount = 4,
     }
 
     /// <summary>
@@ -253,8 +254,9 @@ namespace AbleCheckbook.Logic
                 return candidates;
             }
             // Find candidates
-            candidates.AddRange(FindSumCandidates(disparity, maxMatches));
-            candidates.AddRange(FindTransposeCandidates(disparity));
+            candidates.AddRange(FindSignWrongCandidates(disparity, closingDate.Date));
+            candidates.AddRange(FindSumCandidates(disparity, maxMatches, closingDate.Date));
+            candidates.AddRange(FindTransposeCandidates(disparity, closingDate.Date));
             return candidates;
         }
 
@@ -263,11 +265,12 @@ namespace AbleCheckbook.Logic
         /// </summary>
         /// <param name="disparity">The expected sum of the entries yet to be cleared.</param>
         /// <param name="maxMatches">The maximum number of entries to be paired-up: 3, 2, or 1</param>
+        /// <param name="closingDate">Last date to check</param>
         /// <returns>List of "List of candidates that sum up to the desire disparity."</returns>
-        public List<CandidateEntry> FindSumCandidates(long disparity, int maxMatches)
+        public List<CandidateEntry> FindSumCandidates(long disparity, int maxMatches, DateTime closingDate)
         {
             List<CandidateEntry> candidates = new List<CandidateEntry>();
-            FindSumCandidatesRecursively(disparity, candidates, null, null, null, maxMatches);
+            FindSumCandidatesRecursively(disparity, candidates, null, null, null, closingDate, maxMatches);
             return candidates;
         }
 
@@ -279,15 +282,20 @@ namespace AbleCheckbook.Logic
         /// <param name="entry1">entry to consider, passed from the outermost level of recursion</param>
         /// <param name="entry2">entry to consider, passed from the second level of recursion</param>
         /// <param name="entryPrior">entry to consider, passed from the just prior level of recursion</param>
+        /// <param name="closingDate">Last date to check</param>
         /// <param name="maxMatches">The maximum number of entries in each sum: 3, 2, or 1</param>
         private void FindSumCandidatesRecursively(long disparity, List<CandidateEntry> candidates,
-            OpenEntry entry1, OpenEntry entry2, OpenEntry entryPrior, int maxMatches)
+            OpenEntry entry1, OpenEntry entry2, OpenEntry entryPrior, DateTime closingDate, int maxMatches)
         {
             long sum = Amount(entry1) + Amount(entry2);
             bool skipPastPrior = entryPrior != null;
             foreach (KeyValuePair<Guid, OpenEntry> pair in _openEntries)
             {
                 OpenEntry openEntry = pair.Value;
+                if(openEntry.CheckbookEntry.DateOfTransaction.Date > closingDate.Date)
+                {
+                    continue;
+                }
                 if(skipPastPrior) // skip past prior entry
                 {
                     skipPastPrior = openEntry.CheckbookEntry.Id != entryPrior.CheckbookEntry.Id;
@@ -312,11 +320,11 @@ namespace AbleCheckbook.Logic
                 {
                     case 3:
                         FindSumCandidatesRecursively(disparity, 
-                            candidates, openEntry, null, openEntry, 2);
+                            candidates, openEntry, null, openEntry, closingDate, 2);
                         break;
                     case 2:
                         FindSumCandidatesRecursively(disparity, 
-                            candidates, entry1, openEntry, openEntry, 1);
+                            candidates, entry1, openEntry, openEntry, closingDate, 1);
                         break;
                     case 1:
                     default:
@@ -351,14 +359,19 @@ namespace AbleCheckbook.Logic
         /// Find checkbook "amount" digit transpositions that would account for a disparity.
         /// </summary>
         /// <param name="disparity">The expected delta for corrected amounts.</param>
+        /// <param name="closingDate">Last date to check</param>
         /// <returns>List of potential candidates</returns>
-        public List<CandidateEntry> FindTransposeCandidates(long disparity)
+        public List<CandidateEntry> FindTransposeCandidates(long disparity, DateTime closingDate)
         {
             List<CandidateEntry> candidates = new List<CandidateEntry>();
             // Check each split for a tens<->units transpose in cents and in dollars
             foreach (KeyValuePair<Guid, OpenEntry> pair in _openEntries)
             {
                 OpenEntry openEntry = pair.Value;
+                if(openEntry.CheckbookEntry.DateOfTransaction.Date > closingDate.Date)
+                {
+                    continue;
+                }
                 CheckbookEntry entryTest = new CheckbookEntry();
                 foreach (SplitEntry split in openEntry.CheckbookEntry.Splits)
                 {
@@ -413,6 +426,39 @@ namespace AbleCheckbook.Logic
             long hundredsAmount = (amount / 100L) % 10L;
             long remainder = amount % 100L;
             return baseAmount * 10000L + hundredsAmount * 1000L + thousandsAmount * 100L + remainder;
+        }
+
+        /// <summary>
+        /// Find checkbook sign-wrong (payment/deposit) that would account for a disparity.
+        /// </summary>
+        /// <param name="disparity">The expected delta for corrected amounts.</param>
+        /// <param name="closingDate">Last date to check</param>
+        /// <returns>List of potential candidates</returns>
+        private List<CandidateEntry> FindSignWrongCandidates(long disparity, DateTime closingDate)
+        {
+            List<CandidateEntry> candidates = new List<CandidateEntry>();
+            // Check each split for a tens<->units transpose in cents and in dollars
+            foreach (KeyValuePair<Guid, OpenEntry> pair in _openEntries)
+            {
+                OpenEntry openEntry = pair.Value;
+                if (openEntry.CheckbookEntry.DateOfTransaction.Date > closingDate.Date)
+                {
+                    continue;
+                }
+                CheckbookEntry entryTest = new CheckbookEntry();
+                long entrySum = 0L;
+                foreach (SplitEntry split in openEntry.CheckbookEntry.Splits)
+                {
+                    entrySum += split.Amount;
+                }
+                if(entrySum * 2 == -disparity)
+                {
+                    CandidateEntry candidate = new CandidateEntry(CandidateIssue.WrongSignOnAmount);
+                    candidate.Add(openEntry);
+                    candidates.Add(candidate);
+                }
+            }
+            return candidates;
         }
 
     }

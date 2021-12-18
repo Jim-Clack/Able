@@ -266,6 +266,7 @@ namespace AbleCheckbook.Logic
             AddString("Entries Sum Up to Disparity:");
             AddString("Transposed Fractional Digits:");
             AddString("Transposed Monetary Digits:");
+            AddString("Sign (Payment/Deposit) Wrong:");
             AddString("Illegal Directory Path Specified, Reverted...");
             AddString("Number of days in advance to post scheduled events to checkbook:");
             AddString("Log Level (Trace = Detailed, Diag = Normal, Warn = Smaller Logs)");

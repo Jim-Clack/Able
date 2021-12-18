@@ -100,22 +100,23 @@ namespace AbleCheckbook.Logic
             }
             if(matches.Count > 1)
             {
-                int longestLgt = 0;
-                int longestIndex = 0;
+                // 12/18/2021 - changed - was longest
+                int shortestLgt = 999;
+                int shortestIndex = 0;
                 for(int index = 0; index < matches.Count; ++index)
                 {
-                    if(matches[index].Payee.Length > longestLgt)
+                    if(matches[index].Payee.Length < shortestLgt)
                     {
-                        longestLgt = matches[index].Payee.Length;
-                        longestIndex = index; 
+                        shortestLgt = matches[index].Payee.Length;
+                        shortestIndex = index; 
                     }
                 }
-                // longest one should be first
-                if(longestIndex > 0)
+                // shorted one should be first
+                if(shortestIndex > 0)
                 {
-                    MemorizedPayee longest = matches[longestIndex];
-                    matches.RemoveAt(longestIndex);
-                    matches.Insert(0, longest);
+                    MemorizedPayee shortest = matches[shortestIndex];
+                    matches.RemoveAt(shortestIndex);
+                    matches.Insert(0, shortest);
                 }
             }
             return matches;

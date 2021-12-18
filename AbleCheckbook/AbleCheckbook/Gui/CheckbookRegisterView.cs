@@ -236,7 +236,8 @@ namespace AbleCheckbook.Gui
             }
             if (_dataGridView.CurrentRow != null && _dataGridView.CurrentRow.DataBoundItem != null)
             {
-                guid = ((RowOfCheckbook)_dataGridView.CurrentRow.DataBoundItem).Entry.Id;
+                RowOfCheckbook rowEntry = (RowOfCheckbook)_dataGridView.CurrentRow.DataBoundItem;
+                guid = rowEntry.Entry.Id;
             }
             _layout.LayoutColumns(_dataGridView, _diagsEnabled, _db.InProgress == InProgress.Reconcile);
             _layout.AdjustWidths(_dataGridView);

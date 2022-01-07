@@ -509,7 +509,7 @@ namespace AbleCheckbook.Gui
             form.InitialDirectory = Configuration.Instance.DirectoryImportExport;
             form.Multiselect = false;
             form.RestoreDirectory = true;
-            form.Title = "Import CSV";
+            form.Title = Strings.Get("Import CSV");
             if (form.ShowDialog() == DialogResult.OK)
             {
                 string filepath = form.FileName.Trim();

@@ -75,6 +75,10 @@ namespace AbleCheckbook.Logic
         {
             get
             {
+                if(_newFilename == null || _newFilename.Length < 7)
+                {
+                    return false;
+                }
                 string dbName = _newFilename + ".acb";
                 if(File.Exists(Path.Combine(Configuration.Instance.DirectoryDatabase, dbName))) // already wrapped-up
                 {
@@ -111,7 +115,7 @@ namespace AbleCheckbook.Logic
                         }
                     }
                 }
-                if (numOldUncleared * 3 + 1 < numNewUncleared && numOldUncleared * 20 < numOld) // last year mostly reconciled?
+                if (numOldUncleared < 1 && numNewUncleared > 1 && numOld > 10) // last year mostly reconciled?
                 {
                     return true;
                 }

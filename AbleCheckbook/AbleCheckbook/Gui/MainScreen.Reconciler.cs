@@ -126,11 +126,21 @@ namespace AbleCheckbook
         /// <summary>
         /// Start the reconciliation process.
         /// </summary>
-        private void StartReconciliation()
+        /// <param name="continuation">true if continuing from a reconciliation in progress.</param>
+        private void StartReconciliation(bool continuation)
         {
             if (_reconHelper != null)
             {
                 return;
+            }
+            if(!continuation)
+            {
+                ReconcileSourceForm form = new ReconcileSourceForm(Backend.Db);
+                form.ShowDialog();
+                if(form.DialogResult != DialogResult.OK)
+                {
+                    return;
+                }
             }
             dateTimePickerLastRecon.ShowUpDown = !Configuration.Instance.ShowCalendars;
             dateTimePickerThisRecon.ShowUpDown = !Configuration.Instance.ShowCalendars;

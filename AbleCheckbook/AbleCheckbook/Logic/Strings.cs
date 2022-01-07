@@ -129,6 +129,8 @@ namespace AbleCheckbook.Logic
             AddString("Reconcile");
             AddString("Adjustment");
             AddString("Clear");
+            AddString("Source");
+            AddString("Browse");
             AddString("Transaction");
             AddString("Date of Transaction");
             AddString("Modified Date");
@@ -372,6 +374,11 @@ namespace AbleCheckbook.Logic
             AddString("Sorry - Illegal Account Name");
             AddString("Year-End Wrap-Up Overdue");
             AddString("Monthly Reconciliation Due");
+            AddString("Reconciliation Source");
+            AddString("Manual - Clear one entry at a time per a bank statement");
+            AddString("Web: Financial Institution:");
+            AddString("CSV File:");
+            AddString("First select the CSV file");
             AddString("Cannot mix Payments and Deposits in the same entry");
             AddString("Category and amount required");
             AddString("Payee must be specified");

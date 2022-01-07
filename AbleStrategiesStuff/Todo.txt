@@ -1,5 +1,4 @@
 Alpha TODO...
- - Don't set "default date" if edited (existing) transaction is deleted or unchanged
  - Flesh out online help
  - Deploy website for testing
  - EULA
@@ -17,6 +16,7 @@ Beta TODO...
  - Much testing
 
 Long-term TODO...
+ - ScheduledEvent needs a "EveryNDays" period (i.e. NYT)
  - Activation: Add a time-of-day stamp to an image file as a tertiary expiry check
  - Budgeting, forecasting, trends, etc.
  - Implement SU ReadLog

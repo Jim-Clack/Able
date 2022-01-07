@@ -94,6 +94,7 @@ namespace AbleCheckbook.Gui
         protected CheckbookRegisterView(DataGridView dataGridView)
         {
             _dataGridView = dataGridView;
+            _dataGridView.DefaultCellStyle.SelectionBackColor = Color.FromArgb(120, 180, 240);
             string dbFilename = Configuration.Instance.LastDbName;
             if (dbFilename == null || dbFilename.Length < 1)
             {
@@ -132,7 +133,9 @@ namespace AbleCheckbook.Gui
                 row.Cells["Debit"].Style = _layout.Style(colorIndex, true);
                 row.Cells["Credit"].Style = _layout.Style(colorIndex, true);
                 // Forcast an impending lowest balance
-                if (_sortedBy == SortEntriesBy.TranDate && rowEntry.DateOfTransaction.Date >= DateTime.Now.Date)
+                if (_sortedBy == SortEntriesBy.TranDate && 
+                    rowEntry.DateOfTransaction.Date >= DateTime.Now.Date &&
+                    !rowEntry.NewEntryRow)
                 {
                     if(rowEntry.Entry.MadeBy == EntryMadeBy.Scheduler || rowEntry.Entry.MadeBy == EntryMadeBy.Reminder)
                     {

@@ -202,7 +202,7 @@ namespace AbleCheckbook
                     break;
                 case AlertType.Reconcile:
                     BeforeOperation("Reconcile", true);
-                    StartReconciliation();
+                    StartReconciliation(false);
                     AfterOperation();
                     _alertType = AlertType.None;
                     break;
@@ -485,7 +485,7 @@ namespace AbleCheckbook
         private void reconcileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             BeforeOperation("Reconcile", true);
-            StartReconciliation();
+            StartReconciliation(false);
             AfterOperation();
         }
 

@@ -170,7 +170,7 @@ namespace AbleCheckbook
             _backend.ReloadTransactions();
             if (_backend.Db.InProgress == InProgress.Reconcile)
             {
-                StartReconciliation();
+                StartReconciliation(true);
             }
         }
 
@@ -637,7 +637,7 @@ namespace AbleCheckbook
             {
                 if (_backend.Db.InProgress == InProgress.Reconcile)
                 {
-                    StartReconciliation();
+                    StartReconciliation(true);
                 }
                 else
                 {
@@ -676,7 +676,7 @@ namespace AbleCheckbook
             {
                 if (_backend.Db.InProgress == InProgress.Reconcile)
                 {
-                    StartReconciliation();
+                    StartReconciliation(true);
                 }
                 else
                 {

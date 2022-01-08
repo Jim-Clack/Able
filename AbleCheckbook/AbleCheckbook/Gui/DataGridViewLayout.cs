@@ -229,14 +229,20 @@ namespace AbleCheckbook.Gui
                     return Color.FromArgb(160, 0, 0);
                 case 13:           // Typ Blue on Chartr
                     return Color.FromArgb(80, 80, 100);
-                case 14:           // Typ Slate on Grey
-                    return Color.FromArgb(100, 100, 100);
-                case 15:           // Typ Yellow on Green 
+                case 14:           // Typ Yellow on Green 
                     return Color.FromArgb(255, 255, 80);
-                case 16:           //  Typ White on Red
+                case 15:           //  Typ White on Red
                     return Color.FromArgb(255, 255, 255);
-                default:           // Typ Purp on Yellow
+                case 16:           // Typ Slate on Grey
+                    return Color.FromArgb(100, 100, 100);
+                case 17:           // Typ Slate on White
+                    return Color.FromArgb(120, 120, 120);
+                case 18:           // Typ White on Black
+                    return Color.FromArgb(220, 220, 220);
+                case 19:           // Typ Purp on Yellow
                     return Color.FromArgb(80, 0, 80);
+                default:           // Unused
+                    return Color.FromArgb(255, 255, 255);
             }
         }
 
@@ -277,14 +283,20 @@ namespace AbleCheckbook.Gui
                     return Color.FromArgb(210, 250, 230);
                 case 13:           // Typ Blue on Chartr
                     return Color.FromArgb(240, 250, 210);
-                case 14:           // Typ Slate on Grey
-                    return Color.FromArgb(175, 175, 175);
-                case 15:           // Typ Yellow on Green 
+                case 14:           // Typ Yellow on Green 
                     return Color.FromArgb(80, 180, 120);
-                case 16:           //  Typ White on Red
+                case 15:           //  Typ White on Red
                     return Color.FromArgb(120, 20, 20);
-                default:           // Typ Purp on Yellow
+                case 16:           // Typ Slate on Grey
+                    return Color.FromArgb(175, 175, 175);
+                case 17:           // Typ Slate on White
+                    return Color.FromArgb(200, 200, 200);
+                case 18:           // Typ White on Black
+                    return Color.FromArgb(20, 20, 20);
+                case 19:           // Typ Purp on Yellow
                     return Color.FromArgb(255, 255, 220);
+                default:           // Unused
+                    return Color.FromArgb(0, 0, 0);
             }
         }
     }

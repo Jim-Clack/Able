@@ -25,11 +25,13 @@ namespace AbleCheckbook.Gui
         JustModified = 11,        // Just Now Changed by User      Typ Blue on Cyan
         JustModCredit = 12,       // Just Now Changed Credit       Typ Red on Aqua
         NonDebitCredit = 13,      // Such as Balance Adjustment    Typ Blue on Chartr
-        CheckedOff = 14,          // Check-Mark Clicked            Typ Slate on Grey
-        NewEntryRow = 15,         // Click to Insert New Entry     Typ Yellow on Green
-        Reminder = 16,            // Reminder to do                Typ White on Red
-        Unknown = 17,             // Something Went Wrong          Typ Purp on Yellow
-        Count = 18,               // Number of entries above
+        NewEntryRow = 14,         // Click to Insert New Entry     Typ Yellow on Green
+        Reminder = 15,            // Reminder to do                Typ White on Red
+        CheckedOff = 16,          // Check-Mark Clicked            Typ Slate on Grey
+        CheckedAuto = 17,         // Checked Off Automatically     Typ Slate on White
+        CheckedMaybe = 18,        // Awaiting Poss Merge Tran      Typ White on Black
+        Unknown = 19,             // Something Went Wrong          Typ Purp on Yellow
+        Count = 20,               // Number of entries above
     }
 
     public class RowOfCheckbook
@@ -401,6 +403,7 @@ namespace AbleCheckbook.Gui
                 {
                     return EntryColor.NewEntryRow;
                 }
+                // TODO - CheckedAuto, CheckedMaybe
                 if(IsChecked)
                 {
                     return EntryColor.CheckedOff;

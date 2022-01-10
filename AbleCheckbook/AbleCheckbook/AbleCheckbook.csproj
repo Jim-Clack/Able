@@ -261,6 +261,7 @@
     <Compile Include="Db\CheckbookEntry.cs" />
     <Compile Include="Db\ScheduledEvent.cs" />
     <Compile Include="Gui\ReportPrinter.cs" />
+    <Compile Include="Logic\AutoReconciler.cs" />
     <Compile Include="Logic\CheckbookSorter.cs" />
     <Compile Include="Logic\SuLogFileReader.cs" />
     <Compile Include="Logic\SuUserManagement.cs" />

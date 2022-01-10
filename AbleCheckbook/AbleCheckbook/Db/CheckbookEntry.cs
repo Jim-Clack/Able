@@ -119,6 +119,11 @@ namespace AbleCheckbook.Db
         private string _bankPayee = "";
 
         /// <summary>
+        /// Check number, 0 if none.
+        /// </summary>
+        private int _bankCheckNumber = 0;
+
+        /// <summary>
         /// From online bank inquiry.
         /// </summary>
         private string _bankTransaction = "";
@@ -163,6 +168,7 @@ namespace AbleCheckbook.Db
         public long Balance { get => _balance; set => _balance = value; }
         public SplitEntry[] Splits { get => _splits; set => _splits = value; }
         public string BankPayee { get => _bankPayee; set => _bankPayee = value; }
+        public int BankCheckNumber { get => _bankCheckNumber; set => _bankCheckNumber = value; }
         public string BankTransaction { get => _bankTransaction; set => _bankTransaction = value; }
         public DateTime BankTranDate { get => _bankTranDate; set => _bankTranDate = value; }
         public long BankAmount { get => _bankAmount; set => _bankAmount = value; }

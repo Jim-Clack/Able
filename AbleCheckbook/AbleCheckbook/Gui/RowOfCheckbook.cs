@@ -306,9 +306,12 @@ namespace AbleCheckbook.Gui
                 {
                     return "";
                 }
-                return _entry.BankPayee + " " + _entry.BankTransaction + " " + 
-                    _entry.BankTranDate.ToShortDateString() + " " + UtilityMethods.FormatCurrency(_entry.BankAmount) +
-                    (_entry.BankMergeAccepted ? " X" : "");
+                return _entry.BankPayee + " " 
+                    + (_entry.BankCheckNumber != 0 ? ("#" + _entry.BankCheckNumber + " ") : "")  
+                    + _entry.BankTransaction + " " 
+                    + _entry.BankTranDate.ToShortDateString() + " " 
+                    + UtilityMethods.FormatCurrency(_entry.BankAmount)
+                    + (_entry.BankMergeAccepted ? " X" : "");
             }
         }
 

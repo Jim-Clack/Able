@@ -15,16 +15,133 @@ namespace AbleCheckbook.Logic
         /// </summary>
         public enum ThresholdScore
         {
-            Mismatch = 0, 
+            Mismatch =  0, 
             Unlikely = 25,   // Only Amounts Match (generally not acceptable)
             Possible = 50,   // Questionable Match (acceptable after exhaustive comparison)
             Probable = 75,   // But Some Differences (acceptable for aggressive matching)
             Matched = 100,   // Only Minor Differences (acceptable in all cases)
         }
 
-        public AutoReconciler()
-        {
+        private IDbAccess _userDb = null;
 
+        private IDbAccess _bankDb = null;
+
+        /// <summary>
+        /// Ctor.
+        /// </summary>
+        /// <param name="userDb">For accessing user DB, already partially populated</param>
+        /// <param name="bankDb">Bank statement</param>
+        public AutoReconciler(IDbAccess userDb, IDbAccess bankDb)
+        {
+            _userDb = userDb;
+            _bankDb = bankDb;
+        }
+
+        /// <summary>
+        /// Perform the automatic reconcile.
+        /// </summary>
+        /// <param name="useBankInfo">true to use bankXxx instead of regular properties from bankDb</param>
+        /// <param name="aggressive">true to perform a more aggressive match</param>
+        /// <returns>number of CheckbookEntries affected - if >0 then call reconHelper.UpdateOpenEntries()</returns>
+        public int Reconcile(bool useBankInfo, bool aggressive)
+        {
+            if(_userDb == null || _bankDb == null)
+            {
+                return 0; // should never occur, but...
+            }
+            int countAffected = 0;
+            double targetScore = (int)AutoReconciler.ThresholdScore.Possible + (aggressive ? 0 : 10);
+            CheckbookEntryIterator bankIterator = _bankDb.CheckbookEntryIterator;
+            while (bankIterator.HasNextEntry())
+            {
+                CheckbookEntry bankEntry = bankIterator.GetNextEntry();
+                double bestScore = 0.0;
+                CheckbookEntry bestEntry = null;
+                CheckbookEntryIterator userIterator = _userDb.CheckbookEntryIterator;
+                while (userIterator.HasNextEntry())
+                {
+                    CheckbookEntry userEntry = userIterator.GetNextEntry();
+                    // Future: we shouldn't iterate over ALL entries, just the ones to be reconciled
+                    if (userEntry.IsChecked || !string.IsNullOrEmpty(userEntry.BankPayee))
+                    {
+                        continue;
+                    }
+                    double score = Score(userEntry, bankEntry, useBankInfo);
+                    if (score > bestScore)
+                    {
+                        bestScore = score;
+                        bestEntry = userEntry;
+                    }
+                }
+                UpdateUserDb(targetScore, bankEntry, bestScore, bestEntry, useBankInfo);
+                ++countAffected;
+            }
+            return countAffected;
+        }
+
+        /// <summary>
+        /// Update the user DB with the new/changed checkbook entry.
+        /// </summary>
+        /// <param name="targetScore">Score to beat in order to merge</param>
+        /// <param name="bankEntry">From bank statement</param>
+        /// <param name="bestScore">Best match score</param>
+        /// <param name="bestEntry">User DB entry that matches bank entry with bestScore</param>
+        /// <param name="useBankInfo">true to use bankXxx instead of regular properties from bankDb</param>
+        private void UpdateUserDb(double targetScore, 
+            CheckbookEntry bankEntry, double bestScore, CheckbookEntry bestEntry, bool useBankInfo)
+        {
+            CheckbookEntry newEntry;
+            if (bestScore < targetScore)
+            {
+                newEntry = new CheckbookEntry();
+            }
+            else
+            {
+                newEntry = bestEntry.Clone();
+            }
+            // populate newEntry BankXxxx properties in all cases
+            newEntry.BankPayee = bankEntry.BankPayee;
+            newEntry.BankTranDate = bankEntry.BankTranDate;
+            newEntry.BankAmount = bankEntry.BankAmount;
+            newEntry.BankCheckNumber = bankEntry.BankCheckNumber;
+            newEntry.BankTransaction = bankEntry.BankTransaction;
+            // if not useBankInfo the overwrite those same BankXxxx properties
+            if (!useBankInfo)
+            {
+                newEntry.BankPayee = bankEntry.Payee;
+                newEntry.BankTranDate = bankEntry.DateOfTransaction;
+                newEntry.BankAmount = bankEntry.Amount;
+                long checkNumber = 0L;
+                long.TryParse(bankEntry.CheckNumber, out checkNumber);
+                newEntry.BankCheckNumber = checkNumber;
+            }
+            if(newEntry.BankPayee == null || newEntry.BankPayee.Length < 4)
+            {
+                newEntry.BankPayee = "----"; // flags BankXxxx proerties as filled-in
+            }
+            newEntry.IsChecked = true;
+            if (newEntry.BankTranDate > DateTime.Now.AddDays(-400))
+            {
+                newEntry.DateCleared = newEntry.BankTranDate;
+            }
+            if (bestScore < targetScore)
+            {
+                // if this is to be a NEW entry, populate its primary properties
+                string catName = UtilityMethods.GuessAtCategory(newEntry.BankPayee);
+                Guid catId = UtilityMethods.GetCategoryOrUnknown(_userDb, catName).Id;
+                TransactionKind tranKind = (newEntry.BankAmount < 0 ? TransactionKind.Payment : TransactionKind.Deposit);
+                newEntry.AddSplit(catId, tranKind, Math.Abs(newEntry.BankAmount));
+                newEntry.CheckNumber = (newEntry.BankCheckNumber == 0 ? "" : "" + newEntry.BankCheckNumber);
+                newEntry.Payee = newEntry.BankPayee;
+                newEntry.DateOfTransaction = newEntry.BankTranDate;
+                newEntry.MadeBy = EntryMadeBy.Reconciler;
+                newEntry.ModifiedBy = System.Environment.UserName;
+                _userDb.InsertEntry(newEntry);
+            }
+            else
+            {
+                _userDb.UpdateEntry(newEntry, bestEntry, true);
+            }
         }
 
         /// <summary>
@@ -55,11 +172,11 @@ namespace AbleCheckbook.Logic
             }
             score = score + 30 - Math.Min(30, daysOff);
             // if check numbers are specified on both, add or subtract 40 depending on the match
-            int userCheckNumber = 0;
-            int bankCheckNumber = 0;
-            if (int.TryParse(userEntry.CheckNumber, out userCheckNumber) && userCheckNumber > 0)
+            long userCheckNumber = 0;
+            long bankCheckNumber = 0;
+            if (long.TryParse(userEntry.CheckNumber, out userCheckNumber) && userCheckNumber > 0)
             {
-                int.TryParse(bankEntry.CheckNumber, out bankCheckNumber);
+                long.TryParse(bankEntry.CheckNumber, out bankCheckNumber);
                 if (useBankInfo && bankCheckNumber == 0)
                 {
                     bankCheckNumber = bankEntry.BankCheckNumber;

@@ -34,6 +34,9 @@ namespace AbleCheckbook.Gui
         Count = 20,               // Number of entries above
     }
 
+    /// <summary>
+    /// Encapsulates and decorates a CheckbookEntry
+    /// </summary>
     public class RowOfCheckbook
     {
 

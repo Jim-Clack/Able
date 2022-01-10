@@ -156,7 +156,7 @@
     <Compile Include="Gui\ReconcileSourceForm.Designer.cs">
       <DependentUpon>ReconcileSourceForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\RowOfSchEvents.cs" />
+    <Compile Include="Logic\RowOfSchEvents.cs" />
     <Compile Include="Gui\ScheduledEventEditForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -199,7 +199,7 @@
     <Compile Include="Gui\OpenBackupForm.Designer.cs">
       <DependentUpon>OpenBackupForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\RowOfBackup.cs" />
+    <Compile Include="Logic\RowOfBackup.cs" />
     <Compile Include="Gui\RenamePayeeForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -239,7 +239,7 @@
     <Compile Include="Gui\DateRangeForm.Designer.cs">
       <DependentUpon>DateRangeForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\RowOfCheckbook.cs" />
+    <Compile Include="Logic\RowOfCheckbook.cs" />
     <Compile Include="Gui\CheckbookRegisterBackend.cs" />
     <Compile Include="Gui\NotificationForm.cs">
       <SubType>Form</SubType>

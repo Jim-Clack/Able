@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace AbleCheckbook.Gui
 {
+    /// <summary>
+    /// Encapsulates and decorates a ScheduledEvent
+    /// </summary>
     public class RowOfSchEvents : IComparable
     {
 

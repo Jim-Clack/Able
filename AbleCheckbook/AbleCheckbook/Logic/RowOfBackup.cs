@@ -11,7 +11,7 @@ namespace AbleCheckbook.Gui
 {
 
     /// <summary>
-    /// Encapsulates one row of the Backup listing.
+    /// Encapsulates and decorates a potential backup file listing
     /// </summary>
     public class RowOfBackup : IComparable
     {

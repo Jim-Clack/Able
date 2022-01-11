@@ -1,4 +1,7 @@
 Alpha TODO...
+ - During reconcile the cursor sometimes jumps way down
+ - When doing autoreconcile, if identical bankinfo is found, display error: "nnn already reconciled, suggest you Abandon Reconcile"
+ - Prevent multiple instances at the same time
  - Flesh out online help
  - Deploy website for testing
  - EULA
@@ -10,7 +13,6 @@ Alpha TODO...
  - Fix desktop Icon
 
 Beta TODO...
- - Prevent multiple instances at the same time
  - AreYouSureForm with date/time/user that screen-captures, logs, and read log
  - Quick yesterday-thru-future condensed report as jpg file (date, payee, amt, bal)
  - Much testing

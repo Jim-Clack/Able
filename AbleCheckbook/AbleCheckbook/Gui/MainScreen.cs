@@ -615,11 +615,11 @@ namespace AbleCheckbook
         {
             if (MessageBox.Show(Strings.Get("Are you sure you want to change this value?"), Strings.Get("Confirm"), MessageBoxButtons.YesNo) != DialogResult.Yes)
             {
-                dateTimePickerLastRecon.Enter -= dateTimePickerLastRecon_Enter;
+                dateTimePickerPrevRecon.Enter -= dateTimePickerLastRecon_Enter;
                 ReconciliationValues reconValues = _backend.Db.GetReconciliationValues();
-                dateTimePickerLastRecon.Value = reconValues.Date;
-                textBoxLastBalance.Text = UtilityMethods.FormatCurrency(reconValues.Balance, 3);
-                dateTimePickerLastRecon.Enter += dateTimePickerLastRecon_Enter;
+                dateTimePickerPrevRecon.Value = reconValues.Date;
+                textBoxPrevReconBalance.Text = UtilityMethods.FormatCurrency(reconValues.Balance, 3);
+                dateTimePickerPrevRecon.Enter += dateTimePickerLastRecon_Enter;
             }
         }
 
@@ -627,10 +627,10 @@ namespace AbleCheckbook
         {
             if (MessageBox.Show(Strings.Get("Are you sure you want to change this value?"), Strings.Get("Confirm"), MessageBoxButtons.YesNo) != DialogResult.Yes)
             {
-                textBoxLastBalance.Enter -= textBoxLastBalance_Enter;
+                textBoxPrevReconBalance.Enter -= textBoxLastBalance_Enter;
                 ReconciliationValues reconValues = _backend.Db.GetReconciliationValues();
-                textBoxLastBalance.Text = UtilityMethods.FormatCurrency(reconValues.Balance, 3);
-                textBoxLastBalance.Enter += textBoxLastBalance_Enter;
+                textBoxPrevReconBalance.Text = UtilityMethods.FormatCurrency(reconValues.Balance, 3);
+                textBoxPrevReconBalance.Enter += textBoxLastBalance_Enter;
             }
         }
 

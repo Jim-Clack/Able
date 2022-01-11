@@ -144,8 +144,12 @@ namespace AbleCheckbook.Gui
                     newEntry.Payee = newEntry.BankPayee;
                     newEntry.DateOfTransaction = newEntry.BankTranDate;
                     newEntry.MadeBy = EntryMadeBy.Reconciler;
+                    newEntry.IsCleared = form.rowCheckbook.Entry.IsCleared;
+                    newEntry.IsChecked = form.rowCheckbook.Entry.IsChecked;
                     newEntry.ModifiedBy = System.Environment.UserName;
                     _db.InsertEntry(newEntry);
+                    form.rowCheckbook.Entry.IsCleared = false;
+                    form.rowCheckbook.Entry.IsChecked = false;
                     form.rowCheckbook.Entry.BankAmount = 0;
                     form.rowCheckbook.Entry.BankPayee = "";
                     form.rowCheckbook.Entry.BankCheckNumber = 0;

@@ -26,6 +26,10 @@ namespace AbleCheckbook.Logic
 
         private IDbAccess _bankDb = null;
 
+        private int _countDateWrong = 0;
+
+        public int CountDateWrong { get => _countDateWrong; }
+
         /// <summary>
         /// Ctor.
         /// </summary>
@@ -40,15 +44,18 @@ namespace AbleCheckbook.Logic
         /// <summary>
         /// Perform the automatic reconcile.
         /// </summary>
+        /// <param name="prevReconDate">Start of the period to process</param>
+        /// <param name="thisReconDate">One day past end of the period</param>
         /// <param name="useBankInfo">true to use bankXxx instead of regular properties from bankDb</param>
         /// <param name="aggressive">true to perform a more aggressive match</param>
         /// <returns>number of CheckbookEntries affected - if >0 then call reconHelper.UpdateOpenEntries()</returns>
-        public int Reconcile(bool useBankInfo, bool aggressive)
+        public int Reconcile(DateTime prevReconDate, DateTime thisReconDate, bool useBankInfo, bool aggressive)
         {
             if(_userDb == null || _bankDb == null)
             {
                 return 0; // should never occur, but...
             }
+            _countDateWrong = 0;
             int countAffected = 0;
             double targetScore = (int)(aggressive ? AutoReconciler.ThresholdScore.Possible : AutoReconciler.ThresholdScore.Probable);
             CheckbookEntryIterator bankIterator = _bankDb.CheckbookEntryIterator;
@@ -56,6 +63,16 @@ namespace AbleCheckbook.Logic
             {
                 CheckbookEntry bankEntry = bankIterator.GetNextEntry();
                 double bestScore = 0.0;
+                DateTime bankDate = bankEntry.DateOfTransaction;
+                if (Math.Abs(DateTime.Now.Subtract(bankDate).Days) > 400 && useBankInfo)
+                {
+                    bankDate = bankEntry.BankTranDate;
+                }
+                if(bankDate.Date < prevReconDate.Date || bankDate.Date >= thisReconDate.Date)
+                {
+                    ++_countDateWrong;
+                    continue;
+                }
                 CheckbookEntry bestEntry = null;
                 CheckbookEntryIterator userIterator = _userDb.CheckbookEntryIterator;
                 while (userIterator.HasNextEntry())

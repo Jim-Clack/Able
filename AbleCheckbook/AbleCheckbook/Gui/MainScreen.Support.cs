@@ -289,7 +289,7 @@ namespace AbleCheckbook
                 yearEndToolStripMenuItem.Enabled = false;
                 dataGridView1.Height = dataGridView1.Parent.Height - 150;
                 labelLastClosing.Visible = labelThisClosing.Visible = this.Width > 552;
-                textBoxLastBalance.Left = textBoxThisBalance.Left = (this.Width > 552) ? 160 : 88;
+                textBoxPrevReconBalance.Left = textBoxThisReconBalance.Left = (this.Width > 552) ? 160 : 88;
                 labelInstructions.Left = (this.Width > 552) ? 224 : 154;
             }
             else
@@ -303,10 +303,10 @@ namespace AbleCheckbook
                 byCategoryToolStripMenuItem.Enabled = byCheckNumberToolStripMenuItem.Enabled = 
                 byDateToolStripMenuItem.Enabled = byPayeeToolStripMenuItem.Enabled = 
                 searchToolStripMenuItem.Enabled = !reconciling;
-            dateTimePickerLastRecon.ShowUpDown = dateTimePickerThisRecon.ShowUpDown = 
+            dateTimePickerPrevRecon.ShowUpDown = dateTimePickerThisRecon.ShowUpDown = 
                 !Configuration.Instance.ShowCalendars;
-            dateTimePickerLastRecon.Visible = dateTimePickerThisRecon.Visible = 
-                textBoxLastBalance.Visible = textBoxThisBalance.Visible = 
+            dateTimePickerPrevRecon.Visible = dateTimePickerThisRecon.Visible = 
+                textBoxPrevReconBalance.Visible = textBoxThisReconBalance.Visible = 
                 buttonAbandonReconcile.Visible =
                 buttonAllDone.Visible = reconciling;
             pictureBoxLogo.BackColor = System.Drawing.Color.Transparent;

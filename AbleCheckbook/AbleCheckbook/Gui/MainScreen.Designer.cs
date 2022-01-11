@@ -145,9 +145,9 @@ namespace AbleCheckbook
             this.toolStripButtonHelp = new System.Windows.Forms.ToolStripButton();
             this.toolStripTextBoxHelp = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripLabelStatus = new System.Windows.Forms.ToolStripLabel();
-            this.textBoxLastBalance = new System.Windows.Forms.TextBox();
-            this.textBoxThisBalance = new System.Windows.Forms.TextBox();
-            this.dateTimePickerLastRecon = new System.Windows.Forms.DateTimePicker();
+            this.textBoxPrevReconBalance = new System.Windows.Forms.TextBox();
+            this.textBoxThisReconBalance = new System.Windows.Forms.TextBox();
+            this.dateTimePickerPrevRecon = new System.Windows.Forms.DateTimePicker();
             this.dateTimePickerThisRecon = new System.Windows.Forms.DateTimePicker();
             this.buttonReconcileTips = new System.Windows.Forms.Button();
             this.buttonAllDone = new System.Windows.Forms.Button();
@@ -1111,35 +1111,35 @@ namespace AbleCheckbook
             // 
             // textBoxLastBalance
             // 
-            this.textBoxLastBalance.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.textBoxLastBalance.Location = new System.Drawing.Point(119, 366);
-            this.textBoxLastBalance.Name = "textBoxLastBalance";
-            this.textBoxLastBalance.Size = new System.Drawing.Size(80, 22);
-            this.textBoxLastBalance.TabIndex = 8;
-            this.textBoxLastBalance.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textBoxLastBalance.Enter += new System.EventHandler(this.textBoxLastBalance_Enter);
-            this.textBoxLastBalance.Leave += new System.EventHandler(this.textBoxLastBalance_Leave);
+            this.textBoxPrevReconBalance.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.textBoxPrevReconBalance.Location = new System.Drawing.Point(119, 366);
+            this.textBoxPrevReconBalance.Name = "textBoxLastBalance";
+            this.textBoxPrevReconBalance.Size = new System.Drawing.Size(80, 22);
+            this.textBoxPrevReconBalance.TabIndex = 8;
+            this.textBoxPrevReconBalance.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textBoxPrevReconBalance.Enter += new System.EventHandler(this.textBoxLastBalance_Enter);
+            this.textBoxPrevReconBalance.Leave += new System.EventHandler(this.textBoxLastBalance_Leave);
             // 
             // textBoxThisBalance
             // 
-            this.textBoxThisBalance.AcceptsReturn = true;
-            this.textBoxThisBalance.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.textBoxThisBalance.Location = new System.Drawing.Point(119, 395);
-            this.textBoxThisBalance.Name = "textBoxThisBalance";
-            this.textBoxThisBalance.Size = new System.Drawing.Size(80, 22);
-            this.textBoxThisBalance.TabIndex = 9;
-            this.textBoxThisBalance.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textBoxThisBalance.Leave += new System.EventHandler(this.textBoxThisBalance_Leave);
+            this.textBoxThisReconBalance.AcceptsReturn = true;
+            this.textBoxThisReconBalance.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.textBoxThisReconBalance.Location = new System.Drawing.Point(119, 395);
+            this.textBoxThisReconBalance.Name = "textBoxThisBalance";
+            this.textBoxThisReconBalance.Size = new System.Drawing.Size(80, 22);
+            this.textBoxThisReconBalance.TabIndex = 9;
+            this.textBoxThisReconBalance.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textBoxThisReconBalance.Leave += new System.EventHandler(this.textBoxThisBalance_Leave);
             // 
             // dateTimePickerLastRecon
             // 
-            this.dateTimePickerLastRecon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.dateTimePickerLastRecon.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePickerLastRecon.Location = new System.Drawing.Point(13, 366);
-            this.dateTimePickerLastRecon.Name = "dateTimePickerLastRecon";
-            this.dateTimePickerLastRecon.Size = new System.Drawing.Size(97, 22);
-            this.dateTimePickerLastRecon.TabIndex = 44;
-            this.dateTimePickerLastRecon.Enter += new System.EventHandler(this.dateTimePickerLastRecon_Enter);
+            this.dateTimePickerPrevRecon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.dateTimePickerPrevRecon.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dateTimePickerPrevRecon.Location = new System.Drawing.Point(13, 366);
+            this.dateTimePickerPrevRecon.Name = "dateTimePickerLastRecon";
+            this.dateTimePickerPrevRecon.Size = new System.Drawing.Size(100, 22);
+            this.dateTimePickerPrevRecon.TabIndex = 44;
+            this.dateTimePickerPrevRecon.Enter += new System.EventHandler(this.dateTimePickerLastRecon_Enter);
             // 
             // dateTimePickerThisRecon
             // 
@@ -1147,7 +1147,7 @@ namespace AbleCheckbook
             this.dateTimePickerThisRecon.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dateTimePickerThisRecon.Location = new System.Drawing.Point(13, 395);
             this.dateTimePickerThisRecon.Name = "dateTimePickerThisRecon";
-            this.dateTimePickerThisRecon.Size = new System.Drawing.Size(97, 22);
+            this.dateTimePickerThisRecon.Size = new System.Drawing.Size(100, 22);
             this.dateTimePickerThisRecon.TabIndex = 4;
             this.dateTimePickerThisRecon.ValueChanged += new System.EventHandler(this.dateTimePickerThisRecon_ValueChanged);
             // 
@@ -1268,9 +1268,9 @@ namespace AbleCheckbook
             this.Controls.Add(this.buttonAllDone);
             this.Controls.Add(this.buttonReconcileTips);
             this.Controls.Add(this.dateTimePickerThisRecon);
-            this.Controls.Add(this.dateTimePickerLastRecon);
-            this.Controls.Add(this.textBoxThisBalance);
-            this.Controls.Add(this.textBoxLastBalance);
+            this.Controls.Add(this.dateTimePickerPrevRecon);
+            this.Controls.Add(this.textBoxThisReconBalance);
+            this.Controls.Add(this.textBoxPrevReconBalance);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.menuStrip1);
@@ -1370,9 +1370,9 @@ namespace AbleCheckbook
         private System.Windows.Forms.ToolStripMenuItem yearEndToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openBackupToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.TextBox textBoxLastBalance;
-        private System.Windows.Forms.TextBox textBoxThisBalance;
-        private System.Windows.Forms.DateTimePicker dateTimePickerLastRecon;
+        private System.Windows.Forms.TextBox textBoxPrevReconBalance;
+        private System.Windows.Forms.TextBox textBoxThisReconBalance;
+        private System.Windows.Forms.DateTimePicker dateTimePickerPrevRecon;
         private System.Windows.Forms.DateTimePicker dateTimePickerThisRecon;
         private System.Windows.Forms.Button buttonReconcileTips;
         private System.Windows.Forms.Button buttonAllDone;

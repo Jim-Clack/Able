@@ -45,9 +45,9 @@ namespace AbleCheckbook
             }
             _checkedOff = _checkedOff || checkedOff;
             bool showInstructions = true;
-            if (textBoxThisBalance.Text.Trim().Length < 3)
+            if (textBoxThisReconBalance.Text.Trim().Length < 3)
             {
-                labelInstructions.Text = Strings.Get("Fill in details at left from your bank statement");
+                labelInstructions.Text = Strings.Get("Fill in bottom/left from your bank statement");
                 // dataGridView1.Enabled = false; // nope, causes user confusion
             }
             else
@@ -64,7 +64,7 @@ namespace AbleCheckbook
             buttonReconcileTips.Visible = !hideAll && showDisparity;
             labelReconDisparity.Visible = !hideAll && showDisparity;
             textBoxReconDisparity.Visible = !hideAll && showDisparity;
-            string balanceAsAString = textBoxThisBalance.Text.Trim();
+            string balanceAsAString = textBoxThisReconBalance.Text.Trim();
             long closingBalance = 0L;
             if (balanceAsAString.Length <= 1)
             {
@@ -75,12 +75,12 @@ namespace AbleCheckbook
                 closingBalance = UtilityMethods.ParseCurrency(balanceAsAString);
                 balanceAsAString = UtilityMethods.FormatCurrency(closingBalance);
             }
-            textBoxThisBalance.Text = balanceAsAString;
+            textBoxThisReconBalance.Text = balanceAsAString;
             _backend.UpdateCheckedEntries(_reconHelper);
             long disparity = _reconHelper.GetDisparity(closingBalance);
-            if (textBoxLastBalance.Text.Trim().Length > 0)
+            if (textBoxPrevReconBalance.Text.Trim().Length > 0)
             {
-                disparity = _reconHelper.GetDisparity(closingBalance, UtilityMethods.ParseCurrency(textBoxLastBalance.Text));
+                disparity = _reconHelper.GetDisparity(closingBalance, UtilityMethods.ParseCurrency(textBoxPrevReconBalance.Text));
             }
             textBoxReconDisparity.Text = UtilityMethods.FormatCurrency(disparity);
             if (disparity == 0)
@@ -93,7 +93,7 @@ namespace AbleCheckbook
                 buttonAllDone.Text = Strings.Get("Create Balance Adjustment");
                 buttonAllDone.ForeColor = System.Drawing.SystemColors.ControlText;
             }
-            buttonAllDone.Enabled = textBoxThisBalance.Text.Trim().Length > 1;
+            buttonAllDone.Enabled = textBoxThisReconBalance.Text.Trim().Length > 1;
             buttonReconcileTips.Enabled = false;
             List<CandidateEntry> candidates =
                 _reconHelper.FindTipCandidates(-disparity, dateTimePickerThisRecon.Value.AddDays(1));
@@ -133,29 +133,39 @@ namespace AbleCheckbook
             {
                 return;
             }
-            if(!continuation)
-            {
-                ReconcileSourceForm form = new ReconcileSourceForm(Backend.Db);
-                form.ShowDialog();
-                if(form.DialogResult != DialogResult.OK)
-                {
-                    return;
-                }
-            }
-            dateTimePickerLastRecon.ShowUpDown = !Configuration.Instance.ShowCalendars;
+            dateTimePickerPrevRecon.ShowUpDown = !Configuration.Instance.ShowCalendars;
             dateTimePickerThisRecon.ShowUpDown = !Configuration.Instance.ShowCalendars;
-            _reconHelper = new ReconciliationHelper(_backend.Db);
-            _backend.Db.InProgress = InProgress.Reconcile;
             ReconciliationValues reconValues = _backend.Db.GetReconciliationValues();
-            dateTimePickerLastRecon.Value = reconValues.Date;
+            dateTimePickerPrevRecon.Value = reconValues.Date;
             DateTime now = DateTime.Now;
             dateTimePickerThisRecon.Value = new DateTime(now.Year, now.Month, 1);
-            if(dateTimePickerThisRecon.Value.Date == dateTimePickerLastRecon.Value.Date)
+            if(dateTimePickerThisRecon.Value.Date == dateTimePickerPrevRecon.Value.Date)
             {
                 dateTimePickerThisRecon.Value = dateTimePickerThisRecon.Value.AddMonths(1);
             }
-            textBoxLastBalance.Text = UtilityMethods.FormatCurrency(reconValues.Balance, 3);
-            textBoxThisBalance.Text = "";
+            textBoxPrevReconBalance.Text = UtilityMethods.FormatCurrency(reconValues.Balance, 3);
+            textBoxThisReconBalance.Text = "";
+            if (!continuation)
+            {
+                ReconcileStartForm form = new ReconcileStartForm(Backend.Db);
+                form.PrevReconDate = dateTimePickerPrevRecon.Value;
+                form.ThisReconDate = dateTimePickerThisRecon.Value;
+                form.PrevReconBalance = textBoxPrevReconBalance.Text;
+                form.ThisReconBalance = textBoxThisReconBalance.Text;
+                form.ShowDialog();
+                if (form.DialogResult != DialogResult.OK)
+                {
+                    return;
+                }
+                dateTimePickerPrevRecon.Value = form.PrevReconDate;
+                dateTimePickerThisRecon.Value = form.ThisReconDate;
+                textBoxPrevReconBalance.Text = form.PrevReconBalance;
+                textBoxThisReconBalance.Text = form.ThisReconBalance;
+                dateTimePickerPrevRecon.Enabled = dateTimePickerThisRecon.Enabled = false;
+                textBoxPrevReconBalance.Enabled = textBoxThisReconBalance.Enabled = false;
+            }
+            _backend.Db.InProgress = InProgress.Reconcile;
+            _reconHelper = new ReconciliationHelper(_backend.Db);
             List<Guid> matches = _reconHelper.OpenEntries.Keys.ToList();
             _backend.ReloadTransactions(SortEntriesBy.CheckBox, matches);
             UpdateReconcileControls(false, false);
@@ -192,9 +202,9 @@ namespace AbleCheckbook
         {
             ReconciliationValues reconValues = null;
             long closingBalance = 0L;
-            if (textBoxThisBalance.Text.Trim().Length > 0)
+            if (textBoxThisReconBalance.Text.Trim().Length > 0)
             {
-                closingBalance = UtilityMethods.ParseCurrency(textBoxThisBalance.Text.Trim());
+                closingBalance = UtilityMethods.ParseCurrency(textBoxThisReconBalance.Text.Trim());
             }
             DateTime closingDate = dateTimePickerThisRecon.Value;
             long disparity = UtilityMethods.ParseCurrency(textBoxReconDisparity.Text);

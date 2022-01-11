@@ -150,11 +150,11 @@
     <Compile Include="Gui\ReconcileCandidatesForm.Designer.cs">
       <DependentUpon>ReconcileCandidatesForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\ReconcileSourceForm.cs">
+    <Compile Include="Gui\ReconcileStartForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Gui\ReconcileSourceForm.Designer.cs">
-      <DependentUpon>ReconcileSourceForm.cs</DependentUpon>
+    <Compile Include="Gui\ReconcileStartForm.Designer.cs">
+      <DependentUpon>ReconcileStartForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Logic\RowOfSchEvents.cs" />
     <Compile Include="Gui\ScheduledEventEditForm.cs">
@@ -301,8 +301,8 @@
     <EmbeddedResource Include="Gui\ReconcileCandidatesForm.resx">
       <DependentUpon>ReconcileCandidatesForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ReconcileSourceForm.resx">
-      <DependentUpon>ReconcileSourceForm.cs</DependentUpon>
+    <EmbeddedResource Include="Gui\ReconcileStartForm.resx">
+      <DependentUpon>ReconcileStartForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ScheduledEventEditForm.resx">
       <DependentUpon>ScheduledEventEditForm.cs</DependentUpon>

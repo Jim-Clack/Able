@@ -309,11 +309,11 @@ namespace AbleCheckbook.Gui
                 {
                     return "";
                 }
-                return _entry.BankPayee + " " 
-                    + (_entry.BankCheckNumber != 0 ? ("#" + _entry.BankCheckNumber + " ") : "")  
-                    + _entry.BankTransaction + " " 
-                    + _entry.BankTranDate.ToShortDateString() + " " 
-                    + UtilityMethods.FormatCurrency(_entry.BankAmount)
+                return UtilityMethods.FormatCurrency(_entry.BankAmount) + " "
+                    + (_entry.BankCheckNumber != 0 ? ("#" + _entry.BankCheckNumber + " ") : "")
+                    + _entry.BankPayee + " "
+                    + _entry.BankTranDate.ToShortDateString() + " "
+                    + _entry.BankTransaction + " "
                     + (_entry.BankMergeAccepted ? " X" : "");
             }
         }

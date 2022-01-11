@@ -277,9 +277,11 @@ namespace AbleCheckbook.Logic
             AddString("Display the Year-End Wrap-Up Due notification When appropriate");
             AddString("Display amounts in two columns (Debit/Credit) instead of one (Amount)");
             AddString("Check off entries that are cleared in bank statement");
-            AddString("Fill in details at left from your bank statement");
+            AddString("Fill in bottom/left from your bank statement");
             AddString(" days away from today! Are you sure?");
             AddString("Confirm");
+            AddString(" entries changed or added");
+            AddString(" entries ignored as out of date range");
             AddString("Disable sanity-checks for wild dates and amounts during data-entry");
             AddString("Account Settings - ");
             AddString("Live sync to bank acct online (instead of only for monthly reconcile)");
@@ -365,6 +367,8 @@ namespace AbleCheckbook.Logic
             AddString("New Account, Starting Balance");
             AddString("Initial Account Balance:");
             AddString("Starting Balance for New Account...");
+            AddString("Prev Reconcile");
+            AddString("This Reconcile");
             AddString("As of:");
             AddString("Go To Most Recent");
             AddString("Sort Matches First");

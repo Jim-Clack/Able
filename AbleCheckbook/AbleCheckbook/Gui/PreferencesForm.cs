@@ -74,6 +74,7 @@ namespace AbleCheckbook.Gui
             FolderBrowserDialog form = new FolderBrowserDialog();
             form.Description = Strings.Get("Base DB Directory");
             form.ShowNewFolderButton = true;
+            form.SelectedPath = textBoxBaseDir.Text.Trim();
             DialogResult result = form.ShowDialog();
             if (result != DialogResult.OK || form.SelectedPath.Trim().Length < 1)
             {

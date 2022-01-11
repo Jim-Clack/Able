@@ -82,8 +82,15 @@ namespace AbleCheckbook.Gui
                 return;
             }
 
-            // TODO... (web/csv import)
+            // TODO... (web import)
 
+            JsonDbAccess db = new JsonDbAccess("statement", null, true);
+            CsvImporter importer = new CsvImporter(db);
+            if(importer.Import(textBoxCsvFile.Text.Trim()) > 0)
+            {
+                AutoReconciler reconciler = new AutoReconciler(_db, db);
+                reconciler.Reconcile(false, _db.Account.OnlineBankingAggressive);
+            }
             this.DialogResult = DialogResult.OK;
             this.Close();
         }

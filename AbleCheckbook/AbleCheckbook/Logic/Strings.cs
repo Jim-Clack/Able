@@ -359,7 +359,7 @@ namespace AbleCheckbook.Logic
             AddString("←  Back");
             AddString("⌂  Home");
             AddString("Ꙭ  Search");
-            AddString("◀ No: Un-Merge");
+            AddString("◀ No UnMerge");
             AddString("New DB Acct");
             AddString("Select Acct");
             AddString("New Account, Starting Balance");

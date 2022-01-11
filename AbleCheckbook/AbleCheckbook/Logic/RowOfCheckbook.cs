@@ -305,7 +305,7 @@ namespace AbleCheckbook.Gui
         {
             get
             {
-                if(_entry.BankPayee.Trim().Length < 1)
+                if(string.IsNullOrEmpty(_entry.BankPayee))
                 {
                     return "";
                 }

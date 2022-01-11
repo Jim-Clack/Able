@@ -58,6 +58,11 @@ namespace AbleCheckbook.Gui
         private bool _deleteEntry = false;
 
         /// <summary>
+        /// Did the user click Unmerge?
+        /// </summary>
+        private bool _unmergeEntry = false;
+
+        /// <summary>
         /// For use in handling category splits.
         /// </summary>
         private SplitEntry[] _splits = null;
@@ -301,7 +306,7 @@ namespace AbleCheckbook.Gui
             buttonDelete.Text = Strings.Get("Delete");
             buttonCancel.Text = Strings.Get("Cancel");
             buttonOk.Text = Strings.Get("OK");
-            buttonUnMerge.Text = Strings.Get("◀ No: Un-Merge");
+            buttonUnMerge.Text = Strings.Get("◀ No UnMerge");
             comboBoxPayee.DataSource = _backend.Payees;
             comboBoxPayee.Text = "";
             ValidateReadyForSubmit();
@@ -326,11 +331,11 @@ namespace AbleCheckbook.Gui
                 control.Top = _yOffsets[controlNumber++] + yOffset;
             }
             int allowance = 124;
-            textBoxBankInfo.Visible = buttonUnMerge.Visible = false;
+            buttonUnMerge.Enabled = textBoxBankInfo.Visible = buttonUnMerge.Visible = false;
             if(_rowCheckbook.BankInfo.Length > 10)
             {
                 allowance = 150;
-                textBoxBankInfo.Visible = buttonUnMerge.Visible = true;
+                buttonUnMerge.Enabled = textBoxBankInfo.Visible = buttonUnMerge.Visible = true;
                 textBoxBankInfo.Text = _rowCheckbook.BankInfo;
             }
             textBoxMemo.Height = (int)(this.Height - (allowance * _yScale + textBoxMemo.Top));
@@ -757,6 +762,17 @@ namespace AbleCheckbook.Gui
             }
         }
 
+        /// <summary>
+        /// Did the user click "Unmerge"?
+        /// </summary>
+        public bool UnmergeEntry
+        {
+            get
+            {
+                return _unmergeEntry;
+            }
+        }
+
         /////////////////////////////// Getters //////////////////////////////
 
         public DateTime DateOfTransaction
@@ -967,9 +983,13 @@ namespace AbleCheckbook.Gui
 
         private void buttonUnMerge_Click(object sender, EventArgs e)
         {
-            // TODO...
-
-            // this must return DialogResult.OK
+            if (_rowCheckbook.NewEntryRow)
+            {
+                return; // not allowed on the NewEntryRow entry
+            }
+            _unmergeEntry = true;
+            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
 
         private void textBoxCheckNbr_Enter(object sender, EventArgs e)

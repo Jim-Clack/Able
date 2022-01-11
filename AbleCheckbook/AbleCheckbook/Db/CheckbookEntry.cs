@@ -208,6 +208,12 @@ namespace AbleCheckbook.Db
             clonedEntry.IsCleared = this.IsCleared;
             clonedEntry.Balance = this.Balance;
             clonedEntry._highlight = this._highlight;
+            clonedEntry._bankPayee = this.BankPayee;
+            clonedEntry._bankAmount = this.BankAmount;
+            clonedEntry._bankTranDate = this.BankTranDate;
+            clonedEntry._bankTransaction = this.BankTransaction;
+            clonedEntry._bankCheckNumber = this.BankCheckNumber;
+            clonedEntry._bankMergeAccepted = this.BankMergeAccepted;
             foreach (SplitEntry split in this.Splits)
             {
                 clonedEntry.AddSplit(split.CategoryId, split.Kind, split.Amount);

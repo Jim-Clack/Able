@@ -81,7 +81,8 @@ namespace AbleCheckbook.Db
         /// </summary>
         /// <param name="connection">Name of connection: Checking, Business, Personal, or Alternate</param>
         /// <param name="undoTracker">To be called for tracking operations that can later be undone.</param>
-        public JsonDbAccess(string connection, IUndoTracker undoTracker)
+        /// <param name="startEmpty">true to start empty, first deleting the db if it exists</param>
+        public JsonDbAccess(string connection, IUndoTracker undoTracker, bool startEmpty = false)
         {
             AppException.SetDb(null);
             _fullPath = connection;
@@ -95,6 +96,10 @@ namespace AbleCheckbook.Db
                     }
                 }
                 _fullPath = UtilityMethods.GetDbFilename(connection, false, false);
+            }
+            if (startEmpty)
+            {
+                File.Delete(_fullPath);
             }
             _isDirty = false;
             _errorMessage = "";

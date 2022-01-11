@@ -285,7 +285,7 @@
             this.buttonUnMerge.Name = "buttonUnMerge";
             this.buttonUnMerge.Size = new System.Drawing.Size(124, 32);
             this.buttonUnMerge.TabIndex = 27;
-            this.buttonUnMerge.Text = "◀ No: Un-Merge";
+            this.buttonUnMerge.Text = "◀ No UnMerge";
             this.buttonUnMerge.UseVisualStyleBackColor = true;
             this.buttonUnMerge.Visible = false;
             this.buttonUnMerge.Click += new System.EventHandler(this.buttonUnMerge_Click);

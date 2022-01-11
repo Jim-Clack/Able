@@ -132,6 +132,26 @@ namespace AbleCheckbook.Gui
             CurrentEntryId = Guid.Empty;
             if (form.ShowDialog(parent) == DialogResult.OK)
             {
+                if(form.UnmergeEntry)
+                {
+                    CheckbookEntry newEntry = form.rowCheckbook.Entry.Clone();
+                    newEntry.DeleteSplits();
+                    string catName = UtilityMethods.GuessAtCategory(newEntry.BankPayee);
+                    Guid catId = UtilityMethods.GetCategoryOrUnknown(_db, catName).Id;
+                    TransactionKind tranKind = (newEntry.BankAmount < 0 ? TransactionKind.Payment : TransactionKind.Deposit);
+                    newEntry.AddSplit(catId, tranKind, Math.Abs(newEntry.BankAmount));
+                    newEntry.CheckNumber = (newEntry.BankCheckNumber == 0 ? "" : "" + newEntry.BankCheckNumber);
+                    newEntry.Payee = newEntry.BankPayee;
+                    newEntry.DateOfTransaction = newEntry.BankTranDate;
+                    newEntry.MadeBy = EntryMadeBy.Reconciler;
+                    newEntry.ModifiedBy = System.Environment.UserName;
+                    _db.InsertEntry(newEntry);
+                    form.rowCheckbook.Entry.BankAmount = 0;
+                    form.rowCheckbook.Entry.BankPayee = "";
+                    form.rowCheckbook.Entry.BankCheckNumber = 0;
+                    form.rowCheckbook.Entry.BankTransaction = "";
+                    form.rowCheckbook.Entry.BankMergeAccepted = false;
+                }
                 if (form.DeleteEntry)
                 {
                     DeleteEntry(form, parent);

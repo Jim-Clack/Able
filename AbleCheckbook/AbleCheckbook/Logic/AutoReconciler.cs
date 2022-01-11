@@ -50,7 +50,7 @@ namespace AbleCheckbook.Logic
                 return 0; // should never occur, but...
             }
             int countAffected = 0;
-            double targetScore = (int)AutoReconciler.ThresholdScore.Possible + (aggressive ? 0 : 10);
+            double targetScore = (int)(aggressive ? AutoReconciler.ThresholdScore.Possible : AutoReconciler.ThresholdScore.Probable);
             CheckbookEntryIterator bankIterator = _bankDb.CheckbookEntryIterator;
             while (bankIterator.HasNextEntry())
             {
@@ -140,6 +140,7 @@ namespace AbleCheckbook.Logic
             }
             else
             {
+                newEntry.BankMergeAccepted = true;
                 _userDb.UpdateEntry(newEntry, bestEntry, true);
             }
         }
@@ -186,13 +187,13 @@ namespace AbleCheckbook.Logic
                     score = score + (userCheckNumber == bankCheckNumber ? 40 : -20);
                 }
             }
-            // check for substring matches on the payee, adding up to 50
+            // check for substring matches on the payee, adding up to 45
             string bankPayee = bankEntry.Payee;
             if (useBankInfo && bankPayee.Trim().Length < bankEntry.BankPayee.Trim().Length)
             {
                 bankPayee = bankEntry.BankPayee;
             }
-            score = score + ScoreSubStringMatch(userEntry.Payee, bankPayee, 50);
+            score = score + ScoreSubStringMatch(userEntry.Payee, bankPayee, 45);
             return score;
         }
 

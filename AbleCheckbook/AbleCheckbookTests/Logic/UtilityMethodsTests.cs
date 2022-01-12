@@ -61,7 +61,7 @@ namespace AbleCheckbook.Logic.Tests
         {
             string dbName = "UtEsTsearch-" + DateTime.Now.Year + ".acb";
             File.Delete(Path.Combine(Configuration.Instance.DirectoryDatabase, dbName));
-            JsonDbAccess db = new JsonDbAccess(dbName, null);
+            JsonDbAccess db = new JsonDbAccess(dbName, null, true);
             AddCheckbookEntry(db, "Bellington", false, 4, "", "Misc", 52575, "", 0);
             Guid cashId = AddCheckbookEntry(db, "Kroger", true, 3, "", "Groceries", 2250, "Cash", 1000).Splits[1].CategoryId;
             Guid autoId = AddCheckbookEntry(db, "Shell", true, 2, "1200", "Transportation", 2500, "", 0).Splits[0].CategoryId;
@@ -105,7 +105,7 @@ namespace AbleCheckbook.Logic.Tests
             Assert.AreEqual(1, list.Count);
             list = UtilityMethods.SearchDb(db, UtilityMethods.EntryField.MemoSubstring, "tEST", Guid.Empty, 0, 0, false, DateTime.Now);
             Assert.AreEqual(1, list.Count);
-            db.Sync();
+            db.SyncAndClose();
         }
 
         private static CheckbookEntry AddCheckbookEntry(IDbAccess db, string payee, bool isDebit, int daysAgo,

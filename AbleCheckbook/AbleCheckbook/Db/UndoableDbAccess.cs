@@ -159,6 +159,14 @@ namespace AbleCheckbook.Db
         }
 
         /// <summary>
+        /// Update and close the DB.
+        /// </summary>
+        public void SyncAndClose()
+        {
+            _underlyingDb.SyncAndClose();
+        }
+
+        /// <summary>
         /// Has the data been changed since the last save/sync was done?
         /// </summary>
         public bool IsDirty
@@ -202,6 +210,14 @@ namespace AbleCheckbook.Db
             bool ok = _underlyingDb.Sync();
             Backups.PeriodicBackup(filepath, 7, 8, ".bw", false, true);
             return ok;
+        }
+
+        /// <summary>
+        /// This must be closed to release the potential mutex in JsonDbAccess 
+        /// </summary>
+        public void Dispose()
+        {
+            _underlyingDb.Dispose();
         }
 
         /// <summary>

@@ -111,6 +111,7 @@ namespace AbleLicensing
         private Activation()
         {
             _iSettings = null;
+            // This throws an exception if run in DEBUG mode, of course!
             Type[] clazzes = Assembly.GetEntryAssembly().GetExportedTypes();
             // Get the instance of the SiteSettings implementation
             foreach (Type clazz in clazzes)

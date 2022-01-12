@@ -138,6 +138,11 @@ namespace AbleCheckbook.Gui
                     _schEvent.SetDueBiWeekly(isReminder,
                         listBoxDayOfWeek5.SelectedIndex, dateTimePickerNextOccurrence5.Value, finalDate);
                 }
+            }
+            else if (tabControl.SelectedTab == tabPageDaysApart)
+            {
+                    _schEvent.SetDueDaysApart(isReminder,
+                        (int)numericUpDownDaysApart6.Value, dateTimePickerNextOccurrence6.Value, finalDate);
             };
             if (!_isNewEvent)
             {
@@ -188,7 +193,7 @@ namespace AbleCheckbook.Gui
             labelNotice.Text = "";
             if (tabControl.SelectedTab == tabPageMonthly)
             {
-                if(listBoxDaysOfMonth1.SelectedIndices.Count < 1)
+                if (listBoxDaysOfMonth1.SelectedIndices.Count < 1)
                 {
                     labelNotice.Text = Strings.Get("Select Day(s) of Month");
                     return false;
@@ -236,7 +241,7 @@ namespace AbleCheckbook.Gui
                     labelNotice.Text = Strings.Get("Select Day of Week");
                     return false;
                 }
-                if(dateTimePickerNextOccurrence5.Value.Date < DateTime.Now.Date)
+                if (dateTimePickerNextOccurrence5.Value.Date < DateTime.Now.Date)
                 {
                     labelNotice.Text = Strings.Get("Invalid Next Date");
                     return false;
@@ -247,13 +252,26 @@ namespace AbleCheckbook.Gui
                     return false;
                 }
                 int dayOfWeek = Array.IndexOf(Enum.GetNames(typeof(DayOfWeek)), dateTimePickerNextOccurrence5.Value.Date.DayOfWeek.ToString());
-                if(dayOfWeek != listBoxDayOfWeek5.SelectedIndex)
+                if (dayOfWeek != listBoxDayOfWeek5.SelectedIndex)
                 {
                     labelNotice.Text = Strings.Get("Next Date Not ") + listBoxDayOfWeek5.SelectedItem.ToString();
                     return false;
                 }
+            }
+            else if (tabControl.SelectedTab == tabPageDaysApart)
+            {
+                if (dateTimePickerNextOccurrence6.Value.Date < DateTime.Now.Date)
+                {
+                    labelNotice.Text = Strings.Get("Invalid Next Date");
+                    return false;
+                }
+                if (dateTimePickerNextOccurrence5.Value.Date.Subtract(DateTime.Now.Date).Days > 364)
+                {
+                    labelNotice.Text = Strings.Get("Must be Within 1 Year");
+                    return false;
+                }
             };
-            if(comboBoxPayee.Text.Trim().Length < 1)
+            if (comboBoxPayee.Text.Trim().Length < 1)
             {
                 labelNotice.Text = Strings.Get("Must Specify Payee");
                 return false;
@@ -327,6 +345,9 @@ namespace AbleCheckbook.Gui
                 case SchedulePeriod.BiWeekly:
                     tabControl.SelectedTab = tabPageBiWeekly;
                     break;
+                case SchedulePeriod.DaysApart:
+                    tabControl.SelectedTab = tabPageDaysApart;
+                    break;
             }
             SetSelections(listBoxDaysOfMonth1, _schEvent.DayOfMonthBits);
             SetSelections(listBoxDaysOfMonth2, _schEvent.DayOfMonthBits);
@@ -335,12 +356,14 @@ namespace AbleCheckbook.Gui
             SetSelections(listBoxDayOfWeek5, _schEvent.DayOfWeekBits);
             listBoxNthOccurrence.SelectedIndex = _schEvent.WeekOfMonth;
             listBoxMonth2.SelectedIndex = _schEvent.MonthOfYear;
+            numericUpDownDaysApart6.Value = _schEvent.DaysApart;
             DateTime dateTime = _schEvent.DueNext();
-            if(dateTime < new DateTime(1970, 1, 1))
+            if (dateTime < new DateTime(1970, 1, 1))
             {
                 dateTime = DateTime.Now;
             }
             dateTimePickerNextOccurrence5.Value = dateTime;
+            dateTimePickerNextOccurrence6.Value = dateTime;
             string[] kinds = new string[]
             {
                 Strings.Get("Payment"),
@@ -632,6 +655,11 @@ namespace AbleCheckbook.Gui
                 Strings.Get("30th (or last day in Feb)"),
                 Strings.Get("31st (or last day of month)")});
             listBoxDaysOfMonth2.Items.AddRange(listBoxDaysOfMonth1.Items);
+            labelDaysApart6.Text = Strings.Get("Days Apart");
+            labelNextOccurence6.Text = Strings.Get("Next occurrence date...");
+            labelDaysApartExample6.Text = Strings.Get("i.e. Every 7 days would occur weekly");
+            numericUpDownDaysApart6.Minimum = 1;
+            numericUpDownDaysApart6.Maximum = 365;
             PopulateControls();
             UpdateVisibilities();
             ValidateControls();

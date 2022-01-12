@@ -68,7 +68,7 @@ namespace AbleCheckbook.Gui
 
         private void ReconcileSourceForm_Load(object sender, EventArgs e)
         {
-            this.Text = Strings.Get("Reconciliation Source");
+            this.Text = Strings.Get("Start Reconciliation");
             groupBoxSource.Text = Strings.Get("Source");
             radioButtonManual.Text = Strings.Get("Manual - Clear one entry at a time per a bank statement");
             radioButtonWeb.Text = Strings.Get("Web: Financial Institution:");
@@ -78,7 +78,7 @@ namespace AbleCheckbook.Gui
             buttonBrowse.Text = Strings.Get("Browse");
             buttonCancel.Text = Strings.Get("Cancel");
             buttonOk.Text = Strings.Get("Ok");
-            labelPrompt.Text = "";
+            labelPrompt.Text = Strings.Get("Start/Prev Date is Inclusive, End/This date is Exclusive (after)");
             labelPrevRecon.Text = Strings.Get("Prev Reconcile");
             labelThisRecon.Text = Strings.Get("This Reconcile");
             dateTimePickerPrevRecon.ShowUpDown = !Configuration.Instance.ShowCalendars;
@@ -170,6 +170,7 @@ namespace AbleCheckbook.Gui
                 }
                 MessageBox.Show(message);
             }
+            db.CloseWithoutSync();
         }
     }
 }

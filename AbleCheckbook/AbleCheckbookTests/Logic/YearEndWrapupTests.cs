@@ -23,7 +23,7 @@ namespace AbleCheckbook.Logic.Tests
             string dbName = "UtEsTwrap-" + newDate.Year + ".acb";
             File.Delete(Path.Combine(Configuration.Instance.DirectoryDatabase, dbName));
             File.Delete(Path.Combine(Configuration.Instance.DirectoryDatabase, "UtEsTwrap-" + oldDate.Year + ".acb"));
-            JsonDbAccess db = new JsonDbAccess(dbName, null);
+            JsonDbAccess db = new JsonDbAccess(dbName, null, true);
             CheckbookEntry entry;
             // entered and cleared last year
             entry = StaticTestSupport.AddEntry(db, oldDate, "OLD-ABC", false, "Paycheck", 223490, null, 0, false);
@@ -41,15 +41,15 @@ namespace AbleCheckbook.Logic.Tests
             entry = StaticTestSupport.AddEntry(db, newDate, "NEW-STU", true, "Utilities", 666, null, 0, false);
             entry.IsCleared = true;
             entry.DateCleared = newDate;
-            db.Sync();
+            db.SyncAndClose();
 
             // Try forcing a year-end
-            db = new JsonDbAccess(dbName, null);
+            db = new JsonDbAccess(dbName, null, true);
             YearEndWrapup yew = new YearEndWrapup(db);
             bool ok = yew.SplitDbsAtDec31(true);
             Assert.IsTrue(ok);
             string message = yew.Message;
-            db.Sync();
+            db.SyncAndClose();
 
             // check the old archive db
             db = new JsonDbAccess(dbName.Replace(("" + newDate.Year), ("" + oldDate.Year)), null);
@@ -64,6 +64,7 @@ namespace AbleCheckbook.Logic.Tests
             Assert.IsTrue(payees.Contains("OLD-ABC"));
             Assert.IsTrue(payees.Contains("BOTH-DEF"));
             Assert.IsTrue(payees.Contains("BOTH-GHI"));
+            db.SyncAndClose();
 
             // check the new updated db
             db = new JsonDbAccess(dbName, null);
@@ -78,6 +79,7 @@ namespace AbleCheckbook.Logic.Tests
             Assert.IsTrue(payees.Contains("BOTH-GHI"));
             Assert.IsTrue(payees.Contains("NEW-PQR"));
             Assert.IsTrue(payees.Contains("NEW-STU"));
+            db.SyncAndClose();
         }
     }
 }

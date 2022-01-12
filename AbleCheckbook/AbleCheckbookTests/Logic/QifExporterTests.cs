@@ -20,7 +20,7 @@ namespace AbleCheckbook.Logic.Tests
         {
             string dbName = "UtEsTexpqif-" + DateTime.Now.Year + ".acb";
             File.Delete(Path.Combine(Configuration.Instance.DirectoryDatabase, dbName));
-            JsonDbAccess db = new JsonDbAccess(dbName, null);
+            JsonDbAccess db = new JsonDbAccess(dbName, null, true);
             DateTime dateTran = new DateTime(2020, 6, 15);
             StaticTestSupport.AddEntry(db, dateTran, 
                 "ABCD", false, "Paycheck", 223450, null, 0, false);
@@ -41,6 +41,7 @@ namespace AbleCheckbook.Logic.Tests
             Assert.IsTrue(buffer.Contains("D6/15'20\r\nT2234.50\r\nPABCD\r\nLPaycheck\r\n^"));
             Assert.IsTrue(buffer.Length > 350);
             reader.Close();
+            db.SyncAndClose();
         }
 
     }

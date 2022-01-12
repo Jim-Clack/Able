@@ -11,13 +11,18 @@ namespace AbleCheckbook.Db
     /// <summary>
     /// The database layer is an implementation of this.
     /// </summary>
-    public interface IDbAccess
+    public interface IDbAccess : IDisposable
     {
 
         /// <summary>
         /// Close the DB without modifiying it. (if it was open too long it may have already been modified)
         /// </summary>
         void CloseWithoutSync();
+
+        /// <summary>
+        /// Update and close the DB.
+        /// </summary>
+        void SyncAndClose();
 
         /// <summary>
         /// Full path the current DB account file.

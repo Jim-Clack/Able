@@ -87,7 +87,7 @@
             this.textBoxWebConnection.Name = "textBoxWebConnection";
             this.textBoxWebConnection.Size = new System.Drawing.Size(351, 15);
             this.textBoxWebConnection.TabIndex = 4;
-            this.textBoxWebConnection.Text = "Xxxxx.com";
+            this.textBoxWebConnection.Text = "(none)";
             // 
             // buttonBrowse
             // 
@@ -95,7 +95,7 @@
             this.buttonBrowse.Location = new System.Drawing.Point(477, 79);
             this.buttonBrowse.Name = "buttonBrowse";
             this.buttonBrowse.Size = new System.Drawing.Size(82, 26);
-            this.buttonBrowse.TabIndex = 4;
+            this.buttonBrowse.TabIndex = 3;
             this.buttonBrowse.Text = "Browse";
             this.buttonBrowse.UseVisualStyleBackColor = true;
             this.buttonBrowse.Click += new System.EventHandler(this.buttonBrowse_Click);
@@ -115,7 +115,7 @@
             this.radioButtonCsv.Location = new System.Drawing.Point(11, 80);
             this.radioButtonCsv.Name = "radioButtonCsv";
             this.radioButtonCsv.Size = new System.Drawing.Size(86, 21);
-            this.radioButtonCsv.TabIndex = 3;
+            this.radioButtonCsv.TabIndex = 333;
             this.radioButtonCsv.Text = "CSV File:";
             this.radioButtonCsv.UseVisualStyleBackColor = true;
             // 
@@ -159,35 +159,35 @@
             this.labelPrompt.ForeColor = System.Drawing.Color.Red;
             this.labelPrompt.Location = new System.Drawing.Point(13, 142);
             this.labelPrompt.Name = "labelPrompt";
-            this.labelPrompt.Size = new System.Drawing.Size(43, 18);
+            this.labelPrompt.Size = new System.Drawing.Size(469, 18);
             this.labelPrompt.TabIndex = 3;
-            this.labelPrompt.Text = "Xxxx";
+            this.labelPrompt.Text = "Start/Prev Date is Inclusive, End/This date is Exclusive (after)";
             // 
             // dateTimePickerPrevRecon
             // 
             this.dateTimePickerPrevRecon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.dateTimePickerPrevRecon.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePickerPrevRecon.Location = new System.Drawing.Point(14, 169);
+            this.dateTimePickerPrevRecon.Location = new System.Drawing.Point(14, 170);
             this.dateTimePickerPrevRecon.Name = "dateTimePickerPrevRecon";
             this.dateTimePickerPrevRecon.ShowUpDown = true;
             this.dateTimePickerPrevRecon.Size = new System.Drawing.Size(125, 22);
-            this.dateTimePickerPrevRecon.TabIndex = 7;
+            this.dateTimePickerPrevRecon.TabIndex = 344;
             // 
             // dateTimePickerThisRecon
             // 
             this.dateTimePickerThisRecon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.dateTimePickerThisRecon.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePickerThisRecon.Location = new System.Drawing.Point(14, 203);
+            this.dateTimePickerThisRecon.Location = new System.Drawing.Point(14, 204);
             this.dateTimePickerThisRecon.Name = "dateTimePickerThisRecon";
             this.dateTimePickerThisRecon.ShowUpDown = true;
             this.dateTimePickerThisRecon.Size = new System.Drawing.Size(125, 22);
-            this.dateTimePickerThisRecon.TabIndex = 8;
+            this.dateTimePickerThisRecon.TabIndex = 355;
             // 
             // labelPrevRecon
             // 
             this.labelPrevRecon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelPrevRecon.AutoSize = true;
-            this.labelPrevRecon.Location = new System.Drawing.Point(143, 171);
+            this.labelPrevRecon.Location = new System.Drawing.Point(143, 173);
             this.labelPrevRecon.Name = "labelPrevRecon";
             this.labelPrevRecon.Size = new System.Drawing.Size(103, 17);
             this.labelPrevRecon.TabIndex = 9;
@@ -197,7 +197,7 @@
             // 
             this.labelThisRecon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelThisRecon.AutoSize = true;
-            this.labelThisRecon.Location = new System.Drawing.Point(143, 205);
+            this.labelThisRecon.Location = new System.Drawing.Point(143, 207);
             this.labelThisRecon.Name = "labelThisRecon";
             this.labelThisRecon.Size = new System.Drawing.Size(101, 17);
             this.labelThisRecon.TabIndex = 10;
@@ -207,19 +207,19 @@
             // 
             this.textBoxThisBalance.AcceptsReturn = true;
             this.textBoxThisBalance.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.textBoxThisBalance.Location = new System.Drawing.Point(250, 203);
+            this.textBoxThisBalance.Location = new System.Drawing.Point(250, 204);
             this.textBoxThisBalance.Name = "textBoxThisBalance";
             this.textBoxThisBalance.Size = new System.Drawing.Size(90, 22);
-            this.textBoxThisBalance.TabIndex = 12;
+            this.textBoxThisBalance.TabIndex = 4;
             this.textBoxThisBalance.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // textBoxPrevBalance
             // 
             this.textBoxPrevBalance.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.textBoxPrevBalance.Location = new System.Drawing.Point(250, 169);
+            this.textBoxPrevBalance.Location = new System.Drawing.Point(250, 170);
             this.textBoxPrevBalance.Name = "textBoxPrevBalance";
             this.textBoxPrevBalance.Size = new System.Drawing.Size(90, 22);
-            this.textBoxPrevBalance.TabIndex = 11;
+            this.textBoxPrevBalance.TabIndex = 366;
             this.textBoxPrevBalance.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // ReconcileStartForm
@@ -241,7 +241,7 @@
             this.MaximumSize = new System.Drawing.Size(622, 292);
             this.MinimumSize = new System.Drawing.Size(622, 292);
             this.Name = "ReconcileStartForm";
-            this.Text = "Reconciliation Source";
+            this.Text = "Start Reconciliation";
             this.Load += new System.EventHandler(this.ReconcileSourceForm_Load);
             this.groupBoxSource.ResumeLayout(false);
             this.groupBoxSource.PerformLayout();

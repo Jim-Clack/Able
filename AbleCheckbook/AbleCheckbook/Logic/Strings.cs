@@ -214,6 +214,7 @@ namespace AbleCheckbook.Logic
             AddString("Adjustment");
             AddString("Print");
             AddString("Close");
+            AddString("days");
             AddString("No Activity");
             AddString("Select Printer and Settings");
             AddString("This can corrupt your checkbook, please cancel");
@@ -285,6 +286,7 @@ namespace AbleCheckbook.Logic
             AddString(" entries ignored as out of date range");
             AddString("Disable sanity-checks for wild dates and amounts during data-entry");
             AddString("Account Settings - ");
+            AddString("Start/Prev Date is Inclusive, End/This date is Exclusive (after)");
             AddString("Live sync to bank acct online (instead of only for monthly reconcile)");
             AddString("Aggressively merge transactions (you can still un-merge if desired)");
             AddString("Bank/branch req'd");
@@ -340,6 +342,7 @@ namespace AbleCheckbook.Logic
             AddString("\nRecommended action: [Abandon Reconcile]");
             AddString("Abandon Reconcile");
             AddString("Abandon");
+            AddString("days, from");
             AddString("Uncheck All Checked Entries Too?");
             AddString("Not Yet");
             AddString("Sorry");
@@ -382,7 +385,7 @@ namespace AbleCheckbook.Logic
             AddString("Sorry - Illegal Account Name");
             AddString("Year-End Wrap-Up Overdue");
             AddString("Monthly Reconciliation Due");
-            AddString("Reconciliation Source");
+            AddString("Start Reconciliation");
             AddString("Manual - Clear one entry at a time per a bank statement");
             AddString("Web: Financial Institution:");
             AddString("CSV File:");
@@ -457,6 +460,7 @@ namespace AbleCheckbook.Logic
             AddString("Next occurrence date...");
             AddString("Estimate");
             AddString("Final Payment if Different");
+            AddString("i.e. Every 7 days would occur weekly");
             AddString("Duration");
             AddString("Final:");
             AddString("Occurrences:");
@@ -511,6 +515,7 @@ namespace AbleCheckbook.Logic
             AddString("Set Debit/Credit");
             AddString("Amount is Needed");
             AddString("Autosaving...");
+            AddString("Days Apart");
             AddString("Set Occurrences Count");
             AddString("Invalid Final Date");
             AddString("Must be Within 2 Wks");

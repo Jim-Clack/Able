@@ -17,7 +17,7 @@ namespace AbleCheckbook.Logic.Tests
         {
             string dbName = "UtEsTrecsum-" + DateTime.Now.Year + ".acb";
             File.Delete(Path.Combine(Configuration.Instance.DirectoryDatabase, dbName));
-            JsonDbAccess db = new JsonDbAccess(dbName, null);
+            JsonDbAccess db = new JsonDbAccess(dbName, null, true);
             CheckbookEntry entry = null;
             entry = StaticTestSupport.AddEntry(db, DateTime.Now, 
                 "Acme", false, "Paycheck", 150000, "", 0, false);       // 1500.00 paycheck
@@ -47,7 +47,7 @@ namespace AbleCheckbook.Logic.Tests
             list = helper.FindSumCandidates(150000-(99521+2378), 3, new DateTime().AddYears(10));
             Assert.AreEqual(1, list.Count);
             Assert.AreEqual(3, list[0].OpenEntries.Count);
-            db.Sync();
+            db.SyncAndClose();
         }
 
         [TestMethod()]
@@ -55,7 +55,7 @@ namespace AbleCheckbook.Logic.Tests
         {
             string dbName = "UtEsTrectran-" + DateTime.Now.Year + ".acb";
             File.Delete(Path.Combine(Configuration.Instance.DirectoryDatabase, dbName));
-            JsonDbAccess db = new JsonDbAccess(dbName, null);
+            JsonDbAccess db = new JsonDbAccess(dbName, null, true);
             StaticTestSupport.AddEntry(db, DateTime.Now,
                 "Acme", false, "Paycheck", 150000, "", 0, false);       // 1500.00 paycheck
             StaticTestSupport.AddEntry(db, DateTime.Now,
@@ -72,7 +72,7 @@ namespace AbleCheckbook.Logic.Tests
             list = helper.FindTransposeCandidates(-3600, new DateTime().AddYears(10));
             Assert.AreEqual(1, list.Count);
             Assert.AreEqual("Chase", list[0].OpenEntries[0].CheckbookEntry.Payee);
-            db.Sync();
+            db.SyncAndClose();
         }
 
     }

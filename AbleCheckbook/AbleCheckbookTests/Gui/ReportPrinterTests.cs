@@ -23,6 +23,7 @@ namespace AbleCheckbook.Gui.Tests
                 JsonDbAccess db = CreateTestDb("UtEsTprtreg-");
                 ReportPrinter printer = new ReportPrinter();
                 printer.PrintRegisterReport(db, new DateTime(2020, 5, 17), new DateTime(2030, 6, 17));
+                db.CloseWithoutSync();
             }
         }
 
@@ -34,6 +35,7 @@ namespace AbleCheckbook.Gui.Tests
                 JsonDbAccess db = CreateTestDb("UtEsTprtreg2-");
                 ReportPrinter printer = new ReportPrinter();
                 printer.PrintRegisterReport(db);
+                db.CloseWithoutSync();
             }
         }
 
@@ -45,6 +47,7 @@ namespace AbleCheckbook.Gui.Tests
                 JsonDbAccess db = CreateTestDb("UtEsTprtcat-");
                 ReportPrinter printer = new ReportPrinter();
                 printer.PrintCategoryReport(db, new DateTime(2020, 5, 17), new DateTime(2030, 6, 17), true);
+                db.CloseWithoutSync();
             }
         }
 
@@ -56,6 +59,7 @@ namespace AbleCheckbook.Gui.Tests
                 JsonDbAccess db = CreateTestDb("UtEsTprtcat2-");
                 ReportPrinter printer = new ReportPrinter();
                 printer.PrintCategoryReport(db);
+                db.CloseWithoutSync();
             }
         }
 
@@ -63,7 +67,7 @@ namespace AbleCheckbook.Gui.Tests
         {
             string dbName = name + DateTime.Now.Year + ".acb";
             File.Delete(Path.Combine(Configuration.Instance.DirectoryDatabase, dbName));
-            JsonDbAccess db = new JsonDbAccess(dbName, null);
+            JsonDbAccess db = new JsonDbAccess(dbName, null, true);
             StaticTestSupport.AddEntry(db, new DateTime(2020, 6, 15),
                 "Acme", false, "Paycheck", 223490, null, 0, false);
             StaticTestSupport.AddEntry(db, new DateTime(2020, 5, 16),
@@ -116,7 +120,6 @@ namespace AbleCheckbook.Gui.Tests
                 "Mobile", true, "Transportation", -1850, null, 0, false);
             StaticTestSupport.AddEntry(db, new DateTime(2020, 7, 5),
                 "Publix", true, "Groceries", -9975, "Cash", 2000, true);
-            db.Sync();
             return db;
         }
 

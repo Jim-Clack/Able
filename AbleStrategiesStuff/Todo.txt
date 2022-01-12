@@ -1,5 +1,4 @@
 Alpha TODO...
- - Prevent multiple instances at the same time
  - Flesh out online help
  - Deploy website for testing
  - EULA
@@ -8,16 +7,15 @@ Alpha TODO...
  - Implement Activate via Email/Phone as is appropriate 
  - Web Services for online purchase and self-service activation
  - Move SU user data to website instead of file
- - During reconcile the cursor sometimes jumps way down
  - Fix desktop Icon
 
 Beta TODO...
+ - During reconcile the cursor sometimes jumps way down
  - AreYouSureForm with date/time/user that screen-captures, logs, and read log
  - Quick yesterday-thru-future condensed report as jpg file (date, payee, amt, bal)
  - Much testing
 
 Long-term TODO...
- - ScheduledEvent needs a "EveryNDays" period (i.e. NYT)
  - Activation: Add a time-of-day stamp to an image file as a tertiary expiry check
  - Budgeting, forecasting, trends, etc.
  - Implement SU ReadLog

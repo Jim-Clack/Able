@@ -147,9 +147,9 @@ namespace AbleCheckbook.Logic
             try
             {
                 bool okay = MoveInactiveEntries();
-                _oldDb.Sync();
+                _oldDb.SyncAndClose();
                 InsertStartingBalance();
-                _newDb.Sync(); // JBC added 7-5-2021 (correct?)
+                _newDb.SyncAndClose(); // JBC added 7-5-2021 (correct?)
             }
             catch (Exception ex)
             {

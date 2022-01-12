@@ -173,6 +173,7 @@ namespace AbleCheckbook.Logic
                     }
                 }
             }
+            Logger.Diag("CheckForDuplicates " + _countDuplicates);
             return _countDuplicates > 0;
         }
 
@@ -234,11 +235,13 @@ namespace AbleCheckbook.Logic
                 newEntry.MadeBy = EntryMadeBy.Reconciler;
                 newEntry.ModifiedBy = System.Environment.UserName;
                 _userDb.InsertEntry(newEntry);
+                Logger.Diag("AutoReconciler - Inserted Entry " + newEntry.ToShortString());
             }
             else
             {
                 newEntry.BankMergeAccepted = true;
                 _userDb.UpdateEntry(newEntry, bestEntry, true);
+                Logger.Diag("AutoReconciler - Updated Entry " + newEntry.ToShortString());
             }
         }
 

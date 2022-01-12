@@ -58,7 +58,7 @@ User Levels (and corresponding Site-Description delimiters)...
  1. Deactivated (abuse deactivates most latent)     en-dash, not a hyphen: –
  2. Standard (Regular licensed version)                            hyphen: -
  3. ProCPA (Named Accts, SLA, Live Support, Mult Instances)     ampersand: &
- 4. SuperUser (UserDb Maint, Log Reader, Activation Codes, etc.)   DEBUG + @
+ 4. SuperUser (UserDb Maint, Log Reader, Activation Codes, etc.) (+DEBUG): @
 
 When writing docs/help, explain...
  - See terminology, above
@@ -69,9 +69,9 @@ When writing docs/help, explain...
  - Licensing, UserLevel, Activation, Expiration, and Admin Mode
  - Time-limited: Days of use vs days since installed
 
-Kludge to force your system (via Able Licensing) into Super-User mode...
+Kludge to enable your system (via Able Licensing) for Super-User mode...
  Activation.Instance.SetDefaultDays(180, 366); // note1: not needed but shown for completeness
- Activation.Instance.SiteDescription = "MYNAME@99999"; // The @-sign (plus compiler/run in DEBUG mode) enables SuperUser mode
+ Activation.Instance.SiteDescription = "MYNAME@99999"; // The @-sign (plus compile/run in DEBUG mode) enables SuperUser mode
  string pin = Activation.Instance.ResetAllEntries(Activation.Instance.ChecksumOfString(Activation.Instance.SiteIdentification));
  Activation.Instance.SetActivationPin(pin);
  Activation.Instance.SetFeatureBitmask(0x000000000000000FL, Activation.Instance.ChecksumOfString(Activation.Instance.SiteIdentification)); // note1

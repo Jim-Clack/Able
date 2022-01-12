@@ -90,7 +90,7 @@ namespace AbleCheckbook.Gui.Tests
         {
             string dbName = name + DateTime.Now.Year + ".acb";
             File.Delete(Path.Combine(Configuration.Instance.DirectoryDatabase, dbName));
-            JsonDbAccess db = new JsonDbAccess(dbName, null);
+            JsonDbAccess db = new JsonDbAccess(dbName, null, true);
             StaticTestSupport.AddEntry(db, new DateTime(2020, 6, 15),
                 "Acme", false, "Paycheck", 223490, null, 0, false);
             StaticTestSupport.AddEntry(db, new DateTime(2020, 5, 16),

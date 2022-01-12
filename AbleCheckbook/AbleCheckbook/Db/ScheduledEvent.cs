@@ -17,6 +17,7 @@ namespace AbleCheckbook.Db
         Monthly = 2,
         MonthlySsa = 3,
         Annually = 4,
+        DaysApart = 5,
     }
 
     /// <summary>
@@ -29,8 +30,8 @@ namespace AbleCheckbook.Db
     ///   MonthOfYear  1-based (Jan = 1)
     ///   WeekOfMonth  0-based
     ///   Year         1-based (actual year number, like 2031)
-    ///  Note that these are what you would expect and are consistent with
-    ///  normal use. But it's important to refer to this often because the
+    ///  Note that these are what you would expect but are consistent with
+    ///  normal use. Yet it's important to refer to this often because the
     ///  mix of 0-based and 1-based indexes can be confusing. 
     /// INTERNAL INDEXES:
     ///   Note that the .NET DateTime object, the user interface, and the 
@@ -45,7 +46,7 @@ namespace AbleCheckbook.Db
     /// DANGER DANGER DANGER: 
     ///   Do not use setters for the due date settings (_dayOfXxx, etc.), only
     ///   the SetXxx methods, as those public setters/getters are there for
-    ///   .NET serialization and should not be set independently.
+    ///   .NET serialization and circumvent normal processes.
     /// USAGE:
     ///   ...Initialization...
     ///    1. Ctor();
@@ -147,6 +148,11 @@ namespace AbleCheckbook.Db
         private int _monthOfYear = 0;
 
         /// <summary>
+        /// Number of days from one occurence to the next, i.e. 7=weekly.
+        /// </summary>
+        private int _daysApart = 7;
+
+        /// <summary>
         /// Name of payee.
         /// </summary>
         private string _payee = "";
@@ -176,6 +182,7 @@ namespace AbleCheckbook.Db
         public int DayOfWeekBits { get => _dayOfWeekBits; set => _dayOfWeekBits = value; }
         public int WeekOfMonth { get => _weekOfMonth; set => _weekOfMonth = value; }
         public int MonthOfYear { get => _monthOfYear; set => _monthOfYear = value; }
+        public int DaysApart { get => _daysApart; set => _daysApart = value; }
         public SchedulePeriod Period { get => _period; set => _period = value; }
         public long FinalPaymentAmount { get => _finalPaymentAmount; set => _finalPaymentAmount = value; }
         public bool IsEstimatedAmount { get => _isEstimatedAmount; set => _isEstimatedAmount = value; }
@@ -206,6 +213,7 @@ namespace AbleCheckbook.Db
             schedEvent._dayOfWeekBits = this._dayOfWeekBits;
             schedEvent._monthOfYear = this._monthOfYear;
             schedEvent._weekOfMonth = this._weekOfMonth;
+            schedEvent._daysApart = this._daysApart;
             schedEvent._endingDate = this._endingDate;
             schedEvent._finalPaymentAmount = this._finalPaymentAmount;
             schedEvent._isEstimatedAmount = this._isEstimatedAmount;
@@ -402,6 +410,25 @@ namespace AbleCheckbook.Db
         }
 
         /// <summary>
+        /// Set up due dates for enery N days.
+        /// </summary>
+        /// <param name="isReminder">true if this is just a reminder, false if it's an automatic entry</param>
+        /// <param name="daysApart">7=weekly</param>
+        /// <param name="firstOccurrence">date of first occurence</param>
+        /// <param name="endingDate">Last date of occurence.</param>
+        public void SetDueDaysApart(bool isReminder, int daysApart, DateTime firstOccurrence, DateTime endingDate)
+        {
+            _period = SchedulePeriod.DaysApart;
+            _daysApart = Math.Max(1, daysApart);
+            _endingDate = endingDate.Date;
+            _lastPosting = firstOccurrence.AddDays(-daysApart).Date;
+            if (_endingDate.Ticks > Eternity.Ticks)
+            {
+                _endingDate = Eternity;
+            }
+        }
+
+        /// <summary>
         /// Set EndingDate based on "number of occurences" 
         /// </summary>
         /// <param name="occurrences">How many times event should occur from today onward.</param>
@@ -480,11 +507,11 @@ namespace AbleCheckbook.Db
         }
 
         /// <summary>
-        /// Get a list of due dates while ignoring RepeatCount or EndingDate.
+        /// Get due date while ignoring RepeatCount.
         /// </summary>
         /// <param name="startDate">start looking for due dates from this one forward</param>
         /// <param name="endDate">list should not go beyond this date.</param>
-        /// <returns>list of due dates, possibly empty</returns>
+        /// <returns>due date on or after startDate, possibly empty/0</returns>
         public DateTime DueDateUnending(DateTime startDate, DateTime endDate)
         { 
             if(endDate.Date.Ticks < 1L || startDate.Date.CompareTo(endDate) >= 0)
@@ -496,7 +523,7 @@ namespace AbleCheckbook.Db
                 endDate = Eternity;
             }
             bool found = false;
-            DateTime dueDate = new DateTime(startDate.Date.Ticks);
+            DateTime dueDate = startDate.Date; // changed 1-12-2022 jbc
             while(!found) 
             {
                 if(dueDate.Date.CompareTo(endDate) > 0)
@@ -537,6 +564,12 @@ namespace AbleCheckbook.Db
                         break;
                     case SchedulePeriod.Annually:
                         if ((isMonthlyDueDay || isOnOrPastLastDay) && _monthOfYear == dueDate.Month - 1)
+                        {
+                            found = true;
+                        }
+                        break;
+                    case SchedulePeriod.DaysApart:
+                        if (dueDate.Subtract(_lastPosting.Date).Days % DaysApart == 0)
                         {
                             found = true;
                         }
@@ -605,6 +638,8 @@ namespace AbleCheckbook.Db
                         return Strings.Get("Monthly on") + " " + UtilityMethods.Ordinal(1 + _weekOfMonth) + " " + daysOfWeek;
                     case SchedulePeriod.BiWeekly:
                         return Strings.Get("Every") + " " + Strings.Get(_isOddWeeksOnly ? "Odd" : "Even") + " " + daysOfWeek;
+                    case SchedulePeriod.DaysApart:
+                        return Strings.Get("Every") + " " + DaysApart + " " + Strings.Get("days, from") + " " + LastPosting.ToShortDateString();
                 }
                 return "?";
             }

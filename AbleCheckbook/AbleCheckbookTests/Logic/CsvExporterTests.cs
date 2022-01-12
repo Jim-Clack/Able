@@ -19,7 +19,7 @@ namespace AbleCheckbook.Logic.Tests
         {
             string dbName = "UtEsTexpcsv-" + DateTime.Now.Year + ".acb";
             File.Delete(Path.Combine(Configuration.Instance.DirectoryDatabase, dbName));
-            JsonDbAccess db = new JsonDbAccess(dbName, null);
+            JsonDbAccess db = new JsonDbAccess(dbName, null, true);
             StaticTestSupport.AddEntry(db, new DateTime(2020, 6, 15), 
                 "ABCD", false, "Paycheck", 223490, null, 0, false);
             StaticTestSupport.AddEntry(db, new DateTime(2020, 6, 16), 
@@ -37,6 +37,7 @@ namespace AbleCheckbook.Logic.Tests
                 "\"6/17/2020\",\"\",\"HIJK\",\"Groceries\",\"\",\"-163.45\",\"0\",\"X\"\r\n";
             Assert.AreEqual(csv, buffer.ToString());
             reader.Close();
+            db.SyncAndClose();
         }
 
     }

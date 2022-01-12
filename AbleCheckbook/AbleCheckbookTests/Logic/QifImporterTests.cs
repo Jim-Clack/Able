@@ -20,11 +20,12 @@ namespace AbleCheckbook.Logic.Tests
             createQif("import.qif", 1);
             string dbName = "UtEsTimpqif-" + DateTime.Now.Year + ".acb";
             File.Delete(Path.Combine(Configuration.Instance.DirectoryDatabase, dbName));
-            JsonDbAccess db = new JsonDbAccess(dbName, null);
+            JsonDbAccess db = new JsonDbAccess(dbName, null, true);
             QifImporter importer = new QifImporter(db);
             int lineNumber = importer.Import("import.qif");
             string errorMessage = importer.ErrorMessage;
             string warningMessages = importer.WarningMessages;
+            db.SyncAndClose();
         }
 
         /// <summary>

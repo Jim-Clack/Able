@@ -19,7 +19,7 @@ namespace AbleCheckbook.Logic.Tests
         {
             string dbName = "UtEsTckbk-" + DateTime.Now.Year + ".acb";
             File.Delete(Path.Combine(Configuration.Instance.DirectoryDatabase, dbName));
-            JsonDbAccess db = new JsonDbAccess(dbName, null);
+            JsonDbAccess db = new JsonDbAccess(dbName, null, true);
             CheckbookEntry entry = null;
             entry = new CheckbookEntry();
             entry.AddSplit(Guid.NewGuid(), TransactionKind.Payment, 1234);
@@ -34,7 +34,7 @@ namespace AbleCheckbook.Logic.Tests
             entry.IsCleared = false;
             db.InsertEntry(entry);
             CheckbookEntry entryEfgh = entry;
-            db.Sync();
+            db.SyncAndClose();
             db = new JsonDbAccess(dbName, null);
             // must be in ascending order by tran date
             CheckbookEntryIterator iter = db.CheckbookEntryIterator;
@@ -57,6 +57,7 @@ namespace AbleCheckbook.Logic.Tests
             Assert.IsTrue(ok);
             entry = db.GetCheckbookEntryById(entryEfgh.Id);
             Assert.IsNull(entry);
+            db.SyncAndClose();
         }
 
         [TestMethod()]
@@ -64,7 +65,7 @@ namespace AbleCheckbook.Logic.Tests
         {
             string dbName = "UtEsTsched-" + DateTime.Now.Year + ".acb";
             File.Delete(Path.Combine(Configuration.Instance.DirectoryDatabase, dbName));
-            JsonDbAccess db = new JsonDbAccess(dbName, null);
+            JsonDbAccess db = new JsonDbAccess(dbName, null, true);
             ScheduledEvent schEvent = null;
             schEvent = new ScheduledEvent();
             schEvent.SetDueOneTime(false, DateTime.Now.AddDays(4));
@@ -75,7 +76,7 @@ namespace AbleCheckbook.Logic.Tests
             schEvent.SetDueOneTime(false, DateTime.Now.AddDays(2));
             db.InsertEntry(schEvent);
             ScheduledEvent entry2 = schEvent;
-            db.Sync();
+            db.SyncAndClose();
             db = new JsonDbAccess(dbName, null);
             // must be in ascending order by due date
             ScheduledEventIterator iter = db.ScheduledEventIterator;
@@ -97,6 +98,7 @@ namespace AbleCheckbook.Logic.Tests
             Assert.IsTrue(ok);
             schEvent = db.GetScheduledEventById(entry2.Id);
             Assert.IsNull(schEvent);
+            db.SyncAndClose();
         }
 
         [TestMethod()]
@@ -104,7 +106,7 @@ namespace AbleCheckbook.Logic.Tests
         {
             string dbName = "UtEsTcateg-" + DateTime.Now.Year + ".acb";
             File.Delete(Path.Combine(Configuration.Instance.DirectoryDatabase, dbName));
-            JsonDbAccess db = new JsonDbAccess(dbName, null);
+            JsonDbAccess db = new JsonDbAccess(dbName, null, true);
             FinancialCategory finCateg = null;
             finCateg = new FinancialCategory();
             finCateg.Name = "XYZ";
@@ -114,7 +116,7 @@ namespace AbleCheckbook.Logic.Tests
             finCateg.Name = "ABC";
             db.InsertEntry(finCateg);
             FinancialCategory entry2 = finCateg;
-            db.Sync();
+            db.SyncAndClose();
             db = new JsonDbAccess(dbName, null);
             // must be in ascending order by name
             FinancialCategoryIterator iter = db.FinancialCategoryIterator;
@@ -136,6 +138,7 @@ namespace AbleCheckbook.Logic.Tests
             Assert.IsTrue(ok);
             finCateg = db.GetFinancialCategoryById(entry2.Id);
             Assert.IsNull(finCateg);
+            db.SyncAndClose();
         }
 
         [TestMethod()]
@@ -143,7 +146,7 @@ namespace AbleCheckbook.Logic.Tests
         {
             string dbName = "UtEsTupsert-" + DateTime.Now.Year + ".acb";
             File.Delete(Path.Combine(Configuration.Instance.DirectoryDatabase, dbName));
-            JsonDbAccess db = new JsonDbAccess(dbName, null);
+            JsonDbAccess db = new JsonDbAccess(dbName, null, true);
             CheckbookEntry entry = null;
             entry = new CheckbookEntry();
             entry.AddSplit(Guid.NewGuid(), TransactionKind.Deposit, 1234);
@@ -180,7 +183,7 @@ namespace AbleCheckbook.Logic.Tests
             {
                 Assert.Fail();
             }
-            db.Sync();
+            db.SyncAndClose();
         }
 
         [TestMethod()]
@@ -188,7 +191,7 @@ namespace AbleCheckbook.Logic.Tests
         {
             string dbName = "UtEsTrelat-" + DateTime.Now.Year + ".acb";
             File.Delete(Path.Combine(Configuration.Instance.DirectoryDatabase, dbName));
-            JsonDbAccess db = new JsonDbAccess(dbName, null);
+            JsonDbAccess db = new JsonDbAccess(dbName, null, true);
             FinancialCategory finCateg = null;
             finCateg = new FinancialCategory();
             finCateg.Name = "XYZ";
@@ -205,7 +208,7 @@ namespace AbleCheckbook.Logic.Tests
             ckbkEntry.Payee = "ABCD";
             ckbkEntry.IsCleared = false;
             db.InsertEntry(ckbkEntry);
-            db.Sync();
+            db.SyncAndClose();
             db = new JsonDbAccess(dbName, null);
             CheckbookEntryIterator iter = db.CheckbookEntryIterator;
             if (!iter.HasNextEntry())
@@ -219,6 +222,7 @@ namespace AbleCheckbook.Logic.Tests
             finCateg = db.GetFinancialCategoryById(ckbkEntry.Splits[1].CategoryId);
             Assert.AreEqual("PQR", finCateg.Name);
             Assert.AreEqual(-3579, ckbkEntry.Amount);
+            db.SyncAndClose();
         }
 
     }

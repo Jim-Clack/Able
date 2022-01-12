@@ -20,7 +20,7 @@ namespace AbleCheckbook.Logic.Tests
             CreateCsv("import.csv", 0);
             string dbName = "UtEsTimpcsv-" + DateTime.Now.Year + ".acb";
             File.Delete(Path.Combine(Configuration.Instance.DirectoryDatabase, dbName));
-            JsonDbAccess db = new JsonDbAccess(dbName, null);
+            JsonDbAccess db = new JsonDbAccess(dbName, null, true);
             CsvImporter importer = new CsvImporter(db);
             int lineNumber = importer.Import("import.csv");
             string errorMessage = importer.ErrorMessage;
@@ -68,6 +68,7 @@ namespace AbleCheckbook.Logic.Tests
             Assert.IsTrue(iterator.HasNextEntry());
             entry = iterator.GetNextEntry();
             Assert.AreEqual(-183432, entry.Amount);
+            db.SyncAndClose();
         }
 
         /// <summary>

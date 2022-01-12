@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -24,13 +25,13 @@ namespace AbleCheckbook.Db
     /// Therefore you must hold onto a copy of the prior version so that you can delete/insert
     /// instead of updating the record.
     /// </remarks>
-    public class JsonDbAccess : IDbAccess // , IDisposable
+    public class JsonDbAccess : IDbAccess 
     {
 
         /// <summary>
         /// How often to autosave if changes were made.
         /// </summary>
-        public const long AutoSaveSeconds = 19;
+        public const long AUTO_SAVE_SECONDS = 19;
 
         /// <summary>
         /// WHen did we last autosave?
@@ -63,18 +64,23 @@ namespace AbleCheckbook.Db
         private JsonDbHeader _dbHeader = new JsonDbHeader();
 
         /// <summary>
-        /// Mutex to avoid races.
+        /// Inner mutex to avoid races.
         /// </summary>
-        private static Mutex _mutex = new Mutex();
+        private static Mutex _innerMutex = new Mutex();
 
         /// <summary>
         /// Outer mutex to avoid races.
         /// </summary>
-        private static Mutex _mutex2 = new Mutex();
+        private static Mutex _outerMutex = new Mutex();
+
+        /// <summary>
+        /// Here we ensure that multiple copies of the same acct/file/db are not opened
+        /// </summary>
+        private Mutex _accountDbMutex = null;
 
         // Getters/Setters
-        public static Mutex Mutex { get => _mutex; }
-        public static Mutex Mutex2 { get => _mutex2; }
+        public static Mutex Mutex { get => _innerMutex; }
+        public static Mutex Mutex2 { get => _outerMutex; }
 
         /// <summary>
         /// Ctor.
@@ -95,14 +101,23 @@ namespace AbleCheckbook.Db
                         connection = "Banking";
                     }
                 }
-                _fullPath = UtilityMethods.GetDbFilename(connection, false, false);
+                _fullPath = UtilityMethods.GetDbFilename(connection.Trim(), false, false);
             }
+            bool gotNew = true;
+            _accountDbMutex = new Mutex(true, "Global\\Able" + Regex.Replace(_fullPath.ToUpper(), "[^A-Z]", "$"), out gotNew);
+            if(!gotNew)
+            {
+                _accountDbMutex = null;
+                _errorMessage = "File/acct/DB is open in another window: " + _fullPath;
+                AppException.SetDb(null);
+                throw new AppException(_errorMessage, null, ExceptionHandling.CompleteFailure);
+            }
+            _errorMessage = "";
             if (startEmpty)
             {
                 File.Delete(_fullPath);
             }
             _isDirty = false;
-            _errorMessage = "";
             _undoTracker = undoTracker;
             if(File.Exists(_fullPath))
             {
@@ -144,7 +159,33 @@ namespace AbleCheckbook.Db
             _fullPath = null;
             _dbHeader = null;
             _isDirty = false;
-            _errorMessage = "Close Wihtout Sync";
+            _errorMessage = "Close Without Sync";
+            Dispose();
+        }
+
+        /// <summary>
+        /// Close the DB
+        /// </summary>
+        public void SyncAndClose()
+        {
+            AppException.SetDb(null);
+            Logger.Info("SyncAndClose " + _fullPath);
+            Sync();
+            Dispose();
+        }
+
+        /// <summary>
+        /// This must be closed to release the potential mutex (does not save DB!)
+        /// </summary>
+        public void Dispose()
+        {
+            AppException.SetDb(null);
+            if (_accountDbMutex != null)
+            {
+                _accountDbMutex.ReleaseMutex();
+                _accountDbMutex.Dispose();
+                _accountDbMutex = null;
+            }
         }
 
         /// <summary>
@@ -224,7 +265,7 @@ namespace AbleCheckbook.Db
         /// </summary>
         public void IdleTimeSync()
         {
-            if (!_isDirty || DateTime.Now.Subtract(_lastAutoSave).TotalSeconds < AutoSaveSeconds)
+            if (!_isDirty || DateTime.Now.Subtract(_lastAutoSave).TotalSeconds < AUTO_SAVE_SECONDS)
             {
                 return;
             }

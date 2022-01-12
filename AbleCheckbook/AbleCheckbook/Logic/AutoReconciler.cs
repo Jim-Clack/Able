@@ -28,7 +28,19 @@ namespace AbleCheckbook.Logic
 
         private int _countDateWrong = 0;
 
+        private int _countDuplicates = 0;
+
+        private string _firstDuplicate = null;
+
+        private string _lastDuplicate = null;
+
         public int CountDateWrong { get => _countDateWrong; }
+
+        public int CountDuplicates { get => _countDuplicates; }
+
+        public string FirstDuplicate { get => _firstDuplicate; }
+
+        public string LastDuplicate { get => _lastDuplicate; }
 
         /// <summary>
         /// Ctor.
@@ -54,6 +66,10 @@ namespace AbleCheckbook.Logic
             if(_userDb == null || _bankDb == null)
             {
                 return 0; // should never occur, but...
+            }
+            if(CheckForDuplicates(prevReconDate, thisReconDate))
+            {
+                return 0;
             }
             _countDateWrong = 0;
             int countAffected = 0;
@@ -94,6 +110,70 @@ namespace AbleCheckbook.Logic
                 ++countAffected;
             }
             return countAffected;
+        }
+
+        /// <summary>
+        /// See if any of the bank entries have already been processed/cleared in the user DB
+        /// </summary>
+        /// <param name="prevReconDate">Start of the period to process</param>
+        /// <param name="thisReconDate">One day past end of the period</param>
+        /// <returns>true if duplicates exist</returns>
+        private bool CheckForDuplicates(DateTime prevReconDate, DateTime thisReconDate)
+        {
+            _countDuplicates = 0;
+            DateTime firstDupDate = prevReconDate.Date;
+            DateTime lastDupDate = thisReconDate.Date;
+            CheckbookEntryIterator bankIterator = _bankDb.CheckbookEntryIterator;
+            while (bankIterator.HasNextEntry())
+            {
+                CheckbookEntry bankEntry = bankIterator.GetNextEntry();
+                CheckbookEntryIterator userIterator = _userDb.CheckbookEntryIterator;
+                string bankPayee = bankEntry.Payee.Trim();
+                long bankAmount = Math.Abs(bankEntry.Amount);
+                DateTime bankDate = bankEntry.DateOfTransaction;
+                long bankCheckNumber = 0;
+                long.TryParse(bankEntry.CheckNumber, out bankCheckNumber);
+                if (string.IsNullOrEmpty(bankPayee))
+                {
+                    bankPayee = bankEntry.BankPayee.Trim();
+                    bankAmount = Math.Abs(bankEntry.BankAmount);
+                    bankCheckNumber = bankEntry.BankCheckNumber;
+                    bankDate = bankEntry.BankTranDate;
+                }
+                while (userIterator.HasNextEntry())
+                {
+                    CheckbookEntry userEntry = userIterator.GetNextEntry();
+                    if(!string.IsNullOrEmpty(userEntry.BankPayee.Trim()) &&
+                        Math.Abs(userEntry.BankAmount) == bankAmount &&
+                        userEntry.BankPayee.Trim().Equals(bankPayee) &&
+                        userEntry.BankCheckNumber == bankCheckNumber &&
+                        userEntry.BankTranDate.Date == bankDate.Date)
+                    {
+                        string duplicateString = "[" + bankDate.ToShortDateString() + " (" +
+                            UtilityMethods.FormatCurrency(bankAmount) + ") " +
+                            bankPayee + "]";
+                        if(_firstDuplicate == null)
+                        {
+                            _firstDuplicate = duplicateString;
+                            firstDupDate = bankDate.Date;
+                            _lastDuplicate = duplicateString;
+                            lastDupDate = bankDate.Date;
+                        }
+                        else if(bankDate.Date > lastDupDate)
+                        {
+                            _lastDuplicate = duplicateString;
+                            lastDupDate = bankDate.Date;
+                        }
+                        else if (bankDate.Date < firstDupDate)
+                        {
+                            _firstDuplicate = duplicateString;
+                            firstDupDate = bankDate.Date;
+                        }
+                        ++_countDuplicates;
+                    }
+                }
+            }
+            return _countDuplicates > 0;
         }
 
         /// <summary>

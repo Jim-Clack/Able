@@ -160,6 +160,14 @@ namespace AbleCheckbook.Gui
                 {
                     message = "" + countDateWrong + Strings.Get(" entries ignored as out of date range");
                 }
+                int countDuplicates = reconciler.CountDuplicates;
+                if (countDuplicates > 0)
+                {
+                    message = Strings.Get("Cannot Proceed:") + " " + countDuplicates +
+                        Strings.Get(" entries already reconciled in range:\n  ") +
+                        reconciler.FirstDuplicate + "\n        ... \n  " + reconciler.LastDuplicate +
+                        Strings.Get("\nRecommended action: [Abandon Reconcile]");
+                }
                 MessageBox.Show(message);
             }
         }

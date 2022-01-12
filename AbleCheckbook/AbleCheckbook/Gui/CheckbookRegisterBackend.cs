@@ -155,6 +155,7 @@ namespace AbleCheckbook.Gui
                     form.rowCheckbook.Entry.BankCheckNumber = 0;
                     form.rowCheckbook.Entry.BankTransaction = "";
                     form.rowCheckbook.Entry.BankMergeAccepted = false;
+                    CurrentEntryId = newEntry.Id;
                 }
                 if (form.DeleteEntry)
                 {

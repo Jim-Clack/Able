@@ -24,7 +24,7 @@ namespace AbleCheckbook.Db
     /// Therefore you must hold onto a copy of the prior version so that you can delete/insert
     /// instead of updating the record.
     /// </remarks>
-    public class JsonDbAccess : IDbAccess
+    public class JsonDbAccess : IDbAccess // , IDisposable
     {
 
         /// <summary>

@@ -104,7 +104,7 @@
             // 
             this.textBoxCsvFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxCsvFile.Location = new System.Drawing.Point(104, 81);
+            this.textBoxCsvFile.Location = new System.Drawing.Point(104, 79);
             this.textBoxCsvFile.Name = "textBoxCsvFile";
             this.textBoxCsvFile.Size = new System.Drawing.Size(361, 22);
             this.textBoxCsvFile.TabIndex = 2;

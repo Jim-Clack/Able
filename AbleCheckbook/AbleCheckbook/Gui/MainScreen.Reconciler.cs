@@ -52,7 +52,7 @@ namespace AbleCheckbook
             }
             else
             {
-                labelInstructions.Text = Strings.Get("Check off entries that are cleared in bank statement");
+                labelInstructions.Text = Strings.Get("Check off any remaining cleared entries");
                 dataGridView1.Enabled = true;
                 if (_checkedOff)
                 {

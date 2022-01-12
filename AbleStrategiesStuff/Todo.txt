@@ -1,6 +1,4 @@
 Alpha TODO...
- - During reconcile the cursor sometimes jumps way down
- - When doing autoreconcile, if identical bankinfo is found, display error: "nnn already reconciled, suggest you Abandon Reconcile"
  - Prevent multiple instances at the same time
  - Flesh out online help
  - Deploy website for testing
@@ -10,6 +8,7 @@ Alpha TODO...
  - Implement Activate via Email/Phone as is appropriate 
  - Web Services for online purchase and self-service activation
  - Move SU user data to website instead of file
+ - During reconcile the cursor sometimes jumps way down
  - Fix desktop Icon
 
 Beta TODO...

@@ -3,6 +3,7 @@ using AbleCheckbook.Gui;
 using AbleCheckbook.Logic;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -328,7 +329,13 @@ namespace AbleCheckbook
             OpenBackupForm form = new OpenBackupForm(_backend.Db);
             if (form.ShowDialog() == DialogResult.OK)
             {
-                _backend.Db.BackupAndSave();
+                // _backend.Db.BackupAndSave(); // jbc removed 2/9/2022 = Added five lines below
+                _backend.Db.Sync();
+                string acbPath = _backend.Db.FullPath;
+                string bu0Path = acbPath.Replace(".acb", ".bu0");
+                File.Delete(bu0Path);
+                File.Move(acbPath, bu0Path);
+                // end of chnages
                 _backend.Db.CloseWithoutSync();
                 _backend.OpenDb(form.Filepath);
                 AddStartingBalanceIfNeeded();

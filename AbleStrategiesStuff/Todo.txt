@@ -1,22 +1,23 @@
 Alpha TODO...
+ - JsonDbAccess line 132, while awaiting, front end gets called with broken DB 
+    (When restoring it from backup, exception referencing Db.InProgress)
  - Flesh out online help
  - Deploy website for testing
  - EULA
  - Web Services for online reconciliation (Open Banking API)
- - Paypal API
+ - Activation: Add a time-of-day stamp to an image file as a tertiary expiry check
  - Implement Activate via Email/Phone as is appropriate 
+ - Paypal API
  - Web Services for online purchase and self-service activation
  - Move SU user data to website instead of file
  - Fix desktop Icon
-
-Beta TODO...
  - During reconcile the cursor sometimes jumps way down
  - AreYouSureForm with date/time/user that screen-captures, logs, and read log
- - Quick yesterday-thru-future condensed report as jpg file (date, payee, amt, bal)
+ - Make CsvImporter more flexible for various column sequences
  - Much testing
 
-Long-term TODO...
- - Activation: Add a time-of-day stamp to an image file as a tertiary expiry check
+Longer term TODO...
+ - Quick yesterday-thru-future condensed report as jpg file (date, payee, amt, bal)
  - Budgeting, forecasting, trends, etc.
  - Implement SU ReadLog
  - When to call DiscardWeakRefs
@@ -25,7 +26,7 @@ Long-term TODO...
  - Need a command to "check for duplicates" and fix them
  - Need a "rename category" that will, if required, merge categories
  - Fix piggish memory usage, especially unecessary duplications
- - Make CsvImporter more flexible for various column sequences
+ - Use mutex when changing preferences
  - CheckbookEntryForm change multiple arrays to an array of LineItem
  - More fine-grained unit tests
  - Overflow Undo-Queues to disk - sync to db via GUID

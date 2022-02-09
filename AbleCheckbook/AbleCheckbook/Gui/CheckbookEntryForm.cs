@@ -306,7 +306,7 @@ namespace AbleCheckbook.Gui
             buttonDelete.Text = Strings.Get("Delete");
             buttonCancel.Text = Strings.Get("Cancel");
             buttonOk.Text = Strings.Get("OK");
-            buttonUnMerge.Text = Strings.Get("◀ No UnMerge");
+            buttonUnMerge.Text = Strings.Get("◀─ UnMerge");
             comboBoxPayee.DataSource = _backend.Payees;
             comboBoxPayee.Text = "";
             ValidateReadyForSubmit();

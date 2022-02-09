@@ -167,6 +167,10 @@ namespace AbleCheckbook.Gui
             {
                 _schEvent.FinalPaymentAmount = UtilityMethods.ParseCurrency(textBoxFinalPayment.Text);
             }
+            if(radioButtonDisabled.Checked)
+            {
+                _schEvent.EndingDate = new DateTime(0L);
+            }
             return _schEvent;
         }
 
@@ -318,7 +322,7 @@ namespace AbleCheckbook.Gui
         {
             numericUpDownOccurrences.Enabled = radioButtonOccurrences.Checked;
             dateTimePickerFinal.Enabled = radioButtonFinal.Checked;
-
+            radioButtonDisabled.ForeColor = radioButtonDisabled.Checked ? Color.Red : SystemColors.ControlText;
         }
 
         /// <summary>
@@ -386,7 +390,7 @@ namespace AbleCheckbook.Gui
             radioButtonForever.Checked = true;
             radioButtonOccurrences.Checked = false;
             radioButtonFinal.Checked = false;
-            dateTimePickerFinal.Value = _schEvent.EndingDate;
+            dateTimePickerFinal.Value = _schEvent.EndingDate.Date.Ticks <= 0 ? DateTime.Now : _schEvent.EndingDate;
             numericUpDownOccurrences.Value = 0;
             int occurrences = _schEvent.GetRepeatCount(DateTime.Now);
             occurrences = UtilityMethods.Clamp(0, occurrences, maxOccurrences);
@@ -398,6 +402,7 @@ namespace AbleCheckbook.Gui
                 radioButtonForever.Checked = false;
                 radioButtonFinal.Checked = true;
             }
+            radioButtonDisabled.Checked = _schEvent.EndingDate.Date.Ticks <= 0L;
             comboBoxCategory.Text = "";
             comboBoxDebitCredit.Text = "";
             if (_schEvent.Payee.Trim().Length < 1)
@@ -575,7 +580,8 @@ namespace AbleCheckbook.Gui
             groupBoxOccurrences.Text = Strings.Get("Duration");
             radioButtonFinal.Text = Strings.Get("Final:");
             radioButtonOccurrences.Text = Strings.Get("Occurrences:");
-            radioButtonForever.Text = Strings.Get("Continues Forever");
+            radioButtonForever.Text = Strings.Get("Forever");
+            radioButtonDisabled.Text = Strings.Get("Disabled");
             checkBoxReminder.Text = Strings.Get("Highlight Entry as a Reminder");
             labelPayee.Text = Strings.Get("Payee");
             labelCategory.Text = Strings.Get("Category");
@@ -829,6 +835,16 @@ namespace AbleCheckbook.Gui
         private void textBoxFinalPayment_Enter(object sender, EventArgs e)
         {
             textBoxFinalPayment.SelectAll();
+        }
+
+        private void radioButtonDisabled_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateVisibilities();
+            ValidateControls();
+            if(radioButtonDisabled.Checked)
+            {
+                _schEvent.UpdateLastPostingToNow();
+            }
         }
     }
 

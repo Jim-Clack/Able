@@ -50,6 +50,12 @@
             this.labelNextOccurrence5 = new System.Windows.Forms.Label();
             this.dateTimePickerNextOccurrence5 = new System.Windows.Forms.DateTimePicker();
             this.listBoxDayOfWeek5 = new System.Windows.Forms.ListBox();
+            this.tabPageDaysApart = new System.Windows.Forms.TabPage();
+            this.labelDaysApart6 = new System.Windows.Forms.Label();
+            this.numericUpDownDaysApart6 = new System.Windows.Forms.NumericUpDown();
+            this.labelNextOccurence6 = new System.Windows.Forms.Label();
+            this.dateTimePickerNextOccurrence6 = new System.Windows.Forms.DateTimePicker();
+            this.labelDaysApartExample6 = new System.Windows.Forms.Label();
             this.comboBoxPayee = new System.Windows.Forms.ComboBox();
             this.comboBoxCategory = new System.Windows.Forms.ComboBox();
             this.comboBoxDebitCredit = new System.Windows.Forms.ComboBox();
@@ -74,22 +80,17 @@
             this.textBoxMemo = new System.Windows.Forms.TextBox();
             this.labelMemo = new System.Windows.Forms.Label();
             this.checkBoxReminder = new System.Windows.Forms.CheckBox();
-            this.tabPageDaysApart = new System.Windows.Forms.TabPage();
-            this.labelDaysApartExample6 = new System.Windows.Forms.Label();
-            this.labelNextOccurence6 = new System.Windows.Forms.Label();
-            this.dateTimePickerNextOccurrence6 = new System.Windows.Forms.DateTimePicker();
-            this.numericUpDownDaysApart6 = new System.Windows.Forms.NumericUpDown();
-            this.labelDaysApart6 = new System.Windows.Forms.Label();
+            this.radioButtonDisabled = new System.Windows.Forms.RadioButton();
             this.tabControl.SuspendLayout();
             this.tabPageMonthly.SuspendLayout();
             this.tabPageAnnually.SuspendLayout();
             this.tabPageWeekly.SuspendLayout();
             this.tabPageMonthlySsa.SuspendLayout();
             this.tabPageBiWeekly.SuspendLayout();
-            this.groupBoxOccurrences.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownOccurrences)).BeginInit();
             this.tabPageDaysApart.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDaysApart6)).BeginInit();
+            this.groupBoxOccurrences.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownOccurrences)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl
@@ -438,6 +439,64 @@
             this.listBoxDayOfWeek5.TabIndex = 1;
             this.listBoxDayOfWeek5.SelectedIndexChanged += new System.EventHandler(this.listBoxDayOfWeek5_SelectedIndexChanged);
             // 
+            // tabPageDaysApart
+            // 
+            this.tabPageDaysApart.Controls.Add(this.labelDaysApart6);
+            this.tabPageDaysApart.Controls.Add(this.numericUpDownDaysApart6);
+            this.tabPageDaysApart.Controls.Add(this.labelNextOccurence6);
+            this.tabPageDaysApart.Controls.Add(this.dateTimePickerNextOccurrence6);
+            this.tabPageDaysApart.Controls.Add(this.labelDaysApartExample6);
+            this.tabPageDaysApart.Location = new System.Drawing.Point(4, 25);
+            this.tabPageDaysApart.Name = "tabPageDaysApart";
+            this.tabPageDaysApart.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageDaysApart.Size = new System.Drawing.Size(530, 147);
+            this.tabPageDaysApart.TabIndex = 5;
+            this.tabPageDaysApart.Text = "Days Apart";
+            this.tabPageDaysApart.UseVisualStyleBackColor = true;
+            // 
+            // labelDaysApart6
+            // 
+            this.labelDaysApart6.AutoSize = true;
+            this.labelDaysApart6.Location = new System.Drawing.Point(13, 12);
+            this.labelDaysApart6.Name = "labelDaysApart6";
+            this.labelDaysApart6.Size = new System.Drawing.Size(78, 17);
+            this.labelDaysApart6.TabIndex = 9;
+            this.labelDaysApart6.Text = "Days Apart";
+            // 
+            // numericUpDownDaysApart6
+            // 
+            this.numericUpDownDaysApart6.Location = new System.Drawing.Point(16, 35);
+            this.numericUpDownDaysApart6.Name = "numericUpDownDaysApart6";
+            this.numericUpDownDaysApart6.Size = new System.Drawing.Size(98, 22);
+            this.numericUpDownDaysApart6.TabIndex = 8;
+            // 
+            // labelNextOccurence6
+            // 
+            this.labelNextOccurence6.AutoSize = true;
+            this.labelNextOccurence6.Location = new System.Drawing.Point(126, 12);
+            this.labelNextOccurence6.Name = "labelNextOccurence6";
+            this.labelNextOccurence6.Size = new System.Drawing.Size(155, 17);
+            this.labelNextOccurence6.TabIndex = 7;
+            this.labelNextOccurence6.Text = "Next occurrence date...";
+            // 
+            // dateTimePickerNextOccurrence6
+            // 
+            this.dateTimePickerNextOccurrence6.Location = new System.Drawing.Point(127, 35);
+            this.dateTimePickerNextOccurrence6.Name = "dateTimePickerNextOccurrence6";
+            this.dateTimePickerNextOccurrence6.Size = new System.Drawing.Size(233, 22);
+            this.dateTimePickerNextOccurrence6.TabIndex = 6;
+            // 
+            // labelDaysApartExample6
+            // 
+            this.labelDaysApartExample6.AutoSize = true;
+            this.labelDaysApartExample6.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelDaysApartExample6.ForeColor = System.Drawing.Color.Red;
+            this.labelDaysApartExample6.Location = new System.Drawing.Point(263, 115);
+            this.labelDaysApartExample6.Name = "labelDaysApartExample6";
+            this.labelDaysApartExample6.Size = new System.Drawing.Size(238, 17);
+            this.labelDaysApartExample6.TabIndex = 5;
+            this.labelDaysApartExample6.Text = "i.e. Every 7 days would occur weekly";
+            // 
             // comboBoxPayee
             // 
             this.comboBoxPayee.AllowDrop = true;
@@ -507,6 +566,7 @@
             // groupBoxOccurrences
             // 
             this.groupBoxOccurrences.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBoxOccurrences.Controls.Add(this.radioButtonDisabled);
             this.groupBoxOccurrences.Controls.Add(this.dateTimePickerFinal);
             this.groupBoxOccurrences.Controls.Add(this.numericUpDownOccurrences);
             this.groupBoxOccurrences.Controls.Add(this.radioButtonFinal);
@@ -569,10 +629,9 @@
             this.radioButtonForever.Checked = true;
             this.radioButtonForever.Location = new System.Drawing.Point(16, 20);
             this.radioButtonForever.Name = "radioButtonForever";
-            this.radioButtonForever.Size = new System.Drawing.Size(145, 21);
+            this.radioButtonForever.Size = new System.Drawing.Size(78, 21);
             this.radioButtonForever.TabIndex = 8;
-            this.radioButtonForever.TabStop = true;
-            this.radioButtonForever.Text = "Continues Forever";
+            this.radioButtonForever.Text = "Forever";
             this.radioButtonForever.UseVisualStyleBackColor = true;
             this.radioButtonForever.CheckedChanged += new System.EventHandler(this.radioButtonForever_CheckedChanged);
             // 
@@ -712,63 +771,16 @@
             this.checkBoxReminder.Text = "Highlight Entry as a Reminder";
             this.checkBoxReminder.UseVisualStyleBackColor = true;
             // 
-            // tabPageDaysApart
+            // radioButtonDisabled
             // 
-            this.tabPageDaysApart.Controls.Add(this.labelDaysApart6);
-            this.tabPageDaysApart.Controls.Add(this.numericUpDownDaysApart6);
-            this.tabPageDaysApart.Controls.Add(this.labelNextOccurence6);
-            this.tabPageDaysApart.Controls.Add(this.dateTimePickerNextOccurrence6);
-            this.tabPageDaysApart.Controls.Add(this.labelDaysApartExample6);
-            this.tabPageDaysApart.Location = new System.Drawing.Point(4, 25);
-            this.tabPageDaysApart.Name = "tabPageDaysApart";
-            this.tabPageDaysApart.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageDaysApart.Size = new System.Drawing.Size(530, 147);
-            this.tabPageDaysApart.TabIndex = 5;
-            this.tabPageDaysApart.Text = "Days Apart";
-            this.tabPageDaysApart.UseVisualStyleBackColor = true;
-            // 
-            // labelDaysApartExample6
-            // 
-            this.labelDaysApartExample6.AutoSize = true;
-            this.labelDaysApartExample6.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelDaysApartExample6.ForeColor = System.Drawing.Color.Red;
-            this.labelDaysApartExample6.Location = new System.Drawing.Point(263, 115);
-            this.labelDaysApartExample6.Name = "labelDaysApartExample6";
-            this.labelDaysApartExample6.Size = new System.Drawing.Size(238, 17);
-            this.labelDaysApartExample6.TabIndex = 5;
-            this.labelDaysApartExample6.Text = "i.e. Every 7 days would occur weekly";
-            // 
-            // labelNextOccurence6
-            // 
-            this.labelNextOccurence6.AutoSize = true;
-            this.labelNextOccurence6.Location = new System.Drawing.Point(126, 12);
-            this.labelNextOccurence6.Name = "labelNextOccurence6";
-            this.labelNextOccurence6.Size = new System.Drawing.Size(155, 17);
-            this.labelNextOccurence6.TabIndex = 7;
-            this.labelNextOccurence6.Text = "Next occurrence date...";
-            // 
-            // dateTimePickerNextOccurrence6
-            // 
-            this.dateTimePickerNextOccurrence6.Location = new System.Drawing.Point(127, 35);
-            this.dateTimePickerNextOccurrence6.Name = "dateTimePickerNextOccurrence6";
-            this.dateTimePickerNextOccurrence6.Size = new System.Drawing.Size(233, 22);
-            this.dateTimePickerNextOccurrence6.TabIndex = 6;
-            // 
-            // numericUpDownDaysApart6
-            // 
-            this.numericUpDownDaysApart6.Location = new System.Drawing.Point(16, 35);
-            this.numericUpDownDaysApart6.Name = "numericUpDownDaysApart6";
-            this.numericUpDownDaysApart6.Size = new System.Drawing.Size(98, 22);
-            this.numericUpDownDaysApart6.TabIndex = 8;
-            // 
-            // labelDaysApart6
-            // 
-            this.labelDaysApart6.AutoSize = true;
-            this.labelDaysApart6.Location = new System.Drawing.Point(13, 12);
-            this.labelDaysApart6.Name = "labelDaysApart6";
-            this.labelDaysApart6.Size = new System.Drawing.Size(78, 17);
-            this.labelDaysApart6.TabIndex = 9;
-            this.labelDaysApart6.Text = "Days Apart";
+            this.radioButtonDisabled.AutoSize = true;
+            this.radioButtonDisabled.Location = new System.Drawing.Point(124, 20);
+            this.radioButtonDisabled.Name = "radioButtonDisabled";
+            this.radioButtonDisabled.Size = new System.Drawing.Size(84, 21);
+            this.radioButtonDisabled.TabIndex = 12;
+            this.radioButtonDisabled.Text = "Disabled";
+            this.radioButtonDisabled.UseVisualStyleBackColor = true;
+            this.radioButtonDisabled.CheckedChanged += new System.EventHandler(this.radioButtonDisabled_CheckedChanged);
             // 
             // ScheduledEventEditForm
             // 
@@ -811,12 +823,12 @@
             this.tabPageMonthlySsa.PerformLayout();
             this.tabPageBiWeekly.ResumeLayout(false);
             this.tabPageBiWeekly.PerformLayout();
-            this.groupBoxOccurrences.ResumeLayout(false);
-            this.groupBoxOccurrences.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownOccurrences)).EndInit();
             this.tabPageDaysApart.ResumeLayout(false);
             this.tabPageDaysApart.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDaysApart6)).EndInit();
+            this.groupBoxOccurrences.ResumeLayout(false);
+            this.groupBoxOccurrences.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownOccurrences)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -875,5 +887,6 @@
         private System.Windows.Forms.Label labelNextOccurence6;
         private System.Windows.Forms.DateTimePicker dateTimePickerNextOccurrence6;
         private System.Windows.Forms.Label labelDaysApartExample6;
+        private System.Windows.Forms.RadioButton radioButtonDisabled;
     }
 }

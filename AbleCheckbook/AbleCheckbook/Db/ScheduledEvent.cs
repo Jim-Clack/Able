@@ -523,7 +523,7 @@ namespace AbleCheckbook.Db
                 endDate = Eternity;
             }
             bool found = false;
-            DateTime dueDate = startDate.Date; // changed 1-12-2022 jbc
+            DateTime dueDate = startDate.Date; 
             while(!found) 
             {
                 if(dueDate.Date.CompareTo(endDate) > 0)
@@ -587,14 +587,31 @@ namespace AbleCheckbook.Db
         /// <summary>
         /// When is this due next?
         /// </summary>
-        /// <returns>Due date - may be in the past if LastPosting was a while ago.</returns>
+        /// <returns>Due date - maybe in the past. Ticks=0 if disabled</returns>
         public DateTime DueNext()
         {
+            if(EndingDate.Date.Ticks <= 0L)
+            {
+                return new DateTime(0L);
+            }
             if(_lastPosting == null || _lastPosting < new DateTime(1970, 2, 2))
             {
                 return DateTime.Now; // Should never happen, but...
             }
             return DueDateStartingAt(_lastPosting.AddDays(1).Date);
+        }
+
+        /// <summary>
+        /// Update the LastPosting to make the next occurence forthcoming. 
+        /// </summary>
+        public void UpdateLastPostingToNow()
+        {
+            DateTime testDate = LastPosting;
+            while (testDate.Date.Ticks < DateTime.Now.Date.Ticks)
+            {
+                LastPosting = testDate;
+                testDate = DueDateUnending(LastPosting, DateTime.Now.Date);
+            }
         }
 
         /// <summary>

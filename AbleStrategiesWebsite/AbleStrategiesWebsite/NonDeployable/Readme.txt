@@ -1,6 +1,8 @@
 Setup
   Install Visual Studio 2019
   Open the solution
+  Update the AbleLicensing reference to wherever you've installed it, browse to:
+    C:\Users\<user>\source\repos\Able\AbleCheckbook\AbleLicensing\bin\Release\netstandard2.0\AbleLicensing.dll
   If not already done, tell the IONOS installer to install .NET core: 
     Add the following line to AbleStrategiesWebsite.csproj <PropertyGoup> element:
       <PublishWithAspNetCoreTargetManifest>false</PublishWithAspNetCoreTargetManifest>
@@ -8,6 +10,9 @@ Setup
 
 Caveats
   TBD
+
+Info on creating an ASMX web service
+  https://www.patrickschadler.com/creating-a-rest-webservice-with-net-core/
 
 Info on deploying .NET apps to Linux
   https://docs.microsoft.com/en-us/dotnet/core/deploying/#framework-dependent-deployments-fdd

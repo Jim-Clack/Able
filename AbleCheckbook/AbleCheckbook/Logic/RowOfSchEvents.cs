@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AbleCheckbook.Gui
+namespace AbleCheckbook
 {
     /// <summary>
     /// Encapsulates and decorates a ScheduledEvent
@@ -103,7 +103,11 @@ namespace AbleCheckbook.Gui
         {
             get
             {
-                return Strings.Get(_schEvent.GetRepeatCount(DateTime.Now.Date) < 1 ? "Expired" : "Active");
+                if(_schEvent.GetRepeatCount(DateTime.Now.Date) < 1)
+                {
+                    return Strings.Get("Expired");
+                }
+                return Strings.Get(_schEvent.IsReminder ? "Reminder" : "Automatic");
             }
             set
             {

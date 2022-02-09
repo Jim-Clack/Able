@@ -270,10 +270,12 @@
             this.textBoxBankInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxBankInfo.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBoxBankInfo.Font = new System.Drawing.Font("Arial Narrow", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxBankInfo.ForeColor = System.Drawing.SystemColors.MenuHighlight;
             this.textBoxBankInfo.Location = new System.Drawing.Point(12, 234);
             this.textBoxBankInfo.Name = "textBoxBankInfo";
             this.textBoxBankInfo.ReadOnly = true;
-            this.textBoxBankInfo.Size = new System.Drawing.Size(411, 15);
+            this.textBoxBankInfo.Size = new System.Drawing.Size(411, 14);
             this.textBoxBankInfo.TabIndex = 26;
             this.textBoxBankInfo.Visible = false;
             // 
@@ -285,7 +287,7 @@
             this.buttonUnMerge.Name = "buttonUnMerge";
             this.buttonUnMerge.Size = new System.Drawing.Size(124, 32);
             this.buttonUnMerge.TabIndex = 27;
-            this.buttonUnMerge.Text = "◀ No UnMerge";
+            this.buttonUnMerge.Text = "◀─ UnMerge";
             this.buttonUnMerge.UseVisualStyleBackColor = true;
             this.buttonUnMerge.Visible = false;
             this.buttonUnMerge.Click += new System.EventHandler(this.buttonUnMerge_Click);

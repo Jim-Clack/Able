@@ -104,11 +104,12 @@ namespace AbleCheckbook.Db
                 _fullPath = UtilityMethods.GetDbFilename(connection.Trim(), false, false);
             }
             bool gotNew = true;
-            _accountDbMutex = new Mutex(true, "Global\\Able" + Regex.Replace(_fullPath.ToUpper(), "[^A-Z]", "$"), out gotNew);
+            _accountDbMutex = new Mutex(true, "Global\\ABLE" + Regex.Replace(_fullPath.ToUpper(), "[^A-Z0-9]", "$"), out gotNew);
             if(!gotNew)
             {
                 _accountDbMutex = null;
                 _errorMessage = "File/acct/DB is open in another window: " + _fullPath;
+                System.Windows.Forms.MessageBox.Show(_errorMessage); // is this necessary here?
                 AppException.SetDb(null);
                 throw new AppException(_errorMessage, null, ExceptionHandling.CompleteFailure);
             }

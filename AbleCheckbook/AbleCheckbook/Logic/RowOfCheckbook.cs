@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AbleCheckbook.Gui
+namespace AbleCheckbook
 {
 
     public enum EntryColor // Override numerically, highest valid one wins
@@ -134,11 +134,11 @@ namespace AbleCheckbook.Gui
         {
             get
             {
-                return _entry.DateOfTransaction.Date;
+                return _entry.DateOfTransaction.Date <= new DateTime(0L) ? DateTime.Now : _entry.DateOfTransaction.Date;
             }
             set
             {
-                _entry.DateOfTransaction = value;
+                _entry.DateOfTransaction = value.Date;
             }
         }
 
@@ -146,7 +146,7 @@ namespace AbleCheckbook.Gui
         {
             get
             {
-                return _entry.DateModified.Date;
+                return _entry.DateModified.Date <= new DateTime(0L) ? DateTime.Now : _entry.DateModified.Date;
             }
             set
             {
@@ -160,7 +160,8 @@ namespace AbleCheckbook.Gui
             {
                 if (_entry.IsCleared)
                 {
-                    return _entry.DateCleared.Date.ToShortDateString();
+                    return (_entry.DateCleared.Date <= new DateTime(0L) ? DateTime.Now : _entry.DateCleared.Date)
+                        .ToString();
                 }
                 return "";
             }

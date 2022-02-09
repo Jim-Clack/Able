@@ -120,7 +120,7 @@ namespace AbleCheckbook.Logic
         /// </summary>
         private static void LoadHardCodedDefaults()
         {
-            AddString("AboutThisFile", "Loads from launch path, i.e. chkbk-EN-us.json  (depending on locale)");
+            AddString("AboutThisFile", "Loads from exe path, i.e. chkbk-EN-us.json (depending on locale)");
             AddString("PuncHash", "#");
             AddString("PuncQuestion", "?");
             AddString("Error");
@@ -367,7 +367,7 @@ namespace AbleCheckbook.Logic
             AddString("←  Back");
             AddString("⌂  Home");
             AddString("Ꙭ  Search");
-            AddString("◀ No UnMerge");
+            AddString("◀─ UnMerge");
             AddString("New DB Acct");
             AddString("Select Acct");
             AddString("New Account, Starting Balance");
@@ -439,7 +439,8 @@ namespace AbleCheckbook.Logic
             AddString("Due");
             AddString("Success");
             AddString("Expired");
-            AddString("Active");
+            AddString("Automatic");
+            AddString("Reminder");
             AddString("Every");
             AddString("Monthly");
             AddString("Monthly on");
@@ -465,7 +466,8 @@ namespace AbleCheckbook.Logic
             AddString("Final:");
             AddString("Occurrences:");
             AddString("Occurrence");
-            AddString("Continues Forever");
+            AddString("Forever");
+            AddString("Disabled");
             AddString("Trans Kind");
             AddString("1st occurrence in month");
             AddString("2nd occurrence in month");

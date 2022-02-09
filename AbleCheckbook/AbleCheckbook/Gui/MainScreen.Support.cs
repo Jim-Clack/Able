@@ -366,7 +366,8 @@ namespace AbleCheckbook
                 entry.Splits = new SplitEntry[] { split };
                 entry.Payee = schEventAfterEdit.Payee;
                 entry.MadeBy = schEvent.IsReminder ? EntryMadeBy.Reminder : EntryMadeBy.Scheduler;
-                entry.DateOfTransaction = schEventAfterEdit.DueNext();
+                DateTime dueDate = schEventAfterEdit.DueNext().Date;
+                entry.DateOfTransaction = dueDate <= new DateTime(0L) ? DateTime.Now : dueDate;
                 entry.AppendMemo(schEvent.Memo);
                 _backend.Db.InsertEntry(entry, Highlight.Processed); // insert checkbook entry
                 schEventAfterEdit.LastPosting = entry.DateOfTransaction;
@@ -387,9 +388,15 @@ namespace AbleCheckbook
             while (iterator.HasNextEntry())
             {
                 ScheduledEvent schEvent = iterator.GetNextEntry();
-                if (schEvent.DueNext().CompareTo(DateTime.Now.Date.AddDays(Configuration.Instance.PostEventAdvanceDays)) <= 0)
+                DateTime dueDate = schEvent.DueNext();
+                if (dueDate.Date.Ticks > 0L &&
+                    dueDate.CompareTo(DateTime.Now.Date.AddDays(Configuration.Instance.PostEventAdvanceDays)) <= 0)
                 {
                     events.Add(schEvent);
+                }
+                if(events.Count > 40) // sanity check
+                {
+                    break;
                 }
             }
             return events;

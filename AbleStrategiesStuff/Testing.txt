@@ -2,6 +2,7 @@ SQA...
  * Intermix reconcile/year-end/checkoff/uncheck/undo/redo/save/open - verify
  * Test performance/correctness with large DB's, such as 3000+ entries
  * Make sure that everything that impacts the DB can be undone/redone
+ * Changes have been made to Open Backup, so retest it thoroughly
  * Change computer date to test reconcile/year-end, running in a VM
  * Thoroughly test all variations of ScheduledEvent, changing dates in a VM
  * Test various screen resolutions, themes, and font scales (i.e. 100%, 150%)

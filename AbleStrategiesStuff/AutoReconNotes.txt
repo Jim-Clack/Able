@@ -1,4 +1,0 @@
-
-After Reconcile
-Dec 31, 2021 bal per bank:  $4436.68
-Dec 31, 2021 bal mine eod:  $3263.58

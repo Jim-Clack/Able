@@ -52,7 +52,7 @@ namespace AbleCheckbook.Gui
         {
             this.Text = Strings.Get("Open Backup of DB File: ") + _db.Name;
             string dbName = _db.Name;
-            label1.Text = Strings.Get("Save the current DB as ") + dbName + ".bu1" + 
+            label1.Text = Strings.Get("Save the current DB as ") + dbName + ".bu0" + 
                 Strings.Get("; Open the selected backup as ") + dbName + ".acb";
             buttonOk.Text = Strings.Get("OK");
             buttonCancel.Text = Strings.Get("Cancel");
@@ -60,7 +60,10 @@ namespace AbleCheckbook.Gui
             List<FileInfo> infos = UtilityMethods.PotentialBackups(_db.Name);
             foreach(FileInfo fileInfo in infos)
             {
-                _backups.Add(new RowOfBackup(fileInfo));
+                if (fileInfo.FullName.CompareTo(_db.FullPath) != 0)
+                {
+                    _backups.Add(new RowOfBackup(fileInfo));
+                }
             }
             _backups.Sort();
             BindingSource bindingSource1 = new BindingSource();

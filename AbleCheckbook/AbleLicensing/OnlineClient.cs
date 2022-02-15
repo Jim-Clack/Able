@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Net.Http;
 using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace AbleLicensing
 {
@@ -15,6 +20,8 @@ namespace AbleLicensing
         NetworkProblems = 2,  // Cannot communicate with server
         NotActivated = 3,     // Unrecognized user, siteID, purchase, or other activation issue
         DeActivated = 4,      // Most latent site deactivation due to more recent activations on same purchase 
+        Future1 = 5,
+        Future2 = 6,
     }
 
     /// <summary>
@@ -79,6 +86,12 @@ namespace AbleLicensing
     /// </summary>
     public class OnlineClient
     {
+
+        /// <summary>
+        /// URL for calling MASTER web services
+        /// </summary>
+        //private static string _wsUrl = "http://ablestrategies.com:33333/as/master";
+        private static string _wsUrl = "https://localhost:44363/as/master";
 
         /// <summary>
         /// Staging area for a server error.
@@ -229,6 +242,50 @@ namespace AbleLicensing
         /////////////////////// Web Service API Calls ////////////////////////
 
         /// <summary>
+        /// Verify that we can connect to the server.
+        /// </summary>
+        /// <returns>Success (if false, populates error message)</returns>
+        public bool CallServerToCheckConnection()
+        {
+            _serverErrorMessage = null; // "[A0] ..."
+            bool okay = false;
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    Task<HttpResponseMessage> response = client.GetAsync(_wsUrl, HttpCompletionOption.ResponseContentRead);
+                    response.Result.EnsureSuccessStatusCode();
+                    if (!(response.Result.Content is object) || 
+                        response.Result.Content.Headers.ContentType.MediaType != "application/json")
+                    {
+                        throw new HttpRequestException("Invalid server response");
+                    }
+                    System.IO.Stream contentStream = response.Result.Content.ReadAsStreamAsync().GetAwaiter().GetResult();
+                    string json = new StreamReader(contentStream).ReadToEnd();
+                    try
+                    {
+                        string[] strings = JsonSerializer.Deserialize<string[]>(json);
+                        _serverErrorMessage = "[A0] " + json;
+                        okay = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new HttpRequestException("Invalid JSON in server response: " + ex.Message);
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                _serverErrorMessage =
+                    "[A0] Problem Connecting to Server " + ex.Message;
+            }
+            Activation.Instance.LoggerHook("[A0] CallServerToCheckConnection() " + okay + " " + _serverErrorMessage);
+            return okay;
+        }
+
+
+
+        /// <summary>
         /// Call the server to get remaining fields.
         /// </summary>
         /// <param name="addr">installation street address</param>
@@ -245,9 +302,10 @@ namespace AbleLicensing
         {
             _serverErrorMessage = null; // "[A1] ..."
             bool okay = false;
+            string pin = "";
 
 
-            Activation.Instance.LoggerHook("[A1] CallServerForLicenseInfo() " + feature + " " + desc + " " + purchase);
+            Activation.Instance.LoggerHook("[A1] CallServerForLicenseInfo() " + feature + " " + desc + " " + purchase + " " + pin);
             _serverErrorMessage =
                 "[A1] ???";
             return okay;

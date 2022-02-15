@@ -241,6 +241,10 @@ namespace AbleCheckbook
         /// </summary>
         public void AdjustVisibilities()
         {
+            if (_backend.Db == null)
+            {
+                return;
+            }
             string undoDesc = Strings.Get("&Undo");
             undoToolStripMenuItem.Enabled = false;
             toolStripButtonUndo.Enabled = false;
@@ -322,6 +326,10 @@ namespace AbleCheckbook
         /// <returns>true if any events were due and, therefore, added</returns>
         private bool PeriodicalCheck()
         {
+            if (_backend.Db == null)
+            {
+                return false;
+            }
             if (DateTime.Now.Subtract(_whenLastScheduleUpdate).Minutes < ScheduleUpdateCheckMinutes)
             {
                 return false;
@@ -503,7 +511,11 @@ namespace AbleCheckbook
         /// </summary>
         private void AddStartingBalanceIfNeeded()
         {
-            if(_backend.Db.CheckbookEntryIterator.HasNextEntry())
+            if (_backend.Db == null)
+            {
+                return;
+            }
+            if (_backend.Db.CheckbookEntryIterator.HasNextEntry())
             {
                 return;
             }

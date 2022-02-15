@@ -4,7 +4,7 @@ Development Notes
 Workstation Setup Notes...
  A. Install MS 2019 Visual Studio complete
  B. Install MS 2017 Installer for Application Deployment via MSIx
- C. Install into MS VS via NuGet: System.Text.Json
+ C. Install via NuGet: System.Text.Json (AbleCheckbook & AbleLicensing)
  D. Install git and/or GitHub desktop
  E. You may want to install Postman and WinSCP as well
  F. AbleCheckbook VS Pre-Build Event: copy $(ProjectDir)Support\* $(TargetDir)

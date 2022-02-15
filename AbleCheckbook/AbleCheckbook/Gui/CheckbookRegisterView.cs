@@ -109,6 +109,7 @@ namespace AbleCheckbook.Gui
         /// <param name="dbFilename">account file name with no path, year, or extension</param>
         public void OpenDb(string dbFilename)
         {
+            _db = null; // in case another thread tries to access it while we are loading it
             _db = new UndoableDbAccess(dbFilename);
             Configuration.Instance.LastDbName = dbFilename;
             _layout = new DataGridViewLayout();
@@ -174,6 +175,10 @@ namespace AbleCheckbook.Gui
         /// </summary>
         public void LayoutDataGridView()
         {
+            if(Db == null)
+            {
+                return;
+            }
             _layout.LayoutColumns(_dataGridView, _diagsEnabled, _db.InProgress == InProgress.Reconcile);
             foreach(DataGridViewRow gridRow in _dataGridView.Rows)
             {
@@ -187,12 +192,26 @@ namespace AbleCheckbook.Gui
         }
 
         /// <summary>
-        /// Expose the DB.
+        /// Expose the DB. Returns null if db is invalid or not open.
         /// </summary>
         public UndoableDbAccess Db
         {
             get
             {
+                if(_db != null)
+                {
+                    if (_db.UnderlyingDb == null)
+                    {
+                        return null;
+                    }
+                    if (_db.UnderlyingDb.GetType() == typeof(JsonDbAccess))
+                    {
+                        if (_db.UnderlyingDb.Account == null)
+                        {
+                            return null;
+                        }
+                    }
+                }
                 return _db;
             }
         }
@@ -224,6 +243,10 @@ namespace AbleCheckbook.Gui
         /// <returns>success</returns>
         public bool ReloadTransactions(SortEntriesBy sortedBy = SortEntriesBy.NoChange, List<Guid> matches = null)
         {
+            if (Db == null)
+            {
+                return false;
+            }
             if (sortedBy != SortEntriesBy.NoChange && sortedBy != _sortedBy) // sort changed?
             {
                 CurrentEntryId = Guid.Empty;

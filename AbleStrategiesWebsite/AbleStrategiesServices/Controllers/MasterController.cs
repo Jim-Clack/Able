@@ -22,7 +22,8 @@ namespace AbleStrategiesServices.Controllers
             DateTime now = DateTime.Now.ToUniversalTime();
             return new string[] {
                 Version.ToString(), 
-                now.ToString("o", CultureInfo.GetCultureInfo("en-US"))
+                now.ToString("o", CultureInfo.GetCultureInfo("en-US")),
+                (DateTime.Now.Ticks / (DateTime.Now.Millisecond + 173L)).ToString() // future use
             };
         }
 

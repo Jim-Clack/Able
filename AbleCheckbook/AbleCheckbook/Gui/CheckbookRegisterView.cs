@@ -135,7 +135,7 @@ namespace AbleCheckbook.Gui
                 row.Cells["Credit"].Style = _layout.Style(colorIndex, true);
                 // Forcast an impending lowest balance
                 if (_sortedBy == SortEntriesBy.TranDate && 
-                    rowEntry.DateOfTransaction.Date >= DateTime.Now.Date &&
+                    rowEntry.EntryBeforeEdit.DateOfTransaction.Date >= DateTime.Now.Date &&
                     !rowEntry.NewEntryRow)
                 {
                     if(rowEntry.Entry.MadeBy == EntryMadeBy.Scheduler || rowEntry.Entry.MadeBy == EntryMadeBy.Reminder)

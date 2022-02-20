@@ -209,9 +209,13 @@ namespace AbleCheckbook
                     break;
                 case AlertType.YearEndWrapUp:
                     BeforeOperation("Year End", true);
-                    _backend.PerformYearEndWrapUp(this);
+                    string account = _backend.PerformYearEndWrapUp(this);
                     AfterOperation();
                     _alertType = AlertType.None;
+                    if(account.Length > 5)
+                    {
+                        LoadNewDb(account);
+                    }
                     break;
             }
             AdjustAlert();
@@ -499,8 +503,12 @@ namespace AbleCheckbook
         private void yearEndToolStripMenuItem_Click(object sender, EventArgs e)
         {
             BeforeOperation("Year End", true);
-            _backend.PerformYearEndWrapUp(this);
+            string account = _backend.PerformYearEndWrapUp(this);
             AfterOperation();
+            if (account.Length > 5)
+            {
+                LoadNewDb(account);
+            }
         }
 
         private void printRegisterToolStripMenuItem1_Click(object sender, EventArgs e)

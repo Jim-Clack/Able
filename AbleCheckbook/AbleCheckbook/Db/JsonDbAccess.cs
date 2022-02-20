@@ -1,6 +1,7 @@
 ﻿using AbleCheckbook.Logic;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -25,7 +26,7 @@ namespace AbleCheckbook.Db
     /// Therefore you must hold onto a copy of the prior version so that you can delete/insert
     /// instead of updating the record.
     /// </remarks>
-    public class JsonDbAccess : IDbAccess 
+    public class JsonDbAccess : IDbAccess
     {
 
         /// <summary>
@@ -37,7 +38,7 @@ namespace AbleCheckbook.Db
         /// WHen did we last autosave?
         /// </summary>
         private static DateTime _lastAutoSave = DateTime.Now;
-        
+
         /// <summary>
         /// This is the full path to the JSON DB file. 
         /// </summary>
@@ -73,11 +74,6 @@ namespace AbleCheckbook.Db
         /// </summary>
         private static Mutex _outerMutex = new Mutex();
 
-        /// <summary>
-        /// Here we ensure that multiple copies of the same acct/file/db are not opened
-        /// </summary>
-        private Mutex _accountDbMutex = null;
-
         // Getters/Setters
         public static Mutex Mutex { get => _innerMutex; }
         public static Mutex Mutex2 { get => _outerMutex; }
@@ -85,16 +81,22 @@ namespace AbleCheckbook.Db
         /// <summary>
         /// Ctor.
         /// </summary>
-        /// <param name="connection">Name of connection: Checking, Business, Personal, or Alternate</param>
+        /// <param name="connection">Name of connection, i.e. "Checking" - opt w hyphen and 4-digit year</param>
         /// <param name="undoTracker">To be called for tracking operations that can later be undone.</param>
         /// <param name="startEmpty">true to start empty, first deleting the db if it exists</param>
         public JsonDbAccess(string connection, IUndoTracker undoTracker, bool startEmpty = false)
         {
             AppException.SetDb(null);
             _fullPath = connection;
+            string account = connection;
+            int hyphenIndex = account.LastIndexOf('-');
+            if(hyphenIndex > 0)
+            {
+                account = account.Substring(0, hyphenIndex);
+            }
             if (Path.GetDirectoryName(connection).Length < 3)
             {
-                if (!Configuration.Instance.GetLegalFilenames().Contains(connection))
+                if (!Configuration.Instance.GetLegalFilenames().Contains(account))
                 {
                     if (!connection.Contains("UtEsT"))
                     {
@@ -103,11 +105,8 @@ namespace AbleCheckbook.Db
                 }
                 _fullPath = UtilityMethods.GetDbFilename(connection.Trim(), false, false);
             }
-            bool gotNew = true;
-            _accountDbMutex = new Mutex(true, "Global\\ABLE" + Regex.Replace(_fullPath.ToUpper(), "[^A-Z0-9]", "$"), out gotNew);
-            if(!gotNew)
-            {
-                _accountDbMutex = null;
+            if(IsAcctOpenElsewhere(connection))
+            { 
                 _errorMessage = "File/acct/DB is open in another window: " + _fullPath;
                 System.Windows.Forms.MessageBox.Show(_errorMessage); // is this necessary here?
                 AppException.SetDb(null);
@@ -181,12 +180,33 @@ namespace AbleCheckbook.Db
         public void Dispose()
         {
             AppException.SetDb(null);
-            if (_accountDbMutex != null)
+        }
+
+        /// <summary>
+        /// Is a specified account already open in another window?
+        /// </summary>
+        /// <param name="connection">acct DB filename, with or without suffix</param>
+        /// <returns>true if it is already open</returns>
+        public bool IsAcctOpenElsewhere(string connection)
+        {
+            // Note: initially this was done w/ a global mutex - bad idea, esp when the program crashes, etc.
+            string acctName = Path.GetFileNameWithoutExtension(
+                    UtilityMethods.GetDbFilename(connection.Trim(), false, false)).ToUpper();
+            Process thisProcess = Process.GetCurrentProcess();
+            Process[] processes = Process.GetProcesses();
+            foreach (Process process in processes)
             {
-                _accountDbMutex.ReleaseMutex();
-                _accountDbMutex.Dispose();
-                _accountDbMutex = null;
+                if(process == thisProcess)
+                {
+                    continue;
+                }
+                if(process.MainWindowTitle.ToUpper().Contains(acctName) &&
+                   process.MainWindowTitle.Contains(Strings.Get("Able Strategies AbleCheckbook")))
+                {
+                    return true;
+                }
             }
+            return false;
         }
 
         /// <summary>

@@ -1,9 +1,4 @@
 Alpha TODO...
- - JsonDbAccess line 132, while awaiting, front end gets called with broken DB 
-    (When restoring it from backup, exception referencing Db.InProgress)
-	Maybe MainScreen._busy can be checked in UpdateVisibility, etc??? 
-	Application.FormCollection -> SuspendLayout ???
- - Why can't program.cs trap exceptions? (debug mode only?)
  - Flesh out online help
  - Deploy website for testing
  - EULA
@@ -20,6 +15,7 @@ Alpha TODO...
  - Much testing
 
 Longer term TODO...
+ - Why can't program.cs trap exceptions? (debug mode only?)
  - Quick yesterday-thru-future condensed report as jpg file (date, payee, amt, bal)
  - Budgeting, forecasting, trends, etc.
  - Implement SU ReadLog

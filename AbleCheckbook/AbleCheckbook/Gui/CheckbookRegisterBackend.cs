@@ -481,41 +481,49 @@ namespace AbleCheckbook.Gui
         /// <summary>
         /// Year-end wrap-up.
         /// </summary>
-        public void PerformYearEndWrapUp(IWin32Window win)
+        /// <returns>name of new (current year) file, i.e. "Checking-2023, "" on error</returns>
+        public string PerformYearEndWrapUp(Form win)
         {
             if(_db.InProgress != InProgress.Nothing)
             {
-                return;
+                return "";
             }
             YearEndWrapup yearEndWrapUp = new YearEndWrapup(_db);
             if (_db.InProgress != InProgress.Nothing || !yearEndWrapUp.IsTimeToWrapUp)
             {
-                MessageBox.Show(win, Strings.Get("Too soon or too many uncleared entries remain."),
+                MessageBox.Show(win, Strings.Get("Many old entries not yet been cleared, or current year acct already exists."),
                     Strings.Get("Not Yet"), MessageBoxButtons.OK);
-                return;
+                return "";
             }
-            if (yearEndWrapUp.SplitDbsAtDec31(false))
-            {
-                ReloadTransactions(SortEntriesBy.TranDate);
-            }
-            else
-            {
-                MessageBox.Show(win, Strings.GetIff(yearEndWrapUp.Message), Strings.Get("Sorry"), MessageBoxButtons.OK);
-            }
-            if (Configuration.Instance.GetAdminMode())
+            bool ok = PerformYearEndWrapUp(yearEndWrapUp, win);
+            if (!ok && Configuration.Instance.GetAdminMode())
             {
                 if (MessageBox.Show(win, Strings.Get("Admin Mode - Force Year-End Wrap-Up?"),
                     Strings.Get("Try Again?"), MessageBoxButtons.OKCancel) == DialogResult.OK)
                 {
-                    if (yearEndWrapUp.SplitDbsAtDec31(true))
-                    {
-                        ReloadTransactions(SortEntriesBy.TranDate);
-                    }
-                    else
-                    {
-                        MessageBox.Show(win, Strings.GetIff(yearEndWrapUp.Message), Strings.Get("Sorry"), MessageBoxButtons.OK);
-                    }
+                    ok = PerformYearEndWrapUp(yearEndWrapUp, win);
                 }
+            }
+            if(ok)
+            {
+                return _db.Name;
+            }
+            return "";
+        }
+
+        private bool PerformYearEndWrapUp(YearEndWrapup yearEndWrapUp, Form win)
+        {
+            string windowTitle = win.Text;
+            win.Text = Strings.Get("Year-End Wrap-Up, Please Wait . . .");
+            if (yearEndWrapUp.SplitDbsAtDec31(true))
+            {
+                ReloadTransactions(SortEntriesBy.TranDate);
+                return true;
+            }
+            else
+            {
+                MessageBox.Show(win, Strings.GetIff(yearEndWrapUp.Message), Strings.Get("Sorry"), MessageBoxButtons.OK);
+                return false;
             }
         }
 

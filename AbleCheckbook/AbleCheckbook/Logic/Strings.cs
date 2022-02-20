@@ -396,11 +396,12 @@ namespace AbleCheckbook.Logic
             AddString("Reconciled/cleared entry - cannot be changed");
             AddString("Reconciled/cleared entry - DO NOT CHANGE ANYTHING");
             AddString("Danger Danger Danger");
+            AddString("Year-End Wrap-Up, Please Wait . . .");
             AddString("Direct modification can corrupt your account data!");
             AddString("Problem with Year-End Wrap-Up (Suggest Undo) ");
             AddString("Active DB name indicates that it is already current.");
             AddString("Cannot perform year-end with large proportion unreconciled.");
-            AddString("Too soon for year-end: many old entries not yet been cleared.");
+            AddString("Many old entries not yet been cleared, or current year acct already exists.");
             AddString("#Invalid Site Description - Expected 6-char Name, a Hyphen, then 5-char Postal Code.");
             AddString("#Requires Super-User Permission");
             AddString("#Invalid Site Identification Code.");

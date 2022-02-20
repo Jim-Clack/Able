@@ -79,8 +79,8 @@ namespace AbleCheckbook.Logic
                 {
                     return false;
                 }
-                string dbName = _newFilename + ".acb";
-                if(File.Exists(Path.Combine(Configuration.Instance.DirectoryDatabase, dbName))) // already wrapped-up
+                string dbName = UtilityMethods.ReplaceSuffix(_newFilename, ".acb"); // essentially a no-op
+                if (File.Exists(Path.Combine(Configuration.Instance.DirectoryDatabase, dbName))) // already wrapped-up
                 {
                     return false;
                 }
@@ -115,11 +115,11 @@ namespace AbleCheckbook.Logic
                         }
                     }
                 }
-                if (numOldUncleared < 1 && numNewUncleared > 1 && numOld > 10) // last year mostly reconciled?
+                if (numOldUncleared < (numNew / 2 + 2) && numOld > 5) // last year mostly reconciled?
                 {
                     return true;
                 }
-                return false; // otehrwise
+                return false; // otherwise
             }
         }
 
@@ -139,10 +139,10 @@ namespace AbleCheckbook.Logic
                     return false;
                 }
             }
-            string dbName = _oldFilename + ".acb";
+            string dbName = UtilityMethods.ReplaceSuffix(_oldFilename, ".acb"); // essentially a no-op
             File.Delete(Path.Combine(Configuration.Instance.DirectoryDatabase, dbName));
             _newStartingBalance = 0L;
-            _oldDb = new JsonDbAccess(_oldFilename, null); // do not put bank creds in old db
+            _oldDb = new JsonDbAccess(_oldFilename, null, true); // do not put bank creds in old db
             _newDb.Name = Path.GetFileNameWithoutExtension(_newFilename);
             try
             {
@@ -195,14 +195,14 @@ namespace AbleCheckbook.Logic
                 {
                     keepInNew = true;
                 }
-                if (!entry.IsCleared || entry.DateCleared > startOfYear)
+                if (!entry.IsCleared)
                 {
                     keepInNew = true;
                 }
                 if(putIntoOld)
                 {
                     Logger.Diag("Archiving into Last Year " + entry.Payee + " " + entry.Amount);
-                    CreateDuplicate(entry);
+                    DuplicateIntoOldDb(entry);
                 }
                 if (!keepInNew)
                 {
@@ -236,7 +236,8 @@ namespace AbleCheckbook.Logic
                     _newDb.DeleteEntry(entry);
                     continue;
                 }
-                if(entry.DateOfTransaction < oldest)
+                DateTime DateZero = new DateTime(0L);
+                if(entry.DateOfTransaction < oldest && entry.DateOfTransaction > DateZero)
                 {
                     oldest = entry.DateOfTransaction;
                 }
@@ -258,23 +259,9 @@ namespace AbleCheckbook.Logic
         /// </summary>
         /// <param name="entry">To be duplicated.</param>
         /// <returns>The duplicate</returns>
-        private CheckbookEntry CreateDuplicate(CheckbookEntry entry)
+        private CheckbookEntry DuplicateIntoOldDb(CheckbookEntry entry)
         {
             CheckbookEntry clonedEntry = entry.Clone(true);
-            foreach (SplitEntry split in entry.Splits)
-            {
-                Guid categoryId = split.CategoryId;
-                if (_newDb != null && _oldDb != null)
-                {
-                    FinancialCategory category = _newDb.GetFinancialCategoryById(split.CategoryId);
-                    if (category == null)
-                    {
-                        category = UtilityMethods.GetCategoryOrUnknown(_newDb, null);
-                    }
-                    categoryId = UtilityMethods.GetOrCreateCategory(_oldDb, category.Name, category.IsCredit).Id;
-                }
-                clonedEntry.AddSplit(categoryId, split.Kind, split.Amount);
-            }
             if (_oldDb.GetCheckbookEntryById(entry.Id) == null)
             {
                 _oldDb.InsertEntry(clonedEntry);
@@ -326,7 +313,7 @@ namespace AbleCheckbook.Logic
             }
             if (loDateCount > hiDateCount) // more old uncleared than recently cleared
             {
-                _message = Strings.Get("Too soon for year-end: many old entries not yet been cleared.");
+                _message = Strings.Get("Many old entries not yet been cleared, or current year acct already exists.");
                 return false;
             }
             return true;

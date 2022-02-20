@@ -111,7 +111,7 @@ namespace AbleCheckbook.Logic
         /// <summary>
         /// Get the full path, name, and extension of a DB file.
         /// </summary>
-        /// <param name="baseName">Base name such as Checking, Business, Personal, or Alternate.</param>
+        /// <param name="baseName">Name of connection, i.e. "Checking" - opt w hyphen and 4-digit year</param>
         /// <param name="adjustYear">true to adjust the year per the next param: fromLastYear</param>
         /// <param name="fromLastYear">true to return the name of last year's DB.</param>
         /// <returns>full path to DB file like this: C:/Users/Ben/Docs/Able/Checking-2023.db</returns>
@@ -119,18 +119,40 @@ namespace AbleCheckbook.Logic
         {
             int newYear = DateTime.Now.Year;
             int oldYear = newYear - 1;
+            int oldOldYear = oldYear - 1;
             int returnYear = (adjustYear && fromLastYear) ? oldYear : newYear;
             baseName = baseName.Replace(".acb", "");
             if (adjustYear)
             {
-                baseName = Path.GetFileNameWithoutExtension(baseName).Replace("-" + oldYear, "").Replace("-" + newYear, "");
+                baseName = Path.GetFileNameWithoutExtension(baseName).Replace("-" + oldYear, "").Replace("-" + newYear, "").Replace("-" + oldOldYear, "");
                 return Path.Combine(Configuration.Instance.DirectoryDatabase, baseName) + "-" + returnYear + ".acb";
             }
-            if(!baseName.Contains("-" + oldYear) && !baseName.Contains("-" + newYear))
+            if(!baseName.Contains("-" + oldYear) && !baseName.Contains("-" + newYear) && !baseName.Contains("-" + oldOldYear))
             {
                 baseName = baseName + "-" + newYear;
             }
             return Path.Combine(Configuration.Instance.DirectoryDatabase, baseName) + ".acb";
+        }
+
+        /// <summary>
+        /// Replace the file extension with another
+        /// </summary>
+        /// <param name="filename">The filename, optionally with a path, optionally with a suffix</param>
+        /// <param name="newSuffix">Suffix (extension) to append, optionally beginning with a dot</param>
+        /// <returns>Updated filename with new suffix</returns>
+        public static string ReplaceSuffix(string filename, string newSuffix)
+        {
+            string result = filename;
+            int index = result.LastIndexOf('.');
+            if(index > 0)
+            {
+                result = result.Substring(0, index);
+            }
+            if(!newSuffix.StartsWith("."))
+            {
+                result = result + ".";
+            }
+            return result + newSuffix;
         }
 
         /// <summary>

@@ -175,6 +175,21 @@ namespace AbleCheckbook
         }
 
         /// <summary>
+        /// Load/Open an acct DB
+        /// </summary>
+        /// <param name="connection">Name of connection, i.e. "Checking" - opt w hyphen and 4-digit year</param>
+        public void LoadNewDb(string connection)
+        {
+            _backend.OpenDb(connection);
+            this.Text = Strings.Get("Able Strategies AbleCheckbook") + " - " + _backend.Db.Name;
+            _backend.ReloadTransactions();
+            if (_backend.Db.InProgress == InProgress.Reconcile)
+            {
+                StartReconciliation(true);
+            }
+        }
+
+        /// <summary>
         /// Call this after the splash screen vanishes.
         /// </summary>
         public void AfterSplash()

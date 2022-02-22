@@ -11,7 +11,7 @@ namespace AbleCheckbook.Logic
         private static int _dbMajor = 1;
         private static int _dbMinor = 1;
         private static int _dbRevis = 1;
-        private static int _dbBuild = 1;
+        private static int _dbBuild = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Build;
         private static string _dbVersion = _dbMajor + "." + _dbMinor + "." + _dbRevis + "(" + _dbBuild + ")";
         private static int _appMajor = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Major;
         private static int _appMinor = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Minor;

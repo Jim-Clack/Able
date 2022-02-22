@@ -87,7 +87,7 @@ namespace AbleCheckbook.Logic
         {
             int count = 0;
             bool ok = false;
-            while (!ok)
+            while (!ok && count < 50) // sanity check
             {
                 try
                 {
@@ -102,7 +102,7 @@ namespace AbleCheckbook.Logic
                 {
                     // ignore
                 }
-                index = index + (++count).ToString();
+                index = index + (++count).ToString(); 
             }
         }
 
@@ -397,10 +397,10 @@ namespace AbleCheckbook.Logic
             AddString("Reconciled/cleared entry - DO NOT CHANGE ANYTHING");
             AddString("Danger Danger Danger");
             AddString("Year-End Wrap-Up, Please Wait . . .");
+            AddString("Too soon. Many old entries not yet been cleared.");
             AddString("Direct modification can corrupt your account data!");
             AddString("Problem with Year-End Wrap-Up (Suggest Undo) ");
-            AddString("Active DB name indicates that it is already current.");
-            AddString("Cannot perform year-end with large proportion unreconciled.");
+            AddString("Active DB is already for the current year.");
             AddString("Many old entries not yet been cleared, or current year acct already exists.");
             AddString("#Invalid Site Description - Expected 6-char Name, a Hyphen, then 5-char Postal Code.");
             AddString("#Requires Super-User Permission");

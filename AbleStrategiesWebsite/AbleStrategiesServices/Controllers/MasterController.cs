@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Razor;
 
 /// <summary>                                      MASTER
 /// https://domain:port/as/master
@@ -20,9 +22,11 @@ namespace AbleStrategiesServices.Controllers
         public ActionResult<IEnumerable<string>> Get()
         {
             DateTime now = DateTime.Now.ToUniversalTime();
+            string ipAddress = HttpContext.Connection.RemoteIpAddress.ToString();
             return new string[] {
                 Version.ToString(), 
                 now.ToString("o", CultureInfo.GetCultureInfo("en-US")),
+                ipAddress,
                 (DateTime.Now.Ticks / (DateTime.Now.Millisecond + 173L)).ToString() // future use
             };
         }

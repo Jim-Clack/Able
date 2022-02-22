@@ -11,6 +11,9 @@ Setup
 Caveats
   TBD
 
+Required Reading...
+  https://docs.microsoft.com/en-us/aspnet/core/fundamentals/servers/?view=aspnetcore-6.0&tabs=windows#korh
+
 Info on creating an ASMX web service
   https://www.patrickschadler.com/creating-a-rest-webservice-with-net-core/
 

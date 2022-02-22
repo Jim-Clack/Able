@@ -276,8 +276,7 @@ namespace AbleLicensing
             }
             catch(Exception ex)
             {
-                _serverErrorMessage =
-                    "[A0] Problem Connecting to Server " + ex.Message;
+                _serverErrorMessage = "[A0] Problem Connecting to Server " + ex.Message;
             }
             Activation.Instance.LoggerHook("[A0] CallServerToCheckConnection() " + okay + " " + _serverErrorMessage);
             return okay;

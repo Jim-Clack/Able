@@ -281,14 +281,13 @@ namespace AbleCheckbook.Logic
         {
             if (_newDb.Name.Contains("-" + DateTime.Now.Year))
             {
-                _message = Strings.Get("Active DB name indicates that it is already current.");
+                _message = Strings.Get("Active DB is already for the current year.");
                 return false;
             }
             DateTime loDate = new DateTime(DateTime.Now.Year - 1, 12, 1); // Start of Dec
             DateTime hiDate = new DateTime(DateTime.Now.Year, 1, 1); // Start of Jan
             int loDateCount = 0;
             int hiDateCount = 0;
-            int totalCleared = 0;
             CheckbookEntryIterator iterator = _newDb.CheckbookEntryIterator;
             while (iterator.HasNextEntry())
             {
@@ -297,23 +296,14 @@ namespace AbleCheckbook.Logic
                 {
                     hiDateCount++;
                 }
-                if (!entry.IsCleared && entry.DateOfTransaction >= loDate)
+                if (!entry.IsCleared && entry.DateOfTransaction >= loDate && entry.DateCleared < hiDate)
                 {
                     loDateCount++;
                 }
-                if (entry.IsCleared)
-                {
-                    totalCleared++;
-                }
             }
-            if (totalCleared <= 1)
+            if (loDateCount > (hiDateCount + 2)) // more old uncleared than recently cleared
             {
-                _message = Strings.Get("Cannot perform year-end with large proportion unreconciled.");
-                return false;
-            }
-            if (loDateCount > hiDateCount) // more old uncleared than recently cleared
-            {
-                _message = Strings.Get("Many old entries not yet been cleared, or current year acct already exists.");
+                _message = Strings.Get("Too soon. Many old entries not yet been cleared.");
                 return false;
             }
             return true;

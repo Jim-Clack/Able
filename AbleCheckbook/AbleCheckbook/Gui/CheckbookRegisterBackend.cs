@@ -522,6 +522,7 @@ namespace AbleCheckbook.Gui
             }
             else
             {
+                win.Text = windowTitle;
                 MessageBox.Show(win, Strings.GetIff(yearEndWrapUp.Message), Strings.Get("Sorry"), MessageBoxButtons.OK);
                 return false;
             }

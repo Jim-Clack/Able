@@ -1,10 +1,12 @@
 ﻿using AbleCheckbook.Db;
 using AbleCheckbook.Logic;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 // https://central.xero.com/s/article/Import-a-CSV-bank-statement-US#Preparethedatainthefile
@@ -141,7 +143,7 @@ namespace AbleCheckbook.Logic
         /// </summary>
         private void IdentifyColumns()
         {
-            // Not yet doing any sophisticated mapping...
+            // Brute force assuming same as previously encountered - Not yet doing any sophisticated mapping...
             string buffer = _reader.ReadLine().ToLower();
             if (buffer.Contains("\x09"))
             {
@@ -178,7 +180,13 @@ namespace AbleCheckbook.Logic
             }
             if (buffer.Contains("category") || buffer.Contains("reference"))
             {
-                // normal case
+                // Suntrust
+            }
+            else if(buffer.Contains("transaction"))
+            {
+                // Truist
+                _columnMap[ColumnMap.Payee]++;
+                _columnMap[ColumnMap.CheckNum]++;
             }
             else
             {
@@ -220,11 +228,15 @@ namespace AbleCheckbook.Logic
                 }
                 string dateString = columns[_columnMap[ColumnMap.Date]];
                 string checkNum = columns[_columnMap[ColumnMap.CheckNum]];
-                string payee = columns[_columnMap[ColumnMap.Payee]];
+                if(!Regex.IsMatch(checkNum, ".*[1-9].*", System.Text.RegularExpressions.RegexOptions.None))
+                {
+                    checkNum = "";
+                }
+                string payee = columns[_columnMap[ColumnMap.Payee]].Replace("\\x09", " ").Replace("   ", " ").Replace("  ", " ");
                 string category = "";
                 if (_columnMap[ColumnMap.Category] < 100)
                 {
-                    category = columns[_columnMap[ColumnMap.Category]];
+                    category = columns[_columnMap[ColumnMap.Category]].Replace("   ", " ").Replace ("  ", " ");
                 }
                 string memo = "";
                 if (_columnMap[ColumnMap.Memo] < 100)
@@ -264,8 +276,8 @@ namespace AbleCheckbook.Logic
             int amount = 0;
             if (_columnMap[ColumnMap.Amount] < _numColumns)               // Use "amount" column
             {
-                amountString = columns[_columnMap[ColumnMap.Amount]].Replace(".", "").Replace(",", "");
-                if (!int.TryParse(amountString, out amount))
+                amountString = columns[_columnMap[ColumnMap.Amount]];
+                if (!ParseValue(amountString, out amount))
                 {
                     _errorMessage = "Cannot parse amount " + amountString + " at L" + _lineNumber + ". ";
                     throw new IOException(_errorMessage);
@@ -273,8 +285,8 @@ namespace AbleCheckbook.Logic
             }
             else                                                          // Use "debit" column
             {
-                amountString = columns[_columnMap[ColumnMap.Debit]].Replace(".", "").Replace(",", "");
-                if (amountString.Length > 0 && !int.TryParse(amountString, out amount))
+                amountString = columns[_columnMap[ColumnMap.Debit]];
+                if (!ParseValue(amountString, out amount))
                 {
                     _errorMessage = "Cannot parse debit " + amountString + " at L" + _lineNumber + ". ";
                     throw new IOException(_errorMessage);
@@ -282,8 +294,8 @@ namespace AbleCheckbook.Logic
                 amount = -Math.Abs(amount);
                 if (amount == 0)                                         // Use "credit" column
                 {
-                    amountString = columns[_columnMap[ColumnMap.Credit]].Replace(".", "").Replace(",", "");
-                    if (amountString.Length > 0 && !int.TryParse(amountString, out amount))
+                    amountString = columns[_columnMap[ColumnMap.Credit]];
+                    if (!ParseValue(amountString, out amount))
                     {
                         _errorMessage = "Cannot parse credit " + amountString + " at L" + _lineNumber + ". ";
                         throw new IOException(_errorMessage);
@@ -292,6 +304,24 @@ namespace AbleCheckbook.Logic
                 }
             }
             return amount;
+        }
+
+        /// <summary>
+        /// Parse a monetary amount from a string.
+        /// </summary>
+        /// <param name="textAmt">String containing currency in cents with a decimal point</param>
+        /// <returns>true if valid numeric, even if empty</returns>
+        private bool ParseValue(string textAmt, out int amount)
+        {
+            const string currencyRegex = "^[0-9\\$\\.\\,\\(\\)\\-]*$"; // should be precompiled
+            if (textAmt == null || !Regex.IsMatch(textAmt, currencyRegex, System.Text.RegularExpressions.RegexOptions.None))
+            {
+                amount = 0;
+                return false;
+            }
+            amount = (int)UtilityMethods.ParseCurrency(textAmt);
+            return true;
+
         }
 
         /// <summary>

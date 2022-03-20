@@ -138,39 +138,46 @@ namespace AbleCheckbook.Gui
 
             if (radioButtonCsv.Checked)
             {
-                ReconcileFromCsv();
+                if(!ReconcileFromCsv())
+                {
+                    MessageBox.Show("Note: No Importable Entries Read");
+                    this.DialogResult = DialogResult.Cancel;
+                }
             }
 
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
 
-        private void ReconcileFromCsv()
+        private bool ReconcileFromCsv()
         {
             JsonDbAccess db = new JsonDbAccess("csvtemp", null, true);
             CsvImporter importer = new CsvImporter(db);
-            if (importer.Import(textBoxCsvFile.Text.Trim()) > 0)
+            if (importer.Import(textBoxCsvFile.Text.Trim()) <= 0)
             {
-                AutoReconciler reconciler = new AutoReconciler(_db, db);
-                int countChanges = reconciler.Reconcile(
-                    dateTimePickerPrevRecon.Value, dateTimePickerThisRecon.Value, false, _db.Account.OnlineBankingAggressive);
-                int countDateWrong = reconciler.CountDateWrong;
-                string message = "" + countChanges + Strings.Get(" entries changed or added");
-                if (countDateWrong > 0)
-                {
-                    message = "" + countDateWrong + Strings.Get(" entries ignored as out of date range");
-                }
-                int countDuplicates = reconciler.CountDuplicates;
-                if (countDuplicates > 0)
-                {
-                    message = Strings.Get("Cannot Proceed:") + " " + countDuplicates +
-                        Strings.Get(" entries already reconciled in range:\n  ") +
-                        reconciler.FirstDuplicate + "\n        ... \n  " + reconciler.LastDuplicate +
-                        Strings.Get("\nRecommended action: [Abandon Reconcile]");
-                }
-                MessageBox.Show(message);
+                db.CloseWithoutSync();
+                return false;
             }
+            AutoReconciler reconciler = new AutoReconciler(_db, db);
+            int countChanges = reconciler.Reconcile(
+                dateTimePickerPrevRecon.Value, dateTimePickerThisRecon.Value, false, _db.Account.OnlineBankingAggressive);
+            int countDateWrong = reconciler.CountDateWrong;
+            string message = "" + countChanges + Strings.Get(" entries changed or added");
+            if (countDateWrong > 0)
+            {
+                message = "" + countDateWrong + Strings.Get(" entries ignored as out of date range");
+            }
+            int countDuplicates = reconciler.CountDuplicates;
+            if (countDuplicates > 0)
+            {
+                message = Strings.Get("Cannot Proceed:") + " " + countDuplicates +
+                    Strings.Get(" entries already reconciled in range:\n  ") +
+                    reconciler.FirstDuplicate + "\n        ... \n  " + reconciler.LastDuplicate +
+                    Strings.Get("\nRecommended action: [Abandon Reconcile]");
+            }
+            MessageBox.Show(message);
             db.CloseWithoutSync();
+            return true;
         }
     }
 }

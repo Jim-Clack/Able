@@ -392,12 +392,12 @@ namespace AbleCheckbook.Gui
             radioButtonFinal.Checked = false;
             dateTimePickerFinal.Value = _schEvent.EndingDate.Date.Ticks <= 0 ? DateTime.Now : _schEvent.EndingDate;
             numericUpDownOccurrences.Value = 0;
+            numericUpDownOccurrences.Minimum = 0;
+            numericUpDownOccurrences.Maximum = maxOccurrences;
             int occurrences = _schEvent.GetRepeatCount(DateTime.Now);
             occurrences = UtilityMethods.Clamp(0, occurrences, maxOccurrences);
             if (occurrences > 0)
             {
-                numericUpDownOccurrences.Minimum = 0;
-                numericUpDownOccurrences.Maximum = maxOccurrences;
                 numericUpDownOccurrences.Value = occurrences;
                 radioButtonForever.Checked = false;
                 radioButtonFinal.Checked = true;

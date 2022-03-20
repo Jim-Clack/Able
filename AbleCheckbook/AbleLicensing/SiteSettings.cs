@@ -24,6 +24,11 @@ namespace AbleLicensing
         // public static SiteSettings Instance { get; } // commented-out due to compiler warning anomaly
 
         /// <summary>
+        /// URL override for calling MASTER web services
+        /// </summary>
+        public abstract string WsUrlOverride { get; }
+
+        /// <summary>
         /// Hook for Activation to call the logger with a DIAG-level mesage.
         /// </summary>
         /// <param name="message">To be logged</param>

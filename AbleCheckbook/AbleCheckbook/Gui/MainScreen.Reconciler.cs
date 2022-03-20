@@ -136,16 +136,16 @@ namespace AbleCheckbook
             dateTimePickerPrevRecon.ShowUpDown = !Configuration.Instance.ShowCalendars;
             dateTimePickerThisRecon.ShowUpDown = !Configuration.Instance.ShowCalendars;
             ReconciliationValues reconValues = _backend.Db.GetReconciliationValues();
-            dateTimePickerPrevRecon.Value = reconValues.Date;
+            dateTimePickerPrevRecon.Value = reconValues.Date.Date;
             DateTime now = DateTime.Now;
-            dateTimePickerThisRecon.Value = new DateTime(now.Year, now.Month, 1);
-            if(dateTimePickerThisRecon.Value.Date == dateTimePickerPrevRecon.Value.Date)
+            dateTimePickerThisRecon.Value = reconValues.Date.AddMonths(1).Date;
+            if(dateTimePickerThisRecon.Value.Date.Date <= dateTimePickerPrevRecon.Value.Date.Date)
             {
-                dateTimePickerThisRecon.Value = dateTimePickerThisRecon.Value.AddMonths(1);
+                dateTimePickerThisRecon.Value = dateTimePickerThisRecon.Value.AddMonths(1).Date;
             }
             textBoxPrevReconBalance.Text = UtilityMethods.FormatCurrency(reconValues.Balance, 3);
             textBoxThisReconBalance.Text = "";
-            if (!continuation)
+            if (!continuation) // only when starting, not when reloading an acct w reconciliation in progress
             {
                 ReconcileStartForm form = new ReconcileStartForm(Backend.Db);
                 form.PrevReconDate = dateTimePickerPrevRecon.Value;
@@ -155,6 +155,7 @@ namespace AbleCheckbook
                 form.ShowDialog();
                 if (form.DialogResult != DialogResult.OK)
                 {
+                    _backend.ReloadTransactions(SortEntriesBy.TranDate);
                     return;
                 }
                 dateTimePickerPrevRecon.Value = form.PrevReconDate;

@@ -106,6 +106,11 @@ namespace AbleLicensing
         private DateTime _lastAttempt = DateTime.Now.AddDays(-1);
 
         /// <summary>
+        /// Expose site settings.
+        /// </summary>
+        public SiteSettings ISettings { get => _iSettings; }
+
+        /// <summary>
         /// Ctor.
         /// </summary>
         private Activation()
@@ -118,9 +123,9 @@ namespace AbleLicensing
             {
                 if(typeof(SiteSettings).IsAssignableFrom(clazz))
                 {
-                    if(_iSettings != null)
+                    if(ISettings != null)
                     {
-                        LoggerHook("[V5a] Activation() ERROR - " + _iSettings.GetType().Name + " " + clazz.Name);
+                        LoggerHook("[V5a] Activation() ERROR - " + ISettings.GetType().Name + " " + clazz.Name);
                         throw new ApplicationException("More than one class implements SiteSettings");
                     }
                     PropertyInfo property = clazz.GetProperty("Instance", 
@@ -129,7 +134,7 @@ namespace AbleLicensing
                     _iSettings = (SiteSettings)method.Invoke(null, null);
                 }
             }
-            if (_iSettings == null)
+            if (ISettings == null)
             {
                 LoggerHook("[V5b] Activation() ERROR");
                 throw new ApplicationException("No class found that implements SiteSettings");
@@ -157,7 +162,7 @@ namespace AbleLicensing
         /// <param name="message">To be logged</param>
         public void LoggerHook(string message)
         {
-            _iSettings.LoggerHook(message);
+            ISettings.LoggerHook(message);
         }
 
         /// <summary>
@@ -177,9 +182,9 @@ namespace AbleLicensing
         public void DeActivate()
         {
             LoggerHook("[W6] DeActivate() ");
-            _iSettings.SiteDescription = _iSettings.SiteDescription.Substring(0, 5) +
-                (char)UserLevelPunct.Deactivated + _iSettings.SiteDescription.Substring(7);
-            _iSettings.Save();
+            ISettings.SiteDescription = ISettings.SiteDescription.Substring(0, 5) +
+                (char)UserLevelPunct.Deactivated + ISettings.SiteDescription.Substring(7);
+            ISettings.Save();
         }
 
         /// <summary>
@@ -190,7 +195,7 @@ namespace AbleLicensing
         {
             get
             {
-                if (_iSettings == null)
+                if (ISettings == null)
                 {
                     return false;
                 }
@@ -202,7 +207,7 @@ namespace AbleLicensing
                 LoggerHook("[X7] IsLicensed() " + verificationCode);
                 string pin = ResetAllEntries(verificationCode);
                 bool ok = CheckVerificationCode(verificationCode, _lastAttempt.Ticks); // no-op: hacker diversion
-                _isLicensed = (pin == _iSettings.ActivationPin);
+                _isLicensed = (pin == ISettings.ActivationPin);
                 ok = !VerifyPin(verificationCode); // no-op: hacker diversion
                 pin = XorString(SiteIdentification + ok.ToString());  // no-op: hacker diversion
                 if(pin.Length < 1)  // no-op: hacker diversion (never happens)
@@ -246,9 +251,9 @@ namespace AbleLicensing
                 return;
             }
             ClampAtDaysSinceInstallation(daysRemaining, DateTime.Now, true); // reset days-since-installed
-            _iSettings.ActivityTracking = XorString(
+            ISettings.ActivityTracking = XorString(
                 daysRemaining.ToString() + "||" + DateTime.Now.ToShortDateString());
-            _iSettings.Save();
+            ISettings.Save();
         }
 
         /// <summary>
@@ -257,8 +262,8 @@ namespace AbleLicensing
         /// <param name="pin">Activation PIN</param>
         public void SetActivationPin(string pin)
         {
-            _iSettings.ActivationPin = pin;
-            _iSettings.Save();
+            ISettings.ActivationPin = pin;
+            ISettings.Save();
         }
 
         /// <summary>
@@ -268,15 +273,14 @@ namespace AbleLicensing
         {
             get
             {
-                return _iSettings.SiteDescription;
+                return ISettings.SiteDescription;
             }
             set
             {
-                _iSettings.SiteDescription = value;
-                _iSettings.Save();
+                ISettings.SiteDescription = value;
+                ISettings.Save();
             }
         }
-
         /// <summary>
         /// Set FeaturesBitmask. (to be called by a web service client)
         /// </summary>
@@ -288,8 +292,8 @@ namespace AbleLicensing
             {
                 return;
             }
-            _iSettings.FeaturesBitMask = TranslateLong(featureBitmask);
-            _iSettings.Save();
+            ISettings.FeaturesBitMask = TranslateLong(featureBitmask);
+            ISettings.Save();
         }
 
         /// <summary>
@@ -303,7 +307,7 @@ namespace AbleLicensing
             {
                 return 0L;
             }
-            return TranslateLong(_iSettings.FeaturesBitMask);
+            return TranslateLong(ISettings.FeaturesBitMask);
         }
 
         /// <summary>
@@ -313,7 +317,7 @@ namespace AbleLicensing
         /// <returns>true if feature is enabled AND this is a licensed version</returns>
         public bool IsFeatureEnabled(long featureBitmask)
         {
-            long mask = TranslateLong(_iSettings.FeaturesBitMask);
+            long mask = TranslateLong(ISettings.FeaturesBitMask);
             return (featureBitmask & mask) == featureBitmask;
         }
 
@@ -349,7 +353,7 @@ namespace AbleLicensing
         /// <returns>who knows?</returns>
         public string CalculatePin()
         {
-            string pinString = _iSettings.ActivationPin;
+            string pinString = ISettings.ActivationPin;
             long pinNumber = 1234;
             if(long.TryParse(pinString, out pinNumber))
             {
@@ -361,7 +365,7 @@ namespace AbleLicensing
                 pinString = XorString(pinString);
             }
             pinString = TranslateLong(pinNumber).ToString();
-            _iSettings.ActivationPin = pinString;
+            ISettings.ActivationPin = pinString;
             return pinString;
         }
 
@@ -386,7 +390,7 @@ namespace AbleLicensing
             }
             if (desc.Trim().Length < 1)
             {
-                desc = _iSettings.SiteDescription;
+                desc = ISettings.SiteDescription;
             }
             if (!CheckVerificationCode(ChecksumOfString(SiteIdentification), verificationCode))
             {
@@ -424,7 +428,7 @@ namespace AbleLicensing
             {
                 return 10000;
             }
-            string tracking = XorString(_iSettings.ActivityTracking).Trim();
+            string tracking = XorString(ISettings.ActivityTracking).Trim();
             LoggerHook("[Z9a] UpdateSiteSettings() " + tracking);
             string[] daysAndDate = tracking.Split(new string[] { "||" }, StringSplitOptions.RemoveEmptyEntries);
             int daysRemaining = _defaultDaysOfUse;
@@ -457,9 +461,9 @@ namespace AbleLicensing
             // if dummy file is about a year old, trim the days remaining down
             daysRemaining = ClampAtDaysSinceInstallation(daysRemaining, lastChecked);
             // Save results
-            _iSettings.ActivityTracking = XorString(
+            ISettings.ActivityTracking = XorString(
                 daysRemaining.ToString() + "||" + DateTime.Now.ToShortDateString());
-            _iSettings.Save();
+            ISettings.Save();
             LoggerHook("[Z9b] UpdateSiteSettings() " + daysRemaining.ToString() + "||" + DateTime.Now.ToShortDateString());
             return daysRemaining;
         }
@@ -475,7 +479,7 @@ namespace AbleLicensing
         {
             string checkFilePath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                    _iSettings.MfrAndAppName + "\\settings.cnf");
+                    ISettings.MfrAndAppName + "\\settings.cnf");
             if(restart)
             {
                 File.Delete(checkFilePath);
@@ -527,7 +531,7 @@ namespace AbleLicensing
         private long TranslateLong(long value)
         {
             long keyValue = 0x0E1D2C3B4A59687L;
-            long.TryParse(_iSettings.ActivationPin, out keyValue);
+            long.TryParse(ISettings.ActivationPin, out keyValue);
             keyValue += 0x123456789ABCDEF;
             return value ^ keyValue;
         }

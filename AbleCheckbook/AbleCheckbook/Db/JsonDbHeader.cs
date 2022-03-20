@@ -42,7 +42,7 @@ namespace AbleCheckbook.Db
         /// <summary>
         /// Date for use when in-progress.
         /// </summary>
-        private DateTime _reconciliationDate = DateTime.Now;
+        private DateTime _reconciliationDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
 
         /// <summary>
         /// Amount for use when in-progress.

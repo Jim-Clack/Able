@@ -40,8 +40,8 @@ namespace AbleCheckbook.Gui
             }
             textBoxHeading.Select(0, 0);
 
-   // JBC - NO, for debugging only...
-   OnlineClient onlineClient = new OnlineClient();
+            // JBC - NO, for debugging only...
+   OnlineActivationClient onlineClient = new OnlineActivationClient();
    bool ok = onlineClient.CallServerToCheckConnection();
 
         }

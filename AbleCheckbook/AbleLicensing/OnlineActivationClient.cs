@@ -84,14 +84,17 @@ namespace AbleLicensing
     /// <summary>
     /// Main class for this module.
     /// </summary>
-    public class OnlineClient
+    public class OnlineActivationClient
     {
 
         /// <summary>
         /// URL for calling MASTER web services
         /// </summary>
-        //private static string _wsUrl = "http://ablestrategies.com:33333/as/master";
-        private static string _wsUrl = "https://localhost:44363/as/master";
+#if DEBUG
+        private string _wsUrl = "https://localhost:44363/as/master";
+#else
+        private string _wsUrl = "http://ablestrategies.com:33333/as/master";
+#endif
 
         /// <summary>
         /// Staging area for a server error.
@@ -119,18 +122,23 @@ namespace AbleLicensing
         /// <param name="sid">installation site identification</param>
         /// <param name="user">installation user ID</param>
         /// <param name="ip">installation IP address or host name</param>
-        public OnlineClient(string sid, string user, string ip)
+        public OnlineActivationClient(string sid, string user, string ip)
         {
             _sid = sid; 
             _user = user;
             _ip = ip;
+            string wsUrlOverride = Activation.Instance.ISettings.WsUrlOverride;
+            if(!string.IsNullOrEmpty(wsUrlOverride))
+            {
+                _wsUrl = wsUrlOverride;
+            }
         }
 
         /// <summary>
         /// Ctor for use when activating on this host.
         /// </summary>
         /// <param name="user">user name, null to use the environment's username</param>
-        public OnlineClient(string user = null)
+        public OnlineActivationClient(string user = null)
         {
             _sid = Activation.Instance.SiteIdentification;
             _ip = System.Environment.UserDomainName;
@@ -138,6 +146,11 @@ namespace AbleLicensing
             if (user != null && user.Trim().Length > 0)
             {
                 _user = user;
+            }
+            string wsUrlOverride = Activation.Instance.ISettings.WsUrlOverride;
+            if (!string.IsNullOrEmpty(wsUrlOverride))
+            {
+                _wsUrl = wsUrlOverride;
             }
         }
 
@@ -179,7 +192,7 @@ namespace AbleLicensing
             }
 
             // no purchase found, so bring up the PayPal screen and let the user buy it
-            if ((purchase == null || purchase.Trim().Length < 1) && desc != null && desc.Trim().Length > 0)
+            if (string.IsNullOrEmpty(purchase) && !string.IsNullOrEmpty(desc)) // IS THIS CORRECT ???
             {
                 purchase = PurchaseOnline(addr, city, zip, phone, email, feature, desc);
             }

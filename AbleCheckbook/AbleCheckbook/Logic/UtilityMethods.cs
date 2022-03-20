@@ -297,7 +297,7 @@ namespace AbleCheckbook.Logic
         /// Parse a currency value from a string.
         /// </summary>
         /// <param name="text">Text containing a numeric value</param>
-        /// <returns>MOney in smallest units (i.e. cents), or 0 if not valid.</returns>
+        /// <returns>Money in smallest units (i.e. cents), or 0 if not valid.</returns>
         public static long ParseCurrency(string text)
         {
             long sign = text.Contains("(") || text.Contains("-") ? -1L : 1L;

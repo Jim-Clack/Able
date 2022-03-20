@@ -9,6 +9,7 @@ Alpha TODO...
  - Web Services for online purchase and self-service activation
  - Move SU user data to website instead of file
  - Fix desktop Icon
+ - Year end wrapup doesn't carry over memorized payees (categories too?)
  - During reconcile the cursor sometimes jumps way down
  - AreYouSureForm with date/time/user that screen-captures, logs, and read log
  - Make CsvImporter more flexible for various column sequences
@@ -21,6 +22,7 @@ Longer term TODO...
  - Implement SU ReadLog
  - When to call DiscardWeakRefs
  - Better Icon, Toolbar Images, etc.
+ - If ending amt (& date ?) is blank in reconcile, read from last entry in CSV file
  - Call Dispose() for fonts/colors/etc. (...or, better yet, "using")
  - Need a command to "check for duplicates" and fix them
  - Need a "rename category" that will, if required, merge categories
@@ -28,6 +30,7 @@ Longer term TODO...
  - Use mutex when changing preferences
  - CheckbookEntryForm change multiple arrays to an array of LineItem
  - More fine-grained unit tests
+ - Print preview
  - Overflow Undo-Queues to disk - sync to db via GUID
  - View: Load Custom View, Save Custom View (Sort, ColWdts, ColSeq)
  - Refactor Due-Notice, _alertType

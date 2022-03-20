@@ -34,6 +34,7 @@ namespace AbleCheckbook.Logic
         private static Configuration _instance = null;
 
         private string[] _legalFilenames = new string[] { "Checking", "Business", "Personal", "Alternate" };
+        private string _wsUrlOverride = "";
         private string _directoryLogs = "";
         private string _directoryDatabase = "";
         private string _directorySupportFiles = "";
@@ -337,7 +338,7 @@ namespace AbleCheckbook.Logic
         private void SetDefaults()
         {
             String backup2DefaultPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), 
-                "/Google Drive/Backups/ACheckbook");
+                "G:/My Drive");
             _directoryLogs = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ACheckbook");
             _directoryImportExport = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             _directorySupportFiles = AppContext.BaseDirectory;
@@ -346,7 +347,7 @@ namespace AbleCheckbook.Logic
             _directoryBackup2 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ACheckbook/Backups");
             if(File.Exists(backup2DefaultPath))
             {
-                _directoryBackup2 = backup2DefaultPath;
+                _directoryBackup2 = Path.Combine(backup2DefaultPath, "/ACheckbook");
             }
             _postEventAdvanceDays = 30;
             _logLevel = LogLevel.Diag;
@@ -451,7 +452,7 @@ namespace AbleCheckbook.Logic
         }
 
         ///////////////////////////// SiteSettings ///////////////////////////
-        
+
         /// <summary>
         /// Hook for Activation to call the logger with a DIAG-level mesage.
         /// </summary>
@@ -459,6 +460,17 @@ namespace AbleCheckbook.Logic
         public override void LoggerHook(string message)
         {
             Logger.Diag(message);
+        }
+
+        /// <summary>
+        /// URL override for calling MASTER web services
+        /// </summary>
+        public override string WsUrlOverride
+        {
+            get
+            {
+                return _wsUrlOverride;
+            }
         }
 
         /// <summary>

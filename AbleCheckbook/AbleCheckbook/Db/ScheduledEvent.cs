@@ -526,7 +526,7 @@ namespace AbleCheckbook.Db
             DateTime dueDate = startDate.Date; 
             while(!found) 
             {
-                if(dueDate.Date.CompareTo(endDate) > 0)
+                if(dueDate.Date.CompareTo(endDate) > 0 || _endingDate.Date < DateTime.Now.Date)
                 {
                     return new DateTime(0L);
                 }
@@ -607,7 +607,11 @@ namespace AbleCheckbook.Db
         public void UpdateLastPostingToNow()
         {
             DateTime testDate = LastPosting;
-            while (testDate.Date.Ticks < DateTime.Now.Date.Ticks)
+            if(_endingDate.Date <= new DateTime(0L))
+            {
+                _endingDate = DateTime.Now.AddDays(366).Date; // expected to be overwritten
+            }
+            while (testDate.Date < DateTime.Now.Date)
             {
                 LastPosting = testDate;
                 testDate = DueDateUnending(LastPosting, DateTime.Now.Date);

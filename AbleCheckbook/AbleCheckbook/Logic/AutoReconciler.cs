@@ -24,7 +24,7 @@ namespace AbleCheckbook.Logic
 
         private IDbAccess _userDb = null;
 
-        private IDbAccess _bankDb = null;
+        private IDbAccess _statementDb = null;
 
         private int _countDateWrong = 0;
 
@@ -46,11 +46,11 @@ namespace AbleCheckbook.Logic
         /// Ctor.
         /// </summary>
         /// <param name="userDb">For accessing user DB, already partially populated</param>
-        /// <param name="bankDb">Bank statement</param>
-        public AutoReconciler(IDbAccess userDb, IDbAccess bankDb)
+        /// <param name="statementDb">Bank statement</param>
+        public AutoReconciler(IDbAccess userDb, IDbAccess statementDb)
         {
             _userDb = userDb;
-            _bankDb = bankDb;
+            _statementDb = statementDb;
         }
 
         /// <summary>
@@ -63,18 +63,14 @@ namespace AbleCheckbook.Logic
         /// <returns>number of CheckbookEntries affected - if >0 then call reconHelper.UpdateOpenEntries()</returns>
         public int Reconcile(DateTime prevReconDate, DateTime thisReconDate, bool useBankInfo, bool aggressive)
         {
-            if(_userDb == null || _bankDb == null)
+            if(_userDb == null || _statementDb == null)
             {
                 return 0; // should never occur, but...
-            }
-            if(CheckForDuplicates(prevReconDate, thisReconDate))
-            {
-                return 0;
             }
             _countDateWrong = 0;
             int countAffected = 0;
             double targetScore = (int)(aggressive ? AutoReconciler.ThresholdScore.Possible : AutoReconciler.ThresholdScore.Probable);
-            CheckbookEntryIterator bankIterator = _bankDb.CheckbookEntryIterator;
+            CheckbookEntryIterator bankIterator = _statementDb.CheckbookEntryIterator;
             while (bankIterator.HasNextEntry())
             {
                 CheckbookEntry bankEntry = bankIterator.GetNextEntry();
@@ -113,17 +109,24 @@ namespace AbleCheckbook.Logic
         }
 
         /// <summary>
-        /// See if any of the bank entries have already been processed/cleared in the user DB
+        /// See if any of the bank entries have already been processed/cleared in the user DB (deletes dups in _statementDb)
         /// </summary>
         /// <param name="prevReconDate">Start of the period to process</param>
         /// <param name="thisReconDate">One day past end of the period</param>
-        /// <returns>true if duplicates exist</returns>
-        private bool CheckForDuplicates(DateTime prevReconDate, DateTime thisReconDate)
+        /// <param name="message">description of duplicate occurrences</param>
+        /// <returns>number of duplicates</returns>
+        public int CheckForDuplicates(DateTime prevReconDate, DateTime thisReconDate, out string message)
         {
+            message = "";
             _countDuplicates = 0;
+            if (_userDb == null || _statementDb == null)
+            {
+                return 0; // should never occur, but...
+            }
+            LinkedList<CheckbookEntry> duplicates = new LinkedList<CheckbookEntry>();
             DateTime firstDupDate = prevReconDate.Date;
             DateTime lastDupDate = thisReconDate.Date;
-            CheckbookEntryIterator bankIterator = _bankDb.CheckbookEntryIterator;
+            CheckbookEntryIterator bankIterator = _statementDb.CheckbookEntryIterator;
             while (bankIterator.HasNextEntry())
             {
                 CheckbookEntry bankEntry = bankIterator.GetNextEntry();
@@ -169,12 +172,25 @@ namespace AbleCheckbook.Logic
                             _firstDuplicate = duplicateString;
                             firstDupDate = bankDate.Date;
                         }
+                        duplicates.AddLast(bankEntry);
                         ++_countDuplicates;
                     }
                 }
             }
+            foreach(CheckbookEntry entry in duplicates)
+            {
+                _statementDb.DeleteEntry(entry); // delete duplicates in the statement
+            }
+            if(_countDuplicates > 0)
+            {
+                message = "" + _countDuplicates + Strings.Get(" duplicates ignored ") + firstDupDate.ToShortDateString();
+                if (_countDuplicates > 1)
+                {
+                    message = message + " - " + lastDupDate.ToShortDateString();
+                }
+            }
             Logger.Diag("CheckForDuplicates " + _countDuplicates);
-            return _countDuplicates > 0;
+            return _countDuplicates;
         }
 
         /// <summary>

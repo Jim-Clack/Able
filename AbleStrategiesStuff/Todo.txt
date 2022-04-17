@@ -1,4 +1,5 @@
 Alpha TODO...
+ - Scheduled Event (i.e. McDonald LS) - must be within 2 wks (chg to 31+ days)
  - Flesh out online help
  - Deploy website for testing
  - EULA
@@ -9,10 +10,11 @@ Alpha TODO...
  - Web Services for online purchase and self-service activation
  - Move SU user data to website instead of file
  - Fix desktop Icon
- - Year end wrapup doesn't carry over memorized payees (categories too?)
+ - Year end wrapup doesn't carry over memorized payees (do like categories)
  - During reconcile the cursor sometimes jumps way down
  - AreYouSureForm with date/time/user that screen-captures, logs, and read log
  - Make CsvImporter more flexible for various column sequences
+ - Once you've entered a payee with bad capitalization, you cannot change it
  - Much testing
 
 Longer term TODO...

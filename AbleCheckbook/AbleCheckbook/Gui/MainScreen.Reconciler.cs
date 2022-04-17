@@ -155,6 +155,7 @@ namespace AbleCheckbook
                 form.ShowDialog();
                 if (form.DialogResult != DialogResult.OK)
                 {
+                    EndReconciliation(false);
                     _backend.ReloadTransactions(SortEntriesBy.TranDate);
                     return;
                 }
@@ -182,6 +183,7 @@ namespace AbleCheckbook
             dataGridView1.Enabled = true;
             if (_backend.Db.InProgress != InProgress.Reconcile || _reconHelper == null)
             {
+                _reconHelper = null;
                 return;
             }
             if (commitReconcile)

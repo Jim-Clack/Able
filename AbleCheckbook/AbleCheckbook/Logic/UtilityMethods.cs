@@ -306,7 +306,7 @@ namespace AbleCheckbook.Logic
             string commaSymbol = CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator;
             string dotSymbol = CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator;
             float coef = (float)Math.Pow(10, places);
-            text = text.Trim().Replace(commaSymbol, "").Replace("(", "").Replace(")", "").Replace("-", "");
+            text = text.Trim().Replace(commaSymbol, "").Replace("(", "").Replace(")", "").Replace("-", "").Replace("+","");
             decimal decValue = 0;
             // Allow culture-specific parsing to handle it...
             if(text.Contains(moneySymbol) && Decimal.TryParse(text, out decValue))

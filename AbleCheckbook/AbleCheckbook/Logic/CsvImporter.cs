@@ -54,7 +54,7 @@ namespace AbleCheckbook.Logic
         /// <summary>
         /// Error message.
         /// </summary>
-        private string _errorMessage = "";
+        private string _errorMessage = Strings.Get("Note: No Importable Entries Read");
 
         /// <summary>
         /// Track line numbers in CSV file for diagnostics.
@@ -134,6 +134,7 @@ namespace AbleCheckbook.Logic
             catch(Exception ex)
             {
                 _errorMessage = ex.Message;
+                _entryCount = 0;
             }
             return _entryCount;
         }
@@ -313,7 +314,7 @@ namespace AbleCheckbook.Logic
         /// <returns>true if valid numeric, even if empty</returns>
         private bool ParseValue(string textAmt, out int amount)
         {
-            const string currencyRegex = "^[0-9\\$\\.\\,\\(\\)\\-]*$"; // should be precompiled
+            const string currencyRegex = "^[0-9\\$\\.\\,\\(\\)\\-\\+]*$"; // should be precompiled
             if (textAmt == null || !Regex.IsMatch(textAmt, currencyRegex, System.Text.RegularExpressions.RegexOptions.None))
             {
                 amount = 0;

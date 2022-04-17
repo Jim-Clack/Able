@@ -282,6 +282,7 @@ namespace AbleCheckbook.Logic
             AddString("Fill in bottom/left from your bank statement");
             AddString(" days away from today! Are you sure?");
             AddString("Confirm");
+            AddString("Continue?");
             AddString(" entries changed or added");
             AddString(" entries ignored as out of date range");
             AddString("Disable sanity-checks for wild dates and amounts during data-entry");
@@ -339,7 +340,6 @@ namespace AbleCheckbook.Logic
             AddString("Close");
             AddString("Too soon or too many uncleared entries remain.");
             AddString("Cannot Proceed:");
-            AddString("\nRecommended action: [Abandon Reconcile]");
             AddString("Abandon Reconcile");
             AddString("Abandon");
             AddString("days, from");
@@ -375,7 +375,6 @@ namespace AbleCheckbook.Logic
             AddString("Starting Balance for New Account...");
             AddString("Prev Reconcile");
             AddString("This Reconcile");
-            AddString(" entries already reconciled in range: ");
             AddString("As of:");
             AddString("Go To Most Recent");
             AddString("Sort Matches First");
@@ -405,6 +404,9 @@ namespace AbleCheckbook.Logic
             AddString("#Invalid Site Description - Expected 6-char Name, a Hyphen, then 5-char Postal Code.");
             AddString("#Requires Super-User Permission");
             AddString("#Invalid Site Identification Code.");
+            AddString("File contains transactions up to ");
+            AddString("! Adjust ending date?");
+            AddString(" duplicates ignored ");
             AddString("Able Strategies AbleCheckbook - See Terms of License");
             AddString("Activation");
             AddString("Activate");

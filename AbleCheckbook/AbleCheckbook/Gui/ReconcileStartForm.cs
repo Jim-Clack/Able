@@ -140,7 +140,6 @@ namespace AbleCheckbook.Gui
             {
                 if(!ReconcileFromCsv())
                 {
-                    MessageBox.Show("Note: No Importable Entries Read");
                     this.DialogResult = DialogResult.Cancel;
                 }
             }
@@ -149,35 +148,73 @@ namespace AbleCheckbook.Gui
             this.Close();
         }
 
+        /// <summary>
+        /// Load the statement from a CSV file and process it.
+        /// </summary>
+        /// <returns>success</returns>
         private bool ReconcileFromCsv()
         {
-            JsonDbAccess db = new JsonDbAccess("csvtemp", null, true);
-            CsvImporter importer = new CsvImporter(db);
+            JsonDbAccess dbStatement = new JsonDbAccess("csvtemp", null, true);
+            CsvImporter importer = new CsvImporter(dbStatement);
             if (importer.Import(textBoxCsvFile.Text.Trim()) <= 0)
             {
-                db.CloseWithoutSync();
+                MessageBox.Show(importer.ErrorMessage);
+                dbStatement.CloseWithoutSync();
                 return false;
             }
-            AutoReconciler reconciler = new AutoReconciler(_db, db);
+            DateTime lastDate = DateTime.Now.AddYears(-2);
+            CheckbookEntryIterator iter = dbStatement.CheckbookEntryIterator;
+            while(iter.HasNextEntry())
+            {
+                CheckbookEntry entry = iter.GetNextEntry();
+                if(entry.DateOfTransaction > lastDate)
+                {
+                    lastDate = entry.DateOfTransaction;
+                }
+            }
+            lastDate = lastDate.AddDays(1).Date;
+            if(lastDate > dateTimePickerThisRecon.Value.Date)
+            {
+                DialogResult result = MessageBox.Show(
+                    Strings.Get("File contains transactions up to ") +
+                        lastDate.ToShortDateString() + Strings.Get("! Adjust ending date?"), 
+                    Strings.Get("Verify"), MessageBoxButtons.YesNoCancel);
+                if(result == DialogResult.Yes)
+                {
+                    dateTimePickerThisRecon.Value = lastDate;
+                }
+                else if(result == DialogResult.Cancel)
+                {
+                    dbStatement.CloseWithoutSync();
+                    return false;
+                }
+            }
+            AutoReconciler reconciler = new AutoReconciler(_db, dbStatement);
+            string message = "";
+            if (reconciler.CheckForDuplicates(dateTimePickerPrevRecon.Value, dateTimePickerThisRecon.Value, out message) > 0)
+            {
+                if(MessageBox.Show(message, Strings.Get("Continue?"), MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+                {
+                    return false;
+                }
+            }
             int countChanges = reconciler.Reconcile(
                 dateTimePickerPrevRecon.Value, dateTimePickerThisRecon.Value, false, _db.Account.OnlineBankingAggressive);
             int countDateWrong = reconciler.CountDateWrong;
-            string message = "" + countChanges + Strings.Get(" entries changed or added");
+            message = "" + countChanges + Strings.Get(" entries changed or added");
             if (countDateWrong > 0)
             {
                 message = "" + countDateWrong + Strings.Get(" entries ignored as out of date range");
             }
-            int countDuplicates = reconciler.CountDuplicates;
-            if (countDuplicates > 0)
-            {
-                message = Strings.Get("Cannot Proceed:") + " " + countDuplicates +
-                    Strings.Get(" entries already reconciled in range:\n  ") +
-                    reconciler.FirstDuplicate + "\n        ... \n  " + reconciler.LastDuplicate +
-                    Strings.Get("\nRecommended action: [Abandon Reconcile]");
-            }
             MessageBox.Show(message);
-            db.CloseWithoutSync();
+            dbStatement.CloseWithoutSync();
             return true;
+        }
+
+        private void buttonCancel_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.Cancel;
+            this.Close();
         }
     }
 }

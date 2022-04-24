@@ -138,7 +138,7 @@ namespace AbleCheckbook.Logic
                 long.TryParse(bankEntry.CheckNumber, out bankCheckNumber);
                 if (string.IsNullOrEmpty(bankPayee))
                 {
-                    bankPayee = bankEntry.BankPayee.Trim();
+                    bankPayee = bankEntry.BankPayee;
                     bankAmount = Math.Abs(bankEntry.BankAmount);
                     bankCheckNumber = bankEntry.BankCheckNumber;
                     bankDate = bankEntry.BankTranDate;
@@ -148,7 +148,7 @@ namespace AbleCheckbook.Logic
                     CheckbookEntry userEntry = userIterator.GetNextEntry();
                     if(!string.IsNullOrEmpty(userEntry.BankPayee.Trim()) &&
                         Math.Abs(userEntry.BankAmount) == bankAmount &&
-                        userEntry.BankPayee.Trim().Equals(bankPayee) &&
+                        userEntry.BankPayee.Replace(" ", "").Equals(bankPayee.Replace(" ", "")) &&
                         userEntry.BankCheckNumber == bankCheckNumber &&
                         userEntry.BankTranDate.Date == bankDate.Date)
                     {

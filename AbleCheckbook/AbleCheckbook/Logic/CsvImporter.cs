@@ -233,11 +233,11 @@ namespace AbleCheckbook.Logic
                 {
                     checkNum = "";
                 }
-                string payee = columns[_columnMap[ColumnMap.Payee]].Replace("\\x09", " ").Replace("   ", " ").Replace("  ", " ");
+                string payee = columns[_columnMap[ColumnMap.Payee]].Replace("\\x09", " ").Replace("   ", " ").Replace("  ", " ").Trim();
                 string category = "";
                 if (_columnMap[ColumnMap.Category] < 100)
                 {
-                    category = columns[_columnMap[ColumnMap.Category]].Replace("   ", " ").Replace ("  ", " ");
+                    category = columns[_columnMap[ColumnMap.Category]].Replace("   ", " ").Replace ("  ", " ").Trim();
                 }
                 string memo = "";
                 if (_columnMap[ColumnMap.Memo] < 100)

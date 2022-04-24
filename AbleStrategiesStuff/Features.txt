@@ -1,5 +1,4 @@
 Done or Nearing Completion:
-- Checkbook App for Windows - Main Program
 - Platform Neutral Implementation (Quicken has an advantage as it is web-based)
 - I18N/L10N & Configurable Resources (Quicken has, most others do not)
 - Undo/Redo (Very very limited in Quicken, not in most competitors)

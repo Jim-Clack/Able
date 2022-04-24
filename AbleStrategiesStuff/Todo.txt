@@ -1,5 +1,4 @@
 Alpha TODO...
- - Scheduled Event (i.e. McDonald LS) - must be within 2 wks (chg to 31+ days)
  - Flesh out online help
  - Deploy website for testing
  - EULA
@@ -32,6 +31,7 @@ Longer term TODO...
  - Use mutex when changing preferences
  - CheckbookEntryForm change multiple arrays to an array of LineItem
  - More fine-grained unit tests
+ - Document (help) "2 wks" - i.e. schedule within 2 weks, close, selete unwanted
  - Print preview
  - Overflow Undo-Queues to disk - sync to db via GUID
  - View: Load Custom View, Save Custom View (Sort, ColWdts, ColSeq)

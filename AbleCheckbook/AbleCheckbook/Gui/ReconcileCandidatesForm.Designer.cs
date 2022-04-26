@@ -43,13 +43,13 @@
             this.textBoxCandidates.Name = "textBoxCandidates";
             this.textBoxCandidates.ReadOnly = true;
             this.textBoxCandidates.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxCandidates.Size = new System.Drawing.Size(398, 140);
+            this.textBoxCandidates.Size = new System.Drawing.Size(574, 140);
             this.textBoxCandidates.TabIndex = 0;
             // 
             // buttonClose
             // 
             this.buttonClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonClose.Location = new System.Drawing.Point(311, 182);
+            this.buttonClose.Location = new System.Drawing.Point(487, 182);
             this.buttonClose.Name = "buttonClose";
             this.buttonClose.Size = new System.Drawing.Size(101, 32);
             this.buttonClose.TabIndex = 1;
@@ -72,7 +72,7 @@
             this.AcceptButton = this.buttonClose;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(423, 223);
+            this.ClientSize = new System.Drawing.Size(599, 223);
             this.ControlBox = false;
             this.Controls.Add(this.labelTitle);
             this.Controls.Add(this.buttonClose);

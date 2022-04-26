@@ -239,7 +239,9 @@ namespace AbleCheckbook.Gui
                     return Color.FromArgb(120, 120, 120);
                 case 18:           // Typ White on Black
                     return Color.FromArgb(220, 220, 220);
-                case 19:           // Typ Purp on Yellow
+                case 19:           // Typ White on WHite
+                    return Color.FromArgb(250, 250, 250);
+                case 20:           // Typ Purp on Yellow
                     return Color.FromArgb(80, 0, 80);
                 default:           // Unused
                     return Color.FromArgb(255, 255, 255);
@@ -293,7 +295,9 @@ namespace AbleCheckbook.Gui
                     return Color.FromArgb(200, 200, 200);
                 case 18:           // Typ White on Black
                     return Color.FromArgb(20, 20, 20);
-                case 19:           // Typ Purp on Yellow
+                case 19:           // Typ White on White
+                    return Color.FromArgb(255, 255, 255);
+                case 20:           // Typ Purp on Yellow
                     return Color.FromArgb(255, 255, 220);
                 default:           // Unused
                     return Color.FromArgb(0, 0, 0);

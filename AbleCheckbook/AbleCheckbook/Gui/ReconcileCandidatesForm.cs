@@ -93,6 +93,11 @@ namespace AbleCheckbook.Gui
         /// <param name="e"></param>
         private void ReconcileCandidatesForm_Load(object sender, EventArgs e)
         {
+            if(this.Parent != null)
+            {
+                this.Left = this.Parent.PointToScreen(this.Parent.Location).X;
+                this.Width = this.Parent.Width - 10;
+            }
             this.Text = labelTitle.Text = Strings.Get("Reconcile Tips");
             buttonClose.Text = Strings.Get("Close");
             textBoxCandidates.DeselectAll();

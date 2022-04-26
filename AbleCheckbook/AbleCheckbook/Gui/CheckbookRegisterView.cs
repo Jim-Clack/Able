@@ -133,6 +133,21 @@ namespace AbleCheckbook.Gui
                 row.Cells["Amount"].Style = _layout.Style(colorIndex, true);
                 row.Cells["Debit"].Style = _layout.Style(colorIndex, true);
                 row.Cells["Credit"].Style = _layout.Style(colorIndex, true);
+                if (_sortedBy == SortEntriesBy.CheckBox)
+                {
+                    if (rowEntry.EntryBeforeEdit.IsCleared)
+                    {
+                        DataGridViewCheckBoxCell cell = row.Cells["IsChecked"] as DataGridViewCheckBoxCell;
+                        if (cell != null)
+                        {
+                            cell.Value = false;
+                            cell.FlatStyle = FlatStyle.Flat;
+                            cell.Style = cell.Style.Clone();
+                            cell.Style.ForeColor = Color.DarkGray;
+                            cell.ReadOnly = true;
+                        }
+                    }
+                }
                 // Forcast an impending lowest balance
                 if (_sortedBy == SortEntriesBy.TranDate && 
                     rowEntry.EntryBeforeEdit.DateOfTransaction.Date >= DateTime.Now.Date &&
@@ -157,6 +172,7 @@ namespace AbleCheckbook.Gui
                 cellStyle.ForeColor = Color.DarkRed;
                 _dataGridView.Rows[lowBalanceRow].Cells["Balance"].Style = cellStyle;
             }
+            CurrentEntryId = Guid.Empty;
         }
 
         /// <summary>
@@ -385,10 +401,10 @@ namespace AbleCheckbook.Gui
             switch (_sortedBy)
             {
                 case SortEntriesBy.SearchResults:  // placed at end of matches
-                case SortEntriesBy.CheckBox:
                     return ++_matchCount > _matches.Count;
                 case SortEntriesBy.CheckNumber:    // placed at end of those with numbers
                     return entry.CheckNumber.Trim().Length < 1;
+                case SortEntriesBy.CheckBox:       // reconciling
                 case SortEntriesBy.TranDate:       // placed by date
                     return (entry.DateOfTransaction.Date.CompareTo(DateTime.Now.Date) > 0);
                 case SortEntriesBy.Category:       // placed at end

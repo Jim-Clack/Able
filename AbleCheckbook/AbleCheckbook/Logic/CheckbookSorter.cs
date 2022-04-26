@@ -18,7 +18,7 @@ namespace AbleCheckbook.Logic
         Category =      3,   // Case-insensitive category
         CheckNumber =   4,   // Check numbers numerically
         SearchResults = 5,   // List search results first
-        CheckBox =      6,   // Similar to SearchResults
+        CheckBox =      6,   // Reconciliation w checkboxes
     }
 
     /// <summary>
@@ -102,7 +102,7 @@ namespace AbleCheckbook.Logic
                     entries.Sort(CompareEntriesByMatch);
                     break;
                 case SortEntriesBy.CheckBox:
-                    entries.Sort(CompareEntriesByMatch);
+                    entries.Sort(CompareEntriesByTranDate);
                     break;
             }
             return entries;

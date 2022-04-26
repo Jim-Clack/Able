@@ -30,8 +30,9 @@ namespace AbleCheckbook
         CheckedOff = 16,          // Check-Mark Clicked            Typ Slate on Grey
         CheckedAuto = 17,         // Checked Off Automatically     Typ Slate on White
         CheckedMaybe = 18,        // Awaiting Poss Merge Tran      Typ White on Black
-        Unknown = 19,             // Something Went Wrong          Typ Purp on Yellow
-        Count = 20,               // Number of entries above
+        Invisible = 19,           // Blank                         Typ White on White
+        Unknown = 20,             // Something Went Wrong          Typ Purp on Yellow
+        Count = 21,               // Number of entries above
     }
 
     /// <summary>

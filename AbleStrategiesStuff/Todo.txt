@@ -1,4 +1,6 @@
 Alpha TODO...
+ - Make CsvImporter more flexible for various column sequences
+ - Refactor to extract large methods
  - Flesh out online help
  - Deploy website for testing
  - EULA
@@ -12,7 +14,6 @@ Alpha TODO...
  - Year end wrapup doesn't carry over memorized payees (do like categories)
  - During reconcile the cursor sometimes jumps way down
  - AreYouSureForm with date/time/user that screen-captures, logs, and read log
- - Make CsvImporter more flexible for various column sequences
  - Once you've entered a payee with bad capitalization, you cannot change it
  - Much testing
 

@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using AbleCheckbook.Logic;
 using AbleCheckbook.Db;
 
 namespace AbleCheckbook.Logic.Tests
@@ -15,14 +14,14 @@ namespace AbleCheckbook.Logic.Tests
     public class CsvImporterTests
     {
         [TestMethod()]
-        public void ImportTest()
+        public void ImportTest1()
         {
-            CreateCsv("import.csv", 0);
-            string dbName = "UtEsTimpcsv-" + DateTime.Now.Year + ".acb";
+            CreateCsv1("import1.csv", 0);
+            string dbName = "UtEsTimpcsv1-" + DateTime.Now.Year + ".acb";
             File.Delete(Path.Combine(Configuration.Instance.DirectoryDatabase, dbName));
             JsonDbAccess db = new JsonDbAccess(dbName, null, true);
             CsvImporter importer = new CsvImporter(db);
-            int lineNumber = importer.Import("import.csv");
+            int lineNumber = importer.Import("import1.csv");
             string errorMessage = importer.ErrorMessage;
             CheckbookEntry entry = null;
             CheckbookEntryIterator iterator = db.CheckbookEntryIterator;
@@ -30,6 +29,7 @@ namespace AbleCheckbook.Logic.Tests
             entry = iterator.GetNextEntry();
             Assert.AreEqual(215443, entry.Amount);
             Assert.AreEqual("", entry.CheckNumber);
+            Assert.IsTrue(entry.Payee.ToUpper().StartsWith("PAYCHECK"));
             Assert.AreEqual(TransactionKind.Deposit, entry.Splits[0].Kind);
             Assert.IsTrue(entry.IsCleared);
             Assert.IsTrue(iterator.HasNextEntry());
@@ -71,12 +71,70 @@ namespace AbleCheckbook.Logic.Tests
             db.SyncAndClose();
         }
 
+        [TestMethod()]
+        public void ImportTest2()
+        {
+            CreateCsv2("import2.csv", 0);
+            string dbName = "UtEsTimpcsv2-" + DateTime.Now.Year + ".acb";
+            File.Delete(Path.Combine(Configuration.Instance.DirectoryDatabase, dbName));
+            JsonDbAccess db = new JsonDbAccess(dbName, null, true);
+            CsvImporter importer = new CsvImporter(db);
+            int lineNumber = importer.Import("import2.csv");
+            string errorMessage = importer.ErrorMessage;
+            CheckbookEntry entry = null;
+            CheckbookEntryIterator iterator = db.CheckbookEntryIterator;
+            Assert.IsTrue(iterator.HasNextEntry());
+            entry = iterator.GetNextEntry();
+            Assert.AreEqual(2, entry.Amount);
+            Assert.AreEqual(TransactionKind.Deposit, entry.Splits[0].Kind);
+            Assert.AreEqual("INTEREST PAYMENT", entry.Payee);
+            Assert.IsTrue(iterator.HasNextEntry());
+            entry = iterator.GetNextEntry();
+            Assert.AreEqual(-400, entry.Amount);
+            Assert.AreEqual(TransactionKind.Payment, entry.Splits[0].Kind);
+            Assert.IsTrue(iterator.HasNextEntry());
+            entry = iterator.GetNextEntry();
+            Assert.IsTrue(iterator.HasNextEntry());
+            entry = iterator.GetNextEntry();
+            Assert.AreEqual(299, entry.Amount);
+            Assert.AreEqual(TransactionKind.Deposit, entry.Splits[0].Kind);
+            Assert.IsTrue(iterator.HasNextEntry());
+            entry = iterator.GetNextEntry();
+            Assert.AreEqual(360000, entry.Amount);
+            Assert.AreEqual(TransactionKind.Deposit, entry.Splits[0].Kind);
+            db.SyncAndClose();
+        }
+
+        [TestMethod()]
+        public void ImportTest3()
+        {
+            CreateCsv3("import3.csv", 0);
+            string dbName = "UtEsTimpcsv3-" + DateTime.Now.Year + ".acb";
+            File.Delete(Path.Combine(Configuration.Instance.DirectoryDatabase, dbName));
+            JsonDbAccess db = new JsonDbAccess(dbName, null, true);
+            CsvImporter importer = new CsvImporter(db);
+            int lineNumber = importer.Import("import3.csv");
+            string errorMessage = importer.ErrorMessage;
+            CheckbookEntry entry = null;
+            CheckbookEntryIterator iterator = db.CheckbookEntryIterator;
+            Assert.IsTrue(iterator.HasNextEntry());
+            entry = iterator.GetNextEntry();
+            Assert.AreEqual(-1585, entry.Amount);
+            Assert.AreEqual(TransactionKind.Payment, entry.Splits[0].Kind);
+            Assert.AreEqual("McDonalds", entry.Payee);
+            Assert.IsTrue(iterator.HasNextEntry());
+            entry = iterator.GetNextEntry();
+            Assert.AreEqual(123450, entry.Amount);
+            Assert.AreEqual(TransactionKind.Deposit, entry.Splits[0].Kind);
+            db.SyncAndClose();
+        }
+
         /// <summary>
         /// Hardcoded CSV content for testing.
         /// </summary>
         /// <param name="filename">Where to write it.</param>
         /// <param name="variation">Provided to create test variations in the file.</param>
-        private void CreateCsv(string filename, int variation)
+        private void CreateCsv1(string filename, int variation)
         {
             StreamWriter writer = new StreamWriter(Path.Combine(Configuration.Instance.DirectoryImportExport, filename));
             writer.WriteLine("Date,Check Number,Description,Debit,Credit,Running Balance");
@@ -91,6 +149,37 @@ namespace AbleCheckbook.Logic.Tests
             writer.WriteLine("01/09/2021,993, GARDEN GATE SUBS           8003,32.00,0,3988.12");
             writer.WriteLine("01/10/2021,994, PUBLIX SUPER MAR           KENN, 155.41,0,3690.90");
             writer.WriteLine("01/11/2021,0, AMERICAN HOMES 4 WEB PMTS   HS5,1834.32,0,1856.58");
+            writer.Close();
+        }
+
+        /// <summary>
+        /// Hardcoded CSV content for testing.
+        /// </summary>
+        /// <param name="filename">Where to write it.</param>
+        /// <param name="variation">Provided to create test variations in the file.</param>
+        private void CreateCsv2(string filename, int variation)
+        {
+            StreamWriter writer = new StreamWriter(Path.Combine(Configuration.Instance.DirectoryImportExport, filename));
+            writer.WriteLine("Date,Transaction Type,Serial Number,Description,Amount,Daily Posted Balance");
+            writer.WriteLine("03/24/2022,Interest,,INTEREST PAYMENT,$+0.02,$3170.81");
+            writer.WriteLine("03/25/2022,POS,,NYTimes* NYTimes 9341 DEBIT CARD RECURRING PYMT,($4),");
+            writer.WriteLine("03/25/2022,Debit,,ACCOUNT NUMBER 194822572 PREAUTHORIZED TRANSFER,($25),$3055.68");
+            writer.WriteLine("03/28/2022,POS,,HLU* Hulu 145921230 03-27 HULU.COM/BILL CA 9341 DEBIT CARD RETURN,$+2.99,");
+            writer.WriteLine("03/31/2022,Credit,,SEC PPD EDWARD JONES 2011 JAMESCLACK & ACH CREDIT,$+3600,");
+            writer.WriteLine("01/11/2021,0, AMERICAN HOMES 4 WEB PMTS   HS5,1834.32,0,1856.58");
+            writer.Close();
+        }
+
+        /// <summary>
+        /// Hardcoded CSV content for testing.
+        /// </summary>
+        /// <param name="filename">Where to write it.</param>
+        /// <param name="variation">Provided to create test variations in the file.</param>
+        private void CreateCsv3(string filename, int variation)
+        {
+            StreamWriter writer = new StreamWriter(Path.Combine(Configuration.Instance.DirectoryImportExport, filename));
+            writer.WriteLine("01/01/2021,222,\"McDonalds\",($15.85)");
+            writer.WriteLine("01/01/2021,,\"Pay Check\",$1234.50");
             writer.Close();
         }
     }

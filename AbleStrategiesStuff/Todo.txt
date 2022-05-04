@@ -1,4 +1,5 @@
 Alpha TODO...
+ - Reconcile Tips button seems to never be enabled ???
  - Make CsvImporter more flexible for various column sequences
  - Refactor to extract large methods
  - Flesh out online help

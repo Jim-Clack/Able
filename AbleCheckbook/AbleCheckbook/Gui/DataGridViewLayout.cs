@@ -47,9 +47,9 @@ namespace AbleCheckbook.Gui
             {
                 DataGridViewCellStyle style = new DataGridViewCellStyle();
                 style.Font = new Font(FontFamily.GenericSansSerif, fontSize, 
-                    (colorIndex == 15) ? FontStyle.Bold : FontStyle.Regular); // Bold = Insert New Entry
-                style.ForeColor = CellFgColor(colorIndex);
-                style.BackColor = CellBgColor(colorIndex);
+                    (colorIndex == (int)EntryColor.NewEntryRow) ? FontStyle.Bold : FontStyle.Regular); 
+                style.ForeColor = RowOfCheckbook.CellFgColor(colorIndex);
+                style.BackColor = RowOfCheckbook.CellBgColor(colorIndex);
                 _styles[colorIndex] = style;
                 _boldStyles[colorIndex] = style.Clone();
                 Font font = _boldStyles[colorIndex].Font;
@@ -192,116 +192,6 @@ namespace AbleCheckbook.Gui
             dataGridView.Columns["BankInfo"].Width = Math.Max(84 + plus, dataGridView.Columns["BankInfo"].Width + rowsAdjust * 2);
         }
 
-        /// <summary>
-        /// Currently hardcoded - needs to change.
-        /// </summary>
-        /// <param name="colorIndex">Row type per ordinal of EntryColor</param>
-        /// <returns>Corresponding foreground color.</returns>
-        public Color CellFgColor(int colorIndex)
-        {
-            switch (colorIndex)
-            {
-                case 0:            // Typ Red on White
-                    return Color.FromArgb(160, 0, 0);
-                case 1:            // Typ Red on Pink
-                    return Color.FromArgb(160, 0, 0);
-                case 2:            // Typ Br Red on White
-                    return Color.FromArgb(220, 0, 0);
-                case 3:            // Typ Br Red on Pink 
-                    return Color.FromArgb(220, 0, 0);
-                case 4:            // Typ Red on Grey
-                    return Color.FromArgb(160, 0, 0);
-                case 5:            // Typ Green on Grey
-                    return Color.FromArgb(0, 160, 0);
-                case 6:            // Typ Green on White
-                    return Color.FromArgb(0, 160, 0);
-                case 7:            // Typ Typ Green on Pink
-                    return Color.FromArgb(0, 160, 0);
-                case 8:            // Typ Red on Maize
-                    return Color.FromArgb(160, 0, 0);
-                case 9:            // Typ Green on Maize
-                    return Color.FromArgb(0, 160, 0);
-                case 10:            // Typ Blue on Torq
-                    return Color.FromArgb(0, 0, 160);
-                case 11:            // Typ Blue on Cyan
-                    return Color.FromArgb(0, 0, 160);
-                case 12:           // Typ Red on Aqua
-                    return Color.FromArgb(160, 0, 0);
-                case 13:           // Typ Blue on Chartr
-                    return Color.FromArgb(80, 80, 100);
-                case 14:           // Typ Yellow on Green 
-                    return Color.FromArgb(255, 255, 80);
-                case 15:           //  Typ White on Red
-                    return Color.FromArgb(255, 255, 255);
-                case 16:           // Typ Slate on Grey
-                    return Color.FromArgb(100, 100, 100);
-                case 17:           // Typ Slate on White
-                    return Color.FromArgb(120, 120, 120);
-                case 18:           // Typ White on Black
-                    return Color.FromArgb(220, 220, 220);
-                case 19:           // Typ White on WHite
-                    return Color.FromArgb(250, 250, 250);
-                case 20:           // Typ Purp on Yellow
-                    return Color.FromArgb(80, 0, 80);
-                default:           // Unused
-                    return Color.FromArgb(255, 255, 255);
-            }
-        }
-
-        /// <summary>
-        /// Currently hardcoded - needs to change.
-        /// </summary>
-        /// <param name="colorIndex">Row type per ordinal of EntryColor</param>
-        /// <returns>Corresponding background color.</returns>
-        public Color CellBgColor(int colorIndex)
-        {
-            switch (colorIndex)
-            {
-                case 0:            // Typ Red on White
-                    return Color.FromArgb(255, 255, 255);
-                case 1:            // Typ Red on Pink
-                    return Color.FromArgb(255, 240, 240);
-                case 2:            // Typ Br Red on White
-                    return Color.FromArgb(255, 255, 255);
-                case 3:            // Typ Br Red on Pink 
-                    return Color.FromArgb(255, 240, 240);
-                case 4:            // Typ Red on Grey
-                    return Color.FromArgb(230, 230, 230);
-                case 5:            // Typ Green on Grey
-                    return Color.FromArgb(230, 230, 230);
-                case 6:            // Typ Green on White
-                    return Color.FromArgb(255, 255, 255);
-                case 7:            // Typ Typ Green on Pink
-                    return Color.FromArgb(255, 240, 240);
-                case 8:            // Typ Red on Maize
-                    return Color.FromArgb(250, 240, 200);
-                case 9:            // Typ Green on Maize
-                    return Color.FromArgb(250, 240, 200);
-                case 10:            // Typ Blue on Torq
-                    return Color.FromArgb(210, 240, 240);
-                case 11:            // Typ Blue on Cyan
-                    return Color.FromArgb(210, 230, 250);
-                case 12:           // Typ Red on Aqua
-                    return Color.FromArgb(210, 250, 230);
-                case 13:           // Typ Blue on Chartr
-                    return Color.FromArgb(240, 250, 210);
-                case 14:           // Typ Yellow on Green 
-                    return Color.FromArgb(80, 180, 120);
-                case 15:           //  Typ White on Red
-                    return Color.FromArgb(120, 20, 20);
-                case 16:           // Typ Slate on Grey
-                    return Color.FromArgb(175, 175, 175);
-                case 17:           // Typ Slate on White
-                    return Color.FromArgb(200, 200, 200);
-                case 18:           // Typ White on Black
-                    return Color.FromArgb(20, 20, 20);
-                case 19:           // Typ White on White
-                    return Color.FromArgb(255, 255, 255);
-                case 20:           // Typ Purp on Yellow
-                    return Color.FromArgb(255, 255, 220);
-                default:           // Unused
-                    return Color.FromArgb(0, 0, 0);
-            }
-        }
     }
+
 }

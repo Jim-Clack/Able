@@ -153,6 +153,15 @@ namespace AbleCheckbook.Logic
         /// </summary>
         public bool GetIsLicensedVersion()
         {
+#if DEBUG
+            // dont proceed if in UNIT TEST mode
+            System.Reflection.Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            if (assemblies.Any(a => a.FullName.ToLowerInvariant().Contains("testplatform")) ||
+                assemblies.Any(a => a.FullName.ToLowerInvariant().Contains("nunit.fraemwork"))) 
+            {
+                    return true;
+            }
+#endif
             return Activation.Instance.IsLicensed;
         }
 

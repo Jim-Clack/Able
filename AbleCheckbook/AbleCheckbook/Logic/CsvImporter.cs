@@ -9,17 +9,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-// https://central.xero.com/s/article/Import-a-CSV-bank-statement-US#Preparethedatainthefile
-// C:\Users\jimcl\source\repos\AbleCheckbook\Suntrust_History.csv
-
-// If there is no header, the following columns are assumed...
-// Date Check# Payee Category/Desc Memo/Reference Debit/Payment Credit/Deposit ... XCleared
-//  ...or...
-// Date Check# Payee Category/Desc Memo/Reference Amount ... XCleared
-//  - XCleared is optional - flagged by an X or x in this column
-//  - When Debit/Credit is used, the sign of the values are ignored
-//  - When Amount is used, it must be negative for payments/debits
-
 namespace AbleCheckbook.Logic
 {
     public class CsvImporter : IDisposable
@@ -40,6 +29,11 @@ namespace AbleCheckbook.Logic
             Amount = 7,
             Cleared = 8,
         }
+
+        /// <summary>
+        /// Flags a missing column.
+        /// </summary>
+        private static int NotPresent = 100;
 
         /// <summary>
         /// DB into which the data will be imported.
@@ -72,6 +66,11 @@ namespace AbleCheckbook.Logic
         private bool _useTabs = false;
 
         /// <summary>
+        /// Was a header present?
+        /// </summary>
+        private bool _foundHeader = false;
+
+        /// <summary>
         /// How many columns are significant?
         /// </summary>
         private int _numColumns = 8;
@@ -88,8 +87,8 @@ namespace AbleCheckbook.Logic
             { ColumnMap.Memo, 4 },
             { ColumnMap.Debit, 5 },
             { ColumnMap.Credit, 6 },
-            { ColumnMap.Amount, 100 },
-            { ColumnMap.Cleared, 100 },
+            { ColumnMap.Amount, NotPresent },
+            { ColumnMap.Cleared, NotPresent },
         };
 
         /// <summary>
@@ -101,6 +100,11 @@ namespace AbleCheckbook.Logic
         /// Description of any error.
         /// </summary>
         public string ErrorMessage { get => _errorMessage; }
+
+        /// <summary>
+        /// Path to CSV file.
+        /// </summary>
+        private string _fullPath = null;
 
         /// <summary>
         /// Ctor.
@@ -118,16 +122,26 @@ namespace AbleCheckbook.Logic
         /// <returns>How many entries were imported</returns>
         public int Import(string fullPath)
         {
-            if (!Path.IsPathRooted(fullPath))
+            _fullPath = fullPath;
+            if (!Path.IsPathRooted(_fullPath))
             {
-                fullPath = Path.Combine(Configuration.Instance.DirectoryImportExport, Path.GetFileName(fullPath));
+                _fullPath = Path.Combine(Configuration.Instance.DirectoryImportExport, Path.GetFileName(_fullPath));
             }
             try
             {
-                _reader = new StreamReader(fullPath);
-                IdentifyColumns();
+                _reader = new StreamReader(_fullPath);
+                if (!IdentifyColumnsUsingHeaders())
+                {
+                    _reader.Close();
+                    _reader = new StreamReader(_fullPath);
+                    IdentifyColumnsByGuessing();
+                }
                 _reader.Close();
-                _reader = new StreamReader(fullPath);
+                _reader = new StreamReader(_fullPath);
+                if (_foundHeader)
+                {
+                    GetNextLine(); // discard header line
+                }
                 ImportEntries();
                 _reader.Close();
             }
@@ -140,16 +154,128 @@ namespace AbleCheckbook.Logic
         }
 
         /// <summary>
-        /// Prescan the CSV file and populate _columnMap.
+        /// Read headers from the CSV file and populate _columnMap authoritatively.
         /// </summary>
-        private void IdentifyColumns()
+        /// <returns>success</returns>
+        private bool IdentifyColumnsUsingHeaders()
         {
-            // Brute force assuming same as previously encountered - Not yet doing any sophisticated mapping...
             string buffer = _reader.ReadLine().ToLower();
-            if (buffer.Contains("\x09"))
+            char delimiter = ',';
+            int numTabs = 0, numCommas = 0;
+            bool sawDate = false, sawPayee = false, sawDebit = false, sawCredit = false, sawAmount = false;
+            foreach (char ch in buffer)
+            {
+                if (ch == '\x09')
+                {
+                    ++numTabs;
+                }
+                else if (ch == ',')
+                {
+                    ++numCommas;
+                }
+            }
+            if (numTabs > numCommas)
             {
                 _useTabs = true;
+                delimiter = '\x09';
             }
+            _columnMap[ColumnMap.Date] = 0;
+            _columnMap[ColumnMap.Payee] = 2;
+            _columnMap[ColumnMap.Category] = NotPresent;
+            _columnMap[ColumnMap.CheckNum] = NotPresent;
+            _columnMap[ColumnMap.Memo] = NotPresent;
+            _numColumns = 0;
+            int colNum = 0;
+            string[] headers = buffer.ToLower().Split(delimiter);
+            foreach(string header in headers)
+            {
+                string hdr = header.Trim();
+                if(hdr.StartsWith("\"") && hdr.EndsWith("\""))
+                {
+                    hdr = hdr.Substring(1, hdr.Length - 2);
+                }
+                switch(hdr)
+                {
+                    case "date":
+                    case "transaction date":
+                    case "date of tran":
+                    case "date of transaction":
+                        sawDate = true;
+                        _columnMap[ColumnMap.Date] = colNum;
+                        _numColumns = Math.Max(_numColumns, colNum + 1);
+                        break;
+                    case "check #":
+                    case "checknum":
+                    case "check number":
+                        _columnMap[ColumnMap.CheckNum] = colNum;
+                        break;
+                    case "amount":
+                        sawAmount = true;
+                        _columnMap[ColumnMap.Amount] = colNum;
+                        _numColumns = Math.Max(_numColumns, colNum + 1);
+                        break;
+                    case "debit":
+                    case "payment":
+                        sawDebit = true;
+                        _columnMap[ColumnMap.Debit] = colNum;
+                        _numColumns = Math.Max(_numColumns, colNum + 1);
+                        break;
+                    case "credit":
+                    case "deposit":
+                        sawCredit = true;
+                        _columnMap[ColumnMap.Credit] = colNum;
+                        _numColumns = Math.Max(_numColumns, colNum + 1);
+                        break;
+                    case "cleared":
+                        _columnMap[ColumnMap.Cleared] = colNum;
+                        break;
+                    case "payee":
+                        sawPayee = true;
+                        _columnMap[ColumnMap.Payee] = colNum;
+                        _numColumns = Math.Max(_numColumns, colNum + 1);
+                        break;
+                    case "memo":
+                        _columnMap[ColumnMap.Memo] = colNum;
+                        break;
+                    case "category":
+                    case "description":
+                        _columnMap[ColumnMap.Category] = colNum;
+                        if (!sawPayee)
+                        {
+                            sawPayee = true; // default to this column as payee for now
+                        }
+                        _columnMap[ColumnMap.Payee] = colNum;
+                        _numColumns = Math.Max(_numColumns, colNum + 1);
+                        break;
+                }
+                ++colNum;
+            }
+            if (sawDate && sawPayee)
+            {
+                if(sawDebit && sawCredit)
+                {
+                    _columnMap[ColumnMap.Amount] = NotPresent;
+                    _foundHeader = true;
+                    return true;
+                }
+                if (sawAmount)
+                {
+                    _columnMap[ColumnMap.Debit] = NotPresent;
+                    _columnMap[ColumnMap.Credit] = NotPresent;
+                    _foundHeader = true;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Prescan the CSV file and populate _columnMap by making an educated guess.
+        /// </summary>
+        private void IdentifyColumnsByGuessing()
+        {
+            // Brute force - not doing any sophisticated mapping...
+            string buffer = _reader.ReadLine().ToLower();
             _columnMap[ColumnMap.Date] = 0;
             _columnMap[ColumnMap.CheckNum] = 1;
             _columnMap[ColumnMap.Payee] = 2;
@@ -161,7 +287,8 @@ namespace AbleCheckbook.Logic
                 _columnMap[ColumnMap.Credit] = 5;
                 _columnMap[ColumnMap.Cleared] = 6;
                 _numColumns = 7;
-                _columnMap[ColumnMap.Amount] = 200;
+                _foundHeader = true;
+                _columnMap[ColumnMap.Amount] = NotPresent;
                 if (buffer.Contains("memo") && buffer.Contains("debit") &&
                     buffer.IndexOf("memo") < buffer.IndexOf("debit"))
                 {
@@ -176,8 +303,8 @@ namespace AbleCheckbook.Logic
                 _columnMap[ColumnMap.Amount] = 4;
                 _columnMap[ColumnMap.Cleared] = 5;
                 _numColumns = 6;
-                _columnMap[ColumnMap.Debit] = 200;
-                _columnMap[ColumnMap.Credit] = 200;
+                _columnMap[ColumnMap.Debit] = NotPresent;
+                _columnMap[ColumnMap.Credit] = NotPresent;
             }
             if (buffer.Contains("category") || buffer.Contains("reference"))
             {
@@ -196,11 +323,11 @@ namespace AbleCheckbook.Logic
                 _columnMap[ColumnMap.Amount]--;
                 _columnMap[ColumnMap.Cleared]--;
                 _numColumns--;
-                _columnMap[ColumnMap.Category] = 200; ;
+                _columnMap[ColumnMap.Category] = NotPresent;
             }
             if (buffer.Contains("cleared") || buffer.Contains("reconcile"))
             {
-                if(buffer.Contains("balance"))
+                if (buffer.Contains("balance"))
                 {
                     _columnMap[ColumnMap.Cleared]++;
                     _numColumns++;
@@ -208,7 +335,7 @@ namespace AbleCheckbook.Logic
             }
             else
             {
-                _columnMap[ColumnMap.Cleared] = 200;
+                _columnMap[ColumnMap.Cleared] = NotPresent;
                 _numColumns--;
             }
         }
@@ -218,34 +345,37 @@ namespace AbleCheckbook.Logic
         /// </summary>
         private void ImportEntries()
         {
-            string currentLine = GetNextLine(); // discard header
             while (!_reader.EndOfStream)
             {
-                currentLine = GetNextLine();
+                string currentLine = GetNextLine();
                 string[] columns = SplitColumns(currentLine);
                 if (columns.Length < _numColumns)
                 {
                     continue;
                 }
                 string dateString = columns[_columnMap[ColumnMap.Date]];
-                string checkNum = columns[_columnMap[ColumnMap.CheckNum]];
-                if(!Regex.IsMatch(checkNum, ".*[1-9].*", System.Text.RegularExpressions.RegexOptions.None))
+                string checkNum = "";
+                if (_columnMap[ColumnMap.CheckNum] < NotPresent)
                 {
-                    checkNum = "";
+                    checkNum = columns[_columnMap[ColumnMap.CheckNum]];
+                    if (!Regex.IsMatch(checkNum, ".*[1-9].*", System.Text.RegularExpressions.RegexOptions.None))
+                    {
+                        checkNum = "";
+                    }
                 }
                 string payee = columns[_columnMap[ColumnMap.Payee]].Replace("\\x09", " ").Replace("   ", " ").Replace("  ", " ").Trim();
                 string category = "";
-                if (_columnMap[ColumnMap.Category] < 100)
+                if (_columnMap[ColumnMap.Category] < NotPresent)
                 {
                     category = columns[_columnMap[ColumnMap.Category]].Replace("   ", " ").Replace ("  ", " ").Trim();
                 }
                 string memo = "";
-                if (_columnMap[ColumnMap.Memo] < 100)
+                if (_columnMap[ColumnMap.Memo] < NotPresent)
                 {
                     memo = columns[_columnMap[ColumnMap.Memo]];
                 }
                 bool cleared = true;
-                if(_columnMap[ColumnMap.Cleared] < 100)
+                if(_columnMap[ColumnMap.Cleared] < NotPresent)
                 {
                     cleared = columns[_columnMap[ColumnMap.Cleared]].ToLower().Equals("x");
                 }

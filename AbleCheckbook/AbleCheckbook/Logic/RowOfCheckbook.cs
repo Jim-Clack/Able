@@ -22,8 +22,8 @@ namespace AbleCheckbook
         Scheduled = 8,            // Scheduled Event               Typ Red on Maize
         ScheduledCredit = 9,      // Scheduled Event Credit        Typ Green on Maize
         JustUndoRedo = 10,        // Just Now Changed by Undo/Redo Typ Blue on Torq
-        JustModified = 11,        // Just Now Changed by User      Typ Blue on Cyan
-        JustModCredit = 12,       // Just Now Changed Credit       Typ Red on Aqua
+        JustModified = 11,        // Just Now Changed by User      Typ Red on Cyan
+        JustModCredit = 12,       // Just Now Changed Credit       Typ Green on Cyan
         NonDebitCredit = 13,      // Such as Balance Adjustment    Typ Blue on Chartr
         NewEntryRow = 14,         // Click to Insert New Entry     Typ Yellow on Green
         Reminder = 15,            // Reminder to do                Typ White on Red
@@ -485,6 +485,118 @@ namespace AbleCheckbook
                     default:
                         return EntryColor.Unknown;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Currently hardcoded - needs to change.
+        /// </summary>
+        /// <param name="colorIndex">Row type per ordinal of EntryColor</param>
+        /// <returns>Corresponding foreground color.</returns>
+        public static System.Drawing.Color CellFgColor(int colorIndex)
+        {
+            switch (colorIndex)
+            {
+                case 0:            // Typ Red on White
+                    return System.Drawing.Color.FromArgb(160, 0, 0);
+                case 1:            // Typ Red on Pink
+                    return System.Drawing.Color.FromArgb(160, 0, 0);
+                case 2:            // Typ Br Red on White
+                    return System.Drawing.Color.FromArgb(220, 0, 0);
+                case 3:            // Typ Br Red on Pink 
+                    return System.Drawing.Color.FromArgb(220, 0, 0);
+                case 4:            // Typ Red on Grey
+                    return System.Drawing.Color.FromArgb(160, 0, 0);
+                case 5:            // Typ Green on Grey
+                    return System.Drawing.Color.FromArgb(0, 160, 0);
+                case 6:            // Typ Green on White
+                    return System.Drawing.Color.FromArgb(0, 160, 0);
+                case 7:            // Typ Typ Green on Pink
+                    return System.Drawing.Color.FromArgb(0, 160, 0);
+                case 8:            // Typ Red on Maize
+                    return System.Drawing.Color.FromArgb(160, 0, 0);
+                case 9:            // Typ Green on Maize
+                    return System.Drawing.Color.FromArgb(0, 160, 0);
+                case 10:            // Typ Blue on Torq
+                    return System.Drawing.Color.FromArgb(0, 0, 160);
+                case 11:            // Typ Red on Cyan
+                    return System.Drawing.Color.FromArgb(160, 0, 0);
+                case 12:           // Typ Green on Cyan
+                    return System.Drawing.Color.FromArgb(0, 160, 0);
+                case 13:           // Typ Blue on Chartr
+                    return System.Drawing.Color.FromArgb(80, 80, 100);
+                case 14:           // Typ Yellow on Green 
+                    return System.Drawing.Color.FromArgb(255, 255, 80);
+                case 15:           //  Typ White on Red
+                    return System.Drawing.Color.FromArgb(255, 255, 255);
+                case 16:           // Typ Slate on Grey
+                    return System.Drawing.Color.FromArgb(100, 100, 100);
+                case 17:           // Typ Slate on White
+                    return System.Drawing.Color.FromArgb(120, 120, 120);
+                case 18:           // Typ White on Black
+                    return System.Drawing.Color.FromArgb(220, 220, 220);
+                case 19:           // Typ White on WHite
+                    return System.Drawing.Color.FromArgb(250, 250, 250);
+                case 20:           // Typ Purp on Yellow
+                    return System.Drawing.Color.FromArgb(80, 0, 80);
+                default:           // Unused
+                    return System.Drawing.Color.FromArgb(255, 255, 255);
+            }
+        }
+
+        /// <summary>
+        /// Currently hardcoded - needs to change.
+        /// </summary>
+        /// <param name="colorIndex">Row type per ordinal of EntryColor</param>
+        /// <returns>Corresponding background color.</returns>
+        public static System.Drawing.Color CellBgColor(int colorIndex)
+        {
+            switch (colorIndex)
+            {
+                case 0:            // Typ Red on White
+                    return System.Drawing.Color.FromArgb(255, 255, 255);
+                case 1:            // Typ Red on Pink
+                    return System.Drawing.Color.FromArgb(255, 240, 240);
+                case 2:            // Typ Br Red on White
+                    return System.Drawing.Color.FromArgb(255, 255, 255);
+                case 3:            // Typ Br Red on Pink 
+                    return System.Drawing.Color.FromArgb(255, 240, 240);
+                case 4:            // Typ Red on Grey
+                    return System.Drawing.Color.FromArgb(230, 230, 230);
+                case 5:            // Typ Green on Grey
+                    return System.Drawing.Color.FromArgb(230, 230, 230);
+                case 6:            // Typ Green on White
+                    return System.Drawing.Color.FromArgb(255, 255, 255);
+                case 7:            // Typ Typ Green on Pink
+                    return System.Drawing.Color.FromArgb(255, 240, 240);
+                case 8:            // Typ Red on Maize
+                    return System.Drawing.Color.FromArgb(250, 240, 200);
+                case 9:            // Typ Green on Maize
+                    return System.Drawing.Color.FromArgb(250, 240, 200);
+                case 10:            // Typ Blue on Torq
+                    return System.Drawing.Color.FromArgb(210, 240, 240);
+                case 11:            // Typ Red on Cyan
+                    return System.Drawing.Color.FromArgb(210, 230, 250);
+                case 12:           // Typ Green on Cyan
+                    return System.Drawing.Color.FromArgb(210, 230, 250);
+                case 13:           // Typ Blue on Chartr
+                    return System.Drawing.Color.FromArgb(240, 250, 210);
+                case 14:           // Typ Yellow on Green 
+                    return System.Drawing.Color.FromArgb(80, 180, 120);
+                case 15:           //  Typ White on Red
+                    return System.Drawing.Color.FromArgb(120, 20, 20);
+                case 16:           // Typ Slate on Grey
+                    return System.Drawing.Color.FromArgb(175, 175, 175);
+                case 17:           // Typ Slate on White
+                    return System.Drawing.Color.FromArgb(200, 200, 200);
+                case 18:           // Typ White on Black
+                    return System.Drawing.Color.FromArgb(20, 20, 20);
+                case 19:           // Typ White on White
+                    return System.Drawing.Color.FromArgb(255, 255, 255);
+                case 20:           // Typ Purp on Yellow
+                    return System.Drawing.Color.FromArgb(255, 255, 220);
+                default:           // Unused
+                    return System.Drawing.Color.FromArgb(0, 0, 0);
             }
         }
     }

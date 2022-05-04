@@ -15,6 +15,7 @@ Workstation Setup Notes...
  . If you are new to MS VS, see the notes at the end of this document
  . C# Bug: A DataGridView column called "Name" will instead apply to Form
  . VS Gotcha: See comments at end of MainScreen.Reconciler/Support.cs
+ . Run unit tests only in DEBUG mode, as there is some debug code to handle caveats
 
 Terminology...
  - New-Entry-Row refers to the "Insert Entry" row in the checkbook register

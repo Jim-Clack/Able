@@ -25,7 +25,7 @@ Longer term TODO...
  - When to call DiscardWeakRefs
  - Better Icon, Toolbar Images, etc.
  - If ending amt (& date ?) is blank in reconcile, read from last entry in CSV file
- - Change JsonDbXxx so that all records derive from DbRecord, using ID and RecType
+ - Change JsonDbXxx so that all records derive from DbRecord, like in WebServices
  - Call Dispose() for fonts/colors/etc. (...or, better yet, "using")
  - Need a command to "check for duplicates" and fix them
  - Need a "rename category" that will, if required, merge categories

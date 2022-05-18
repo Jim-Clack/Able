@@ -11,15 +11,13 @@ namespace AbleStrategiesServices.Support
         /// <summary>
         /// Unique record type discriminator.
         /// </summary>
-        public string _desc = "";
+        public string desc = "";
 
         /// <summary>
         /// Ctor.
         /// </summary>
-        /// <param name="desc"></param>
-        public DeviceRecord(string desc)
+        public DeviceRecord()
         {
-            _desc = desc;
         }
 
         /// <summary>
@@ -29,11 +27,11 @@ namespace AbleStrategiesServices.Support
         {
             get
             {
-                return _desc;
+                return desc;
             }
             set
             {
-                _desc = value;
+                desc = value;
                 Mod();
             }
         }
@@ -44,7 +42,7 @@ namespace AbleStrategiesServices.Support
         /// <returns>unique string discriminator</returns>
         public static string GetRecordKind()
         {
-            return typeof(LicenseRecord).Name;
+            return typeof(DeviceRecord).Name;
         }
 
         /// <summary>
@@ -68,7 +66,7 @@ namespace AbleStrategiesServices.Support
             {
                 return;
             }
-            this.Desc = ((LicenseRecord)source).Desc;
+            this.Desc = ((DeviceRecord)source).Desc;
             // TODO
         }
 

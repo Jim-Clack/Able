@@ -10,6 +10,7 @@ Workstation Setup Notes...
  F. AbleCheckbook VS Pre-Build Event: copy $(ProjectDir)Support\* $(TargetDir)
  G. Set Build Configuration Symbols: Debug: SUPERUSER, Release: RELEASE 
  H. In AssemblyInfo.cs, if necessary, change to [assembly: AssemblyVersion("1.0.*")]
+ I. Options:Debug:General Uncheck "Step over propertes and operators" (Critical!)
 
  Caveats...
  . If you are new to MS VS, see the notes at the end of this document

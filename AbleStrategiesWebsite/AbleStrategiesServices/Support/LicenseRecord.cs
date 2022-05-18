@@ -8,27 +8,27 @@ namespace AbleStrategiesServices.Support
         /// <summary>
         /// Unique record type discriminator.
         /// </summary>
-        public string _desc = "";
+        public string desc = "";
 
         /// <summary>
         /// Contact name.
         /// </summary>
-        public string _contactName = "";
+        public string contactName = "";
 
         /// <summary>
         /// Street address.
         /// </summary>
-        public string _contactAddress = "";
+        public string contactAddress = "";
 
         /// <summary>
         /// Contact phone.
         /// </summary>
-        public string _contactPhone = "";
+        public string contactPhone = "";
 
         /// <summary>
         /// Contact email.
         /// </summary>
-        public string _contactEMail = "";
+        public string contactEMail = "";
 
         /// <summary>
         /// Ctor.
@@ -44,11 +44,11 @@ namespace AbleStrategiesServices.Support
         {
             get
             {
-                return _desc;
+                return desc;
             }
             set
             {
-                _desc = value;
+                desc = value;
                 Mod();
             }
         }
@@ -60,11 +60,11 @@ namespace AbleStrategiesServices.Support
         {
             get
             {
-                return _contactName;
+                return contactName;
             }
             set
             {
-                _contactName = value;
+                contactName = value;
                 Mod();
             }
         }
@@ -76,11 +76,11 @@ namespace AbleStrategiesServices.Support
         {
             get
             {
-                return _contactAddress;
+                return contactAddress;
             }
             set
             {
-                _contactAddress = value;
+                contactAddress = value;
                 Mod();
             }
         }
@@ -92,11 +92,11 @@ namespace AbleStrategiesServices.Support
         {
             get
             {
-                return _contactPhone;
+                return contactPhone;
             }
             set
             {
-                _contactPhone = value;
+                contactPhone = value;
                 Mod();
             }
         }
@@ -108,11 +108,11 @@ namespace AbleStrategiesServices.Support
         {
             get
             {
-                return _contactEMail;
+                return contactEMail;
             }
             set
             {
-                _contactEMail = value;
+                contactEMail = value;
                 Mod();
             }
         }

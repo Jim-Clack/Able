@@ -46,7 +46,7 @@ namespace AbleStrategiesServices.Controllers
             {
                 return new LicenseRecord[] { };
             }
-            return JsonLicenseDb.Instance.LicenseByDesc(desc);
+            return JsonUsersDb.Instance.LicenseByDesc(desc);
         }
 
         // POST as/master

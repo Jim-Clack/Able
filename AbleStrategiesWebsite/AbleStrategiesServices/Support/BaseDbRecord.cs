@@ -24,23 +24,23 @@ namespace AbleStrategiesServices.Support
         /// <summary>
         /// Globally unique Id for this record.
         /// </summary>
-        private Guid _id = Guid.Empty;
-        public Guid Id { get => _id; set => _id = value; }
+        private Guid id = Guid.Empty;
+        public Guid Id { get => id; set => id = value; }
 
         /// <summary>
         /// [private] Not persisted to DB, for tracking edits.
         /// </summary>
-        private EditFlag _editFlag = Support.EditFlag.New;
+        private EditFlag editFlag = Support.EditFlag.New;
 
         /// <summary>
         /// When was this record created?
         /// </summary>
-        public DateTime _dateCreated = DateTime.Now;
+        public DateTime dateCreated = DateTime.Now;
 
         /// <summary>
         /// When was this record last modified?
         /// </summary>
-        public DateTime _dateModified = DateTime.Now;
+        public DateTime dateModified = DateTime.Now;
 
         /// <summary>
         /// Unique record type discriminator (note: implement as a call to a static method)
@@ -54,11 +54,11 @@ namespace AbleStrategiesServices.Support
         {
             get
             {
-                return _editFlag;
+                return editFlag;
             }
             set
             {
-                _editFlag = (EditFlag)((value > _editFlag) ? value : _editFlag);
+                editFlag = (EditFlag)((value > editFlag) ? value : editFlag);
             }
         }
 
@@ -67,7 +67,7 @@ namespace AbleStrategiesServices.Support
         /// </summary>
         protected void Mod()
         {
-            EditFlag = EditFlag.Modified;
+            EditFlag = EditFlag.Modified; 
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace AbleStrategiesServices.Support
         /// </summary>
         public void UnMod()
         {
-            EditFlag = EditFlag.Unchanged;
+            editFlag = EditFlag.Unchanged; // adjusts Downward, so don't use setter
         }
 
         /// <summary>
@@ -85,11 +85,11 @@ namespace AbleStrategiesServices.Support
         {
             get
             {
-                return _dateCreated;
+                return dateCreated;
             }
             set
             {
-                _dateCreated = value;
+                dateCreated = value;
                 Mod();
             }
         }
@@ -101,11 +101,11 @@ namespace AbleStrategiesServices.Support
         {
             get
             {
-                return _dateModified;
+                return dateModified;
             }
             set
             {
-                _dateModified = value;
+                dateModified = value;
                 Mod();
             }
         }
@@ -130,7 +130,7 @@ namespace AbleStrategiesServices.Support
                 return false;
             }
             this.EditFlag = EditFlag.Modified;
-            this.EditFlag = source.EditFlag;
+            this.editFlag = source.EditFlag; // may need to adjust Downward, so don't use setter
             this.DateCreated = source.DateCreated;
             this.DateModified = source.DateModified;
             source.EditFlag = EditFlag.Zombie;

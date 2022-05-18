@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace AbleStrategies.Testing
 {
     [TestClass]
-    public class LicenseRecordTest
+    public class LicenseRecordTests
     {
         [TestMethod]
         public void TestUpdate()

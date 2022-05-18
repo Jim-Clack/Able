@@ -95,7 +95,7 @@ namespace AbleCheckbook.Logic
                 if (File.Exists(filename))
                 {
                     FileInfo fileInfo = new FileInfo(filename);
-                    if (fileInfo.Length > 3000000L) // 3MB
+                    if (fileInfo.Length > 2000000L) // 2MB
                     {
                         if (File.Exists(filename + ".bak"))
                         {

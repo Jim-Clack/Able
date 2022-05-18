@@ -1,7 +1,7 @@
 Setup
   Install Visual Studio 2019
   Open the solution
-  Update the AbleLicensing reference to wherever you've installed it, browse to:
+  UIn AbleStrategiesServices, update AbleLicensing reference, i.e. browse to:
     C:\Users\<user>\source\repos\Able\AbleCheckbook\AbleLicensing\bin\Release\netstandard2.0\AbleLicensing.dll
   If not already done, tell the IONOS installer to install .NET core: 
     Add the following line to AbleStrategiesWebsite.csproj <PropertyGoup> element:
@@ -37,7 +37,7 @@ Programmatic Connection to IONOS Server
     // etc.
   }
 
-Help...
+Notes for what must be added to the Help docs...
  - Reconcile-in-progress will maintain state across save/open cycles
  - To undo N-steps of reconcile: undo the last step, then Abandon Reconcile
  - Edits made during reconcile remain even if reconcile is abandoned

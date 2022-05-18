@@ -30,51 +30,51 @@ namespace AbleStrategiesServices.Support
         /// <summary>
         /// Location of output file.
         /// </summary>
-        private static string _logFilePath = "./server.log";
+        private static string LOG_FILE_PATH = "./server.log";
 
         /// <summary>
         /// Singleton instance.
         /// </summary>
-        private static Logger _instance = null;
+        private static Logger instance = null;
 
         /// <summary>
         /// Don't swamp the user with error messages.
         /// </summary>
-        private static int _loggerFailures = 0;
+        private static int loggerFailures = 0;
 
         /// <summary>
         /// Inner mutex to avoid races.
         /// </summary>
-        private static Mutex _innerMutex = new Mutex();
+        private static Mutex innerMutex = new Mutex();
 
         /// <summary>
         /// Outer mutex to avoid races.
         /// </summary>
-        private static Mutex _outerMutex = new Mutex();
+        private static Mutex outerMutex = new Mutex();
 
         /// <summary>
         /// Force an immediate backup conditionally.
         /// </summary>
-        private DateTime _lastBackupCheck = DateTime.Now.AddHours(-1000);
+        private DateTime lastBackupCheck = DateTime.Now.AddHours(-1000);
 
         /// <summary>
         /// Track number of writes since last backup
         /// </summary>
-        private long _numWrites = 0L;
+        private long numWrites = 0L;
 
         /// <summary>
         /// Here's the file we write logs to.
         /// </summary>
-        private StreamWriter _writer = null;
+        private StreamWriter streamWriter = null;
 
         /// <summary>
         /// What level of logging are we keeping track of?
         /// </summary>
-        private LogLevel _level = LogLevel.Diag;
+        private LogLevel level = LogLevel.Diag;
 
         // Getters/Setters
-        public static Mutex InnerMutex { get => _innerMutex; }
-        public static Mutex OuterMutex { get => _outerMutex; }
+        public static Mutex InnerMutex { get => innerMutex; }
+        public static Mutex OuterMutex { get => outerMutex; }
 
         /// <summary>
         /// What level of logging are we keeping track of?
@@ -83,12 +83,12 @@ namespace AbleStrategiesServices.Support
         {
             get
             {
-                return _level;
+                return level;
             }
             set
             {
-                _level = value;
-                _writer.WriteLine("Level: " + _level + " (Log Level Changed)");
+                level = value;
+                streamWriter.WriteLine("Level: " + level + " (Log Level Changed)");
             }
         }
 
@@ -97,15 +97,15 @@ namespace AbleStrategiesServices.Support
         /// </summary>
         public static void Close()
         {
-            _innerMutex.WaitOne();
-            if (_instance != null)
+            innerMutex.WaitOne();
+            if (instance != null)
             {
-                _instance._writer.AutoFlush = false;
-                _instance._writer.Flush();
-                _instance._writer.Close();
-                _instance = null;
+                instance.streamWriter.AutoFlush = false;
+                instance.streamWriter.Flush();
+                instance.streamWriter.Close();
+                instance = null;
             }
-            _innerMutex.ReleaseMutex();
+            innerMutex.ReleaseMutex();
         }
 
         /// <summary>
@@ -115,19 +115,19 @@ namespace AbleStrategiesServices.Support
         {
             try
             {
-                _innerMutex.WaitOne();
+                innerMutex.WaitOne();
                 BackupAndOpen();
             }
             catch (Exception ex)
             {
-                if (_loggerFailures++ < 3)
+                if (loggerFailures++ < 3)
                 {
                     throw new Exception("Logger Ctor Failed", ex);
                 }
             }
             finally
             {
-                _innerMutex.ReleaseMutex();
+                innerMutex.ReleaseMutex();
             }
         }
 
@@ -140,16 +140,16 @@ namespace AbleStrategiesServices.Support
             {
                 // This is NOT a redundant "if" but it is here so we don't lock for 
                 // initial simultaneous Instance reference, crippling performance.
-                if (_instance == null)
+                if (instance == null)
                 {
-                    _outerMutex.WaitOne();
-                    if (_instance == null)
+                    outerMutex.WaitOne();
+                    if (instance == null)
                     {
-                        _instance = new Logger();
+                        instance = new Logger();
                     }
-                    _outerMutex.ReleaseMutex();
+                    outerMutex.ReleaseMutex();
                 }
-                return _instance;
+                return instance;
             }
         }
 
@@ -158,10 +158,10 @@ namespace AbleStrategiesServices.Support
         /// </summary>
         /// <param name="level"></param>
         /// <param name="ipAddress">IP address as a string, null or "" if unknown</param>
-        /// <param name="message"></param>
+        /// <param name="message">To be logged</param>
         public void Log(LogLevel level, string ipAddress, string message)
         {
-            if (level < _level)
+            if (level < this.level)
             {
                 return;
             }
@@ -187,7 +187,7 @@ namespace AbleStrategiesServices.Support
             }
             try
             {
-                if (_level == LogLevel.Detail)
+                if (this.level == LogLevel.Detail)
                 {
                     for (int i = 1; i < 6; ++i)
                     {
@@ -195,9 +195,12 @@ namespace AbleStrategiesServices.Support
                         {
                             break;
                         }
-                        callStack = "\r\n   " +
-                            stackTrace.GetFrame(nonLogFrameIndex + i).GetMethod().ReflectedType.Name + "." +
-                            stackTrace.GetFrame(nonLogFrameIndex + i).GetMethod().Name + "() -> " + callStack;
+                        if (stackTrace.GetFrame(nonLogFrameIndex + i).GetMethod().ReflectedType != typeof(void))
+                        {
+                            callStack = "\r\n   " +
+                                stackTrace.GetFrame(nonLogFrameIndex + i).GetMethod().ReflectedType.Name + "." +
+                                stackTrace.GetFrame(nonLogFrameIndex + i).GetMethod().Name + "() -> " + callStack;
+                        }
                     }
                     if (callStack.Length > 1)
                     {
@@ -205,13 +208,13 @@ namespace AbleStrategiesServices.Support
                     }
                 }
                 string timeStr = DateTime.Now.ToString("HH:mm:ss.ffff");
-                _writer.WriteLine("{0} [{1}] {2}.{3}: {4} {5}{6}",
+                streamWriter.WriteLine("{0} [{1}] {2}.{3}: {4} {5}{6}",
                     timeStr, level, className, methodName, message, ipAddress, callStack);
-                ++_numWrites;
+                ++numWrites;
             }
             catch (Exception ex)
             {
-                if (_loggerFailures++ < 2)
+                if (loggerFailures++ < 2)
                 {
                     throw new Exception("Logger.Log Failed", ex);
                 }
@@ -223,48 +226,43 @@ namespace AbleStrategiesServices.Support
         /// </summary>
         private void BackupAndOpen()
         {
-            bool logfileIsOpen = _writer != null;
-            if (!logfileIsOpen)
+            BackupIfOkay();
+            streamWriter = new StreamWriter(LOG_FILE_PATH, true);
+            streamWriter.WriteLine("\r\n###### " + DateTime.Now.ToLocalTime() + " ######\r\n");
+            streamWriter.WriteLine("App v: " + Environment.Version.ToString());
+            streamWriter.WriteLine("User: " + Environment.UserName + "\r\n");
+            streamWriter.WriteLine("Level: " + level);
+            streamWriter.AutoFlush = true;
+            numWrites = 0L;
+            lastBackupCheck = DateTime.Now;
+        }
+
+        private void BackupIfOkay()
+        {
+            bool logfileIsOpen = streamWriter != null;
+            if (logfileIsOpen)
             {
-                bool tooManyWrites = _numWrites > 10000;
-                bool tooLongOpen = Math.Abs(DateTime.Now.Subtract(_lastBackupCheck).Hours) > 23;
-                if (!(tooManyWrites || tooLongOpen)) // only bother to check if one of these is true
-                {
-                    return;
-                }
-                bool logfileExists = File.Exists(_logFilePath);
-                if (logfileExists) // only check this if the file exists
-                {
-                    FileInfo fileInfo = new FileInfo(_logFilePath);
-                    if (fileInfo.Length < 1000000L) // 1MB
-                    {
-                        return;
-                    }
-                }
+                return;
             }
-            if (_writer != null)
+            bool logfileExists = File.Exists(LOG_FILE_PATH);
+            if (!logfileExists) // only check this if the file exists
             {
-                _writer.Close();
-                _writer.Dispose();
-                _writer = null;
+                return;
+            }
+            FileInfo fileInfo = new FileInfo(LOG_FILE_PATH);
+            if (fileInfo.Length < 1000000L) // 1MB
+            {
+                return;
             }
             // Perform the backup
-            if (File.Exists(_logFilePath + ".bak"))
+            if (File.Exists(LOG_FILE_PATH + ".bak"))
             {
-                File.Delete(_logFilePath + ".bak");
+                File.Delete(LOG_FILE_PATH + ".bak");
             }
-            if (File.Exists(_logFilePath))
+            if (File.Exists(LOG_FILE_PATH))
             {
-                File.Move(_logFilePath, _logFilePath + ".bak");
+                File.Move(LOG_FILE_PATH, LOG_FILE_PATH + ".bak");
             }
-            _writer = new StreamWriter(_logFilePath, true);
-            _writer.WriteLine("\r\n###### " + DateTime.Now.ToLocalTime() + " ######\r\n");
-            _writer.WriteLine("App v: " + Environment.Version.ToString());
-            _writer.WriteLine("User: " + Environment.UserName + "\r\n");
-            _writer.WriteLine("Level: " + _level);
-            _writer.AutoFlush = true;
-            _numWrites = 0L;
-            _lastBackupCheck = DateTime.Now;
         }
 
         /// <summary>

@@ -129,6 +129,30 @@ namespace AbleCheckbook.Logic.Tests
             db.SyncAndClose();
         }
 
+        [TestMethod()]
+        public void ImportTest4()
+        {
+            CreateCsv4("import4.csv", 0);
+            string dbName = "UtEsTimpcsv4-" + DateTime.Now.Year + ".acb";
+            File.Delete(Path.Combine(Configuration.Instance.DirectoryDatabase, dbName));
+            JsonDbAccess db = new JsonDbAccess(dbName, null, true);
+            CsvImporter importer = new CsvImporter(db);
+            int lineNumber = importer.Import("import4.csv");
+            string errorMessage = importer.ErrorMessage;
+            CheckbookEntry entry = null;
+            CheckbookEntryIterator iterator = db.CheckbookEntryIterator;
+            Assert.IsTrue(iterator.HasNextEntry());
+            entry = iterator.GetNextEntry();
+            Assert.AreEqual(-1585, entry.Amount);
+            Assert.AreEqual(TransactionKind.Payment, entry.Splits[0].Kind);
+            Assert.AreEqual("Mc\"Donalds", entry.Payee);
+            Assert.IsTrue(iterator.HasNextEntry());
+            entry = iterator.GetNextEntry();
+            Assert.AreEqual(123450, entry.Amount);
+            Assert.AreEqual(TransactionKind.Deposit, entry.Splits[0].Kind);
+            db.SyncAndClose();
+        }
+
         /// <summary>
         /// Hardcoded CSV content for testing.
         /// </summary>
@@ -169,7 +193,6 @@ namespace AbleCheckbook.Logic.Tests
             writer.WriteLine("01/11/2021,0, AMERICAN HOMES 4 WEB PMTS   HS5,1834.32,0,1856.58");
             writer.Close();
         }
-
         /// <summary>
         /// Hardcoded CSV content for testing.
         /// </summary>
@@ -180,6 +203,20 @@ namespace AbleCheckbook.Logic.Tests
             StreamWriter writer = new StreamWriter(Path.Combine(Configuration.Instance.DirectoryImportExport, filename));
             writer.WriteLine("01/01/2021,222,\"McDonalds\",($15.85)");
             writer.WriteLine("01/01/2021,,\"Pay Check\",$1234.50");
+            writer.Close();
+        }
+
+        /// <summary>
+        /// Hardcoded CSV content for testing.
+        /// </summary>
+        /// <param name="filename">Where to write it.</param>
+        /// <param name="variation">Provided to create test variations in the file.</param>
+        private void CreateCsv4(string filename, int variation)
+        {
+            StreamWriter writer = new StreamWriter(Path.Combine(Configuration.Instance.DirectoryImportExport, filename));
+            writer.WriteLine("Date,Category,Memo,Amount,WhoKnow, Crap");
+            writer.WriteLine("01/01/2021,\"Mc\"Donalds\",\"Garbage\",($15.85),222,555");
+            writer.WriteLine("01/01/2021,\"Pay Check\",\"Junk\",$1234.50",4312);
             writer.Close();
         }
     }

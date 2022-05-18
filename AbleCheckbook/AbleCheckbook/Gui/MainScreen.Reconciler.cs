@@ -97,7 +97,7 @@ namespace AbleCheckbook
             buttonReconcileTips.Enabled = false;
             List<CandidateEntry> candidates =
                 _reconHelper.FindTipCandidates(-disparity, dateTimePickerThisRecon.Value.AddDays(1));
-            if (candidates.Count == 0)
+            if (candidates.Count == 0 || candidates.Count > 20)
             {
                 _tipsForm.Hide();
             }

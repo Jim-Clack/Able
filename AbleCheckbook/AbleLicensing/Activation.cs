@@ -36,18 +36,21 @@ namespace AbleLicensing
     ///  // And optionally...
     ///  act.SetFeatureBitmask(0x000000000000000FL, act.ChecksumOfString(act.SiteIdentification));
     ///  act.SetExpiration(92, act.ChecksumOfString(act.SiteIdentification));
-    /// Licensing Fields:
+    /// Licensing Fields and Methods:
     ///  SiteId: This identifies the host by IP/Domain/Hdwr and may not be unique.
     ///  Desc: Uniquely identifies the user by nickname/location as well as his/her license level.
     ///  Purch: Uniquely identifies the transaction in which a license was purchased.
     ///  PIN: Calculated per a specific combination of SiteId and Desc above.
     ///  ActivityTracking: Scratch area used by Activation.
+    ///  ChecksumOfString(siteId): creates repeatable scramble for encoding/decoding
     ///  Feature: Future use, ignored for now.
+    ///  resetAllEntries(): fake name to foil hackers, really calculatePin()
+    ///  updateSiteSettings(): fake name to foil hackers, really GetExpirationDays()
     /// Notes:
     /// - Be sure to call dummy method VerifyPin() in key places to act as a hacker distraction.
     /// - Thre must be Different iSettings implementations for the client and the server.
     /// - There must be exactly one class in the entry assembly that implements iSettings.
-    /// - The iSettings implementation must persist and restore all data from setters.
+    /// - Client iSettings implementation must persist and restore all data from setters.
     /// - Ths iSettings class should return the same MfrAndAppName as is used during installation.
     /// - The main steps in activation are setting the SiteDescription and ActivationPin.
     /// - To check "is licensed": if(Activation.Instance.IsLicensed) ...
@@ -136,7 +139,7 @@ namespace AbleLicensing
             }
             if (ISettings == null)
             {
-                LoggerHook("[V5b] Activation() ERROR");
+                LoggerHook("[V5b] Activation() ERROR - No class found that implements SiteSettings");
                 throw new ApplicationException("No class found that implements SiteSettings");
             }
         }
@@ -181,9 +184,9 @@ namespace AbleLicensing
         /// </summary>
         public void DeActivate()
         {
-            LoggerHook("[W6] DeActivate() ");
             ISettings.SiteDescription = ISettings.SiteDescription.Substring(0, 5) +
                 (char)UserLevelPunct.Deactivated + ISettings.SiteDescription.Substring(7);
+            LoggerHook("[W6] DeActivate() " + ISettings.SiteDescription);
             ISettings.Save();
         }
 
@@ -469,7 +472,7 @@ namespace AbleLicensing
         }
 
         /// <summary>
-        /// Clamp daysRemaining, based on days since app was installed.
+        /// ClampAtDaysSinceInstallation, based on days since app was installed.
         /// </summary>
         /// <param name="daysRemaining">Current expectation of days remaininng </param>
         /// <param name="lastChecked">when was the expiration last checked?</param>

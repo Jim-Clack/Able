@@ -268,8 +268,8 @@ namespace AbleLicensing
                 {
                     Task<HttpResponseMessage> response = client.GetAsync(_wsUrl, HttpCompletionOption.ResponseContentRead);
                     response.Result.EnsureSuccessStatusCode();
-                    if (!(response.Result.Content is object) || 
-                        response.Result.Content.Headers.ContentType.MediaType != "application/json")
+                    if (!(response.Result.Content is object) || !
+                        response.Result.Content.Headers.ContentType.MediaType.Equals("application/json"))
                     {
                         throw new HttpRequestException("Invalid server response");
                     }

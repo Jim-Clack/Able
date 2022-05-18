@@ -249,14 +249,14 @@ namespace AbleCheckbook.Logic
                 }
             }
             // don't bother looking for tips if there are still too many unchecked entries
-            if (nbrUnchecked > nbrChecked && nbrUnchecked > 6)
+            if (nbrUnchecked > nbrChecked && nbrUnchecked > 10)
             {
                 return candidates;
             }
             // Find candidates
             candidates.AddRange(FindSignWrongCandidates(disparity, closingDate.Date));
-            candidates.AddRange(FindSumCandidates(disparity, maxMatches, closingDate.Date));
             candidates.AddRange(FindTransposeCandidates(disparity, closingDate.Date));
+            candidates.AddRange(FindSumCandidates(disparity, maxMatches, closingDate.Date));
             return candidates;
         }
 
@@ -313,7 +313,14 @@ namespace AbleCheckbook.Logic
                         candidate.Add(entry2);
                     }
                     candidate.Add(openEntry);
-                    candidates.Add(candidate);
+                    if (entry2 != null)
+                    {
+                        candidates.Add(candidate); // if there are 3, append...
+                    }
+                    else
+                    {
+                        candidates.Insert(0, candidate); // else prepend
+                    }
                     continue;
                 }
                 switch(maxMatches) // recurse, decrementing maxMatches from 3 to 2 to 1

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Razor;
+using AbleStrategiesServices.Support;
 
 /// <summary>                                      MASTER
 /// https://domain:port/as/master
@@ -24,28 +25,28 @@ namespace AbleStrategiesServices.Controllers
             DateTime now = DateTime.Now.ToUniversalTime();
             string ipAddress = HttpContext.Connection.RemoteIpAddress.ToString();
             return new string[] {
-                Version.ToString(), 
+                AbleStrategiesServices.Support.Version.ToString(), 
                 now.ToString("o", CultureInfo.GetCultureInfo("en-US")),
                 ipAddress,
                 (DateTime.Now.Ticks / (DateTime.Now.Millisecond + 173L)).ToString() // future use
             };
         }
 
-        // GET as/master/user?desc=*
+        // GET as/master/license?desc=*
         /// <summary>
-        /// Return users by assigned site description.
+        /// Return licenses by assigned site description.
         /// </summary>
-        /// <param name="cmd">literal, "user"</param>
+        /// <param name="cmd">literal, "license"</param>
         /// <param name="desc">Assigned site description - may end with wildcard "*"</param>
-        /// <returns>List of matching users</returns>
+        /// <returns>List of matching licenses</returns>
         [HttpGet("{cmd}")]
-        public ActionResult<UserData[]> Get([FromRoute] string cmd, [FromQuery]string desc)
+        public ActionResult<LicenseRecord[]> Get([FromRoute] string cmd, [FromQuery]string desc)
         {
-            if(!cmd.ToLower().StartsWith("user"))
+            if(!cmd.ToLower().StartsWith("license"))
             {
-                return new UserData[] { };
+                return new LicenseRecord[] { };
             }
-            return UserDb.Instance.UsersByDesc(desc);
+            return JsonLicenseDb.Instance.LicenseByDesc(desc);
         }
 
         // POST as/master

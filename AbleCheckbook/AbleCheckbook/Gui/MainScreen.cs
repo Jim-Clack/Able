@@ -542,6 +542,7 @@ namespace AbleCheckbook
         {
             ActivationForm form = new ActivationForm();
             form.ShowDialog();
+            // TODO
         }
 
         private void diagnosticsToolStripMenuItem_Click_1(object sender, EventArgs e)

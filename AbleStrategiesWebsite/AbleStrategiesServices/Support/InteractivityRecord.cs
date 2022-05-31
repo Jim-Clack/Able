@@ -6,34 +6,46 @@ using System.Threading.Tasks;
 namespace AbleStrategiesServices.Support
 {
 
+    public enum InteractivityClient
+    {
+        Unknown = 0,
+        PhoneCall = 1,
+        OnlineChat = 2,
+        Email = 3,
+        InPerson = 4,
+        UserAlert = 7,
+        ActivationWs = 8,
+        OtherWs = 9,
+    }
+
     public class InteractivityRecord : BaseDbRecord
     {
+
         /// <summary>
-        /// Unique record type discriminator.
+        /// Foreign key to license data.
         /// </summary>
-        public string desc = "";
+        public Guid fkLicenseId = Guid.Empty;
+
+        /// <summary>
+        /// Interactivity by phone, web service, or what?
+        /// </summary>
+        public InteractivityClient interactivityClient = InteractivityClient.Unknown;
+
+        /// <summary>
+        /// Client name, email, and/or IP address.
+        /// </summary>
+        public string clientInfo = "";
+
+        /// <summary>
+        /// Content - what occurred during interactivity - cumulative history of notes.
+        /// </summary>
+        public string conversation = "";
 
         /// <summary>
         /// Ctor.
         /// </summary>
-        public InteractivityRecord()
+        public InteractivityRecord() : base()
         {
-        }
-
-        /// <summary>
-        /// Description of record.
-        /// </summary>
-        public string Desc
-        {
-            get
-            {
-                return desc;
-            }
-            set
-            {
-                desc = value;
-                Mod();
-            }
         }
 
         /// <summary>
@@ -57,17 +69,83 @@ namespace AbleStrategiesServices.Support
         }
 
         /// <summary>
+        /// Forieng key - license.
+        /// </summary>
+        public Guid FkLicenseId
+        {
+            get
+            {
+                return fkLicenseId;
+            }
+            set
+            {
+                fkLicenseId = value;
+                Mod();
+            }
+        }
+
+        /// <summary>
+        /// Interactivity by phone, web service, or what?
+        /// </summary>
+        public InteractivityClient InteractivityClient
+        {
+            get
+            {
+                return interactivityClient;
+            }
+            set
+            {
+                interactivityClient = value;
+                Mod();
+            }
+        }
+
+        /// <summary>
+        /// Client name, email, and/or IP address.
+        /// </summary>
+        public string ClientInfo
+        {
+            get
+            {
+                return clientInfo;
+            }
+            set
+            {
+                clientInfo = value;
+                Mod();
+            }
+        }
+
+        /// <summary>
+        /// Content - what occurred during interactivity - cumulative history of notes.
+        /// </summary>
+        public string Conversation
+        {
+            get
+            {
+                return conversation;
+            }
+            set
+            {
+                conversation += "########## " + DateTime.Now.ToString() + ":\n" + value.Replace("\n\n", "\n") + "\n";
+                Mod();
+            }
+        }
+
+        /// <summary>
         /// Update all data fields except for Id - keep this.Id, ignore source.Id (adjusts EditFlag, too)
         /// </summary>
         /// <param name="source">record from which to copy all data except for Id</param>
-        public override void Update(BaseDbRecord source)
+        public override void PopulateFrom(BaseDbRecord source)
         {
-            if (!UpdateBase(source))
+            if (!PopulateBaseFrom(source))
             {
                 return;
             }
-            this.Desc = ((InteractivityRecord)source).Desc;
-            // TODO
+            this.FkLicenseId = ((InteractivityRecord)source).FkLicenseId;
+            this.InteractivityClient = ((InteractivityRecord)source).InteractivityClient;
+            this.ClientInfo = ((InteractivityRecord)source).ClientInfo;
+            this.Conversation = ((InteractivityRecord)source).Conversation;
         }
 
     }

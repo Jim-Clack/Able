@@ -20,6 +20,8 @@ namespace AbleStrategiesServices.Support
     /// returned records are "live" and that any change to them is immediately changed in the 
     /// in-memory DB. Be careful. To avoid problems, don't replace (update) a record with a new
     /// one unless you first record.Update(source), source is the original as read from the DB.
+    /// Note: For performance reasons, this ought to be upgraded to maintain suplicate record
+    /// maps where there is an additional map for Fk as well as Id. But for now, it works.
     /// </remarks>
     public class JsonUsersDb : BaseUsersDb
     {
@@ -42,7 +44,7 @@ namespace AbleStrategiesServices.Support
         /// <summary>
         /// Path and name of JSON file with all data.
         /// </summary>
-        private static string connection = "./license.json";
+        private static string connection = "./users.json";
 
         /// <summary>
         /// How often to autosave if changes were made.
@@ -136,7 +138,7 @@ namespace AbleStrategiesServices.Support
         /// </summary>
         private JsonUsersDb()
         {
-            fullPath = connection;
+            fullPath = Path.GetFullPath(connection);
             errorMessage = "";
             isDirty = false;
             if (File.Exists(connection))
@@ -150,6 +152,7 @@ namespace AbleStrategiesServices.Support
                     {
                         dbContent = JsonSerializer.DeserializeAsync<DbContent>(stream, options).GetAwaiter().GetResult();
                     }
+                    UnModDbContent();
                 }
                 catch (Exception ex)
                 {
@@ -167,6 +170,7 @@ namespace AbleStrategiesServices.Support
             }
             dbContent.DbName = Path.GetFileNameWithoutExtension(fullPath);
         }
+
 
         /// <summary>
         /// Close the DB without modifiying it. (if it was open too long it may have already been modified)
@@ -215,7 +219,7 @@ namespace AbleStrategiesServices.Support
                 JsonUsersDb.OuterMutex.WaitOne();
                 try
                 {
-                    //JsonSerializer.SerializeAsync<JsonDbHeader>(stream, _dbHeader, options).GetAwaiter().GetResult();
+                    JsonSerializer.SerializeAsync<DbContent>(stream, dbContent, options).GetAwaiter().GetResult();
                 }
                 catch (Exception ex)
                 {
@@ -290,7 +294,7 @@ namespace AbleStrategiesServices.Support
         /// <param name="record">Affected record, with the EditFlag set for the desired action</param>
         /// <param name="table">DB table to update</param>
         /// <returns>Success</returns>
-        public override bool UpdateDbPerEditFlag<T>(T record, Dictionary<Guid, T> table) // where T : BaseDbRecord
+        private bool UpdateDbPerEditFlag<T>(T record, Dictionary<Guid, T> table) where T : BaseDbRecord
         {
             errorMessage = "";
             if(record.EditFlag == EditFlag.Zombie)
@@ -343,17 +347,34 @@ namespace AbleStrategiesServices.Support
             return true;
         }
 
-        /////////////////////////// LicenseRecord ////////////////////////////
-
         /// <summary>
-        /// NO NO NO NO NO NO NO NO NO NO NO NO NO NO NO NO NO NO NO NO NO NO NO NO NO NO NO NO NO NO NO NO 
+        /// Since EditFlag is not persisted, set it in all records after reading in the DB anew.
         /// </summary>
-        /// <param name="desc">Assigned site description - may end with wildcard "*"</param>
-        /// <returns></returns>
-        public override LicenseRecord[] LicenseByDesc(string desc)
+        private void UnModDbContent()
         {
-            return new LicenseRecord[] { new LicenseRecord(), };
+            Dictionary<Guid, LicenseRecord>.Enumerator licenseEnum = dbContent.LicenseRecords.GetEnumerator();
+            while (licenseEnum.MoveNext())
+            {
+                licenseEnum.Current.Value.UnMod();
+            }
+            Dictionary<Guid, DeviceRecord>.Enumerator deviceEnum = dbContent.DeviceRecords.GetEnumerator();
+            while (deviceEnum.MoveNext())
+            {
+                deviceEnum.Current.Value.UnMod();
+            }
+            Dictionary<Guid, PurchaseRecord>.Enumerator purchaseEnum = dbContent.PurchaseRecords.GetEnumerator();
+            while (purchaseEnum.MoveNext())
+            {
+                purchaseEnum.Current.Value.UnMod();
+            }
+            Dictionary<Guid, InteractivityRecord>.Enumerator interactivityEnum = dbContent.InteractivityRecords.GetEnumerator();
+            while (interactivityEnum.MoveNext())
+            {
+                interactivityEnum.Current.Value.UnMod();
+            }
         }
+
+        /////////////////////////// LicenseRecord ////////////////////////////
 
         /// <summary>
         /// Get a cursor/enumerator over all records.
@@ -384,6 +405,33 @@ namespace AbleStrategiesServices.Support
         }
 
         /// <summary>
+        /// Find record with a specific ID
+        /// </summary>
+        /// <param name="id">The Id</param>
+        /// <returns>list containing the LicenseRecord, possibly empty</returns>
+        public override List<LicenseRecord> LicensesById(Guid id)
+        {
+            errorMessage = "";
+            List<LicenseRecord> results = new List<LicenseRecord>();
+            LicenseRecord record = null;
+            JsonUsersDb.InnerMutex.WaitOne();
+            if (dbContent.LicenseRecords.ContainsKey(id))
+            {
+                try
+                {
+                    record = dbContent.LicenseRecords[id];
+                    Logger.Diag(null, "Got ID " + id + " -> " + record.ToString());
+                    results.Add(record);
+                }
+                finally
+                {
+                    JsonUsersDb.InnerMutex.ReleaseMutex();
+                }
+            }
+            return results;
+        }
+
+        /// <summary>
         /// Find all records with a description that matches a specific regex.
         /// </summary>
         /// <param name="descRegex">The regular expression to match</param>
@@ -410,9 +458,280 @@ namespace AbleStrategiesServices.Support
                 while (enumerator.MoveNext())
                 {
                     LicenseRecord record = enumerator.Current.Value;
-                    if (regex.Match(record.Desc).Success)
+                    if (regex.Match(record.LicenseDesc).Success)
                     {
                         Logger.Diag(null, "Matches description " + descRegex + " -> " + record.ToString());
+                        results.Add(record);
+                    }
+                }
+            }
+            finally
+            {
+                JsonUsersDb.InnerMutex.ReleaseMutex();
+            }
+            return results;
+        }
+
+        /// <summary>
+        /// Find all records with a contact name that matches a specific regex.
+        /// </summary>
+        /// <param name="nameRegex">The regular expression to match</param>
+        /// <returns>List of matching records, possibly empty</returns>
+        public override List<LicenseRecord> LicensesByContactName(string nameRegex)
+        {
+            errorMessage = "";
+            Regex regex = null;
+            List<LicenseRecord> results = new List<LicenseRecord>();
+            try
+            {
+                regex = new Regex(nameRegex);
+            }
+            catch (ArgumentException ex)
+            {
+                errorMessage = "Bad regex " + nameRegex;
+                Logger.Error(null, errorMessage, ex);
+                return results;
+            }
+            JsonUsersDb.InnerMutex.WaitOne();
+            try
+            {
+                Dictionary<Guid, LicenseRecord>.Enumerator enumerator = dbContent.LicenseRecords.GetEnumerator();
+                while (enumerator.MoveNext())
+                {
+                    LicenseRecord record = enumerator.Current.Value;
+                    if (regex.Match(record.ContactName).Success)
+                    {
+                        Logger.Diag(null, "Matches name " + nameRegex + " -> " + record.ToString());
+                        results.Add(record);
+                    }
+                }
+            }
+            finally
+            {
+                JsonUsersDb.InnerMutex.ReleaseMutex();
+            }
+            return results;
+        }
+
+        /// <summary>
+        /// Find all records with a contact city that matches a specific regex.
+        /// </summary>
+        /// <param name="cityRegex">The regular expression to match</param>
+        /// <returns>List of matching records, possibly empty</returns>
+        public override List<LicenseRecord> LicensesByContactCity(string cityRegex)
+        {
+            errorMessage = "";
+            Regex regex = null;
+            List<LicenseRecord> results = new List<LicenseRecord>();
+            try
+            {
+                regex = new Regex(cityRegex);
+            }
+            catch (ArgumentException ex)
+            {
+                errorMessage = "Bad regex " + cityRegex;
+                Logger.Error(null, errorMessage, ex);
+                return results;
+            }
+            JsonUsersDb.InnerMutex.WaitOne();
+            try
+            {
+                Dictionary<Guid, LicenseRecord>.Enumerator enumerator = dbContent.LicenseRecords.GetEnumerator();
+                while (enumerator.MoveNext())
+                {
+                    LicenseRecord record = enumerator.Current.Value;
+                    if (regex.Match(record.ContactCity).Success)
+                    {
+                        Logger.Diag(null, "Matches city " + cityRegex + " -> " + record.ToString());
+                        results.Add(record);
+                    }
+                }
+            }
+            finally
+            {
+                JsonUsersDb.InnerMutex.ReleaseMutex();
+            }
+            return results;
+        }
+
+        /// <summary>
+        /// Find all records with a contact email that matches a specific regex.
+        /// </summary>
+        /// <param name="emailRegex">The regular expression to match</param>
+        /// <returns>List of matching records, possibly empty</returns>
+        public override List<LicenseRecord> LicensesByContactEmail(string emailRegex)
+        {
+            errorMessage = "";
+            Regex regex = null;
+            List<LicenseRecord> results = new List<LicenseRecord>();
+            try
+            {
+                regex = new Regex(emailRegex);
+            }
+            catch (ArgumentException ex)
+            {
+                errorMessage = "Bad regex " + emailRegex;
+                Logger.Error(null, errorMessage, ex);
+                return results;
+            }
+            JsonUsersDb.InnerMutex.WaitOne();
+            try
+            {
+                Dictionary<Guid, LicenseRecord>.Enumerator enumerator = dbContent.LicenseRecords.GetEnumerator();
+                while (enumerator.MoveNext())
+                {
+                    LicenseRecord record = enumerator.Current.Value;
+                    if (regex.Match(record.ContactEMail).Success)
+                    {
+                        Logger.Diag(null, "Matches email " + emailRegex + " -> " + record.ToString());
+                        results.Add(record);
+                    }
+                }
+            }
+            finally
+            {
+                JsonUsersDb.InnerMutex.ReleaseMutex();
+            }
+            return results;
+        }
+
+        /// <summary>
+        /// Find all records with a contact phone that matches a specific regex.
+        /// </summary>
+        /// <param name="contactPhone">The full opr partial phone number to match</param>
+        /// <returns>List of matching records, possibly empty</returns>
+        public override List<LicenseRecord> LicensesByContactPhone(string contactPhone)
+        {
+            errorMessage = "";
+            contactPhone = contactPhone.Replace(" ", "");
+            List<LicenseRecord> results = new List<LicenseRecord>();
+            JsonUsersDb.InnerMutex.WaitOne();
+            try
+            {
+                Dictionary<Guid, LicenseRecord>.Enumerator enumerator = dbContent.LicenseRecords.GetEnumerator();
+                while (enumerator.MoveNext())
+                {
+                    LicenseRecord record = enumerator.Current.Value;
+                    string recordPhone = record.ContactPhone;
+                    if(recordPhone.Length > contactPhone.Length)
+                    {
+                        recordPhone = recordPhone.Substring(0, contactPhone.Length);
+                    }
+                    if (recordPhone.CompareTo(contactPhone) == 0)
+                    {
+                        Logger.Diag(null, "Matches phone " + contactPhone + " -> " + record.ToString());
+                        results.Add(record);
+                    }
+                }
+            }
+            finally
+            {
+                JsonUsersDb.InnerMutex.ReleaseMutex();
+            }
+            return results;
+        }
+
+        /// <summary>
+        /// Find all records with a site code that matches a specific regex.
+        /// </summary>
+        /// <param name="siteCode">The site code to match</param>
+        /// <returns>List of matching records, possibly empty</returns>
+        public override List<LicenseRecord> LicensesBySiteCode(string siteCode)
+        {
+            errorMessage = "";
+            Regex regex = null;
+            List<LicenseRecord> results = new List<LicenseRecord>();
+            try
+            {
+                regex = new Regex(siteCode);
+            }
+            catch (ArgumentException ex)
+            {
+                errorMessage = "Bad regex " + siteCode;
+                Logger.Error(null, errorMessage, ex);
+                return results;
+            }
+            JsonUsersDb.InnerMutex.WaitOne();
+            try
+            {
+                Dictionary<Guid, LicenseRecord>.Enumerator licensesEnum = dbContent.LicenseRecords.GetEnumerator();
+                while (licensesEnum.MoveNext())
+                {
+                    LicenseRecord license = licensesEnum.Current.Value;
+                    List<DeviceRecord> devices = DevicesByFkLicense(license.Id);
+                    foreach(DeviceRecord device in devices)
+                    {
+                        if (regex.Match(device.DeviceSite).Success)
+                        {
+                            Logger.Diag(null, "Matches device site code " + siteCode + " -> " + license.ToString());
+                            results.Add(license);
+                            break;
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                JsonUsersDb.InnerMutex.ReleaseMutex();
+            }
+            return results;
+        }
+
+        /// <summary>
+        /// Find all records with recent interactivity.
+        /// </summary>
+        /// <param name="startDate">The start date</param>
+        /// <returns>List of matching records, possibly empty</returns>
+        public override List<LicenseRecord> LicensesByRecentInteractivity(DateTime startDate)
+        {
+            errorMessage = "";
+            List<LicenseRecord> results = new List<LicenseRecord>();
+            JsonUsersDb.InnerMutex.WaitOne();
+            try
+            {
+                Dictionary<Guid, LicenseRecord>.Enumerator licensesEnum = dbContent.LicenseRecords.GetEnumerator();
+                while (licensesEnum.MoveNext())
+                {
+                    LicenseRecord license = licensesEnum.Current.Value;
+                    List<InteractivityRecord> interactivities = InteractivitiesByFkLicense(license.Id);
+                    foreach (InteractivityRecord interactivity in interactivities)
+                    {
+                        if (interactivity.DateModified >= startDate)
+                        {
+                            Logger.Diag(null, "Matches interactivity since " + startDate.ToString() + " -> " + license.ToString());
+                            results.Add(license);
+                            break;
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                JsonUsersDb.InnerMutex.ReleaseMutex();
+            }
+            return results;
+        }
+
+        /// <summary>
+        /// Find all records created within a date range.
+        /// </summary>
+        /// <param name="startDate">First date to find.</param>
+        /// <param name="endDate">Last date to find. (Use the next day if it has no time component)</param>
+        /// <returns>List of matching records, possibly empty</returns>
+        public override List<LicenseRecord> LicensesByOriginalDate(DateTime startDate, DateTime endDate)
+        {
+            errorMessage = "";
+            List<LicenseRecord> results = new List<LicenseRecord>();
+            JsonUsersDb.InnerMutex.WaitOne();
+            try
+            {
+                Dictionary<Guid, LicenseRecord>.Enumerator enumerator = dbContent.LicenseRecords.GetEnumerator();
+                while (enumerator.MoveNext())
+                {
+                    LicenseRecord record = enumerator.Current.Value;
+                    if (record.DateCreated >= startDate && record.DateCreated <= endDate)
+                    { 
+                        Logger.Diag(null, "Matches date range " + startDate.ToString() + " - " + endDate.ToString() + " -> " + record.ToString());
                         results.Add(record);
                     }
                 }
@@ -465,25 +784,14 @@ namespace AbleStrategiesServices.Support
         }
 
         /// <summary>
-        /// Find all records with a description that matches a specific regex.
+        /// Find all records with a specific FK Id.
         /// </summary>
-        /// <param name="descRegex">The regular expression to match</param>
+        /// <param name="descRegex">The FK ID</param>
         /// <returns>List of matching records, possibly empty</returns>
-        public override List<DeviceRecord> DevicesByDescription(string descRegex)
+        public override List<DeviceRecord> DevicesByFkLicense(Guid fkId)
         {
             errorMessage = "";
-            Regex regex = null;
             List<DeviceRecord> results = new List<DeviceRecord>();
-            try
-            {
-                regex = new Regex(descRegex);
-            }
-            catch(ArgumentException ex)
-            {
-                errorMessage = "Bad regex " + descRegex;
-                Logger.Error(null, errorMessage, ex);
-                return results;
-            }
             JsonUsersDb.InnerMutex.WaitOne();
             try
             {
@@ -491,9 +799,9 @@ namespace AbleStrategiesServices.Support
                 while (enumerator.MoveNext())
                 {
                     DeviceRecord record = enumerator.Current.Value;
-                    if (regex.Match(record.Desc).Success)
+                    if (record.FkLicenseId == fkId)
                     {
-                        Logger.Diag(null, "Matches description " + descRegex + " -> " + record.ToString());
+                        Logger.Diag(null, "Matches fkId " + fkId + " -> " + record.ToString());
                         results.Add(record);
                     }
                 }
@@ -546,25 +854,14 @@ namespace AbleStrategiesServices.Support
         }
 
         /// <summary>
-        /// Find all records with a description that matches a specific regex.
+        /// Find all records with a given fk Id.
         /// </summary>
-        /// <param name="descRegex">The regular expression to match</param>
+        /// <param name="descRegex">The desired fk</param>
         /// <returns>List of matching records, possibly empty</returns>
-        public override List<PurchaseRecord> PurchasesByDescription(string descRegex)
+        public override List<PurchaseRecord> PurchasesByFkLicense(Guid fkId)
         {
             errorMessage = "";
-            Regex regex = null;
             List<PurchaseRecord> results = new List<PurchaseRecord>();
-            try
-            {
-                regex = new Regex(descRegex);
-            }
-            catch (ArgumentException ex)
-            {
-                errorMessage = "Bad regex " + descRegex;
-                Logger.Error(null, errorMessage, ex);
-                return results;
-            }
             JsonUsersDb.InnerMutex.WaitOne();
             try
             {
@@ -572,9 +869,9 @@ namespace AbleStrategiesServices.Support
                 while (enumerator.MoveNext())
                 {
                     PurchaseRecord record = enumerator.Current.Value;
-                    if (regex.Match(record.Desc).Success)
+                    if (record.FkLicenseId == fkId)
                     {
-                        Logger.Diag(null, "Matches description " + descRegex + " -> " + record.ToString());
+                        Logger.Diag(null, "Matches fkId " + fkId + " -> " + record.ToString());
                         results.Add(record);
                     }
                 }
@@ -627,25 +924,14 @@ namespace AbleStrategiesServices.Support
         }
 
         /// <summary>
-        /// Find all records with a description that matches a specific regex.
+        /// Find all records with a given fk Id.
         /// </summary>
-        /// <param name="descRegex">The regular expression to match</param>
+        /// <param name="descRegex">The desired fk</param>
         /// <returns>List of matching records, possibly empty</returns>
-        public override List<InteractivityRecord> InteractivitiesByDescription(string descRegex)
+        public override List<InteractivityRecord> InteractivitiesByFkLicense(Guid fkId)
         {
             errorMessage = "";
-            Regex regex = null;
             List<InteractivityRecord> results = new List<InteractivityRecord>();
-            try
-            {
-                regex = new Regex(descRegex);
-            }
-            catch (ArgumentException ex)
-            {
-                errorMessage = "Bad regex " + descRegex;
-                Logger.Error(null, errorMessage, ex);
-                return results;
-            }
             JsonUsersDb.InnerMutex.WaitOne();
             try
             {
@@ -653,9 +939,9 @@ namespace AbleStrategiesServices.Support
                 while (enumerator.MoveNext())
                 {
                     InteractivityRecord record = enumerator.Current.Value;
-                    if (regex.Match(record.Desc).Success)
+                    if (record.FkLicenseId == fkId)
                     {
-                        Logger.Diag(null, "Matches description " + descRegex + " -> " + record.ToString());
+                        Logger.Diag(null, "Matches fkId " + fkId + " -> " + record.ToString());
                         results.Add(record);
                     }
                 }

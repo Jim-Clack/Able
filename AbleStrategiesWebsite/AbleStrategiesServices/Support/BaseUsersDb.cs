@@ -49,19 +49,7 @@ namespace AbleStrategiesServices.Support
         /// </summary>
         public abstract string ErrorMessage { get; }
 
-        /// <summary>
-        /// Update the DB with a record, per the editFlag
-        /// </summary>
-        /// <typeparam name="T">Record class derived from BaseDbRecord</typeparam>
-        /// <param name="record">Affected record, with the EditFlag set for the desired action</param>
-        /// <param name="table">DB table to update</param>
-        /// <returns>Success</returns>
-        public abstract bool UpdateDbPerEditFlag<T>(T record, Dictionary<Guid, T> table) where T : BaseDbRecord;
-
         /////////////////////////// LicenseRecord ////////////////////////////
-
-        /// NO NO NO NO NO NO NO NO NO NO NO NO NO NO NO NO NO NO NO NO NO NO NO NO NO NO NO NO NO NO NO NO 
-        public abstract LicenseRecord[] LicenseByDesc(string desc);
 
         /// <summary>
         /// Get a cursor/enumerator over all records.
@@ -69,11 +57,68 @@ namespace AbleStrategiesServices.Support
         public abstract Dictionary<Guid, LicenseRecord>.Enumerator LicencesEnumerator { get; }
 
         /// <summary>
+        /// Find record with a specific ID
+        /// </summary>
+        /// <param name="id">The Id</param>
+        /// <returns>list containing the LicenseRecord, possibly empty</returns>
+        public abstract List<LicenseRecord> LicensesById(Guid id);
+
+        /// <summary>
         /// Find all records with a description that matches a specific regex.
         /// </summary>
         /// <param name="descRegex">The regular expression to match</param>
         /// <returns>List of matching records, possibly empty</returns>
         public abstract List<LicenseRecord> LicensesByDescription(string descRegex);
+
+        /// <summary>
+        /// Find all records with a contact name that matches a specific regex.
+        /// </summary>
+        /// <param name="nameRegex">The regular expression to match</param>
+        /// <returns>List of matching records, possibly empty</returns>
+        public abstract List<LicenseRecord> LicensesByContactName(string nameRegex);
+
+        /// <summary>
+        /// Find all records with a contact city that matches a specific regex.
+        /// </summary>
+        /// <param name="cityRegex">The regular expression to match</param>
+        /// <returns>List of matching records, possibly empty</returns>
+        public abstract List<LicenseRecord> LicensesByContactCity(string cityRegex);
+
+        /// <summary>
+        /// Find all records with a contact email that matches a specific regex.
+        /// </summary>
+        /// <param name="emailRegex">The regular expression to match</param>
+        /// <returns>List of matching records, possibly empty</returns>
+        public abstract List<LicenseRecord> LicensesByContactEmail(string emailRegex);
+
+        /// <summary>
+        /// Find all records with a contact phone that fully or paritally matches.
+        /// </summary>
+        /// <param name="contactPhone">The number to match</param>
+        /// <returns>List of matching records, possibly empty</returns>
+        public abstract List<LicenseRecord> LicensesByContactPhone(string contactPhone);
+
+        /// <summary>
+        /// Find all records with a site code that matches a specific regex.
+        /// </summary>
+        /// <param name="siteCode">The value to match</param>
+        /// <returns>List of matching records, possibly empty</returns>
+        public abstract List<LicenseRecord> LicensesBySiteCode(string siteCode);
+
+        /// <summary>
+        /// Find all records with recent interactivity.
+        /// </summary>
+        /// <param name="startDate">The start date</param>
+        /// <returns>List of matching records, possibly empty</returns>
+        public abstract List<LicenseRecord> LicensesByRecentInteractivity(DateTime startDate);
+
+        /// <summary>
+        /// Find all records created within a date range.
+        /// </summary>
+        /// <param name="startDate">First date to find.</param>
+        /// <param name="endDate">Last date to find.</param>
+        /// <returns>List of matching records, possibly empty</returns>
+        public abstract List<LicenseRecord> LicensesByOriginalDate(DateTime startDate, DateTime endDate);
 
         /// <summary>
         /// Update the DB with a record, per the editFlag
@@ -90,11 +135,11 @@ namespace AbleStrategiesServices.Support
         public abstract Dictionary<Guid, DeviceRecord>.Enumerator DevicesEnumerator { get; }
 
         /// <summary>
-        /// Find all records with a description that matches a specific regex.
+        /// Find all records with a description that matches an FK Id.
         /// </summary>
-        /// <param name="descRegex">The regular expression to match</param>
+        /// <param name="fkId">The FK Id</param>
         /// <returns>List of matching records, possibly empty</returns>
-        public abstract List<DeviceRecord> DevicesByDescription(string descRegex);
+        public abstract List<DeviceRecord> DevicesByFkLicense(Guid fkId);
 
         /// <summary>
         /// Update the DB with a record, per the editFlag
@@ -111,11 +156,11 @@ namespace AbleStrategiesServices.Support
         public abstract Dictionary<Guid, PurchaseRecord>.Enumerator PurchasesEnumerator { get; }
 
         /// <summary>
-        /// Find all records with a description that matches a specific regex.
+        /// Find all records with a given fk Id.
         /// </summary>
-        /// <param name="descRegex">The regular expression to match</param>
+        /// <param name="fkId">The desired fk</param>
         /// <returns>List of matching records, possibly empty</returns>
-        public abstract List<PurchaseRecord> PurchasesByDescription(string descRegex);
+        public abstract List<PurchaseRecord> PurchasesByFkLicense(Guid fkId);
 
         /// <summary>
         /// Update the DB with a record, per the editFlag
@@ -132,11 +177,11 @@ namespace AbleStrategiesServices.Support
         public abstract Dictionary<Guid, InteractivityRecord>.Enumerator InteractivitiesEnumerator { get; }
 
         /// <summary>
-        /// Find all records with a description that matches a specific regex.
+        /// Find all records with a given fk Id.
         /// </summary>
-        /// <param name="descRegex">The regular expression to match</param>
+        /// <param name="descRegex">The desired fk</param>
         /// <returns>List of matching records, possibly empty</returns>
-        public abstract List<InteractivityRecord> InteractivitiesByDescription(string descRegex);
+        public abstract List<InteractivityRecord> InteractivitiesByFkLicense(Guid fkId);
 
         /// <summary>
         /// Update the DB with a record, per the editFlag

@@ -48,6 +48,14 @@ namespace AbleStrategiesServices.Support
         public virtual string RecordKind { get; }
 
         /// <summary>
+        /// Ctor.
+        /// </summary>
+        protected BaseDbRecord()
+        {
+            id = Guid.NewGuid();
+        }
+
+        /// <summary>
         /// Should only elevate, never get lower, and never be persisted to the DB
         /// </summary>
         public EditFlag EditFlag
@@ -75,7 +83,7 @@ namespace AbleStrategiesServices.Support
         /// </summary>
         public void UnMod()
         {
-            editFlag = EditFlag.Unchanged; // adjusts Downward, so don't use setter
+            editFlag = EditFlag.Unchanged; // adjusts Downward, so doesn't use setter
         }
 
         /// <summary>
@@ -115,22 +123,22 @@ namespace AbleStrategiesServices.Support
         /// </summary>
         /// <remarks>The source record is expected to be dropped from the DB, replaced by this one</remarks>
         /// <param name="source">record from which to copy all data except for Id</param>
-        public abstract void Update(BaseDbRecord source);
+        public abstract void PopulateFrom(BaseDbRecord source);
 
         /// <summary>
-        /// To be called by the Update() method in each derived class.
+        /// To be called by the PopulateFrom() method in each derived class.
         /// </summary>
         /// <param name="source">record from which to copy all data except for Id, abandoning it afterward</param>
         /// <returns>success</returns>
-        protected bool UpdateBase(BaseDbRecord source)
+        protected bool PopulateBaseFrom(BaseDbRecord source)
         {
             if (source.RecordKind != RecordKind)
             {
                 Logger.Error(null, "Bad DB Record mismatch " + RecordKind + " != " + source.RecordKind);
                 return false;
             }
-            this.EditFlag = EditFlag.Modified;
-            this.editFlag = source.EditFlag; // may need to adjust Downward, so don't use setter
+            this.id = source.id;
+            this.editFlag = source.EditFlag;   // May need to adjust Downward, so don't use setter
             this.DateCreated = source.DateCreated;
             this.DateModified = source.DateModified;
             source.EditFlag = EditFlag.Zombie;

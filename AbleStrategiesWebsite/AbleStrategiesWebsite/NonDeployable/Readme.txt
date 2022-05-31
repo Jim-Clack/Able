@@ -7,6 +7,8 @@ Setup
     Add the following line to AbleStrategiesWebsite.csproj <PropertyGoup> element:
       <PublishWithAspNetCoreTargetManifest>false</PublishWithAspNetCoreTargetManifest>
   Install WinSCP on your computer
+  Note that VS w IIS Express defaults work directory to...
+    \Users\USER\source\repos\Able\AbleStrategiesWebsite\UnitTestProject1\bin\Debug\netcoreappX.Y
 
 Caveats
   TBD
@@ -47,6 +49,53 @@ Notes for what must be added to the Help docs...
  - Admin mode vs Standard/ProCPA vs SuperUser levels are Different Things
  - During reconcile, entry check-off "IsChecked" means "IsCleared Tentatively"
  - Technical details: ".adb", auto-save, rolling-backups, weekly-backups, etc.
+
+     /// <summary>
+    /// Because this is deliberately obfuscated, you'll have to read the code to figure out some things.
+    /// </summary>
+    /// <remarks>
+    /// This is not intended to be uncrackable at all, but just to make it nearly impossible for 
+    /// everyday hackers and script-kiddies to break. Do not make it more difficult than it already
+    /// is because that makes it difficult to maintain. In the future we may switch to a commercial
+    /// activation/licensing system. The sequence in which API's are called is critical. See below.
+    /// Usage:
+    ///  Activation act = Activation.Instance;
+    ///  act.SetDefaultDays(92, 183);
+    ///  act.SiteDescription = "JonDoe-60606";
+    ///  string pin = act.ResetAllEntries(act.ChecksumOfString(act.SiteIdentification));
+    ///  act.SetActivationPin(pin);
+    ///  // And optionally...
+    ///  act.SetFeatureBitmask(0x000000000000000FL, act.ChecksumOfString(act.SiteIdentification));
+    ///  act.SetExpiration(92, act.ChecksumOfString(act.SiteIdentification));
+    /// Licensing Fields and Methods:
+    ///  SiteId: This identifies the host by IP/Domain/Hdwr and may not be unique.
+    ///  Desc: Uniquely identifies the user by nickname/location as well as his/her license level.
+    ///  Purch: Uniquely identifies the transaction in which a license was purchased.
+    ///  PIN: Calculated per a specific combination of SiteId and Desc above.
+    ///  ActivityTracking: Scratch area used by Activation.
+    ///  ChecksumOfString(siteId): creates repeatable scramble for encoding/decoding
+    ///  Feature: Future use, ignored for now.
+    ///  resetAllEntries(): fake name to foil hackers, really calculatePin()
+    ///  updateSiteSettings(): fake name to foil hackers, really GetExpirationDays()
+    /// Notes:
+    /// - Be sure to call dummy method VerifyPin() in key places to act as a hacker distraction.
+    /// - Thre must be Different iSettings implementations for the client and the server.
+    /// - There must be exactly one class in the entry assembly that implements iSettings.
+    /// - Client iSettings implementation must persist and restore all data from setters.
+    /// - Ths iSettings class should return the same MfrAndAppName as is used during installation.
+    /// - The main steps in activation are setting the SiteDescription and ActivationPin.
+    /// - To check "is licensed": if(Activation.Instance.IsLicensed) ...
+    /// - SiteDescription is typically 12-chars: 6-char name, 1-char hyphen/punct, 5-char location
+    /// - Calc activation PIN: string pin = ResetAllEntries(ChecksumOfString(SiteIdentification));
+    /// - PIN must be set correctly before setting features or expiration
+    /// - i.e. features: SetFeatureBitmask((int)(MyFeatures.B | MyFeatures.E)); where B=2 and E=16
+    /// - Check feature: if(Activation.Instance.IsFeatureEnabled((int)MyFeatures.C)...
+    /// - Check expiration: int days = UpdateSiteSettings(); note: returns -1 if non-expiring
+    /// - Each site is uniquely ID'd by the combination of siteIdentification and siteDescription
+    /// - Each site is tracked as a site (possibly many-to-one) from a purchase val code
+    /// - When a new site is activated, the most latent one on that purchase gets deactivated
+    /// - A Purch# (Purchase Validation Code) is a "P" followed by the PayPal trasnsaction number
+    /// </remarks>
 
 
           /////////////////////// Web Service API Calls ////////////////////////

@@ -16,4 +16,10 @@
     <ProjectReference Include="..\AbleStrategiesServices\AbleStrategiesServices.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="AbleLicensing">
+      <HintPath>..\..\AbleCheckbook\AbleLicensing\bin\Release\netstandard2.0\AbleLicensing.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

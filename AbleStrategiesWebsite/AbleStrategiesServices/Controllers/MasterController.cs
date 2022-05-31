@@ -37,7 +37,7 @@ namespace AbleStrategiesServices.Controllers
         /// Return licenses by assigned site description.
         /// </summary>
         /// <param name="cmd">literal, "license"</param>
-        /// <param name="desc">Assigned site description - may end with wildcard "*"</param>
+        /// <param name="desc">Assigned site description - regular expression</param>
         /// <returns>List of matching licenses</returns>
         [HttpGet("{cmd}")]
         public ActionResult<LicenseRecord[]> Get([FromRoute] string cmd, [FromQuery]string desc)
@@ -46,7 +46,7 @@ namespace AbleStrategiesServices.Controllers
             {
                 return new LicenseRecord[] { };
             }
-            return JsonUsersDb.Instance.LicenseByDesc(desc);
+            return JsonUsersDb.Instance.LicensesByDescription(desc).ToArray();
         }
 
         // POST as/master

@@ -5,35 +5,52 @@ using System.Threading.Tasks;
 
 namespace AbleStrategiesServices.Support
 {
+
+    public enum PurchaseAuthority
+    {
+        Unknown = 0,
+        NoCharge = 1,
+        PayPalStd = 2,
+    }
+
     public class PurchaseRecord : BaseDbRecord
     {
 
         /// <summary>
-        /// Unique record type discriminator.
+        /// Foreign key to license data.
         /// </summary>
-        public string desc = "";
+        public Guid fkLicenseId = Guid.Empty;
+
+        /// <summary>
+        /// Comments, additional info.
+        /// </summary>
+        public string details = "";
+
+        /// <summary>
+        /// Typically PayPalStd.
+        /// </summary>
+        public PurchaseAuthority purchaseAuthority = PurchaseAuthority.Unknown;
+
+        /// <summary>
+        /// Authority's transaction number.
+        /// </summary>
+        public string purchaseTransaction = "";
+
+        /// <summary>
+        /// Authority's verification code.
+        /// </summary>
+        public string purchaseVerification = "";
+
+        /// <summary>
+        /// Date of purchase.
+        /// </summary>
+        public DateTime purchaseDate = DateTime.Now; 
 
         /// <summary>
         /// Ctor.
         /// </summary>
-        public PurchaseRecord()
+        public PurchaseRecord() : base()
         {
-        }
-
-        /// <summary>
-        /// Description of record.
-        /// </summary>
-        public string Desc
-        {
-            get
-            {
-                return desc;
-            }
-            set
-            {
-                desc = value;
-                Mod();
-            }
         }
 
         /// <summary>
@@ -57,17 +74,117 @@ namespace AbleStrategiesServices.Support
         }
 
         /// <summary>
+        /// Comments, additional info.
+        /// </summary>
+        public string Details
+        {
+            get
+            {
+                return details;
+            }
+            set
+            {
+                details = value;
+                Mod();
+            }
+        }
+
+        /// <summary>
+        /// Forieng key - license.
+        /// </summary>
+        public Guid FkLicenseId
+        {
+            get
+            {
+                return fkLicenseId;
+            }
+            set
+            {
+                fkLicenseId = value;
+                Mod();
+            }
+        }
+
+        /// <summary>
+        /// Typically PayPalStd.
+        /// </summary>
+        public PurchaseAuthority PurchaseAuthority
+        {
+            get
+            {
+                return purchaseAuthority;
+            }
+            set
+            {
+                purchaseAuthority = value;
+                Mod();
+            }
+        }
+
+        /// <summary>
+        /// Authority's transaction number.
+        /// </summary>
+        public string PurchaseTransaction
+        {
+            get
+            {
+                return purchaseTransaction;
+            }
+            set
+            {
+                purchaseTransaction = value;
+                Mod();
+            }
+        }
+
+        /// <summary>
+        /// Authority's verification code.
+        /// </summary>
+        public string PurchaseVerification
+        {
+            get
+            {
+                return purchaseVerification;
+            }
+            set
+            {
+                purchaseVerification = value;
+                Mod();
+            }
+        }
+
+        /// <summary>
+        /// Date of purchase.
+        /// </summary>
+        public DateTime PurchaseDate
+        {
+            get
+            {
+                return purchaseDate;
+            }
+            set
+            {
+                purchaseDate = value;
+                Mod();
+            }
+        }
+
+        /// <summary>
         /// Update all data fields except for Id - keep this.Id, ignore source.Id (adjusts EditFlag, too)
         /// </summary>
         /// <param name="source">record from which to copy all data except for Id</param>
-        public override void Update(BaseDbRecord source)
+        public override void PopulateFrom(BaseDbRecord source)
         {
-            if (!UpdateBase(source))
+            if (!PopulateBaseFrom(source))
             {
                 return;
             }
-            this.Desc = ((PurchaseRecord)source).Desc;
-            // TODO
+            this.Details = ((PurchaseRecord)source).Details;
+            this.FkLicenseId = ((PurchaseRecord)source).FkLicenseId;
+            this.PurchaseAuthority = ((PurchaseRecord)source).PurchaseAuthority;
+            this.PurchaseTransaction = ((PurchaseRecord)source).PurchaseTransaction;
+            this.PurchaseVerification = ((PurchaseRecord)source).PurchaseVerification;
+            this.PurchaseDate = ((PurchaseRecord)source).PurchaseDate;
         }
 
     }

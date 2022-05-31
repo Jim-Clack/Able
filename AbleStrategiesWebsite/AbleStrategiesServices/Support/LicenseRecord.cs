@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace AbleStrategiesServices.Support
 {
@@ -6,9 +7,9 @@ namespace AbleStrategiesServices.Support
     {
 
         /// <summary>
-        /// Unique record type discriminator.
+        /// Unique record discriminator.
         /// </summary>
-        public string desc = "";
+        public string licenseDesc = "";
 
         /// <summary>
         /// Contact name.
@@ -21,6 +22,11 @@ namespace AbleStrategiesServices.Support
         public string contactAddress = "";
 
         /// <summary>
+        /// City and state
+        /// </summary>
+        public string contactCity = "";
+
+        /// <summary>
         /// Contact phone.
         /// </summary>
         public string contactPhone = "";
@@ -31,24 +37,49 @@ namespace AbleStrategiesServices.Support
         public string contactEMail = "";
 
         /// <summary>
+        /// License features bitmap.
+        /// </summary>
+        public string licenseFeatures = "";
+
+        /// <summary>
         /// Ctor.
         /// </summary>
-        public LicenseRecord()
+        public LicenseRecord() : base()
         {
+        }
+
+        /// <summary>
+        /// [static] Unique record type discriminator.
+        /// </summary>
+        /// <returns>unique string discriminator</returns>
+        public static string GetRecordKind()
+        {
+            return typeof(LicenseRecord).Name;
+        }
+
+        /// <summary>
+        /// Unique record type discriminator (note: implement as a call to a static method)
+        /// </summary>
+        public override string RecordKind
+        {
+            get
+            {
+                return LicenseRecord.GetRecordKind();
+            }
         }
 
         /// <summary>
         /// Description of record.
         /// </summary>
-        public string Desc
+        public string LicenseDesc
         {
             get
             {
-                return desc;
+                return licenseDesc;
             }
             set
             {
-                desc = value;
+                licenseDesc = value;
                 Mod();
             }
         }
@@ -86,6 +117,22 @@ namespace AbleStrategiesServices.Support
         }
 
         /// <summary>
+        /// Contact City and State.
+        /// </summary>
+        public string ContactCity
+        {
+            get
+            {
+                return contactCity;
+            }
+            set
+            {
+                contactCity = value;
+                Mod();
+            }
+        }
+
+        /// <summary>
         /// Contact Phone.
         /// </summary>
         public string ContactPhone
@@ -118,22 +165,18 @@ namespace AbleStrategiesServices.Support
         }
 
         /// <summary>
-        /// [static] Unique record type discriminator.
+        /// LiceneFeatures bitmap.
         /// </summary>
-        /// <returns>unique string discriminator</returns>
-        public static string GetRecordKind()
-        {
-            return typeof(LicenseRecord).Name;
-        }
-
-        /// <summary>
-        /// Unique record type discriminator (note: implement as a call to a static method)
-        /// </summary>
-        public override string RecordKind
+        public string LicenseFeatures
         {
             get
             {
-                return LicenseRecord.GetRecordKind();
+                return licenseFeatures;
+            }
+            set
+            {
+                licenseFeatures = value;
+                Mod();
             }
         }
 
@@ -141,17 +184,19 @@ namespace AbleStrategiesServices.Support
         /// Update all data fields except for Id - keep this.Id, ignore source.Id (adjusts EditFlag, too)
         /// </summary>
         /// <param name="source">record from which to copy all data except for Id</param>
-        public override void Update(BaseDbRecord source)
+        public override void PopulateFrom(BaseDbRecord source)
         {
-            if(!UpdateBase(source))
+            if(!PopulateBaseFrom(source))
             {
                 return;
             }
-            this.Desc = ((LicenseRecord)source).Desc;
+            this.LicenseDesc = ((LicenseRecord)source).LicenseDesc;
             this.ContactName = ((LicenseRecord)source).ContactName;
             this.ContactAddress = ((LicenseRecord)source).ContactAddress;
+            this.ContactCity = ((LicenseRecord)source).ContactCity;
             this.ContactPhone = ((LicenseRecord)source).ContactPhone;
             this.ContactEMail = ((LicenseRecord)source).ContactEMail;
+            this.LicenseFeatures = ((LicenseRecord)source).LicenseFeatures;
         }
 
     }

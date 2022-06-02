@@ -44,7 +44,11 @@ namespace AbleStrategiesServices.Support
         /// <summary>
         /// Path and name of JSON file with all data.
         /// </summary>
+#if DEBUG
+        private static string connection = "./debug.json";
+#else
         private static string connection = "./users.json";
+#endif
 
         /// <summary>
         /// How often to autosave if changes were made.
@@ -141,7 +145,7 @@ namespace AbleStrategiesServices.Support
             fullPath = Path.GetFullPath(connection);
             errorMessage = "";
             isDirty = false;
-            if (File.Exists(connection))
+            if (File.Exists(fullPath))
             {
                 JsonUsersDb.InnerMutex.WaitOne();
                 JsonSerializerOptions options = new JsonSerializerOptions();
@@ -153,10 +157,12 @@ namespace AbleStrategiesServices.Support
                         dbContent = JsonSerializer.DeserializeAsync<DbContent>(stream, options).GetAwaiter().GetResult();
                     }
                     UnModDbContent();
+                    Logger.Info(null, "Opened DB " + fullPath);
                 }
                 catch (Exception ex)
                 {
-                    errorMessage = ex.Message;
+                    errorMessage = "Error Opening DB " + fullPath + " " + ex.Message;
+                    Logger.Error(null, "Error Opening DB " + fullPath, ex);
                     throw new Exception("Cannot deserialize " + fullPath, ex);
                 }
                 finally
@@ -167,6 +173,7 @@ namespace AbleStrategiesServices.Support
             else
             {
                 dbContent = new DbContent();
+                Logger.Info(null, "Creating new DB " + fullPath);
             }
             dbContent.DbName = Path.GetFileNameWithoutExtension(fullPath);
         }
@@ -210,7 +217,8 @@ namespace AbleStrategiesServices.Support
         public override bool Sync()
         {
             errorMessage = "";
-            Directory.CreateDirectory(Path.GetDirectoryName(connection));
+            Logger.Info(null, "Sync DB " + fullPath);
+            Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
             using (FileStream stream = File.Create(fullPath))
             {
                 //_dbContent.LastSaved = DateTime.Now;
@@ -502,6 +510,47 @@ namespace AbleStrategiesServices.Support
                     if (regex.Match(record.ContactName).Success)
                     {
                         Logger.Diag(null, "Matches name " + nameRegex + " -> " + record.ToString());
+                        results.Add(record);
+                    }
+                }
+            }
+            finally
+            {
+                JsonUsersDb.InnerMutex.ReleaseMutex();
+            }
+            return results;
+        }
+
+        /// <summary>
+        /// Find all records with a contact address that matches a specific regex.
+        /// </summary>
+        /// <param name="addressRegex">The regular expression to match</param>
+        /// <returns>List of matching records, possibly empty</returns>
+        public override List<LicenseRecord> LicensesByContactAddress(string addressRegex)
+        {
+            errorMessage = "";
+            Regex regex = null;
+            List<LicenseRecord> results = new List<LicenseRecord>();
+            try
+            {
+                regex = new Regex(addressRegex);
+            }
+            catch (ArgumentException ex)
+            {
+                errorMessage = "Bad regex " + addressRegex;
+                Logger.Error(null, errorMessage, ex);
+                return results;
+            }
+            JsonUsersDb.InnerMutex.WaitOne();
+            try
+            {
+                Dictionary<Guid, LicenseRecord>.Enumerator enumerator = dbContent.LicenseRecords.GetEnumerator();
+                while (enumerator.MoveNext())
+                {
+                    LicenseRecord record = enumerator.Current.Value;
+                    if (regex.Match(record.ContactAddress).Success)
+                    {
+                        Logger.Diag(null, "Matches address " + addressRegex + " -> " + record.ToString());
                         results.Add(record);
                     }
                 }

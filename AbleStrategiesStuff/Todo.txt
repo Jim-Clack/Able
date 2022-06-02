@@ -10,7 +10,7 @@ Alpha TODO...
  - Paypal API
  - Web Services for online purchase and self-service activation
  - Move SU user data to website instead of file
- - Fix desktop Icon
+ - Fix desktop Icon 
  - Year end wrapup doesn't carry over memorized payees (do like categories)
  - During reconcile the cursor sometimes jumps way down
  - AreYouSureForm with date/time/user that screen-captures, logs, and read log

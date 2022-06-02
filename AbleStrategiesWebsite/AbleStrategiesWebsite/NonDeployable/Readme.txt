@@ -11,7 +11,7 @@ Setup
     \Users\USER\source\repos\Able\AbleStrategiesWebsite\UnitTestProject1\bin\Debug\netcoreappX.Y
 
 Caveats
-  TBD
+  The name of the userinfo DB is "users.json" in release mode but "debug.json" in debug mode.
 
 Required Reading...
   https://docs.microsoft.com/en-us/aspnet/core/fundamentals/servers/?view=aspnetcore-6.0&tabs=windows#korh

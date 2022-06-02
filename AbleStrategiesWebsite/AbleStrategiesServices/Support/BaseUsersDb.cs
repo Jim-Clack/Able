@@ -78,6 +78,13 @@ namespace AbleStrategiesServices.Support
         public abstract List<LicenseRecord> LicensesByContactName(string nameRegex);
 
         /// <summary>
+        /// Find all records with a contact address that matches a specific regex.
+        /// </summary>
+        /// <param name="addressRegex">The regular expression to match</param>
+        /// <returns>List of matching records, possibly empty</returns>
+        public abstract List<LicenseRecord> LicensesByContactAddress(string addressRegex);
+
+        /// <summary>
         /// Find all records with a contact city that matches a specific regex.
         /// </summary>
         /// <param name="cityRegex">The regular expression to match</param>

@@ -8,7 +8,7 @@ namespace AbleStrategiesServices.Support
     /// <summary>
     /// This is the main API for database access.
     /// </summary>
-    public class ObjectDb
+    public class UserInfoDbo
     {
 
         /// <summary>
@@ -19,25 +19,25 @@ namespace AbleStrategiesServices.Support
         /// <summary>
         /// Singleton.
         /// </summary>
-        private static ObjectDb instance = null;
+        private static UserInfoDbo instance = null;
 
         /// <summary>
         /// Ctor.
         /// </summary>
-        private ObjectDb()
+        private UserInfoDbo()
         {
         }
 
         /// <summary>
         /// Return our one-and-onnly instance.
         /// </summary>
-        public static ObjectDb Instance
+        public static UserInfoDbo Instance
         {
             get
             {
                 if(instance == null)
                 {
-                    instance = new ObjectDb();
+                    instance = new UserInfoDbo();
                 }
                 return instance;
             }
@@ -100,6 +100,23 @@ namespace AbleStrategiesServices.Support
             if ((licenseRecords == null || licenseRecords.Count < 1) && !string.IsNullOrEmpty(errorMessage))
             {
                 errorMessage = "Name " + nameRegex + " FAILURE: " + errorMessage;
+                return null;
+            }
+            return PopulateLists(licenseRecords);
+        }
+
+        /// <summary>
+        /// Find all records with a contact address that matches a specific regex.
+        /// </summary>
+        /// <param name="addressRegex">The regular expression to match</param>
+        /// <returns>List of matching records, possibly empty, null on error</returns>
+        public List<UserInfo> GetByContactAddress(string addressRegex)
+        {
+            List<LicenseRecord> licenseRecords = JsonUsersDb.Instance.LicensesByContactAddress(addressRegex);
+            string errorMessage = JsonUsersDb.Instance.ErrorMessage;
+            if ((licenseRecords == null || licenseRecords.Count < 1) && !string.IsNullOrEmpty(errorMessage))
+            {
+                errorMessage = "Address " + addressRegex + " FAILURE: " + errorMessage;
                 return null;
             }
             return PopulateLists(licenseRecords);

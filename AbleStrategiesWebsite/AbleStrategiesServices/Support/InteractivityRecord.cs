@@ -37,9 +37,14 @@ namespace AbleStrategiesServices.Support
         public string clientInfo = "";
 
         /// <summary>
-        /// Content - what occurred during interactivity - cumulative history of notes.
+        /// Content - what occurred during interactivity.
         /// </summary>
         public string conversation = "";
+
+        /// <summary>
+        /// Keep track of changes.
+        /// </summary>
+        public string history = "";
 
         /// <summary>
         /// Ctor.
@@ -117,7 +122,7 @@ namespace AbleStrategiesServices.Support
         }
 
         /// <summary>
-        /// Content - what occurred during interactivity - cumulative history of notes.
+        /// Content - what occurred during interactivity.
         /// </summary>
         public string Conversation
         {
@@ -127,8 +132,28 @@ namespace AbleStrategiesServices.Support
             }
             set
             {
-                conversation += "########## " + DateTime.Now.ToString() + ":\n" + value.Replace("\n\n", "\n") + "\n";
+                if (!string.IsNullOrEmpty(conversation))
+                {
+                    history = history + "##### " + DateTime.Now.ToShortDateString() + " #####\n " +
+                        conversation.Replace("\n", "|").Replace("\r", "|") + "\n";
+                }
+                conversation = value;
                 Mod();
+            }
+        }
+
+        /// <summary>
+        /// Track changes to conversation.
+        /// </summary>
+        public string History
+        {
+            get
+            {
+                return history;
+            }
+            set
+            {
+                // cannot be changed directly
             }
         }
 

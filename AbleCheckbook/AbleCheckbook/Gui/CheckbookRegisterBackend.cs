@@ -129,6 +129,11 @@ namespace AbleCheckbook.Gui
             location.X = location.X + 20;
             form.StartPosition = FormStartPosition.Manual;
             form.Location = location;
+            int bottomGap = Screen.PrimaryScreen.Bounds.Height - (form.Top + form.Height);
+            if(bottomGap < 0)
+            {
+                form.Top = form.Top + bottomGap;
+            }
             CurrentEntryId = Guid.Empty;
             if (form.ShowDialog(parent) == DialogResult.OK)
             {
@@ -142,7 +147,7 @@ namespace AbleCheckbook.Gui
                     newEntry.AddSplit(catId, tranKind, Math.Abs(newEntry.BankAmount));
                     newEntry.CheckNumber = (newEntry.BankCheckNumber == 0 ? "" : "" + newEntry.BankCheckNumber);
                     newEntry.Payee = newEntry.BankPayee;
-                    newEntry.DateOfTransaction = newEntry.BankTranDate;
+                    newEntry.DateOfTransaction = newEntry.BankTranDate.Date;
                     newEntry.MadeBy = EntryMadeBy.Reconciler;
                     newEntry.IsCleared = form.rowCheckbook.Entry.IsCleared;
                     newEntry.IsChecked = form.rowCheckbook.Entry.IsChecked;
@@ -399,7 +404,7 @@ namespace AbleCheckbook.Gui
             {
                 entry = new CheckbookEntry();
             }
-            entry.DateOfTransaction = form.DateOfTransaction;
+            entry.DateOfTransaction = form.DateOfTransaction.Date;
             entry.Payee = form.Payee;
             entry.CheckNumber = form.CheckNumber;
             entry.ResetMemo();

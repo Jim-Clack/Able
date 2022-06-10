@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -239,15 +240,15 @@ namespace AbleStrategiesServices.Support
 
         private void BackupIfOkay()
         {
-            bool logfileIsOpen = streamWriter != null;
-            if (logfileIsOpen)
-            {
-                return;
-            }
             bool logfileExists = File.Exists(LOG_FILE_PATH);
             if (!logfileExists) // only check this if the file exists
             {
                 return;
+            }
+            bool logfileIsOpen = streamWriter != null;
+            if (logfileIsOpen)
+            {
+                streamWriter.Close();
             }
             FileInfo fileInfo = new FileInfo(LOG_FILE_PATH);
             if (fileInfo.Length < 1000000L) // 1MB

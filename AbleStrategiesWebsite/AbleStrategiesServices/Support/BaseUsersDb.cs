@@ -64,11 +64,11 @@ namespace AbleStrategiesServices.Support
         public abstract List<LicenseRecord> LicensesById(Guid id);
 
         /// <summary>
-        /// Find all records with a description that matches a specific regex.
+        /// Find all records with a license code that matches a specific regex.
         /// </summary>
-        /// <param name="descRegex">The regular expression to match</param>
+        /// <param name="licRegex">The regular expression to match</param>
         /// <returns>List of matching records, possibly empty</returns>
-        public abstract List<LicenseRecord> LicensesByDescription(string descRegex);
+        public abstract List<LicenseRecord> LicensesByLicenseCode(string licRegex);
 
         /// <summary>
         /// Find all records with a contact name that matches a specific regex.
@@ -142,7 +142,7 @@ namespace AbleStrategiesServices.Support
         public abstract Dictionary<Guid, DeviceRecord>.Enumerator DevicesEnumerator { get; }
 
         /// <summary>
-        /// Find all records with a description that matches an FK Id.
+        /// Find all records with a license that matches an FK Id.
         /// </summary>
         /// <param name="fkId">The FK Id</param>
         /// <returns>List of matching records, possibly empty</returns>
@@ -186,7 +186,7 @@ namespace AbleStrategiesServices.Support
         /// <summary>
         /// Find all records with a given fk Id.
         /// </summary>
-        /// <param name="descRegex">The desired fk</param>
+        /// <param name="fkId">The desired fk</param>
         /// <returns>List of matching records, possibly empty</returns>
         public abstract List<InteractivityRecord> InteractivitiesByFkLicense(Guid fkId);
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace AbleStrategiesServices.Support
@@ -24,27 +25,28 @@ namespace AbleStrategiesServices.Support
         /// <summary>
         /// Foreign key to license data.
         /// </summary>
+        [JsonIgnore]
         public Guid fkLicenseId = Guid.Empty;
 
         /// <summary>
         /// Interactivity by phone, web service, or what?
         /// </summary>
-        public InteractivityClient interactivityClient = InteractivityClient.Unknown;
+        private InteractivityClient interactivityClient = InteractivityClient.Unknown;
 
         /// <summary>
         /// Client name, email, and/or IP address.
         /// </summary>
-        public string clientInfo = "";
+        private string clientInfo = "";
 
         /// <summary>
         /// Content - what occurred during interactivity.
         /// </summary>
-        public string conversation = "";
+        private string conversation = "";
 
         /// <summary>
         /// Keep track of changes.
         /// </summary>
-        public string history = "";
+        private string history = "";
 
         /// <summary>
         /// Ctor.

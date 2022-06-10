@@ -15,7 +15,7 @@ namespace AbleCheckbook.Logic
         private Guid _id = Guid.NewGuid();
         private string _companyName = "";
         private string _contactName = "";
-        private string _siteDescription = "";
+        private string _licenseCode = "";
         private string _phoneNumber = "";
         private string _emailAddress = "";
         private string _zipCode = "";
@@ -36,7 +36,7 @@ namespace AbleCheckbook.Logic
         public string Company { get => _companyName; set => _companyName = value; }
         public string Contact { get => _contactName; set => _contactName = value; }
         public string SiteId { get => _siteIdentification; set => _siteIdentification = value; }
-        public string SiteDesc { get => _siteDescription; set => _siteDescription = value; }
+        public string LicenseCode { get => _licenseCode; set => _licenseCode = value; }
         public string PhoneNum { get => _phoneNumber; set => _phoneNumber = value; }
         public string EmailAddr { get => _emailAddress; set => _emailAddress = value; }
         public string OtherInfo { get => _otherContactInfo; set => _otherContactInfo = value; }

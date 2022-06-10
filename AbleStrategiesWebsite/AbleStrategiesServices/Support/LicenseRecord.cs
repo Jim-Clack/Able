@@ -9,37 +9,37 @@ namespace AbleStrategiesServices.Support
         /// <summary>
         /// Unique record discriminator.
         /// </summary>
-        public string licenseDesc = "";
+        private string licenseCode = "";
 
         /// <summary>
         /// Contact name.
         /// </summary>
-        public string contactName = "";
+        private string contactName = "";
 
         /// <summary>
         /// Street address.
         /// </summary>
-        public string contactAddress = "";
+        private string contactAddress = "";
 
         /// <summary>
         /// City and state
         /// </summary>
-        public string contactCity = "";
+        private string contactCity = "";
 
         /// <summary>
         /// Contact phone.
         /// </summary>
-        public string contactPhone = "";
+        private string contactPhone = "";
 
         /// <summary>
         /// Contact email.
         /// </summary>
-        public string contactEMail = "";
+        private string contactEMail = "";
 
         /// <summary>
         /// License features bitmap.
         /// </summary>
-        public string licenseFeatures = "";
+        private string licenseFeatures = "";
 
         /// <summary>
         /// Ctor.
@@ -69,17 +69,17 @@ namespace AbleStrategiesServices.Support
         }
 
         /// <summary>
-        /// Description of record.
+        /// License number.
         /// </summary>
-        public string LicenseDesc
+        public string LicenseCode
         {
             get
             {
-                return licenseDesc;
+                return licenseCode;
             }
             set
             {
-                licenseDesc = value;
+                licenseCode = value;
                 Mod();
             }
         }
@@ -190,7 +190,7 @@ namespace AbleStrategiesServices.Support
             {
                 return;
             }
-            this.LicenseDesc = ((LicenseRecord)source).LicenseDesc;
+            this.LicenseCode = ((LicenseRecord)source).LicenseCode;
             this.ContactName = ((LicenseRecord)source).ContactName;
             this.ContactAddress = ((LicenseRecord)source).ContactAddress;
             this.ContactCity = ((LicenseRecord)source).ContactCity;

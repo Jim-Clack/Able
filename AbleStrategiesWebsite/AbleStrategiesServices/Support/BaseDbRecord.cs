@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace AbleStrategiesServices.Support
@@ -35,16 +36,17 @@ namespace AbleStrategiesServices.Support
         /// <summary>
         /// When was this record created?
         /// </summary>
-        public DateTime dateCreated = DateTime.Now;
+        private DateTime dateCreated = DateTime.Now;
 
         /// <summary>
         /// When was this record last modified?
         /// </summary>
-        public DateTime dateModified = DateTime.Now;
+        private DateTime dateModified = DateTime.Now;
 
         /// <summary>
         /// Unique record type discriminator (note: implement as a call to a static method)
         /// </summary>
+        [JsonIgnore]
         public virtual string RecordKind { get; }
 
         /// <summary>

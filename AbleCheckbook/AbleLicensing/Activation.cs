@@ -8,7 +8,7 @@ namespace AbleLicensing
 {
 
     /// <summary>
-    /// Delimiter in SiteDescription corresponds to user level in Configuration.
+    /// Delimiter in LicenseCode corresponds to user level in Configuration.
     /// </summary>
     public enum UserLevelPunct
     {
@@ -30,7 +30,7 @@ namespace AbleLicensing
     /// Usage:
     ///  Activation act = Activation.Instance;
     ///  act.SetDefaultDays(92, 183);
-    ///  act.SiteDescription = "JonDoe-60606";
+    ///  act.LicenseCode = "JonDoe-60606";
     ///  string pin = act.ResetAllEntries(act.ChecksumOfString(act.SiteIdentification));
     ///  act.SetActivationPin(pin);
     ///  // And optionally...
@@ -38,29 +38,27 @@ namespace AbleLicensing
     ///  act.SetExpiration(92, act.ChecksumOfString(act.SiteIdentification));
     /// Licensing Fields and Methods:
     ///  SiteId: This identifies the host by IP/Domain/Hdwr and may not be unique.
-    ///  Desc: Uniquely identifies the user by nickname/location as well as his/her license level.
+    ///  LCode: Uniquely identifies the user by nickname/location as well as his/her license level.
     ///  Purch: Uniquely identifies the transaction in which a license was purchased.
-    ///  PIN: Calculated per a specific combination of SiteId and Desc above.
+    ///  PIN: Calculated per a specific combination of SiteId and LCode above.
     ///  ActivityTracking: Scratch area used by Activation.
     ///  ChecksumOfString(siteId): creates repeatable scramble for encoding/decoding
     ///  Feature: Future use, ignored for now.
-    ///  resetAllEntries(): fake name to foil hackers, really calculatePin()
-    ///  updateSiteSettings(): fake name to foil hackers, really GetExpirationDays()
     /// Notes:
     /// - Be sure to call dummy method VerifyPin() in key places to act as a hacker distraction.
-    /// - Thre must be Different iSettings implementations for the client and the server.
-    /// - There must be exactly one class in the entry assembly that implements iSettings.
-    /// - Client iSettings implementation must persist and restore all data from setters.
-    /// - Ths iSettings class should return the same MfrAndAppName as is used during installation.
-    /// - The main steps in activation are setting the SiteDescription and ActivationPin.
+    /// - Thre must be Different SiteSettings implementations for the client and the server.
+    /// - There must be exactly one class in the entry assembly that implements SiteSettings.
+    /// - Client SiteSettings implementation must persist and restore all data from setters.
+    /// - SiteSettings class should return the same MfrAndAppName as is used during installation.
+    /// - The main steps in activation are setting the LicenseCode and ActivationPin.
     /// - To check "is licensed": if(Activation.Instance.IsLicensed) ...
-    /// - SiteDescription is typically 12-chars: 6-char name, 1-char hyphen/punct, 5-char location
+    /// - LicenseCode is typically 12-chars: 6-char name, 1-char hyphen/punct, 5-char location
     /// - Calc activation PIN: string pin = ResetAllEntries(ChecksumOfString(SiteIdentification));
     /// - PIN must be set correctly before setting features or expiration
     /// - i.e. features: SetFeatureBitmask((int)(MyFeatures.B | MyFeatures.E)); where B=2 and E=16
     /// - Check feature: if(Activation.Instance.IsFeatureEnabled((int)MyFeatures.C)...
     /// - Check expiration: int days = UpdateSiteSettings(); note: returns -1 if non-expiring
-    /// - Each site is uniquely ID'd by the combination of siteIdentification and siteDescription
+    /// - Each site is uniquely ID'd by the combination of siteIdentification and licenseCode
     /// - Each site is tracked as a site (possibly many-to-one) from a purchase val code
     /// - When a new site is activated, the most latent one on that purchase gets deactivated
     /// - A Purch# (Purchase Validation Code) is a "P" followed by the PayPal trasnsaction number
@@ -81,7 +79,7 @@ namespace AbleLicensing
         /// <summary>
         /// Our connection to the configuration/preferences class.
         /// </summary>
-        private SiteSettings _iSettings = null;
+        private SiteSettings _siteSettings = null;
 
         /// <summary>
         /// Seed for randoms.
@@ -111,14 +109,14 @@ namespace AbleLicensing
         /// <summary>
         /// Expose site settings.
         /// </summary>
-        public SiteSettings ISettings { get => _iSettings; }
+        public SiteSettings SiteSettings { get => _siteSettings; }
 
         /// <summary>
         /// Ctor.
         /// </summary>
         private Activation()
         {
-            _iSettings = null;
+            _siteSettings = null;
             // This throws an exception if run in DEBUG mode, of course!
             Type[] clazzes = Assembly.GetEntryAssembly().GetExportedTypes();
             // Get the instance of the SiteSettings implementation
@@ -126,18 +124,18 @@ namespace AbleLicensing
             {
                 if(typeof(SiteSettings).IsAssignableFrom(clazz))
                 {
-                    if(ISettings != null)
+                    if(SiteSettings != null)
                     {
-                        LoggerHook("[V5a] Activation() ERROR - " + ISettings.GetType().Name + " " + clazz.Name);
+                        LoggerHook("[V5a] Activation() ERROR - " + SiteSettings.GetType().Name + " " + clazz.Name);
                         throw new ApplicationException("More than one class implements SiteSettings");
                     }
                     PropertyInfo property = clazz.GetProperty("Instance", 
                         BindingFlags.Static | BindingFlags.GetProperty | BindingFlags.Public);
                     MethodInfo method = property.GetGetMethod();
-                    _iSettings = (SiteSettings)method.Invoke(null, null);
+                    _siteSettings = (SiteSettings)method.Invoke(null, null);
                 }
             }
-            if (ISettings == null)
+            if (SiteSettings == null)
             {
                 LoggerHook("[V5b] Activation() ERROR - No class found that implements SiteSettings");
                 throw new ApplicationException("No class found that implements SiteSettings");
@@ -165,7 +163,7 @@ namespace AbleLicensing
         /// <param name="message">To be logged</param>
         public void LoggerHook(string message)
         {
-            ISettings.LoggerHook(message);
+            SiteSettings.LoggerHook(message);
         }
 
         /// <summary>
@@ -184,10 +182,10 @@ namespace AbleLicensing
         /// </summary>
         public void DeActivate()
         {
-            ISettings.SiteDescription = ISettings.SiteDescription.Substring(0, 5) +
-                (char)UserLevelPunct.Deactivated + ISettings.SiteDescription.Substring(7);
-            LoggerHook("[W6] DeActivate() " + ISettings.SiteDescription);
-            ISettings.Save();
+            SiteSettings.LicenseCode = SiteSettings.LicenseCode.Substring(0, 5) +
+                (char)UserLevelPunct.Deactivated + SiteSettings.LicenseCode.Substring(7);
+            LoggerHook("[W6] DeActivate() " + SiteSettings.LicenseCode);
+            SiteSettings.Save();
         }
 
         /// <summary>
@@ -198,7 +196,7 @@ namespace AbleLicensing
         {
             get
             {
-                if (ISettings == null)
+                if (SiteSettings == null)
                 {
                     return false;
                 }
@@ -208,14 +206,14 @@ namespace AbleLicensing
                 }
                 long verificationCode = ChecksumOfString(SiteIdentification);
                 LoggerHook("[X7] IsLicensed() " + verificationCode);
-                string pin = ResetAllEntries(verificationCode);
+                string pin = CalculatePin(verificationCode);
                 bool ok = CheckVerificationCode(verificationCode, _lastAttempt.Ticks); // no-op: hacker diversion
-                _isLicensed = (pin == ISettings.ActivationPin);
+                _isLicensed = (pin == SiteSettings.ActivationPin);
                 ok = !VerifyPin(verificationCode); // no-op: hacker diversion
                 pin = XorString(SiteIdentification + ok.ToString());  // no-op: hacker diversion
                 if(pin.Length < 1)  // no-op: hacker diversion (never happens)
                 {
-                    _iSettings = null;
+                    _siteSettings = null;
                 }
                 return _isLicensed;
             }
@@ -254,9 +252,9 @@ namespace AbleLicensing
                 return;
             }
             ClampAtDaysSinceInstallation(daysRemaining, DateTime.Now, true); // reset days-since-installed
-            ISettings.ActivityTracking = XorString(
+            SiteSettings.ActivityTracking = XorString(
                 daysRemaining.ToString() + "||" + DateTime.Now.ToShortDateString());
-            ISettings.Save();
+            SiteSettings.Save();
         }
 
         /// <summary>
@@ -265,23 +263,23 @@ namespace AbleLicensing
         /// <param name="pin">Activation PIN</param>
         public void SetActivationPin(string pin)
         {
-            ISettings.ActivationPin = pin;
-            ISettings.Save();
+            SiteSettings.ActivationPin = pin;
+            SiteSettings.Save();
         }
 
         /// <summary>
-        /// Site Description. (12-character description)
+        /// License Code. (12-character user6+hyphen+zip5)
         /// </summary>
-        public string SiteDescription
+        public string LicenseCode
         {
             get
             {
-                return ISettings.SiteDescription;
+                return SiteSettings.LicenseCode;
             }
             set
             {
-                ISettings.SiteDescription = value;
-                ISettings.Save();
+                SiteSettings.LicenseCode = value;
+                SiteSettings.Save();
             }
         }
         /// <summary>
@@ -295,8 +293,8 @@ namespace AbleLicensing
             {
                 return;
             }
-            ISettings.FeaturesBitMask = TranslateLong(featureBitmask);
-            ISettings.Save();
+            SiteSettings.FeaturesBitMask = TranslateLong(featureBitmask);
+            SiteSettings.Save();
         }
 
         /// <summary>
@@ -310,7 +308,7 @@ namespace AbleLicensing
             {
                 return 0L;
             }
-            return TranslateLong(ISettings.FeaturesBitMask);
+            return TranslateLong(SiteSettings.FeaturesBitMask);
         }
 
         /// <summary>
@@ -320,7 +318,7 @@ namespace AbleLicensing
         /// <returns>true if feature is enabled AND this is a licensed version</returns>
         public bool IsFeatureEnabled(long featureBitmask)
         {
-            long mask = TranslateLong(ISettings.FeaturesBitMask);
+            long mask = TranslateLong(SiteSettings.FeaturesBitMask);
             return (featureBitmask & mask) == featureBitmask;
         }
 
@@ -356,7 +354,7 @@ namespace AbleLicensing
         /// <returns>who knows?</returns>
         public string CalculatePin()
         {
-            string pinString = ISettings.ActivationPin;
+            string pinString = SiteSettings.ActivationPin;
             long pinNumber = 1234;
             if(long.TryParse(pinString, out pinNumber))
             {
@@ -368,18 +366,18 @@ namespace AbleLicensing
                 pinString = XorString(pinString);
             }
             pinString = TranslateLong(pinNumber).ToString();
-            ISettings.ActivationPin = pinString;
+            SiteSettings.ActivationPin = pinString;
             return pinString;
         }
 
         /// <summary>
-        /// CalculatePin() alias - The real one, renamed so it isn't obvious.
+        /// CalculatePin().
         /// </summary>
         /// <param name="verificationCode">Calculated code: checksum of chars in siteIdentification</param>
         /// <param name="sid">site identification, "" to use the current host's siteIdentification</param>
-        /// <param name="desc">site description, "" to use the current host's site description</param>
+        /// <param name="lCode">license code, "" to use the current host's license code</param>
         /// <returns>the PIN - always 4 digits on success, "" on error</returns>
-        public string ResetAllEntries(long verificationCode, string sid = "", string desc = "")
+        public string CalculatePin(long verificationCode, string sid = "", string lCode = "")
         {
             if(sid.Trim().Length < 1)
             {
@@ -391,28 +389,28 @@ namespace AbleLicensing
                 _lastAttempt = DateTime.Now;
                 sid = SiteIdentification;
             }
-            if (desc.Trim().Length < 1)
+            if (lCode.Trim().Length < 1)
             {
-                desc = ISettings.SiteDescription;
+                lCode = SiteSettings.LicenseCode;
             }
             if (!CheckVerificationCode(ChecksumOfString(SiteIdentification), verificationCode))
             {
                 return "";
             }
-            // Simple PIN checksum based on machineName, region, #processors, and sitedesc
-            string buffer = sid + desc.Trim().ToUpper();
+            // Simple PIN checksum based on machineName, region, #processors, and lCode
+            string buffer = sid + lCode.Trim().ToUpper();
             int accumulator = 0;
             for (int index = 0; index < buffer.Length; ++index)
             {
                 accumulator += ((int)buffer[index] % 32) * (1 + index % 32);
             }
             string pin = "" + (1000 + accumulator % 9000);
-            LoggerHook("[Y8] ResetAllEntries() " + sid + " " + desc + " " + pin);
+            LoggerHook("[Y8] ResetAllEntries() " + sid + " " + lCode + " " + pin);
             return pin;
         }
 
         /// <summary>
-        /// GetExpirationDays() alias - Also updates site settings in anticipation of exit or save.
+        /// GetExpirationDays().
         /// </summary>
         /// <returns>Number of days remaining before expiration, negative if expired. 10000 if licensed/non-expiring.</returns>
         /// <remarks>
@@ -425,13 +423,13 @@ namespace AbleLicensing
         ///  may be a sudden jump due to the fact that there are 2 metrics, as
         ///  is listed above, and one may run past the other.
         /// </remarks>
-        public int UpdateSiteSettings()
+        public int GetExpirationDays()
         {
             if (IsLicensed)
             {
                 return 10000;
             }
-            string tracking = XorString(ISettings.ActivityTracking).Trim();
+            string tracking = XorString(SiteSettings.ActivityTracking).Trim();
             LoggerHook("[Z9a] UpdateSiteSettings() " + tracking);
             string[] daysAndDate = tracking.Split(new string[] { "||" }, StringSplitOptions.RemoveEmptyEntries);
             int daysRemaining = _defaultDaysOfUse;
@@ -464,9 +462,9 @@ namespace AbleLicensing
             // if dummy file is about a year old, trim the days remaining down
             daysRemaining = ClampAtDaysSinceInstallation(daysRemaining, lastChecked);
             // Save results
-            ISettings.ActivityTracking = XorString(
+            SiteSettings.ActivityTracking = XorString(
                 daysRemaining.ToString() + "||" + DateTime.Now.ToShortDateString());
-            ISettings.Save();
+            SiteSettings.Save();
             LoggerHook("[Z9b] UpdateSiteSettings() " + daysRemaining.ToString() + "||" + DateTime.Now.ToShortDateString());
             return daysRemaining;
         }
@@ -482,7 +480,7 @@ namespace AbleLicensing
         {
             string checkFilePath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                    ISettings.MfrAndAppName + "\\settings.cnf");
+                    SiteSettings.MfrAndAppName + "\\settings.cnf");
             if(restart)
             {
                 File.Delete(checkFilePath);
@@ -534,7 +532,7 @@ namespace AbleLicensing
         private long TranslateLong(long value)
         {
             long keyValue = 0x0E1D2C3B4A59687L;
-            long.TryParse(ISettings.ActivationPin, out keyValue);
+            long.TryParse(SiteSettings.ActivationPin, out keyValue);
             keyValue += 0x123456789ABCDEF;
             return value ^ keyValue;
         }

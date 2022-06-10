@@ -121,11 +121,11 @@
   <data name="dataGridView1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <metadata name="SiteDesc.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <metadata name="LicenseCode.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <data name="SiteDesc.HeaderText" xml:space="preserve">
-    <value>SiteDesc</value>
+  <data name="LicenseCode.HeaderText" xml:space="preserve">
+    <value>LicenseCode</value>
   </data>
   <metadata name="SiteId.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -474,31 +474,31 @@
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
     <value>13</value>
   </data>
-  <data name="textBoxSiteDescriptionAbbrev.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="textBoxSiteLicenseCode.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
   </data>
-  <data name="textBoxSiteDescriptionAbbrev.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="textBoxSiteLicenseCode.Font" type="System.Drawing.Font, System.Drawing">
     <value>Courier New, 9pt</value>
   </data>
-  <data name="textBoxSiteDescriptionAbbrev.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="textBoxSiteLicenseCode.Location" type="System.Drawing.Point, System.Drawing">
     <value>201, 344</value>
   </data>
-  <data name="textBoxSiteDescriptionAbbrev.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="textBoxSiteLicenseCode.Size" type="System.Drawing.Size, System.Drawing">
     <value>127, 24</value>
   </data>
-  <data name="textBoxSiteDescriptionAbbrev.TabIndex" type="System.Int32, mscorlib">
+  <data name="textBoxSiteLicenseCode.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="&gt;&gt;textBoxSiteDescriptionAbbrev.Name" xml:space="preserve">
-    <value>textBoxSiteDescriptionAbbrev</value>
+  <data name="&gt;&gt;textBoxSiteLicenseCode.Name" xml:space="preserve">
+    <value>textBoxSiteLicenseCode</value>
   </data>
-  <data name="&gt;&gt;textBoxSiteDescriptionAbbrev.Type" xml:space="preserve">
+  <data name="&gt;&gt;textBoxSiteLicenseCode.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;textBoxSiteDescriptionAbbrev.Parent" xml:space="preserve">
+  <data name="&gt;&gt;textBoxSiteLicenseCode.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;textBoxSiteDescriptionAbbrev.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;textBoxSiteLicenseCode.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
   <data name="label3.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -514,13 +514,13 @@
     <value>13, 347</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>179, 17</value>
+    <value>173, 17</value>
   </data>
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
   <data name="label3.Text" xml:space="preserve">
-    <value>Desc: User6+Hyphen+Zip5</value>
+    <value>License Code: User6-Zip5</value>
   </data>
   <data name="&gt;&gt;label3.Name" xml:space="preserve">
     <value>label3</value>
@@ -642,10 +642,10 @@
   <data name="$this.Text" xml:space="preserve">
     <value>SU User Management</value>
   </data>
-  <data name="&gt;&gt;SiteDesc.Name" xml:space="preserve">
-    <value>SiteDesc</value>
+  <data name="&gt;&gt;LicenseCode.Name" xml:space="preserve">
+    <value>LicenseCode</value>
   </data>
-  <data name="&gt;&gt;SiteDesc.Type" xml:space="preserve">
+  <data name="&gt;&gt;LicenseCode.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;SiteId.Name" xml:space="preserve">

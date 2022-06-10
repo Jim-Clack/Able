@@ -1,24 +1,25 @@
 Alpha TODO...
+ - On checkbook entry form, checkbox: "Enter AFTER other daily transactions"
  - Reconcile Tips button seems to never be enabled ???
- - Refactor to extract large methods
+ - Year end wrapup doesn't carry over memorized payees (do like categories)
  - Flesh out online help
  - Deploy website for testing
  - EULA
  - Web Services for online reconciliation (Open Banking API)
- - Activation: Add a time-of-day stamp to an image file as a tertiary expiry check
  - Implement Activate via Email/Phone as is appropriate 
  - Paypal API
  - Web Services for online purchase and self-service activation
- - Move SU user data to website instead of file
+ - Move SU user data to website instead of file (superuser)
  - Fix desktop Icon 
- - Year end wrapup doesn't carry over memorized payees (do like categories)
  - During reconcile the cursor sometimes jumps way down
  - AreYouSureForm with date/time/user that screen-captures, logs, and read log
  - Once you've entered a payee with bad capitalization, you cannot change it
  - Much testing 
 
 Longer term TODO...
+ - Activation: Add a time-of-day stamp to an image file as a tertiary expiry check
  - Why can't program.cs trap exceptions? (debug mode only?)
+ - Refactor to extract large methods
  - Quick yesterday-thru-future condensed report as jpg file (date, payee, amt, bal)
  - Budgeting, forecasting, trends, etc.
  - Implement SU ReadLog

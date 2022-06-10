@@ -59,9 +59,9 @@ namespace AbleCheckbook.Gui
             textBox2.Text = Strings.Get("Time-Limited Evaluation Copy");
             if (Configuration.Instance.GetIsLicensedVersion())
             {
-                textBox2.Text = Strings.Get("Licensed to: ") + Configuration.Instance.SiteDescription;
+                textBox2.Text = Strings.Get("Licensed to: ") + Configuration.Instance.LicenseCode;
             }
-            int expDays = Activation.Instance.UpdateSiteSettings();
+            int expDays = Activation.Instance.GetExpirationDays();
             if (expDays < 0)
             {
                 textBox2.Text = Strings.Get("Expired") + " " + Math.Abs(expDays) + Strings.Get(" days");

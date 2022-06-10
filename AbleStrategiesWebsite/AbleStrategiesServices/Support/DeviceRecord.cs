@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace AbleStrategiesServices.Support
@@ -12,22 +13,23 @@ namespace AbleStrategiesServices.Support
         /// <summary>
         /// Foreign key to license data.
         /// </summary>
+        [JsonIgnore]
         public Guid fkLicenseId = Guid.Empty;
 
         /// <summary>
         /// Site abbreviation.
         /// </summary>
-        public string deviceSite = "";
+        private string deviceSite = "";
 
         /// <summary>
         /// Current status of device activation.
         /// </summary>
-        public UserLevelPunct userLevelPunct = UserLevelPunct.Unlicensed;
+        private UserLevelPunct userLevelPunct = UserLevelPunct.Unlicensed;
 
         /// <summary>
         /// Binary authentication/authorization info.
         /// </summary>
-        public string codesAndPin = "";
+        private string codesAndPin = "";
 
         /// <summary>
         /// Ctor.

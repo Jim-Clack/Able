@@ -19,6 +19,10 @@ namespace AbleStrategiesServices.Controllers
     {
 
         // GET as/master
+        /// <summary>
+        /// Simple APi to verify the connection.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
@@ -28,25 +32,32 @@ namespace AbleStrategiesServices.Controllers
                 AbleStrategiesServices.Support.Version.ToString(), 
                 now.ToString("o", CultureInfo.GetCultureInfo("en-US")),
                 ipAddress,
-                (DateTime.Now.Ticks / (DateTime.Now.Millisecond + 173L)).ToString() // future use
+                (DateTime.Now.Ticks / (DateTime.Now.Millisecond + 173L)).ToString(), // future
+                "X" // future use
             };
         }
 
-        // GET as/master/license?desc=*
+        // GET as/master/license?lic=.*
         /// <summary>
-        /// Return licenses by assigned site description.
+        /// Return licenses by assigned license code.
         /// </summary>
-        /// <param name="cmd">literal, "license"</param>
-        /// <param name="desc">Assigned site description - regular expression</param>
-        /// <returns>List of matching licenses</returns>
+        /// <param name="cmd">literal, "licenses"</param>
+        /// <param name="lic">Assigned license code - regular expression</param>
+        /// <returns>List of matching licenses, null if not authorized</returns>
         [HttpGet("{cmd}")]
-        public ActionResult<LicenseRecord[]> Get([FromRoute] string cmd, [FromQuery]string desc)
+        public ActionResult<LicenseRecord[]> Get([FromRoute] string cmd, [FromQuery]string lic)
         {
             if(!cmd.ToLower().StartsWith("license"))
             {
                 return new LicenseRecord[] { };
             }
-            return JsonUsersDb.Instance.LicensesByDescription(desc).ToArray();
+            string ip = HttpContext.Connection.RemoteIpAddress.ToString();
+            if (SupportMethods.HasWildcard(lic) && !Configuration.Instance.IsSuperSuperUser(HttpContext.Connection.RemoteIpAddress))
+            {
+                Logger.Warn(HttpContext.Connection.RemoteIpAddress.ToString(), "Attempted unauthorized access [" + lic + "]");
+                return null;
+            }
+            return JsonUsersDb.Instance.LicensesByLicenseCode(lic).ToArray();
         }
 
         // POST as/master

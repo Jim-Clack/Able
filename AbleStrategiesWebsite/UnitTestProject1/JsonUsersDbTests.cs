@@ -16,7 +16,7 @@ namespace AbleStrategies.Testing
 
             LicenseRecord record = new LicenseRecord();
             Guid id = record.Id;
-            record.LicenseDesc = "Test Record";
+            record.LicenseCode = "Test Record";
             record.ContactName = "Ben Dover";
             record.ContactAddress = "123 Main, NYC, NY 01010";
             record.ContactPhone = "123-456-7890";
@@ -26,7 +26,7 @@ namespace AbleStrategies.Testing
             Assert.AreEqual(id, record.Id);
             Assert.AreEqual(EditFlag.Unchanged, record.EditFlag);
 
-            List<LicenseRecord> records = db.LicensesByDescription("Test.*");
+            List<LicenseRecord> records = db.LicensesByLicenseCode("Test.*");
             Assert.AreEqual(1, records.Count);
             LicenseRecord record2 = records[0];
             Assert.AreEqual(id, record2.Id);
@@ -45,7 +45,7 @@ namespace AbleStrategies.Testing
             ok = db.UpdateDb(record2);
             Assert.IsFalse(ok);
 
-            records = db.LicensesByDescription(".*");
+            records = db.LicensesByLicenseCode(".*");
             Assert.AreEqual(1, records.Count);
             LicenseRecord record4 = records[0];
             Assert.AreEqual(id, record4.Id);
@@ -193,7 +193,7 @@ namespace AbleStrategies.Testing
 
             LicenseRecord record = new LicenseRecord();
             Guid id = record.Id;
-            record.LicenseDesc = "Test Rec New";
+            record.LicenseCode = "Test Rec New";
             record.ContactName = "Ben Dover";
             record.ContactAddress = "123 Main, NYC, NY 01010";
             record.ContactPhone = "123-456-7890";
@@ -201,7 +201,7 @@ namespace AbleStrategies.Testing
             db.UpdateDb(record);
 
             record = new LicenseRecord();
-            record.LicenseDesc = "Different Rec";
+            record.LicenseCode = "Different Rec";
             record.ContactName = "Hal O Ween";
             db.UpdateDb(record);
 
@@ -210,24 +210,24 @@ namespace AbleStrategies.Testing
 
             db = JsonUsersDb.Instance;
 
-            List<LicenseRecord> records = db.LicensesByDescription("Test.*");
+            List<LicenseRecord> records = db.LicensesByLicenseCode("Test.*");
             Assert.AreEqual(1, records.Count);
             record = records[0];
             Assert.AreEqual(id, record.Id);
-            Assert.AreEqual("Test Rec New", record.LicenseDesc);
+            Assert.AreEqual("Test Rec New", record.LicenseCode);
             Assert.AreEqual(record.ContactName, "Ben Dover");
             Assert.AreEqual(record.ContactAddress, "123 Main, NYC, NY 01010");
             Assert.AreEqual(record.ContactPhone, "123-456-7890");
             Assert.AreEqual(record.ContactEMail, "abc@xyz.com");
             Assert.AreEqual(EditFlag.Unchanged, record.EditFlag);
 
-            records = db.LicensesByDescription("Diff.*");
+            records = db.LicensesByLicenseCode("Diff.*");
             Assert.AreEqual(1, records.Count);
             record = records[0];
             Assert.AreNotEqual(id, record.Id);
-            Assert.AreEqual("Different Rec", record.LicenseDesc);
+            Assert.AreEqual("Different Rec", record.LicenseCode);
 
-            records = db.LicensesByDescription(".*");
+            records = db.LicensesByLicenseCode(".*");
             Assert.AreEqual(2, records.Count);
 
             db.SyncAndClose();

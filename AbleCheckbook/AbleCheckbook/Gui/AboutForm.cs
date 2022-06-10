@@ -28,12 +28,12 @@ namespace AbleCheckbook.Gui
             textBoxIpAddress.Text = System.Environment.UserDomainName;
             textBoxUserLevel.Text = Configuration.Instance.GetUserLevel().ToString();
             textBoxSiteId.Text = Activation.Instance.SiteIdentification;
-            textBoxSiteDesc.Text = Activation.Instance.SiteDescription;
+            textBoxSiteDesc.Text = Activation.Instance.LicenseCode;
             textBoxUserId.Text = System.Environment.UserName;
             Assembly assembly = Assembly.GetExecutingAssembly();
             textBoxVersion.Text = Strings.Get("Version: ") + AbleCheckbook.Logic.Version.AppVersion;
             linkLabelEula.Text = Strings.Get("EULA - End User License Agreement");
-            int expDays = Activation.Instance.UpdateSiteSettings();
+            int expDays = Activation.Instance.GetExpirationDays();
             if (expDays < 0)
             {
                 textBoxSiteDesc.Text = Strings.Get("Expired") + " " + Math.Abs(expDays) + Strings.Get(" days");

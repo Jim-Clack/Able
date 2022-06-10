@@ -440,22 +440,22 @@ namespace AbleStrategiesServices.Support
         }
 
         /// <summary>
-        /// Find all records with a description that matches a specific regex.
+        /// Find all records with a license code that matches a specific regex.
         /// </summary>
-        /// <param name="descRegex">The regular expression to match</param>
+        /// <param name="licRegex">The regular expression to match</param>
         /// <returns>List of matching records, possibly empty</returns>
-        public override List<LicenseRecord> LicensesByDescription(string descRegex)
+        public override List<LicenseRecord> LicensesByLicenseCode(string licRegex)
         {
             errorMessage = "";
             Regex regex = null;
             List<LicenseRecord> results = new List<LicenseRecord>();
             try
             {
-                regex = new Regex(descRegex);
+                regex = new Regex(licRegex, RegexOptions.IgnoreCase);
             }
             catch(ArgumentException ex)
             {
-                errorMessage = "Bad regex " + descRegex;
+                errorMessage = "Bad regex " + licRegex;
                 Logger.Error(null, errorMessage, ex);
                 return results;
             }
@@ -466,9 +466,9 @@ namespace AbleStrategiesServices.Support
                 while (enumerator.MoveNext())
                 {
                     LicenseRecord record = enumerator.Current.Value;
-                    if (regex.Match(record.LicenseDesc).Success)
+                    if (regex.Match(record.LicenseCode).Success)
                     {
-                        Logger.Diag(null, "Matches description " + descRegex + " -> " + record.ToString());
+                        Logger.Diag(null, "Matches License Code " + licRegex + " -> " + record.ToString());
                         results.Add(record);
                     }
                 }
@@ -492,7 +492,7 @@ namespace AbleStrategiesServices.Support
             List<LicenseRecord> results = new List<LicenseRecord>();
             try
             {
-                regex = new Regex(nameRegex);
+                regex = new Regex(nameRegex, RegexOptions.IgnoreCase);
             }
             catch (ArgumentException ex)
             {
@@ -533,7 +533,7 @@ namespace AbleStrategiesServices.Support
             List<LicenseRecord> results = new List<LicenseRecord>();
             try
             {
-                regex = new Regex(addressRegex);
+                regex = new Regex(addressRegex, RegexOptions.IgnoreCase);
             }
             catch (ArgumentException ex)
             {
@@ -574,7 +574,7 @@ namespace AbleStrategiesServices.Support
             List<LicenseRecord> results = new List<LicenseRecord>();
             try
             {
-                regex = new Regex(cityRegex);
+                regex = new Regex(cityRegex, RegexOptions.IgnoreCase);
             }
             catch (ArgumentException ex)
             {
@@ -615,7 +615,7 @@ namespace AbleStrategiesServices.Support
             List<LicenseRecord> results = new List<LicenseRecord>();
             try
             {
-                regex = new Regex(emailRegex);
+                regex = new Regex(emailRegex, RegexOptions.IgnoreCase);
             }
             catch (ArgumentException ex)
             {
@@ -692,7 +692,7 @@ namespace AbleStrategiesServices.Support
             List<LicenseRecord> results = new List<LicenseRecord>();
             try
             {
-                regex = new Regex(siteCode);
+                regex = new Regex(siteCode, RegexOptions.IgnoreCase);
             }
             catch (ArgumentException ex)
             {
@@ -835,7 +835,7 @@ namespace AbleStrategiesServices.Support
         /// <summary>
         /// Find all records with a specific FK Id.
         /// </summary>
-        /// <param name="descRegex">The FK ID</param>
+        /// <param name="fkId">The FK ID</param>
         /// <returns>List of matching records, possibly empty</returns>
         public override List<DeviceRecord> DevicesByFkLicense(Guid fkId)
         {
@@ -905,7 +905,7 @@ namespace AbleStrategiesServices.Support
         /// <summary>
         /// Find all records with a given fk Id.
         /// </summary>
-        /// <param name="descRegex">The desired fk</param>
+        /// <param name="fkId">The desired fk</param>
         /// <returns>List of matching records, possibly empty</returns>
         public override List<PurchaseRecord> PurchasesByFkLicense(Guid fkId)
         {
@@ -975,7 +975,7 @@ namespace AbleStrategiesServices.Support
         /// <summary>
         /// Find all records with a given fk Id.
         /// </summary>
-        /// <param name="descRegex">The desired fk</param>
+        /// <param name="fkId">The desired fk</param>
         /// <returns>List of matching records, possibly empty</returns>
         public override List<InteractivityRecord> InteractivitiesByFkLicense(Guid fkId)
         {

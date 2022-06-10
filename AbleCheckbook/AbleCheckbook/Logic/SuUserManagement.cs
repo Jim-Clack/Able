@@ -59,9 +59,9 @@ namespace AbleCheckbook.Logic
         /// Get an activation PIN.
         /// </summary>
         /// <param name="siteIdentification">As displayed in the customer's About box</param>
-        /// <param name="siteDescription">Unique 12 letter customer name, space, then zip or other location onfo</param>
+        /// <param name="licenseCode">Unique 12 letter customer name, space, then zip or other location onfo</param>
         /// <returns>The activation PIN, or an error beginning with an "#" symbol</returns>
-        public static string GetActivationPin(string siteIdentification, string siteDescription)
+        public static string GetActivationPin(string siteIdentification, string licenseCode)
         {
             string expectedPin = "";
 #if DEBUG
@@ -70,18 +70,18 @@ namespace AbleCheckbook.Logic
             {
                 return Strings.Get("#Requires Super-User Permission");
             }
-            siteDescription = siteDescription.Trim();
+            licenseCode = licenseCode.Trim();
             siteIdentification = siteIdentification.Trim();
             if (siteIdentification.Length < 4)
             {
                 return Strings.Get("#Invalid Site Identification Code.");
             }
-            if (siteDescription.Contains(" ") || siteDescription.Length != 12 || !Char.IsPunctuation(siteDescription[6]))
+            if (licenseCode.Contains(" ") || licenseCode.Length != 12 || !Char.IsPunctuation(licenseCode[6]))
             {
-                return Strings.Get("#Invalid Site Description - Expected 6-char Name, a Hyphen, then 5-char Postal Code.");
+                return Strings.Get("#Invalid License Code - Expected 6-char Name, a Hyphen, then 5-char Postal Code.");
             }
             Activation act = Activation.Instance;
-            expectedPin = act.ResetAllEntries(act.ChecksumOfString(act.SiteIdentification), siteIdentification, siteDescription);
+            expectedPin = act.CalculatePin(act.ChecksumOfString(act.SiteIdentification), siteIdentification, licenseCode);
 #endif
 #endif
             return expectedPin;
@@ -128,7 +128,7 @@ namespace AbleCheckbook.Logic
                     userData.EmailAddr.ToUpper().Contains(pattern) ||
                     userData.Important.ToUpper().Contains(pattern) ||
                     userData.PhoneNum.ToUpper().Contains(pattern) ||
-                    userData.SiteDesc.ToUpper().Contains(pattern) ||
+                    userData.LicenseCode.ToUpper().Contains(pattern) ||
                     userData.SiteId.ToUpper().Contains(pattern) ||
                     userData.OtherInfo.ToUpper().Contains(pattern))
                 {
@@ -162,11 +162,11 @@ namespace AbleCheckbook.Logic
         }
 
         /// <summary>
-        /// Search for a user based on a match to the site description.
+        /// Search for a user based on a match to the license code.
         /// </summary>
         /// <param name="pattern">case-insensitive string</param>
         /// <returns>list of matches</returns>
-        public List<SuUserData> FindInDesc(string pattern)
+        public List<SuUserData> FindInLicenseCode(string pattern)
         {
             List<SuUserData> matches = new List<SuUserData>();
             pattern = pattern.Trim().ToUpper();
@@ -176,7 +176,7 @@ namespace AbleCheckbook.Logic
             }
             foreach (SuUserData userData in _users)
             {
-                if (userData.SiteDesc.ToUpper().Contains(pattern))
+                if (userData.LicenseCode.ToUpper().Contains(pattern))
                 {
                     matches.Add(userData);
                 }

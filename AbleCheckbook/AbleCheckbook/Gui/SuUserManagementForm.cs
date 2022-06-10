@@ -35,7 +35,7 @@ namespace AbleCheckbook.Gui
         { 
             dataGridView.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(dataGridView)).BeginInit();
-            dataGridView.Columns["SiteDesc"].DisplayIndex = 0;
+            dataGridView.Columns["LicCode"].DisplayIndex = 0;
             dataGridView.Columns["SiteId"].DisplayIndex = 1;
             dataGridView.Columns["Contact"].DisplayIndex = 2;
             dataGridView.Columns["Company"].DisplayIndex = 3;
@@ -53,10 +53,10 @@ namespace AbleCheckbook.Gui
             dataGridView.Columns["DateLastWebService"].DisplayIndex = 15;
             dataGridView.Columns["Id"].DisplayIndex = 16;
             dataGridView.Columns["HiddenInfo"].DisplayIndex = 17;
-            dataGridView.Columns["SiteDesc"].Frozen = true;
+            dataGridView.Columns["LicCode"].Frozen = true;
             dataGridView.Columns["SiteId"].Frozen = true;
             dataGridView.AllowUserToDeleteRows = Configuration.Instance.GetAdminMode();
-            dataGridView.Columns["SiteDesc"].ReadOnly = !Configuration.Instance.GetAdminMode();
+            dataGridView.Columns["LicCode"].ReadOnly = !Configuration.Instance.GetAdminMode();
             ((System.ComponentModel.ISupportInitialize)(dataGridView)).EndInit();
             dataGridView.ResumeLayout();
         }
@@ -83,26 +83,26 @@ namespace AbleCheckbook.Gui
                 return;
             }
             SuUserData userData = (SuUserData)dataGridView1.SelectedRows[0].DataBoundItem;
-            if (textBoxSiteIdCode.Text.Trim().Length < 4 || textBoxSiteDescriptionAbbrev.Text.Trim().Length != 12)
+            if (textBoxSiteIdCode.Text.Trim().Length < 4 || textBoxSiteLicenseCode.Text.Trim().Length != 12)
             {
-                MessageBox.Show(this, "IdCode is wrong or Desc is bad", "Sorry !");
+                MessageBox.Show(this, "Site ID is wrong or License Code is bad", "Sorry !");
                 return;
             }
-            List<SuUserData> users = _userManagement.FindInDesc(textBoxSiteDescriptionAbbrev.Text.Trim());
+            List<SuUserData> users = _userManagement.FindInLicenseCode(textBoxSiteLicenseCode.Text.Trim());
             if (users.Count > 1 || (users.Count == 1 && users.First<SuUserData>().Id != userData.Id))
             {
-                MessageBox.Show(this, "That site description is already in use", "Sorry !");
+                MessageBox.Show(this, "That License Code is already in use", "Sorry !");
                 return;
             }
             string pin = SuUserManagement.GetActivationPin(
-                textBoxSiteIdCode.Text.Trim(), textBoxSiteDescriptionAbbrev.Text.Trim());
+                textBoxSiteIdCode.Text.Trim(), textBoxSiteLicenseCode.Text.Trim());
             if (pin.StartsWith("#"))
             {
                 MessageBox.Show(this, pin.Substring(1), "Sorry !");
                 return;
             }
             textBoxActivationPin.Text = pin;
-            userData.SiteDesc = textBoxSiteDescriptionAbbrev.Text.Trim();
+            userData.LicenseCode = textBoxSiteLicenseCode.Text.Trim();
             userData.SiteId = textBoxSiteIdCode.Text.Trim();
             userData.DateActiv = DateTime.Now;
             userData.DateLastAcc = DateTime.Now;
@@ -150,17 +150,17 @@ namespace AbleCheckbook.Gui
             {
                 return;
             }
-            textBoxSiteDescriptionAbbrev.Text = "";
+            textBoxSiteLicenseCode.Text = "";
             textBoxSiteIdCode.Text = "";
             textBoxActivationPin.Text = "";
-            if (userData.Contact == null && userData.SiteDesc == null && userData.SiteId == null)
+            if (userData.Contact == null && userData.LicenseCode == null && userData.SiteId == null)
             {
                 userData.Id = Guid.NewGuid();
                 userData.Contact = "";
                 userData.Company = "";
                 userData.PhoneNum = "";
                 userData.ZipCode = "";
-                userData.SiteDesc = "";
+                userData.LicenseCode = "";
                 userData.ActivBy = "";
                 userData.EmailAddr = "";
                 userData.HiddenInfo = "";
@@ -173,9 +173,9 @@ namespace AbleCheckbook.Gui
                 userData.DateLastAcc = DateTime.Now;
                 userData.DateLastWebService = DateTime.Now;
             }
-            textBoxSiteDescriptionAbbrev.Text = userData.SiteDesc.Trim();
+            textBoxSiteLicenseCode.Text = userData.LicenseCode.Trim();
             textBoxSiteIdCode.Text = userData.SiteId.Trim();
-            if (textBoxSiteDescriptionAbbrev.Text.Length < 12)
+            if (textBoxSiteLicenseCode.Text.Length < 12)
             {
                 string abbrev = "";
                 if (userData.Company.Length > 2)
@@ -204,7 +204,7 @@ namespace AbleCheckbook.Gui
                 {
                     abbrev = abbrev.Substring(0, 12);
                 }
-                textBoxSiteDescriptionAbbrev.Text = abbrev;
+                textBoxSiteLicenseCode.Text = abbrev;
             }
         }
 

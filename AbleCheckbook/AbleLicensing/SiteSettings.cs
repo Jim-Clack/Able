@@ -21,7 +21,7 @@ namespace AbleLicensing
         /// <summary>
         /// Implementation must be a singleton.
         /// </summary>
-        // public static SiteSettings Instance { get; } // commented-out due to compiler warning anomaly
+        // public static SiteSettings Instance { get; } // commented-out static but must be implemented
 
         /// <summary>
         /// URL override for calling MASTER web services
@@ -40,9 +40,9 @@ namespace AbleLicensing
         public abstract string MfrAndAppName { get; }
 
         /// <summary>
-        /// 12-character description. (set by app or by Activation class)
+        /// 12-character license code. (set by app or by Activation class)
         /// </summary>
-        public abstract string SiteDescription { get; set; }
+        public abstract string LicenseCode { get; set; }
 
         /// <summary>
         /// Bitmask of enabled features. (set by app or by Activation class)

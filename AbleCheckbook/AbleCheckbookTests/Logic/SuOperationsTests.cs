@@ -19,15 +19,15 @@ namespace AbleCheckbook.Logic.Tests
             char[] array = siteId.ToCharArray();
             Array.Reverse(array);
             siteId = new String(array);
-            string siteDesc = "ChasBu-60135";
+            string licCode = "ChasBu-60135";
             siteId = "DD6";
-            string code = SuUserManagement.GetActivationPin(siteId, siteDesc);
+            string code = SuUserManagement.GetActivationPin(siteId, licCode);
             Assert.IsTrue(code.StartsWith("#"));
-            siteDesc = "FTYUDIFTUYAITFUIYFATUI";
-            code = SuUserManagement.GetActivationPin(siteId, siteDesc);
+            licCode = "FTYUDIFTUYAITFUIYFATUI";
+            code = SuUserManagement.GetActivationPin(siteId, licCode);
             Assert.IsTrue(code.StartsWith("#"));
-            siteDesc = "FTY";
-            code = SuUserManagement.GetActivationPin(siteId, siteDesc);
+            licCode = "FTY";
+            code = SuUserManagement.GetActivationPin(siteId, licCode);
             Assert.IsTrue(code.StartsWith("#"));
         }
     }

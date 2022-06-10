@@ -45,8 +45,8 @@
             this.labelIpAddress = new System.Windows.Forms.Label();
             this.textBoxIpAddress = new System.Windows.Forms.TextBox();
             this.linkLabelEula = new System.Windows.Forms.LinkLabel();
-            this.textBoxSiteDescription = new System.Windows.Forms.TextBox();
-            this.labelSiteDescription = new System.Windows.Forms.Label();
+            this.textBoxLicenseCode = new System.Windows.Forms.TextBox();
+            this.labelLicenseCode = new System.Windows.Forms.Label();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.textBoxCityState = new System.Windows.Forms.TextBox();
             this.textBoxStreetAddress = new System.Windows.Forms.TextBox();
@@ -215,24 +215,24 @@
             this.linkLabelEula.TabStop = true;
             this.linkLabelEula.Text = "EULA - End User License Agreement";
             // 
-            // textBoxSiteDescription
+            // textBoxLicenseCode
             // 
-            this.textBoxSiteDescription.Enabled = false;
-            this.textBoxSiteDescription.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxSiteDescription.Location = new System.Drawing.Point(173, 264);
-            this.textBoxSiteDescription.Name = "textBoxSiteDescription";
-            this.textBoxSiteDescription.Size = new System.Drawing.Size(124, 24);
-            this.textBoxSiteDescription.TabIndex = 6;
-            this.textBoxSiteDescription.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textBoxLicenseCode.Enabled = false;
+            this.textBoxLicenseCode.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxLicenseCode.Location = new System.Drawing.Point(173, 264);
+            this.textBoxLicenseCode.Name = "textBoxLicenseCode";
+            this.textBoxLicenseCode.Size = new System.Drawing.Size(124, 24);
+            this.textBoxLicenseCode.TabIndex = 6;
+            this.textBoxLicenseCode.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // labelSiteDescription
+            // labelLicenseCode
             // 
-            this.labelSiteDescription.AutoSize = true;
-            this.labelSiteDescription.Location = new System.Drawing.Point(5, 267);
-            this.labelSiteDescription.Name = "labelSiteDescription";
-            this.labelSiteDescription.Size = new System.Drawing.Size(165, 17);
-            this.labelSiteDescription.TabIndex = 18;
-            this.labelSiteDescription.Text = "Assigned site description";
+            this.labelLicenseCode.AutoSize = true;
+            this.labelLicenseCode.Location = new System.Drawing.Point(5, 267);
+            this.labelLicenseCode.Name = "labelLicenseCode";
+            this.labelLicenseCode.Size = new System.Drawing.Size(156, 17);
+            this.labelLicenseCode.TabIndex = 18;
+            this.labelLicenseCode.Text = "Assigned License Code";
             // 
             // buttonCancel
             // 
@@ -311,7 +311,7 @@
             this.Controls.Add(this.labelStreetAddress);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.textBoxPin);
-            this.Controls.Add(this.textBoxSiteDescription);
+            this.Controls.Add(this.textBoxLicenseCode);
             this.Controls.Add(this.linkLabelEula);
             this.Controls.Add(this.textBoxIpAddress);
             this.Controls.Add(this.checkBoxAcceptTerms);
@@ -324,7 +324,7 @@
             this.Controls.Add(this.labelUserId);
             this.Controls.Add(this.labelSiteId);
             this.Controls.Add(this.labelPostalCode);
-            this.Controls.Add(this.labelSiteDescription);
+            this.Controls.Add(this.labelLicenseCode);
             this.Controls.Add(this.labelCityState);
             this.Controls.Add(this.labelIpAddress);
             this.Controls.Add(this.labelEmailAddress);
@@ -359,8 +359,8 @@
         private System.Windows.Forms.Label labelIpAddress;
         private System.Windows.Forms.TextBox textBoxIpAddress;
         private System.Windows.Forms.LinkLabel linkLabelEula;
-        private System.Windows.Forms.TextBox textBoxSiteDescription;
-        private System.Windows.Forms.Label labelSiteDescription;
+        private System.Windows.Forms.TextBox textBoxLicenseCode;
+        private System.Windows.Forms.Label labelLicenseCode;
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.TextBox textBoxCityState;
         private System.Windows.Forms.TextBox textBoxStreetAddress;

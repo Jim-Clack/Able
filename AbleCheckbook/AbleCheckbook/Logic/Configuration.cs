@@ -60,7 +60,7 @@ namespace AbleCheckbook.Logic
 
         // Used by iSiteSettings overrides.
         private long _featuresBitmask = 0;
-        private string _siteDescription = "";
+        private string _licenseCode = "";
         private string _activityTracking = "";
         private string _activationPin = "";
 
@@ -322,12 +322,12 @@ namespace AbleCheckbook.Logic
         public UserLevel GetUserLevel()
         {
             bool isLicensed = GetIsLicensedVersion();
-            if (!isLicensed || _siteDescription == null || _siteDescription.Length < 3 || _siteDescription.ToUpper().Contains("UNLICENSED"))
+            if (!isLicensed || _licenseCode == null || _licenseCode.Length < 3 || _licenseCode.ToUpper().Contains("UNLICENSED"))
             {
                 return UserLevel.Unlicensed;
             }
             // We should augment this with Activation.IsFeatureEnabled().
-            switch ((int)_siteDescription[6])
+            switch ((int)_licenseCode[6])
             {
                 case (int)UserLevelPunct.Standard:
                     return UserLevel.Standard;
@@ -360,7 +360,7 @@ namespace AbleCheckbook.Logic
             }
             _postEventAdvanceDays = 30;
             _logLevel = LogLevel.Diag;
-            _siteDescription = Strings.Get("(Unlicensed)");
+            _licenseCode = Strings.Get("(Unlicensed)");
             _showCalendars = true;
             _suppressReconcileAlert = false;
             _suppressYearEndAlert = false;
@@ -494,17 +494,17 @@ namespace AbleCheckbook.Logic
         }
 
         /// <summary>
-        /// 12-character description. (set by app or by Activation class)
+        /// 12-character license code. (set by app or by Activation class)
         /// </summary>
-        public override string SiteDescription
+        public override string LicenseCode
         {
             get
             {
-                return _siteDescription;
+                return _licenseCode;
             }
             set
             {
-                _siteDescription = value;
+                _licenseCode = value;
             }
         }
 
@@ -513,7 +513,7 @@ namespace AbleCheckbook.Logic
         /// </summary>
         /// <remarks>
         /// Currently no features are set by this capability. Instead the 6th character of
-        /// the site description is used to set the User Level.
+        /// the license code is used to set the User Level.
         /// </remarks>
         public override long FeaturesBitMask
         {

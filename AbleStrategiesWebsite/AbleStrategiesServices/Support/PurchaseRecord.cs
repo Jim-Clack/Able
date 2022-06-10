@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace AbleStrategiesServices.Support
@@ -19,32 +20,33 @@ namespace AbleStrategiesServices.Support
         /// <summary>
         /// Foreign key to license data.
         /// </summary>
+        [JsonIgnore]
         public Guid fkLicenseId = Guid.Empty;
 
         /// <summary>
         /// Comments, additional info.
         /// </summary>
-        public string details = "";
+        private string details = "";
 
         /// <summary>
         /// Typically PayPalStd.
         /// </summary>
-        public PurchaseAuthority purchaseAuthority = PurchaseAuthority.Unknown;
+        private PurchaseAuthority purchaseAuthority = PurchaseAuthority.Unknown;
 
         /// <summary>
         /// Authority's transaction number.
         /// </summary>
-        public string purchaseTransaction = "";
+        private string purchaseTransaction = "";
 
         /// <summary>
         /// Authority's verification code.
         /// </summary>
-        public string purchaseVerification = "";
+        private string purchaseVerification = "";
 
         /// <summary>
         /// Date of purchase.
         /// </summary>
-        public DateTime purchaseDate = DateTime.Now; 
+        private DateTime purchaseDate = DateTime.Now; 
 
         /// <summary>
         /// Ctor.

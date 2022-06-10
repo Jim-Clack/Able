@@ -480,7 +480,7 @@ namespace AbleCheckbook.Gui
             _licensedTo = Strings.Get("UNLICENSED_VERSION");
             if (Configuration.Instance.GetIsLicensedVersion())
             {
-                _licensedTo = Configuration.Instance.SiteDescription;
+                _licensedTo = Configuration.Instance.LicenseCode;
             }
         }
 

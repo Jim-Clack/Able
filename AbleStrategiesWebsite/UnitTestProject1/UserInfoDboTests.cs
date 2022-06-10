@@ -26,7 +26,7 @@ namespace AbleStrategies.Testing
             userInfo.DeviceRecords = new List<DeviceRecord>();
             userInfo.PurchaseRecords = new List<PurchaseRecord>();
             userInfo.InteractivityRecords = new List<InteractivityRecord>();
-            userInfo.LicenseRecord.LicenseDesc = "Test-Record";
+            userInfo.LicenseRecord.LicenseCode = "Test-Record";
             userInfo.LicenseRecord.ContactName = "Ben Dover";
             userInfo.LicenseRecord.ContactAddress = "123 Main";
             userInfo.LicenseRecord.ContactCity = "Nowhere";
@@ -73,7 +73,7 @@ namespace AbleStrategies.Testing
             userInfo.DeviceRecords = new List<DeviceRecord>();
             userInfo.PurchaseRecords = new List<PurchaseRecord>();
             userInfo.InteractivityRecords = new List<InteractivityRecord>();
-            userInfo.LicenseRecord.LicenseDesc = "Second-Test";
+            userInfo.LicenseRecord.LicenseCode = "Second-Test";
             userInfo.LicenseRecord.ContactName = "Hugh Jass";
             userInfo.LicenseRecord.ContactAddress = "100 Main";
             userInfo.LicenseRecord.ContactCity = "Anywhere";

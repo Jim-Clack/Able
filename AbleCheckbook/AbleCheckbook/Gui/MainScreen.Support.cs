@@ -226,7 +226,7 @@ namespace AbleCheckbook
             {
                 _backend.ReloadTransactions(SortEntriesBy.NoChange);
             }
-            int expDays = Activation.Instance.UpdateSiteSettings();
+            int expDays = Activation.Instance.GetExpirationDays();
             if(expDays < 0)
             {
                 if(DateTime.Now.Second % 20 == 5) // occassionally, remind the user

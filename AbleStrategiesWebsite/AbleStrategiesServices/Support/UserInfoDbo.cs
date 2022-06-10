@@ -72,17 +72,17 @@ namespace AbleStrategiesServices.Support
         }
 
         /// <summary>
-        /// Find all records with a description that matches a specific regex.
+        /// Find all records with a license code that matches a specific regex.
         /// </summary>
-        /// <param name="descRegex">The regular expression to match</param>
+        /// <param name="lCode">The regular expression to match</param>
         /// <returns>List of matching records, possibly empty, null on error</returns>
-        public List<UserInfo> GetByDescription(string descRegex)
+        public List<UserInfo> GetByDescription(string lCode)
         {
-            List<LicenseRecord> licenseRecords = JsonUsersDb.Instance.LicensesByDescription(descRegex);
+            List<LicenseRecord> licenseRecords = JsonUsersDb.Instance.LicensesByLicenseCode(lCode);
             string errorMessage = JsonUsersDb.Instance.ErrorMessage;
             if ((licenseRecords == null || licenseRecords.Count < 1) && !string.IsNullOrEmpty(errorMessage))
             {
-                errorMessage = "Description " + descRegex + " FAILURE: " + errorMessage;
+                errorMessage = "License Code " + lCode + " FAILURE: " + errorMessage;
                 return null;
             }
             return PopulateLists(licenseRecords);

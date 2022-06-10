@@ -17,7 +17,7 @@
 
   <ItemGroup>
     <Reference Include="AbleLicensing">
-      <HintPath>..\..\AbleCheckbook\AbleLicensing\bin\Release\netstandard2.0\AbleLicensing.dll</HintPath>
+      <HintPath>..\..\AbleCheckbook\AbleLicensing\bin\Debug\netstandard2.0\AbleLicensing.dll</HintPath>
     </Reference>
   </ItemGroup>
 

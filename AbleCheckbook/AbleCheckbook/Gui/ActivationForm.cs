@@ -33,7 +33,7 @@ namespace AbleCheckbook.Gui
             checkBoxAcceptTerms.Text = Strings.Get("I have read and accept the terms of the EULA");
             linkLabelEula.Text = Strings.Get("EULA - End User License Agreement");
             buttonActivate.Text = Strings.Get("Activate");
-            labelSiteDescription.Text = Strings.Get("Assigned site description");
+            labelLicenseCode.Text = Strings.Get("Assigned License Code");
             labelPin.Text = Strings.Get("Offline/Manual Activation PIN");
             labelPurchase.Text = Strings.Get("If already paid-for, enter the Purchase Val Code here");
             textBoxSiteId.Text = Activation.Instance.SiteIdentification;
@@ -53,22 +53,22 @@ namespace AbleCheckbook.Gui
         private void OnlineActivation()
         {
             MessageBox.Show(Strings.Get("Use manual activation - Call support for a PIN"), Strings.Get("Sorry"), MessageBoxButtons.OK);
-            textBoxSiteDescription.Enabled = true;
+            textBoxLicenseCode.Enabled = true;
             textBoxPin.Enabled = true;
         }
 
         private void ManualActivation()
         {
-            string prevLicensedTo = Configuration.Instance.SiteDescription;
+            string prevLicensedTo = Configuration.Instance.LicenseCode;
             string prevPin = Configuration.Instance.ActivationPin;
-            Configuration.Instance.SiteDescription = textBoxSiteDescription.Text.Trim();
+            Configuration.Instance.LicenseCode = textBoxLicenseCode.Text.Trim();
             Configuration.Instance.ActivationPin = textBoxPin.Text.Trim();
             UserLevel userLevel = Configuration.Instance.GetUserLevel();
             if (userLevel == UserLevel.Unlicensed)
             {
-                Configuration.Instance.SiteDescription = prevLicensedTo;
+                Configuration.Instance.LicenseCode = prevLicensedTo;
                 Configuration.Instance.ActivationPin = prevPin;
-                MessageBox.Show(this, Strings.Get("Invalid Description and/or PIN"), Strings.Get("Sorry"), MessageBoxButtons.OK);
+                MessageBox.Show(this, Strings.Get("Invalid License Code and/or PIN"), Strings.Get("Sorry"), MessageBoxButtons.OK);
                 return;
             }
             else
@@ -108,9 +108,9 @@ namespace AbleCheckbook.Gui
             }
             if (textBoxPin.Text.Trim().Length > 3)
             {
-                if (textBoxSiteDescription.Text.Trim().Length != 12)
+                if (textBoxLicenseCode.Text.Trim().Length != 12)
                 {
-                    MessageBox.Show(this, Strings.Get("Call support for Description"), Strings.Get("Sorry"), MessageBoxButtons.OK);
+                    MessageBox.Show(this, Strings.Get("Call support for License Code"), Strings.Get("Sorry"), MessageBoxButtons.OK);
                     return;
                 }
                 if (textBoxPin.Text.Trim().Length != 4)

@@ -401,7 +401,7 @@ namespace AbleCheckbook.Logic
             AddString("Problem with Year-End Wrap-Up (Suggest Undo) ");
             AddString("Active DB is already for the current year.");
             AddString("Many old entries not yet been cleared, or current year acct already exists.");
-            AddString("#Invalid Site Description - Expected 6-char Name, a Hyphen, then 5-char Postal Code.");
+            AddString("#Invalid License Code - Expected 6-char Name, a Hyphen, then 5-char Postal Code.");
             AddString("#Requires Super-User Permission");
             AddString("#Invalid Site Identification Code.");
             AddString("File contains transactions up to ");
@@ -422,15 +422,15 @@ namespace AbleCheckbook.Logic
             AddString("Computer Identification");
             AddString("I have read and accept the terms of the EULA");
             AddString("EULA - End User License Agreement");
-            AddString("Assigned site description");
+            AddString("Assigned License Code");
             AddString("Offline/Manual Activation PIN");
             AddString("Use manual activation - Call support for a PIN");
-            AddString("Invalid Description and/or PIN");
+            AddString("Invalid License Code and/or PIN");
             AddString("User name too short");
             AddString("Invalid postal/CC code");
             AddString("Phone and email required");
             AddString("You must accept the EULA");
-            AddString("Call support for Description");
+            AddString("Call support for License Code");
             AddString("Call for an Activation PIN");
             AddString("Turning Off Admin Mode");
             AddString("Time's Up");

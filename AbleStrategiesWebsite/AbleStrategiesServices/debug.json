@@ -1,0 +1,39 @@
+{
+  "DbName": "users",
+  "Authority": "jimcl",
+  "Server": "JIMS-HP-6D56KF9",
+  "LastAccess": "2022-06-10T16:53:39.6491593-04:00",
+  "LicenseRecords": {
+    "de04ce82-f50f-4eda-baeb-2a3a106812ca": {
+      "RecordKind": "LicenseRecord",
+      "LicenseCode": "Test Rec New",
+      "ContactName": "Ben Dover",
+      "ContactAddress": "123 Main, NYC, NY 01010",
+      "ContactCity": "",
+      "ContactPhone": "123-456-7890",
+      "ContactEMail": "abc@xyz.com",
+      "LicenseFeatures": "",
+      "Id": "de04ce82-f50f-4eda-baeb-2a3a106812ca",
+      "EditFlag": 0,
+      "DateCreated": "2022-06-10T16:53:39.6650257-04:00",
+      "DateModified": "2022-06-10T16:53:39.6664096-04:00"
+    },
+    "1c48e7f0-f516-49ea-b6ab-079ce7a45340": {
+      "RecordKind": "LicenseRecord",
+      "LicenseCode": "Different Rec",
+      "ContactName": "Hal O Ween",
+      "ContactAddress": "",
+      "ContactCity": "",
+      "ContactPhone": "",
+      "ContactEMail": "",
+      "LicenseFeatures": "",
+      "Id": "1c48e7f0-f516-49ea-b6ab-079ce7a45340",
+      "EditFlag": 0,
+      "DateCreated": "2022-06-10T16:53:39.6671264-04:00",
+      "DateModified": "2022-06-10T16:53:39.6671297-04:00"
+    }
+  },
+  "DeviceRecords": {},
+  "PurchaseRecords": {},
+  "InteractivityRecords": {}
+}

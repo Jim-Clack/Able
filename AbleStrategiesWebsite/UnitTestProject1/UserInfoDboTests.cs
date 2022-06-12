@@ -92,6 +92,7 @@ namespace AbleStrategies.Testing
             userInfo.InteractivityRecords.Add(interactivity2);
             UserInfoDbo.Instance.Update(userInfo);
             id2 = userInfo.LicenseRecord.Id;
+            UserInfoDbo.Instance.Sync();
         }
 
         [TestMethod]

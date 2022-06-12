@@ -16,36 +16,92 @@ namespace AbleStrategiesServices.Support
         /// <summary>
         /// List of PurchaseRecords.
         /// </summary>
-        private List<PurchaseRecord> purchaseRecords = new List<PurchaseRecord>();
+        private List<PurchaseRecord> purchaseRecords = null;
 
         /// <summary>
         /// List of DeviceRecords.
         /// </summary>
-        private List<DeviceRecord> deviceRecords = new List<DeviceRecord>();
+        private List<DeviceRecord> deviceRecords = null;
 
         /// <summary>
         /// List of InteractivityRecords.
         /// </summary>
-        private List<InteractivityRecord> interactivityRecords = new List<InteractivityRecord>();
+        private List<InteractivityRecord> interactivityRecords = null;
 
         /// <summary>
         /// License data.
         /// </summary>
-        public LicenseRecord LicenseRecord { get => licenseRecord; set => licenseRecord = value; }
+        public LicenseRecord LicenseRecord
+        {
+            get
+            {
+                if(licenseRecord ==  null)
+                {
+                    return new LicenseRecord(); // safety net - can't happen???
+                }
+                return licenseRecord;
+            }
+            set
+            {
+                licenseRecord = value;
+            }
+        }
 
         /// <summary>
         /// List of PurchaseRecords.
         /// </summary>
-        public List<PurchaseRecord> PurchaseRecords { get => purchaseRecords; set => purchaseRecords = value; }
+        public List<PurchaseRecord> PurchaseRecords
+        {
+            get
+            {
+                if (purchaseRecords == null)
+                {
+                    return new List<PurchaseRecord>() { };
+                }
+                return purchaseRecords;
+            }
+            set
+            {
+                purchaseRecords = value;
+            }
+        }
 
         /// <summary>
         /// List of DeviceRecords.
         /// </summary>
-        public List<DeviceRecord> DeviceRecords { get => deviceRecords; set => deviceRecords = value; }
+        public List<DeviceRecord> DeviceRecords
+        {
+            get
+            {
+                if (deviceRecords == null)
+                {
+                    return new List<DeviceRecord>() { };
+                }
+                return deviceRecords;
+            }
+            set
+            {
+                deviceRecords = value;
+            }
+        }
 
         /// <summary>
         /// List of InteractivityRecords.
         /// </summary>
-        public List<InteractivityRecord> InteractivityRecords { get => interactivityRecords; set => interactivityRecords = value; }
+        public List<InteractivityRecord> InteractivityRecords
+        {
+            get
+            {
+                if (interactivityRecords == null)
+                {
+                    return new List<InteractivityRecord>() { };
+                }
+                return interactivityRecords;
+            }
+            set
+            {
+                interactivityRecords = value;
+            }
+        }
     }
 }

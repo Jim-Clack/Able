@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Razor;
 using AbleStrategiesServices.Support;
+using Newtonsoft.Json;
 
 /// <summary>                                      MASTER
 /// https://domain:port/as/master
@@ -45,11 +46,11 @@ namespace AbleStrategiesServices.Controllers
         /// <param name="lic">Assigned license code - regular expression</param>
         /// <returns>List of matching licenses, null if not authorized</returns>
         [HttpGet("{cmd}")]
-        public ActionResult<LicenseRecord[]> Get([FromRoute] string cmd, [FromQuery]string lic)
+        public JsonResult Get([FromRoute] string cmd, [FromQuery]string lic)
         {
             if(!cmd.ToLower().StartsWith("license"))
             {
-                return new LicenseRecord[] { };
+                return new JsonResult("");
             }
             string ip = HttpContext.Connection.RemoteIpAddress.ToString();
             if (SupportMethods.HasWildcard(lic) && !Configuration.Instance.IsSuperSuperUser(HttpContext.Connection.RemoteIpAddress))
@@ -57,7 +58,24 @@ namespace AbleStrategiesServices.Controllers
                 Logger.Warn(HttpContext.Connection.RemoteIpAddress.ToString(), "Attempted unauthorized access [" + lic + "]");
                 return null;
             }
-            return JsonUsersDb.Instance.LicensesByLicenseCode(lic).ToArray();
+            try
+            {
+                UserInfo[] userInfo = UserInfoDbo.Instance.GetByDescription(lic).ToArray();
+                JsonSerializerSettings settings = new JsonSerializerSettings();
+                settings.Formatting = Formatting.Indented;
+                settings.MaxDepth = 20;
+                settings.NullValueHandling = NullValueHandling.Include;
+                settings.PreserveReferencesHandling = PreserveReferencesHandling.None;
+                settings.CheckAdditionalContent = true;
+                settings.MetadataPropertyHandling = MetadataPropertyHandling.Ignore;
+                settings.Culture = new CultureInfo("en-US");
+                return new JsonResult(UserInfoDbo.Instance.GetByDescription(lic).ToArray(), settings);
+            }
+            catch(Exception ex)
+            {
+                Logger.Warn(null, "Failed to serialize to JSON");
+            }
+            return new JsonResult("");
         }
 
         // POST as/master

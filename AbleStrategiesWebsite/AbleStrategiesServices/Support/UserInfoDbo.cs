@@ -55,6 +55,14 @@ namespace AbleStrategiesServices.Support
         }
 
         /// <summary>
+        /// Update the disk image.
+        /// </summary>
+        public void Sync()
+        {
+            JsonUsersDb.Instance.Sync();
+        }
+
+        /// <summary>
         /// Fetch user objects by Id. (should return only one or zero matching records)
         /// </summary>
         /// <param name="id">unique license ID.</param>
@@ -248,31 +256,37 @@ namespace AbleStrategiesServices.Support
                 ok = false;
                 errorMessage = JsonUsersDb.Instance.ErrorMessage;
             }
-            List<DeviceRecord>.Enumerator deviceEnum = userInfo.DeviceRecords.GetEnumerator();
-            while (deviceEnum.MoveNext())
+            foreach (DeviceRecord record in userInfo.DeviceRecords)
             {
-                deviceEnum.Current.fkLicenseId = userInfo.LicenseRecord.Id; // avoid Setter, so as to not affect EditFlag
-                if (!JsonUsersDb.Instance.UpdateDb(deviceEnum.Current))
+                if (record.FkLicenseId != userInfo.LicenseRecord.Id) // check first so as not to corrupt EditFlag
+                {
+                    record.FkLicenseId = userInfo.LicenseRecord.Id;
+                }
+                if (!JsonUsersDb.Instance.UpdateDb(record))
                 {
                     ok = false;
                     errorMessage = JsonUsersDb.Instance.ErrorMessage;
                 }
             }
-            List<PurchaseRecord>.Enumerator purchaseEnum = userInfo.PurchaseRecords.GetEnumerator();
-            while (purchaseEnum.MoveNext())
+            foreach (PurchaseRecord record in userInfo.PurchaseRecords)
             {
-                purchaseEnum.Current.fkLicenseId = userInfo.LicenseRecord.Id; // avoid Setter, so as to not affect EditFlag
-                if (!JsonUsersDb.Instance.UpdateDb(purchaseEnum.Current))
+                if (record.FkLicenseId != userInfo.LicenseRecord.Id) // check first so as not to corrupt EditFlag
+                {
+                    record.FkLicenseId = userInfo.LicenseRecord.Id;
+                }
+                if (!JsonUsersDb.Instance.UpdateDb(record))
                 {
                     ok = false;
                     errorMessage = JsonUsersDb.Instance.ErrorMessage;
                 }
             }
-            List<InteractivityRecord>.Enumerator interactivityEnum = userInfo.InteractivityRecords.GetEnumerator();
-            while (interactivityEnum.MoveNext())
+            foreach (InteractivityRecord record in userInfo.InteractivityRecords)
             {
-                interactivityEnum.Current.fkLicenseId = userInfo.LicenseRecord.Id; // avoid Setter, so as to not affect EditFlag
-                if (!JsonUsersDb.Instance.UpdateDb(interactivityEnum.Current))
+                if (record.FkLicenseId != userInfo.LicenseRecord.Id) // check first so as not to corrupt EditFlag
+                {
+                    record.FkLicenseId = userInfo.LicenseRecord.Id;
+                }
+                if (!JsonUsersDb.Instance.UpdateDb(record))
                 {
                     ok = false;
                     errorMessage = JsonUsersDb.Instance.ErrorMessage;

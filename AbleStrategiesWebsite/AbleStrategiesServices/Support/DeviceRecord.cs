@@ -13,8 +13,7 @@ namespace AbleStrategiesServices.Support
         /// <summary>
         /// Foreign key to license data.
         /// </summary>
-        [JsonIgnore]
-        public Guid fkLicenseId = Guid.Empty;
+        private Guid fkLicenseId = Guid.Empty;
 
         /// <summary>
         /// Site abbreviation.
@@ -60,7 +59,7 @@ namespace AbleStrategiesServices.Support
         }
 
         /// <summary>
-        /// Forieng key - license.
+        /// Foreign key - license.
         /// </summary>
         public Guid FkLicenseId
         {

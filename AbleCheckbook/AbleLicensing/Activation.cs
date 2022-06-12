@@ -159,7 +159,7 @@ namespace AbleLicensing
 
         /// <summary>
         /// Hook for to call the logger with a DIAG-level mesage.
-        /// </summary>
+        /// </summary> 
         /// <param name="message">To be logged</param>
         public void LoggerHook(string message)
         {

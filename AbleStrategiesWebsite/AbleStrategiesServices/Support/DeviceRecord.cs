@@ -16,7 +16,7 @@ namespace AbleStrategiesServices.Support
         private Guid fkLicenseId = Guid.Empty;
 
         /// <summary>
-        /// Site abbreviation.
+        /// Site ID (device) abbreviation.
         /// </summary>
         private string deviceSite = "";
 

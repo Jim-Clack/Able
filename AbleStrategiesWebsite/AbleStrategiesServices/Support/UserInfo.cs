@@ -37,7 +37,7 @@ namespace AbleStrategiesServices.Support
             {
                 if(licenseRecord ==  null)
                 {
-                    return new LicenseRecord(); // safety net - can't happen???
+                    licenseRecord = new LicenseRecord(); 
                 }
                 return licenseRecord;
             }
@@ -56,7 +56,7 @@ namespace AbleStrategiesServices.Support
             {
                 if (purchaseRecords == null)
                 {
-                    return new List<PurchaseRecord>() { };
+                    purchaseRecords = new List<PurchaseRecord>() { };
                 }
                 return purchaseRecords;
             }
@@ -75,7 +75,7 @@ namespace AbleStrategiesServices.Support
             {
                 if (deviceRecords == null)
                 {
-                    return new List<DeviceRecord>() { };
+                    deviceRecords = new List<DeviceRecord>() { };
                 }
                 return deviceRecords;
             }
@@ -94,7 +94,7 @@ namespace AbleStrategiesServices.Support
             {
                 if (interactivityRecords == null)
                 {
-                    return new List<InteractivityRecord>() { };
+                    interactivityRecords = new List<InteractivityRecord>() { };
                 }
                 return interactivityRecords;
             }

@@ -147,11 +147,11 @@ namespace AbleStrategies.Testing
         [TestMethod]
         public void TestGetByDescription()
         {
-            List<UserInfo> licenses = UserInfoDbo.Instance.GetByDescription("Test-Record");
+            List<UserInfo> licenses = UserInfoDbo.Instance.GetByLicenseCode("Test-Record");
             Assert.IsNotNull(licenses);
             Assert.AreEqual(1, licenses.Count);
             Assert.AreEqual(licenses[0].LicenseRecord.ContactName, "Ben Dover");
-            licenses = UserInfoDbo.Instance.GetByDescription(".*Test.*");
+            licenses = UserInfoDbo.Instance.GetByLicenseCode(".*Test.*");
             Assert.IsNotNull(licenses);
             Assert.AreEqual(2, licenses.Count);
         }

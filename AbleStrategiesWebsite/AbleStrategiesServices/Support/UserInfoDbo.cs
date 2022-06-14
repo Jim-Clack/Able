@@ -84,7 +84,7 @@ namespace AbleStrategiesServices.Support
         /// </summary>
         /// <param name="lCode">The regular expression to match</param>
         /// <returns>List of matching records, possibly empty, null on error</returns>
-        public List<UserInfo> GetByDescription(string lCode)
+        public List<UserInfo> GetByLicenseCode(string lCode)
         {
             List<LicenseRecord> licenseRecords = JsonUsersDb.Instance.LicensesByLicenseCode(lCode);
             string errorMessage = JsonUsersDb.Instance.ErrorMessage;
@@ -234,6 +234,40 @@ namespace AbleStrategiesServices.Support
         }
 
         /// <summary>
+        /// Deletes all records for this userInfo from the DB. (calls JsonUsersDb.Instance.UpdateDb(this);)
+        /// </summary>
+        /// <remarks>Danger Danger: I can't think of any reason for ever deleting a UserInfo from the DB!</remarks>
+        /// <returns>Number of DB records maked for deletion</returns>
+        public int Delete(UserInfo userInfo)
+        {
+            int numRecords = 0;
+            if (userInfo.LicenseRecord == null)
+            {
+                return numRecords;
+            }
+            userInfo.LicenseRecord.EditFlag = EditFlag.Deleted;
+            ++numRecords;
+            foreach (PurchaseRecord purchaseRecord in userInfo.PurchaseRecords)
+            {
+                purchaseRecord.EditFlag = EditFlag.Deleted;
+                ++numRecords;
+            }
+            foreach (DeviceRecord deviceRecord in userInfo.DeviceRecords)
+            {
+                deviceRecord.EditFlag = EditFlag.Deleted;
+                ++numRecords;
+            }
+            foreach (InteractivityRecord interactivityRecord in userInfo.InteractivityRecords)
+            {
+                interactivityRecord.EditFlag = EditFlag.Deleted;
+                ++numRecords;
+            }
+            Update(userInfo);
+            Sync();
+            return numRecords;
+        }
+
+        /// <summary>
         /// Update the DB with any changes to the data.
         /// </summary>
         /// <param name="userInfo">possibly modified data to be written to the DB</param>
@@ -292,6 +326,7 @@ namespace AbleStrategiesServices.Support
                     errorMessage = JsonUsersDb.Instance.ErrorMessage;
                 }
             }
+            Sync();
             return ok;
         }
 

@@ -234,7 +234,7 @@ namespace AbleStrategiesServices.Support
         }
 
         /// <summary>
-        /// Deletes all records for this userInfo from the DB. (calls JsonUsersDb.Instance.UpdateDb(this);)
+        /// Deletes all records for this userInfo from the DB. 
         /// </summary>
         /// <remarks>Danger Danger: I can't think of any reason for ever deleting a UserInfo from the DB!</remarks>
         /// <returns>Number of DB records maked for deletion</returns>

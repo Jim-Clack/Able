@@ -81,15 +81,17 @@ namespace AbleStrategiesServices.Support
         /// <param name="auth">Typically PayPalStd.</param>
         /// <param name="trans">Authority's transaction number.</param>
         /// <param name="verif">Authority's verification code.</param>
+        /// <param name="amt">Price paid.</param>
         /// <param name="details">Related data - optional</param>
         /// <param name="date">Date of purchase.</param>
         /// <returns>The updated UserInfoBuilder</returns>
-        public UserInfoBuilder AddPurchase(PurchaseAuthority auth, string trans, string verif, string details, string date)
+        public UserInfoBuilder AddPurchase(PurchaseAuthority auth, string trans, string verif, long amt, string details, string date)
         {
             PurchaseRecord purchaseRecord = new PurchaseRecord();
             purchaseRecord.PurchaseAuthority = PurchaseAuthority.PayPalStd;
             purchaseRecord.PurchaseTransaction = "";
             purchaseRecord.PurchaseVerification = "";
+            purchaseRecord.PurchaseAmount = amt;
             purchaseRecord.Details = details;
             DateTime dateTime = DateTime.Now;
             if (DateTime.TryParse(date, out dateTime))
@@ -140,10 +142,11 @@ namespace AbleStrategiesServices.Support
         /// <param name="auth">Typically PayPalStd.</param>
         /// <param name="trans">Authority's transaction number.</param>
         /// <param name="verif">Authority's verification code.</param>
+        /// <param name="amt">Price paid.</param>
         /// <param name="details">Related data - optional</param>
         /// <param name="date">Date of purchase. null to leave unchanged</param>
         /// <returns>The updated UserInfoBuilder</returns>
-        public UserInfoBuilder UpdatePurchase(PurchaseAuthority auth, string trans, string verif, string details = null, string date = null)
+        public UserInfoBuilder UpdatePurchase(PurchaseAuthority auth, string trans, string verif, long amt, string details = null, string date = null)
         {
             PurchaseRecord purchaseRecord = null;
             if (this.userInfo.PurchaseRecords.Count < 1) // if not found, create new purchase
@@ -154,6 +157,7 @@ namespace AbleStrategiesServices.Support
             purchaseRecord.PurchaseAuthority = PurchaseAuthority.PayPalStd;
             purchaseRecord.PurchaseTransaction = "";
             purchaseRecord.PurchaseVerification = "";
+            purchaseRecord.PurchaseAmount = amt;
             if (details != null)
             {
                 purchaseRecord.Details = details;

@@ -45,7 +45,12 @@ namespace AbleStrategiesServices.Support
         /// <summary>
         /// Date of purchase.
         /// </summary>
-        private DateTime purchaseDate = DateTime.Now; 
+        private DateTime purchaseDate = DateTime.Now;
+
+        /// <summary>
+        /// Price paid.
+        /// </summary>
+        private long purchaseAmount = 0;
 
         /// <summary>
         /// Ctor.
@@ -168,6 +173,35 @@ namespace AbleStrategiesServices.Support
                 purchaseDate = value;
                 Mod();
             }
+        }
+
+        /// <summary>
+        /// Price paid.
+        /// </summary>
+        public long PurchaseAmount
+        {
+            get
+            {
+                return purchaseAmount;
+            }
+            set
+            {
+                purchaseAmount = value;
+                Mod();
+            }
+        }
+
+        /// <summary>
+        /// Return a man-readable representation.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return "PurRec{" + SupportMethods.Shorten(Id.ToString()) +
+                "," + SupportMethods.Shorten(fkLicenseId.ToString()) +
+                "," + purchaseTransaction +
+                "," + SupportMethods.Shorten(purchaseAmount.ToString()) +
+                "," + purchaseDate.ToShortDateString() + "}";
         }
 
         /// <summary>

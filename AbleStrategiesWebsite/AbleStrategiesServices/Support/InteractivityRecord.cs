@@ -144,6 +144,19 @@ namespace AbleStrategiesServices.Support
         }
 
         /// <summary>
+        /// Return a man-readable representation.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return "IntRec{" + SupportMethods.Shorten(Id.ToString()) +
+                "," + SupportMethods.Shorten(fkLicenseId.ToString()) +
+                "," + interactivityClient.ToString() +
+                "," + clientInfo + 
+                "," + SupportMethods.Shorten(conversation, 20) + "}";
+        }
+
+        /// <summary>
         /// Track changes to conversation.
         /// </summary>
         public string History

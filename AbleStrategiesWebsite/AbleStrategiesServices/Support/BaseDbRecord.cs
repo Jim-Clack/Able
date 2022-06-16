@@ -31,7 +31,7 @@ namespace AbleStrategiesServices.Support
         /// <summary>
         /// [private] Not persisted to DB, for tracking edits in memory only.
         /// </summary>
-        [JsonIgnore]
+        [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
         private EditFlag editFlag = Support.EditFlag.New;
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace AbleStrategiesServices.Support
         /// <summary>
         /// Should only elevate, never get lower, and never be persisted to the DB
         /// </summary>
-        [JsonIgnore]
+        [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
         public EditFlag EditFlag
         {
             get

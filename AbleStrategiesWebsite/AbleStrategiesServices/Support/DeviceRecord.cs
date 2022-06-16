@@ -123,6 +123,18 @@ namespace AbleStrategiesServices.Support
         }
 
         /// <summary>
+        /// Return a man-readable representation.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return "DevRec{" + SupportMethods.Shorten(Id.ToString()) +
+                "," + SupportMethods.Shorten(fkLicenseId.ToString()) +
+                "," + userLevelPunct.ToString() +
+                "," + deviceSite + "}";
+        }
+
+        /// <summary>
         /// Update all data fields except for Id - keep this.Id, ignore source.Id (adjusts EditFlag, too)
         /// </summary>
         /// <param name="source">record from which to copy all data except for Id</param>

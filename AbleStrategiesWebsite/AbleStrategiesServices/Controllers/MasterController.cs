@@ -70,40 +70,30 @@ namespace AbleStrategiesServices.Controllers
             return AsJsonResult(userInfo);
         }
 
+        /*
+         TODO
+          - Remove EditFlag from JSON output !!!
+         */
+
         // POST as/master
         /// <summary>
         /// Create a new user info.
         /// </summary>
-        /// <param name="value">Populated JSON representing the UserInfo</param>
+        /// <remarks>Client request header: Content-Type: application/json; charset=UTF-8</remarks>
+        /// <remarks>Unlike Put, this (Post) method ignores the ID of each record.</remarks>
+        /// <param name="value">Populated JSON representing the UserInfo (FkLiceseId and Id are ignored)</param>
         /// <returns>the ID of the license record (not the license code), "" on failure or if the licenseCode already exists</returns>
         [HttpPost]
-        public string Post([FromBody] string value)
+        public string Post([FromBody] UserInfo userInfo)
         {
-            UserInfo userInfo = null;
             string ipAddress = HttpContext.Connection.RemoteIpAddress.ToString();
             if (!Configuration.Instance.IsSuperSuperUser(HttpContext.Connection.RemoteIpAddress))
             {
                 Logger.Warn(ipAddress, "Attempted unauthorized access");
                 return "";
             }
-            try
-            {
-                userInfo = JsonToUserInfo(value);
-            }
-            catch (Exception ex)
-            {
-                Logger.Warn(null, "Failed to process", ex);
-                return "";
-            }
-
-            // Note: Make sure all EditFlags are set to New and ID's are valid
-
-            if (userInfo == null || userInfo.LicenseRecord == null)
-            {
-                Logger.Warn(null, "JSON not parsed to UserInfo type");
-                return "";
-            }
-            Logger.Diag(ipAddress, "Post - Insert new UserInfo");
+            userInfo.SetIdsAllNew();
+            Logger.Diag(ipAddress, "Post - insert new UserInfo...\n" + userInfo.ToString());
             List<UserInfo> userInfos = UserInfoDbo.Instance.GetByLicenseCode(userInfo.LicenseRecord.LicenseCode.Trim());
             if(userInfos != null && userInfos.Count != 1)
             {
@@ -127,10 +117,11 @@ namespace AbleStrategiesServices.Controllers
         /// Update an existing user info, given the ID (not the license code)
         /// </summary>
         /// <param name="id">the license record ID (not the license code)</param>
-        /// <param name="value">Populated JSON representing the updated UserInfo</param>
+        /// <param name="value">Populated JSON UserInfo (FkLiceseId is ignored, Id is significant)</param>
+        /// <remarks>Unlike Post, this (Put) method requires that the ID of each record be correct.</remarks>
         /// <returns>the ID of the license record (not the license code)</returns>
         [HttpPut("{id}")]
-        public string Put(int id, [FromBody] string value)
+        public string Put(int id, [FromBody] UserInfo userInfo)
         {
 
 

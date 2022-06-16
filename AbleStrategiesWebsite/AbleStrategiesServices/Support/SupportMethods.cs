@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -23,5 +24,35 @@ namespace AbleStrategiesServices.Support
         {
             return wildCards.IsMatch(regex);
         }
+
+        /// <summary>
+        /// Shorten a man-readable input string to no more than maxChars characters.
+        /// </summary>
+        /// <param name="instring">to be shortened</param>
+        /// <param name="maxChars">Max desired length, minimum 8, defaults to 12</param>
+        /// <returns>the abbreviated string</returns>
+        public static string Shorten(string instring, int maxChars = 12)
+        {
+            if (instring == null)
+            {
+                return "(null)";
+            }
+            maxChars = Math.Max(8, maxChars);
+            if (instring.Length < maxChars)
+            {
+                return instring;
+            }
+            int maxReplacements = 1 + instring.Length - maxChars;
+            Regex regex = new Regex("[^bcdfghjklmnpqrstvwxyz0123456789]", 
+                RegexOptions.CultureInvariant | RegexOptions.IgnoreCase | RegexOptions.Multiline);
+            string outString = regex.Replace(instring, "", maxReplacements); // remove vowels, whitespace, and punctuation
+            if (outString.Length > maxChars) // remove middle portion of string
+            {
+                outString = outString.Substring(0, maxChars - 4) + "\'" + outString.Substring(outString.Length - 3);
+            }
+            return outString;
+        }
+
     }
+
 }

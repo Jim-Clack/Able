@@ -181,6 +181,17 @@ namespace AbleStrategiesServices.Support
         }
 
         /// <summary>
+        /// Return a man-readable representation.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return "LicRec{" + SupportMethods.Shorten(Id.ToString()) +
+                "," + licenseCode +
+                "," + contactName + "}";
+        }
+
+        /// <summary>
         /// Update all data fields except for Id - keep this.Id, ignore source.Id (adjusts EditFlag, too)
         /// </summary>
         /// <param name="source">record from which to copy all data except for Id</param>

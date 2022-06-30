@@ -74,7 +74,7 @@ When writing docs/help, explain...
 Kludge to enable your system (via Able Licensing) for Super-User mode...
  Activation.Instance.SetDefaultDays(180, 366); // note1: not needed but shown for completeness
  Activation.Instance.LicenseCode = "MYNAME@99999"; // The @-sign (plus compile/run in DEBUG mode) enables SuperUser mode
- string pin = Activation.Instance.ResetAllEntries(Activation.Instance.ChecksumOfString(Activation.Instance.SiteIdentification));
+ string pin = Activation.Instance.CalculatePin(Activation.Instance.ChecksumOfString(Activation.Instance.SiteIdentification));
  Activation.Instance.SetActivationPin(pin);
  Activation.Instance.SetFeatureBitmask(0x000000000000000FL, Activation.Instance.ChecksumOfString(Activation.Instance.SiteIdentification)); // note1
  Activation.Instance.SetExpiration(2, Activation.Instance.ChecksumOfString(Activation.Instance.SiteIdentification)); // note1
@@ -142,7 +142,9 @@ Notes to developers who are MS/VS virgins:
  course there are many cases where you want that to occur but, when you don't,
  then click the expand arrow to the left of the form then right-click-the-
  code-file-beneath-it-then-select-view-code. Otherwise you will sometimes get
- bitten in the ass.
+ bitten in the ass. This is because there are two source files for each form,
+ the one you edit, which is not the one you get when you click a form in the
+ Solution Explorer, as that opens the "xxx.Designer.cs" file.
 
  Speaking of the resource-compiler and form-generator, yoou will sometimes 
  see a form get scrambled, a form that suddenly cannot be rendered, or a

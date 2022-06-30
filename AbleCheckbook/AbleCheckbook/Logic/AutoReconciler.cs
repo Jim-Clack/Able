@@ -16,10 +16,10 @@ namespace AbleCheckbook.Logic
         public enum ThresholdScore
         {
             Mismatch =  0, 
-            Unlikely = 25,   // Only Amounts Match (generally not acceptable)
-            Possible = 50,   // Questionable Match (acceptable after exhaustive comparison)
-            Probable = 75,   // But Some Differences (acceptable for aggressive matching)
-            Matched = 100,   // Only Minor Differences (acceptable in all cases)
+            Unlikely = 38,   // i.e. Amounts Match (generally not useful)
+            Possible = 54,   // Questionable Match (acceptable after exhaustive comparison)
+            Probable = 68,   // But Some Differences (acceptable for cautious matching)
+            Matched =  85,   // Only Minor Differences (acceptable in all cases)
         }
 
         private IDbAccess _userDb = null;
@@ -229,7 +229,7 @@ namespace AbleCheckbook.Logic
                 long.TryParse(bankEntry.CheckNumber, out checkNumber);
                 newEntry.BankCheckNumber = checkNumber;
             }
-            if(newEntry.BankPayee == null || newEntry.BankPayee.Length < 4)
+            if (newEntry.BankPayee == null || newEntry.BankPayee.Length < 4)
             {
                 newEntry.BankPayee = "----"; // flags BankXxxx proerties as filled-in
             }
@@ -255,6 +255,12 @@ namespace AbleCheckbook.Logic
             }
             else
             {
+                long bankAmount = (useBankInfo || bankEntry.Amount == 0) ? bankEntry.BankAmount : bankEntry.Amount;
+                if (newEntry.Amount != bankAmount)
+                {
+                    Guid catId = UtilityMethods.GetCategoryOrUnknown(_userDb, "Correction", false, true).Id;
+                    newEntry.AddSplit(catId, TransactionKind.Adjustment, bankAmount - newEntry.Amount);
+                }
                 newEntry.BankMergeAccepted = true;
                 _userDb.UpdateEntry(newEntry, bestEntry, true);
                 Logger.Diag("AutoReconciler - Updated Entry " + newEntry.ToShortString());
@@ -270,25 +276,26 @@ namespace AbleCheckbook.Logic
         /// <returns>match score, most significance between 0.0 and 100.0</returns>
         public double Score(CheckbookEntry userEntry, CheckbookEntry bankEntry, bool useBankInfo)
         {
-            // if amounts match, start with a score of 30 (may yet be added to or subtracted from)
-            double score = 0.0;
-            if (userEntry.Amount != bankEntry.Amount)
+            // if amounts match, start with a score of 35 (may yet be added to or subtracted from)
+            double score = -12.0;
+            long bankAmount = (useBankInfo && userEntry.Amount != bankEntry.Amount) ? bankEntry.BankAmount : bankEntry.Amount;
+            if (userEntry.Amount == bankAmount)
             {
-                if (!useBankInfo || userEntry.Amount != bankEntry.BankAmount)
-                {
-                    return score;
-                }
+                score = 35.0;
             }
-            score = 30.0;
-            // add from 0 to 30 for nearly matching dates, expecting bank to process in one day
+            else if (userEntry.Amount != 0)
+            {   // handle amounts that are close but not exact
+                score = 10 - Math.Min(22, Math.Abs((userEntry.Amount - bankAmount) * 150 / userEntry.Amount));
+            }
+            // add from 0 to 32 for nearly matching dates, expecting bank to process in one day
             DateTime expectedDate = userEntry.DateOfTransaction.AddDays(1);
             int daysOff = Math.Abs(bankEntry.DateOfTransaction.Subtract(expectedDate).Days);
-            if(daysOff > 30 && useBankInfo)
+            if(daysOff > 32 && useBankInfo)
             {
                 daysOff = Math.Abs(bankEntry.BankTranDate.Subtract(expectedDate).Days);
             }
-            score = score + 30 - Math.Min(30, daysOff);
-            // if check numbers are specified on both, add or subtract 40 depending on the match
+            score = score + 32 - Math.Min(32, daysOff);
+            // if check numbers are specified on both, add 30 or subtract 10 depending on the match
             long userCheckNumber = 0;
             long bankCheckNumber = 0;
             if (long.TryParse(userEntry.CheckNumber, out userCheckNumber) && userCheckNumber > 0)
@@ -300,16 +307,16 @@ namespace AbleCheckbook.Logic
                 }
                 if(bankCheckNumber > 0)
                 {
-                    score = score + (userCheckNumber == bankCheckNumber ? 40 : -20);
+                    score = score + (userCheckNumber == bankCheckNumber ? 30 : -10);
                 }
             }
-            // check for substring matches on the payee, adding up to 45
+            // check for substring matches on the payee, adding up to 40
             string bankPayee = bankEntry.Payee;
             if (useBankInfo && bankPayee.Trim().Length < bankEntry.BankPayee.Trim().Length)
             {
                 bankPayee = bankEntry.BankPayee;
             }
-            score = score + ScoreSubStringMatch(userEntry.Payee, bankPayee, 45);
+            score = score + ScoreSubStringMatch(userEntry.Payee, bankPayee, 40);
             return score;
         }
 

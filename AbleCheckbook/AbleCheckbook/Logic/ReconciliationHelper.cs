@@ -110,6 +110,7 @@ namespace AbleCheckbook.Logic
                     OpenEntry openEntry = new OpenEntry();
                     openEntry.CheckbookEntry = entry;
                     openEntry.IsChecked = false;
+                    _openEntries.Remove(entry.Id); // added 6/30/22
                     _openEntries.Add(entry.Id, openEntry);
                 }
             }

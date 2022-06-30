@@ -154,7 +154,7 @@ namespace AbleCheckbook.Gui
         /// <returns>success</returns>
         private bool ReconcileFromCsv()
         {
-            JsonDbAccess dbStatement = new JsonDbAccess("csvtemp", null, true);
+            JsonDbAccess dbStatement = new JsonDbAccess("csvtemp", null, true); // csvtemp = reserved DB name
             CsvImporter importer = new CsvImporter(dbStatement);
             if (importer.Import(textBoxCsvFile.Text.Trim()) <= 0)
             {
@@ -177,7 +177,7 @@ namespace AbleCheckbook.Gui
             {
                 DialogResult result = MessageBox.Show(
                     Strings.Get("File contains transactions up to ") +
-                        lastDate.ToShortDateString() + Strings.Get("! Adjust ending date?"), 
+                        lastDate.ToShortDateString() + Strings.Get("! Adjust ending date? (Recommendation: NO)"), 
                     Strings.Get("Verify"), MessageBoxButtons.YesNoCancel);
                 if(result == DialogResult.Yes)
                 {

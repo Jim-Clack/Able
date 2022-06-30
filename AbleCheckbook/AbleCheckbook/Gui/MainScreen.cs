@@ -1,10 +1,10 @@
 using AbleCheckbook.Db;
 using AbleCheckbook.Gui;
 using AbleCheckbook.Logic;
+using AbleLicensing;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace AbleCheckbook
@@ -521,6 +521,14 @@ namespace AbleCheckbook
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            /*
+            Activation.Instance.SetDefaultDays(180, 366); 
+            Activation.Instance.LicenseCode = "MYNAME@99999"; 
+            string pin = Activation.Instance.CalculatePin(Activation.Instance.ChecksumOfString(Activation.Instance.SiteIdentification));
+            Activation.Instance.SetActivationPin(pin);
+            Activation.Instance.SetFeatureBitmask(0x000000000000000FL, Activation.Instance.ChecksumOfString(Activation.Instance.SiteIdentification)); 
+            Activation.Instance.SetExpiration(2, Activation.Instance.ChecksumOfString(Activation.Instance.SiteIdentification)); 
+            */
             AboutForm form = new AboutForm();
             form.ShowDialog();
         }

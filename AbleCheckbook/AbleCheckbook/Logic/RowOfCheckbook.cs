@@ -411,10 +411,17 @@ namespace AbleCheckbook
                 {
                     return EntryColor.NewEntryRow;
                 }
-                // TODO - CheckedAuto, CheckedMaybe
                 if(IsChecked)
                 {
                     return EntryColor.CheckedOff;
+                }
+                if (_entry.IsCleared)
+                {
+                    if (_entry.Amount > 0)
+                    {
+                        return EntryColor.ArchivedCredit;
+                    }
+                    return EntryColor.Archived;
                 }
                 if (_entry.MadeBy == EntryMadeBy.Reminder)
                 {
@@ -452,25 +459,14 @@ namespace AbleCheckbook
                 }
                 if (_entry.Amount > 0)
                 {
-                    if (_entry.IsCleared)
+                    if (timeSlot == TimeSlot.Future || timeSlot == TimeSlot.FutureMod)
                     {
-                        return EntryColor.ArchivedCredit;
+                        return EntryColor.FutureCredit;
                     }
                     else
                     {
-                        if (timeSlot == TimeSlot.Future || timeSlot == TimeSlot.FutureMod)
-                        {
-                            return EntryColor.FutureCredit;
-                        }
-                        else
-                        {
-                            return EntryColor.Credit;
-                        }
+                        return EntryColor.Credit;
                     }
-                }
-                if (_entry.IsCleared)
-                {
-                    return EntryColor.Archived;
                 }
                 switch (timeSlot)
                 {

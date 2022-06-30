@@ -4,11 +4,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace AbleCheckbook.Db
 {
@@ -87,65 +84,74 @@ namespace AbleCheckbook.Db
         public JsonDbAccess(string connection, IUndoTracker undoTracker, bool startEmpty = false)
         {
             AppException.SetDb(null);
+            _errorMessage = "";
             _fullPath = connection;
+            _isDirty = false;
+            _undoTracker = undoTracker;
             string account = connection;
             int hyphenIndex = account.LastIndexOf('-');
             if(hyphenIndex > 0)
             {
                 account = account.Substring(0, hyphenIndex);
             }
-            if (Path.GetDirectoryName(connection).Length < 3)
+            if (_fullPath.Equals("csvtemp"))
             {
-                if (!Configuration.Instance.GetLegalFilenames().Contains(account))
-                {
-                    if (!connection.Contains("UtEsT"))
-                    {
-                        connection = "Banking";
-                    }
-                }
-                _fullPath = UtilityMethods.GetDbFilename(connection.Trim(), false, false);
-            }
-            if(IsAcctOpenElsewhere(connection))
-            { 
-                _errorMessage = "File/acct/DB is open in another window: " + _fullPath;
-                System.Windows.Forms.MessageBox.Show(_errorMessage); // is this necessary here?
-                AppException.SetDb(null);
-                throw new AppException(_errorMessage, null, ExceptionHandling.CompleteFailure);
-            }
-            _errorMessage = "";
-            if (startEmpty)
-            {
-                File.Delete(_fullPath);
-            }
-            _isDirty = false;
-            _undoTracker = undoTracker;
-            if(File.Exists(_fullPath))
-            {
-                JsonDbAccess.Mutex.WaitOne();
-                JsonSerializerOptions options = new JsonSerializerOptions();
-                options.AllowTrailingCommas = true;
-                try
-                {
-                    using (FileStream stream = File.OpenRead(_fullPath))
-                    {
-                        _dbHeader = JsonSerializer.DeserializeAsync<JsonDbHeader>(stream, options).GetAwaiter().GetResult();
-                    }
-                }
-                catch(Exception ex)
-                {
-                    _errorMessage = ex.Message;
-                    throw new AppException("Cannot deserialize " + _fullPath, ex, ExceptionHandling.NoSaveThenRestart);
-                }
-                finally
-                {
-                    JsonDbAccess.Mutex.ReleaseMutex();
-                }
+                _dbHeader = new JsonDbHeader();
+                _dbHeader.DbName = _fullPath;
             }
             else
             {
-                _dbHeader = new JsonDbHeader();
+                if (Path.GetDirectoryName(connection).Length < 3)
+                {
+                    if (!Configuration.Instance.GetLegalFilenames().Contains(account))
+                    {
+                        if (!connection.Contains("UtEsT"))
+                        {
+                            connection = "Banking";
+                        }
+                    }
+                    _fullPath = UtilityMethods.GetDbFilename(connection.Trim(), false, false);
+                }
+                if (IsAcctOpenElsewhere(connection))
+                {
+                    _errorMessage = "File/acct/DB is open in another window: " + _fullPath;
+                    System.Windows.Forms.MessageBox.Show(_errorMessage); // is this necessary here?
+                    AppException.SetDb(null);
+                    throw new AppException(_errorMessage, null, ExceptionHandling.CompleteFailure);
+                }
+                if (startEmpty)
+                {
+                    File.Delete(_fullPath);
+                }
+                if (File.Exists(_fullPath))
+                {
+                    JsonDbAccess.Mutex.WaitOne();
+                    JsonSerializerOptions options = new JsonSerializerOptions();
+                    options.AllowTrailingCommas = true;
+                    try
+                    {
+                        using (FileStream stream = File.OpenRead(_fullPath))
+                        {
+                            _dbHeader = JsonSerializer.DeserializeAsync<JsonDbHeader>(stream, options).GetAwaiter().GetResult();
+                            AdjustKeysForCompatibility();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _errorMessage = ex.Message;
+                        throw new AppException("Cannot deserialize " + _fullPath, ex, ExceptionHandling.NoSaveThenRestart);
+                    }
+                    finally
+                    {
+                        JsonDbAccess.Mutex.ReleaseMutex();
+                    }
+                }
+                else
+                {
+                    _dbHeader = new JsonDbHeader();
+                }
+                _dbHeader.DbName = Path.GetFileNameWithoutExtension(_fullPath);
             }
-            _dbHeader.DbName = Path.GetFileNameWithoutExtension(_fullPath);
             AppException.SetDb(this);
         }
 
@@ -254,6 +260,11 @@ namespace AbleCheckbook.Db
         public bool Sync()
         {
             _errorMessage = "";
+            if (_fullPath.Equals("csvtemp"))
+            {
+                _isDirty = false;
+                return true;
+            }
             // Always saves to the DB directory with a .db extension...
             _fullPath = Path.Combine(Configuration.Instance.DirectoryDatabase, _dbHeader.DbName + ".acb");
             Directory.CreateDirectory(Path.GetDirectoryName(_fullPath));
@@ -395,6 +406,33 @@ namespace AbleCheckbook.Db
         {
             _undoTracker.TrackDeletion(GetReconciliationValues());
             return true;
+        }
+
+        /// <summary>
+        /// Normalize keys in case of old version of DB file.
+        /// </summary>
+        private void AdjustKeysForCompatibility()
+        {
+            Dictionary<string, CheckbookEntry> adjustedEntries = new Dictionary<string, CheckbookEntry>();
+            if(_dbHeader.CheckbookEntries.Count > 0 && _dbHeader.CheckbookEntries.First().Key.Length < 50)
+            {
+                return; // latest version, no changes needed
+            }
+            JsonDbAccess.Mutex.WaitOne();
+            try
+            {
+                CheckbookEntryIterator iterator = CheckbookEntryIterator;
+                while (iterator.HasNextEntry())
+                {
+                    CheckbookEntry entry = iterator.GetNextEntry();
+                    adjustedEntries.Add(entry.UniqueKey(), entry);
+                }
+                _dbHeader.CheckbookEntries = adjustedEntries;
+            }
+            finally
+            {
+                JsonDbAccess.Mutex.ReleaseMutex();
+            }
         }
 
         /////////////////////////// CheckbookEntry ///////////////////////////

@@ -588,6 +588,8 @@ namespace AbleCheckbook
         {
             if (_backend.Db.InProgress == InProgress.Reconcile && _reconHelper != null)
             {
+                itemizeSplitsToolStripMenuItem.Checked = true;
+                _backend.ItemizedSplits = true;
                 _reconHelper = new ReconciliationHelper(_backend.Db);
                 List<Guid> matches = _reconHelper.OpenEntries.Keys.ToList();
                 UpdateReconcileControls(false, false);

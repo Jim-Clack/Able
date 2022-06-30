@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace AbleCheckbook.Logic
 {
@@ -118,22 +119,21 @@ namespace AbleCheckbook.Logic
             {
                 exceptionHandling = ((AppException)ex).ExceptionHandling;
             }
-            string logfile = "";
             try
             {
                 Logger.Error("Top Level Exception", ex);
             }
-            catch (Exception)
+            catch (Exception ex1)
             {
-                logfile = "cannot-write-log";
+                MessageBox.Show(Strings.Get("Cannot write log ") + ex1.Message);
             }
             if (exceptionHandling == ExceptionHandling.CompleteFailure)
             {
-                message = "Unrecoverable Failure. " + ex.Message + " [logged to: " + logfile + "]";
+                message = "Unrecoverable Failure. " + ex.Message;
             }
             if (exceptionHandling == ExceptionHandling.SaveCleanupContinue)
             {
-                message = "Serious Error. (Work Saved) " + ex.Message + " [logged to: " + logfile + "]";
+                message = "Serious Error. (Work Saved) " + ex.Message;
                 if (_db != null)
                 {
                     _db.Sync(); // save
@@ -141,7 +141,7 @@ namespace AbleCheckbook.Logic
             }
             if (exceptionHandling == ExceptionHandling.SaveThenRestart)
             {
-                message = "Serious Error. (Work Saved) Restarting. " + ex.Message + " [logged to: " + logfile + "]";
+                message = "Serious Error. (Work Saved) Restarting. " + ex.Message;
                 if (_db != null)
                 {
                     _db.Sync(); // save
@@ -149,11 +149,11 @@ namespace AbleCheckbook.Logic
             }
             if (exceptionHandling == ExceptionHandling.NoSaveCleanupContinue)
             {
-                message = "Serious Error. " + ex.Message + " [logged to: " + logfile + "]";
+                message = "Serious Error. " + ex.Message;
             }
             if (exceptionHandling == ExceptionHandling.NoSaveThenRestart)
             {
-                message = "Serious Error. Restarting. " + ex.Message + " [logged to: " + logfile + "]";
+                message = "Serious Error. Restarting. " + ex.Message;
             }
             return exceptionHandling;
         }

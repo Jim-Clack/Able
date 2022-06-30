@@ -1,6 +1,7 @@
 Alpha TODO...
- - On checkbook entry form, checkbox: "Enter AFTER other daily transactions"
- - Reconcile Tips button seems to never be enabled ???
+ - UniqueKey() should always simply return the Id - also rqrs conversion in JsonDbAccess
+ - Deal properly with too many splits
+ - Persist ending amt and date for a reconcile in progress (already done?)
  - Year end wrapup doesn't carry over memorized payees (do like categories)
  - Flesh out online help
  - Deploy website for testing
@@ -11,9 +12,10 @@ Alpha TODO...
  - Web Services for online purchase and self-service activation
  - Move SU user data to website instead of file (superuser)
  - Fix desktop Icon 
- - During reconcile the cursor sometimes jumps way down
+ - During reconcile or sorted differently the cursor sometimes jumps way down
  - AreYouSureForm with date/time/user that screen-captures, logs, and read log
  - Once you've entered a payee with bad capitalization, you cannot change it
+ - On checkbook entry form, checkbox: "Enter AFTER other daily transactions"
  - Much testing 
 
 Longer term TODO...

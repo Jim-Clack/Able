@@ -400,7 +400,8 @@ namespace AbleCheckbook.Db
         /// <returns>Collatable key.</returns>
         public string UniqueKey()
         {
-            return ((ulong)_dateOfTransaction.ToBinary()).ToString("D22") + "-" + _id;
+            return _id.ToString();
+            // return ((ulong)_dateOfTransaction.ToBinary()).ToString("D22") + "-" + _id;
         }
 
     }

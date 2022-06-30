@@ -395,10 +395,12 @@ namespace AbleCheckbook.Logic
         /// </summary>
         /// <param name="db">To find or update with the category</param>
         /// <param name="name">Name of category, null to default to "Unknown"</param>
+        /// <param name="isCredit">true for credit categories (only used if not found)</param>
+        /// <param name="force">true to force creation of the categgory if it doesn't exist</param>
         /// <returns>The category, possibly newly "Unknown"</returns>
-        public static FinancialCategory GetCategoryOrUnknown(IDbAccess db, string name)
+        public static FinancialCategory GetCategoryOrUnknown(IDbAccess db, string name, bool isCredit = false, bool force = false)
         {
-            string unknownName = Strings.Get("Unknown").Trim().ToLower();
+            string unknownName = force ? name.Trim() : Strings.Get("Unknown").Trim();
             string catName = unknownName;
             if (name != null && name.Trim().Length > 0)
             {
@@ -432,7 +434,7 @@ namespace AbleCheckbook.Logic
                 }
                 // Should never happen, but...
                 category = new FinancialCategory();
-                category.IsCredit = false;
+                category.IsCredit = isCredit;
                 category.Name = unknownName;
                 db.InsertEntry(category);
             }

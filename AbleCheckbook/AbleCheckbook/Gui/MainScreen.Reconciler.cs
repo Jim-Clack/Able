@@ -166,6 +166,8 @@ namespace AbleCheckbook
                 dateTimePickerPrevRecon.Enabled = dateTimePickerThisRecon.Enabled = false;
                 textBoxPrevReconBalance.Enabled = textBoxThisReconBalance.Enabled = false;
             }
+            itemizeSplitsToolStripMenuItem.Checked = true;
+            _backend.ItemizedSplits = true;
             _backend.Db.InProgress = InProgress.Reconcile;
             _reconHelper = new ReconciliationHelper(_backend.Db);
             List<Guid> matches = _reconHelper.OpenEntries.Keys.ToList();
@@ -268,10 +270,10 @@ namespace AbleCheckbook
                     dataGridView1.Rows[rowIndex].Cells["IsChecked"].Value = cell.FalseValue;
                     return;
                 }
-                UpdateReconcileControls(true, false);
                 BeforeOperation("Checkbox", true);
                 ReconcileCheckboxClicked(rowIndex, columnIndex);
                 AfterOperation();
+                UpdateReconcileControls(true, false);
             }
             _recursionLevel = UtilityMethods.Clamp(0, _recursionLevel - 1, 99);
         }

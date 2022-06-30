@@ -363,6 +363,7 @@ namespace AbleCheckbook.Logic
             AddString("Category Report");
             AddString("Preferences");
             AddString("Search for Entries by Payee");
+            AddString("Verify");
             AddString("Help");
             AddString("←  Back");
             AddString("⌂  Home");
@@ -405,7 +406,7 @@ namespace AbleCheckbook.Logic
             AddString("#Requires Super-User Permission");
             AddString("#Invalid Site Identification Code.");
             AddString("File contains transactions up to ");
-            AddString("! Adjust ending date?");
+            AddString("! Adjust ending date? (Recommendation: NO)");
             AddString(" duplicates ignored ");
             AddString("Able Strategies AbleCheckbook - See Terms of License");
             AddString("Activation");

@@ -232,6 +232,21 @@ namespace AbleCheckbook.Db
         }
 
         /// <summary>
+        /// Dictionary of memorized payees.
+        /// </summary>
+        public Dictionary<string, MemorizedPayee> MemorizedPayees
+        {
+            get
+            {
+                return _underlyingDb.MemorizedPayees;
+            }
+            set
+            {
+                _underlyingDb.MemorizedPayees = value;
+            }
+        }
+
+        /// <summary>
         /// Get account info, i.e. online connection settings.)
         /// </summary>
         public IAccount Account
@@ -239,6 +254,36 @@ namespace AbleCheckbook.Db
             get
             {
                 return _underlyingDb.Account;
+            }
+        }
+
+        /// <summary>
+        /// Track a reconcile in progress.
+        /// </summary>
+        public long PendingReconcileEndAmount
+        {
+            get
+            {
+                return _underlyingDb.PendingReconcileEndAmount;
+            }
+            set
+            {
+                _underlyingDb.PendingReconcileEndAmount = value;
+            }
+        }
+
+        /// <summary>
+        /// Track a reconcile in progress.
+        /// </summary>
+        public DateTime PendingReconcileEndDate
+        {
+            get
+            {
+                return _underlyingDb.PendingReconcileEndDate;
+            }
+            set
+            {
+                _underlyingDb.PendingReconcileEndDate = value;
             }
         }
 

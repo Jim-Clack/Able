@@ -238,6 +238,36 @@ namespace AbleCheckbook.Db
         }
 
         /// <summary>
+        /// Track a reconcile in progress.
+        /// </summary>
+        public long PendingReconcileEndAmount
+        {
+            get
+            {
+                return _dbHeader.PendingReconcileEndAmount;
+            }
+            set
+            {
+                _dbHeader.PendingReconcileEndAmount = value;
+            }
+        }
+
+        /// <summary>
+        /// Track a reconcile in progress.
+        /// </summary>
+        public DateTime PendingReconcileEndDate
+        {
+            get
+            {
+                return _dbHeader.PendingReconcileEndDate;
+            }
+            set
+            {
+                _dbHeader.PendingReconcileEndDate = value;
+            }
+        }
+
+        /// <summary>
         /// Iterate over the checkbook entries, updating the balance in each.
         /// </summary>
         /// <returns>Final balance.</returns>
@@ -251,6 +281,21 @@ namespace AbleCheckbook.Db
                 entry.Balance = balance;
             }
             return balance;
+        }
+
+        /// <summary>
+        /// Dictionary of memorized payees.
+        /// </summary>
+        public Dictionary<string, MemorizedPayee> MemorizedPayees
+        {
+            get
+            {
+                return _dbHeader.MemorizedPayees;
+            }
+            set
+            {
+                _dbHeader.MemorizedPayees = value;
+            }
         }
 
         /// <summary>
@@ -380,6 +425,10 @@ namespace AbleCheckbook.Db
         /// </summary>
         private void AdjustDbForCompatibility()
         {
+            if(_dbHeader.MemorizedPayees == null)
+            {
+                _dbHeader.MemorizedPayees = new Dictionary<string, MemorizedPayee>();
+            }
             AdjustCheckbookKeys();
             AdjustCategoryKeys();
             AdjustEventKeys();
@@ -622,6 +671,8 @@ namespace AbleCheckbook.Db
             JsonDbAccess.Mutex.WaitOne();
             try
             {
+                entry = _dbHeader.CheckbookEntries[id.ToString()];
+                /*
                 IEnumerator<KeyValuePair<string, CheckbookEntry>> enumerator = _dbHeader.CheckbookEntries.GetEnumerator();
                 while (enumerator.MoveNext())
                 {
@@ -631,6 +682,7 @@ namespace AbleCheckbook.Db
                         entry = pair.Value;
                     }
                 }
+                */
             }
             catch (Exception ex)
             {
@@ -775,6 +827,8 @@ namespace AbleCheckbook.Db
             JsonDbAccess.Mutex.WaitOne();
             try
             {
+                schEvent = _dbHeader.ScheduledEvents[id.ToString()];
+                /*
                 IEnumerator<KeyValuePair<string, ScheduledEvent>> enumerator = _dbHeader.ScheduledEvents.GetEnumerator();
                 while (enumerator.MoveNext())
                 {
@@ -784,6 +838,7 @@ namespace AbleCheckbook.Db
                         schEvent = pair.Value;
                     }
                 }
+                */
             }
             catch (Exception ex)
             {
@@ -963,6 +1018,8 @@ namespace AbleCheckbook.Db
             JsonDbAccess.Mutex.WaitOne();
             try
             {
+                finCateg = _dbHeader.FinancialCategories[id.ToString()];
+                /*
                 IEnumerator<KeyValuePair<string, FinancialCategory>> enumerator = _dbHeader.FinancialCategories.GetEnumerator();
                 while (enumerator.MoveNext())
                 {
@@ -972,6 +1029,7 @@ namespace AbleCheckbook.Db
                         finCateg = pair.Value;
                     }
                 }
+                */
             }
             catch (Exception ex)
             {

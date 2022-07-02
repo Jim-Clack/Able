@@ -143,7 +143,7 @@ namespace AbleCheckbook.Logic
             File.Delete(Path.Combine(Configuration.Instance.DirectoryDatabase, dbName));
             _newStartingBalance = 0L;
             _oldDb = new JsonDbAccess(_oldFilename, null, true); // do not put bank creds in old db
-            _newDb.Name = Path.GetFileNameWithoutExtension(_newFilename);
+            _newDb.Name = Path.GetFileNameWithoutExtension(_newFilename); // rename current DB to newFilename
             try
             {
                 bool okay = MoveInactiveEntries();

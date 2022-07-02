@@ -4,8 +4,6 @@ using AbleCheckbook.Logic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AbleCheckbook
@@ -145,7 +143,12 @@ namespace AbleCheckbook
             }
             textBoxPrevReconBalance.Text = UtilityMethods.FormatCurrency(reconValues.Balance, 3);
             textBoxThisReconBalance.Text = "";
-            if (!continuation) // only when starting, not when reloading an acct w reconciliation in progress
+            if (continuation) // only when starting, not when reloading an acct w reconciliation in progress
+            {
+                dateTimePickerThisRecon.Value = _backend.Db.PendingReconcileEndDate;
+                textBoxThisReconBalance.Text = UtilityMethods.FormatCurrency(_backend.Db.PendingReconcileEndAmount);
+            }
+            else
             {
                 ReconcileStartForm form = new ReconcileStartForm(Backend.Db);
                 form.PrevReconDate = dateTimePickerPrevRecon.Value;
@@ -165,6 +168,8 @@ namespace AbleCheckbook
                 textBoxThisReconBalance.Text = form.ThisReconBalance;
                 dateTimePickerPrevRecon.Enabled = dateTimePickerThisRecon.Enabled = false;
                 textBoxPrevReconBalance.Enabled = textBoxThisReconBalance.Enabled = false;
+                _backend.Db.PendingReconcileEndDate = dateTimePickerThisRecon.Value;
+                _backend.Db.PendingReconcileEndAmount = UtilityMethods.ParseCurrency(textBoxThisReconBalance.Text);
             }
             itemizeSplitsToolStripMenuItem.Checked = true;
             _backend.ItemizedSplits = true;
@@ -274,6 +279,7 @@ namespace AbleCheckbook
                 ReconcileCheckboxClicked(rowIndex, columnIndex);
                 AfterOperation();
                 UpdateReconcileControls(true, false);
+                _backend.CurrentEntryId = rowCheckbook.Id;
             }
             _recursionLevel = UtilityMethods.Clamp(0, _recursionLevel - 1, 99);
         }

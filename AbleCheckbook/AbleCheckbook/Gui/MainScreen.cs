@@ -588,7 +588,6 @@ namespace AbleCheckbook
 
         private void dateTimePickerThisRecon_ValueChanged(object sender, EventArgs e)
         {
-
         }
 
         private void buttonReconcileTips_Click(object sender, EventArgs e)
@@ -623,6 +622,7 @@ namespace AbleCheckbook
         private void textBoxThisBalance_Leave(object sender, EventArgs e)
         {
             UpdateReconcileControls(false, false);
+            _backend.Db.PendingReconcileEndAmount = UtilityMethods.ParseCurrency(textBoxThisReconBalance.Text);
         }
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
@@ -663,6 +663,10 @@ namespace AbleCheckbook
             UpdateReconcileControls(false, false);
         }
 
+        private void dateTimePickerThisRecon_Leave(object sender, EventArgs e)
+        {
+            _backend.Db.PendingReconcileEndDate = dateTimePickerThisRecon.Value;
+        }
     }
 
 }

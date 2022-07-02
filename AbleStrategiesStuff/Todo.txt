@@ -1,9 +1,4 @@
 Alpha TODO...
- - UniqueKey() should always simply return the Id - also rqrs conversion in JsonDbAccess
- - Deal properly with too many splits
- - Persist ending amt and date for a reconcile in progress (already done?)
- - Year end wrapup doesn't carry over memorized payees (do like categories)
- - During reconcile or sorted differently the cursor sometimes jumps way down
  - Flesh out online help
  - Deploy website for testing
  - EULA
@@ -17,6 +12,7 @@ Alpha TODO...
  - Once you've entered a payee with bad capitalization, you cannot change it
  - On checkbook entry form, checkbox: "Enter AFTER other daily transactions"
  - Speed up the many scattered ID searches by changing them to Id lookups. 
+ - If sorted differently the cursor sometimes jumps way down
  - Much testing 
 
 Longer term TODO...

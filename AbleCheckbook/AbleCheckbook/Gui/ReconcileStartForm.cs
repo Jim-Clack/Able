@@ -216,5 +216,7 @@ namespace AbleCheckbook.Gui
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
+
     }
+
 }

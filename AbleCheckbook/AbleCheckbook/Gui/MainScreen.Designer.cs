@@ -1109,34 +1109,34 @@ namespace AbleCheckbook
             this.toolStripLabelStatus.Name = "toolStripLabelStatus";
             this.toolStripLabelStatus.Size = new System.Drawing.Size(0, 24);
             // 
-            // textBoxLastBalance
+            // textBoxPrevReconBalance
             // 
             this.textBoxPrevReconBalance.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.textBoxPrevReconBalance.Location = new System.Drawing.Point(119, 366);
-            this.textBoxPrevReconBalance.Name = "textBoxLastBalance";
+            this.textBoxPrevReconBalance.Name = "textBoxPrevReconBalance";
             this.textBoxPrevReconBalance.Size = new System.Drawing.Size(80, 22);
             this.textBoxPrevReconBalance.TabIndex = 8;
             this.textBoxPrevReconBalance.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.textBoxPrevReconBalance.Enter += new System.EventHandler(this.textBoxLastBalance_Enter);
             this.textBoxPrevReconBalance.Leave += new System.EventHandler(this.textBoxLastBalance_Leave);
             // 
-            // textBoxThisBalance
+            // textBoxThisReconBalance
             // 
             this.textBoxThisReconBalance.AcceptsReturn = true;
             this.textBoxThisReconBalance.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.textBoxThisReconBalance.Location = new System.Drawing.Point(119, 395);
-            this.textBoxThisReconBalance.Name = "textBoxThisBalance";
+            this.textBoxThisReconBalance.Name = "textBoxThisReconBalance";
             this.textBoxThisReconBalance.Size = new System.Drawing.Size(80, 22);
             this.textBoxThisReconBalance.TabIndex = 9;
             this.textBoxThisReconBalance.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.textBoxThisReconBalance.Leave += new System.EventHandler(this.textBoxThisBalance_Leave);
             // 
-            // dateTimePickerLastRecon
+            // dateTimePickerPrevRecon
             // 
             this.dateTimePickerPrevRecon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.dateTimePickerPrevRecon.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dateTimePickerPrevRecon.Location = new System.Drawing.Point(13, 366);
-            this.dateTimePickerPrevRecon.Name = "dateTimePickerLastRecon";
+            this.dateTimePickerPrevRecon.Name = "dateTimePickerPrevRecon";
             this.dateTimePickerPrevRecon.Size = new System.Drawing.Size(100, 22);
             this.dateTimePickerPrevRecon.TabIndex = 44;
             this.dateTimePickerPrevRecon.Enter += new System.EventHandler(this.dateTimePickerLastRecon_Enter);
@@ -1150,6 +1150,7 @@ namespace AbleCheckbook
             this.dateTimePickerThisRecon.Size = new System.Drawing.Size(100, 22);
             this.dateTimePickerThisRecon.TabIndex = 4;
             this.dateTimePickerThisRecon.ValueChanged += new System.EventHandler(this.dateTimePickerThisRecon_ValueChanged);
+            this.dateTimePickerThisRecon.Leave += new System.EventHandler(this.dateTimePickerThisRecon_Leave);
             // 
             // buttonReconcileTips
             // 

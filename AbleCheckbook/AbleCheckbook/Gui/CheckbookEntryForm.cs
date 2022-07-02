@@ -378,11 +378,11 @@ namespace AbleCheckbook.Gui
             {
                 textBox.Text = "0";
             }
-            _splits = _rowCheckbook.Entry.Splits;
+            PopulateSplits();
             int rowNum = 0;
             for (int index = 0; index < _splits.Length; ++index)
             {
-                if(index > 0 && _splits[index].Amount == 0)
+                if (index > 0 && _splits[index].Amount == 0)
                 {
                     continue; // only the first split can have a zero amount
                 }
@@ -396,7 +396,7 @@ namespace AbleCheckbook.Gui
                 _textBoxAmounts[rowNum].Text = UtilityMethods.FormatCurrency(_splits[index].Amount, 3);
                 ++rowNum;
             }
-            while(rowNum < MaxSplits)
+            while (rowNum < MaxSplits)
             {
                 _comboCategories[rowNum].Text = "";
                 _comboKinds[rowNum].SelectedIndex = 0;
@@ -426,12 +426,38 @@ namespace AbleCheckbook.Gui
             {
                 AdjustAmountsPerKinds(textBox);
             }
-            if(_rowCheckbook.Entry.MadeBy == EntryMadeBy.Reminder)
+            if (_rowCheckbook.Entry.MadeBy == EntryMadeBy.Reminder)
             {
                 _rowCheckbook.Entry.MadeBy = EntryMadeBy.Scheduler;
             }
             UpdateVisibilities();
             ValidateReadyForSubmit();
+        }
+
+        /// <summary>
+        /// Populate splits on Form, collapsing them down to MaxSPlits if necessary.
+        /// </summary>
+        private void PopulateSplits()
+        {
+            _splits = _rowCheckbook.Entry.Splits;
+            if (_splits.Length > MaxSplits)
+            {
+                long accumulator = 0L;
+                for (int splitNumber = MaxSplits - 1; splitNumber < _splits.Length; ++splitNumber)
+                {
+                    accumulator += SplitEntry.IsDebit((int)_splits[splitNumber].Kind, _splits[splitNumber].Amount) ?
+                          _splits[splitNumber].Amount : _splits[splitNumber].Amount;
+                }
+                SplitEntry[] newSplits = new SplitEntry[MaxSplits];
+                for (int splitNumber = 0; splitNumber < MaxSplits; ++splitNumber)
+                {
+                    newSplits[splitNumber] = new SplitEntry(
+                        _splits[splitNumber].CategoryId, _splits[splitNumber].Kind, _splits[splitNumber].Amount);
+                }
+                newSplits[MaxSplits - 1].Amount = Math.Abs(accumulator);
+                newSplits[MaxSplits - 1].Kind = (accumulator <= 0) ? TransactionKind.Payment : TransactionKind.Deposit;
+                _splits = newSplits;
+            }
         }
 
         /// <summary>
@@ -816,7 +842,7 @@ namespace AbleCheckbook.Gui
             get
             {
                 int count = 0;
-                while (_comboCategories[count].Text.Trim().Length > 0)
+                while (count < MaxSplits && _comboCategories[count].Text.Trim().Length > 0)
                 {
                     long amount = UtilityMethods.ParseCurrency(_textBoxAmounts[count].Text) ;
                     if(amount == 0 && count > 0)

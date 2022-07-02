@@ -35,6 +35,21 @@ namespace AbleCheckbook.Db
         IAccount Account { get; }
 
         /// <summary>
+        /// Dictionary of memorized payees.
+        /// </summary>
+        Dictionary<string, MemorizedPayee> MemorizedPayees { get; set; }
+
+        /// <summary>
+        /// Track a reconcile in progress.
+        /// </summary>
+        long PendingReconcileEndAmount { get; set; }
+
+        /// <summary>
+        /// Track a reconcile in progress.
+        /// </summary>
+        DateTime PendingReconcileEndDate { get; set; }
+
+        /// <summary>
         /// Iterate over the checkbook entries, updating the balance in each.
         /// </summary>
         /// <returns>Final balance.</returns>

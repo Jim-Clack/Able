@@ -23,7 +23,7 @@ namespace AbleCheckbook.Logic
         /// <summary>
         /// Here's where they're stored.
         /// </summary>
-        private Dictionary<string, MemorizedPayee> _payees = new Dictionary<string, MemorizedPayee>();
+        private Dictionary<string, MemorizedPayee> _payees = null;
 
         /// <summary>
         /// Ctor.
@@ -32,6 +32,11 @@ namespace AbleCheckbook.Logic
         public AutofillPayee(IDbAccess checkbookDb)
         {
             _checkbookDb = checkbookDb;
+            _payees = _checkbookDb.MemorizedPayees;
+            if(_payees == null)
+            {
+                _payees = new Dictionary<string, MemorizedPayee>();
+            }
             IDbIterator<CheckbookEntry> ckbkIterator = _checkbookDb.CheckbookEntryIterator;
             try
             {

@@ -80,6 +80,16 @@ namespace AbleCheckbook.Db
         private bool _onlineBankingAggressive = true;
 
         /// <summary>
+        /// Track a reconcile in progress.
+        /// </summary>
+        private long _pendingReconcileEndAmount = 0L;
+
+        /// <summary>
+        /// Track a reconcile in progress.
+        /// </summary>
+        private DateTime _pendingReconcileEndDate = DateTime.Now;
+
+        /// <summary>
         /// In-memory store of checkbook entries.
         /// </summary>
         private Dictionary<string, CheckbookEntry> _checkbookEntries = new Dictionary<string, CheckbookEntry>();
@@ -94,6 +104,11 @@ namespace AbleCheckbook.Db
         /// </summary>
         private Dictionary<string, ScheduledEvent> _scheduledEvents = new Dictionary<string, ScheduledEvent>();
 
+        /// <summary>
+        /// In-memory store of memorized payees.
+        /// </summary>
+        private Dictionary<string, MemorizedPayee> _memorizedPayees = new Dictionary<string, MemorizedPayee>();
+
         // Getters/Setters for serialization
         public string DbName { get => _dbName; set => _dbName = value; }
         public int DbVersion { get => _dbVersion; set => _dbVersion = value; }
@@ -105,11 +120,14 @@ namespace AbleCheckbook.Db
         public Dictionary<string, CheckbookEntry> CheckbookEntries { get => _checkbookEntries; set => _checkbookEntries = value; }
         public Dictionary<string, FinancialCategory> FinancialCategories { get => _financialCategories; set => _financialCategories = value; }
         public Dictionary<string, ScheduledEvent> ScheduledEvents { get => _scheduledEvents; set => _scheduledEvents = value; }
+        public Dictionary<string, MemorizedPayee> MemorizedPayees { get => _memorizedPayees; set => _memorizedPayees = value; }
         public string OnlineBankingAcct { get => _onlineBankingAcct; set => _onlineBankingAcct = value; }
         public string OnlineBankingUrl { get => _onlineBankingUrl; set => _onlineBankingUrl = value; }
         public string OnlineBankingUser { get => _onlineBankingUser; set => _onlineBankingUser = value; }
         public string OnlineBankingPwd { get => _onlineBankingPwd; set => _onlineBankingPwd = value; }
         public bool OnlineBankingLive { get => _onlineBankingLive; set => _onlineBankingLive = value; }
         public bool OnlineBankingAggressive { get => _onlineBankingAggressive; set => _onlineBankingAggressive = value; }
+        public long PendingReconcileEndAmount { get => _pendingReconcileEndAmount; set => _pendingReconcileEndAmount = value; }
+        public DateTime PendingReconcileEndDate { get => _pendingReconcileEndDate; set => _pendingReconcileEndDate = value; }
     }
 }

@@ -133,7 +133,7 @@ namespace AbleCheckbook.Db
                         using (FileStream stream = File.OpenRead(_fullPath))
                         {
                             _dbHeader = JsonSerializer.DeserializeAsync<JsonDbHeader>(stream, options).GetAwaiter().GetResult();
-                            AdjustKeysForCompatibility();
+                            AdjustDbForCompatibility();
                         }
                     }
                     catch (Exception ex)
@@ -373,8 +373,110 @@ namespace AbleCheckbook.Db
             }
         }
 
-        ////////////////////////////// Reconcliliation ///////////////////////
-        
+        /////////////////////////// Compatibility ////////////////////////////
+
+        /// <summary>
+        /// Normalize keys in case of old version of DB file.
+        /// </summary>
+        private void AdjustDbForCompatibility()
+        {
+            AdjustCheckbookKeys();
+            AdjustCategoryKeys();
+            AdjustEventKeys();
+        }
+
+        /// <summary>
+        /// Adjust keys for latest version, using Id only.
+        /// </summary>
+        private void AdjustCheckbookKeys()
+        {
+            Dictionary<string, CheckbookEntry> entries = new Dictionary<string, CheckbookEntry>();
+            if (_dbHeader.CheckbookEntries.Count > 0 && _dbHeader.CheckbookEntries.First().Key.Length > 50)
+            {
+                JsonDbAccess.Mutex.WaitOne();
+                try
+                {
+                    CheckbookEntryIterator iterator = CheckbookEntryIterator;
+                    while (iterator.HasNextEntry())
+                    {
+                        CheckbookEntry entry = iterator.GetNextEntry();
+                        entries.Add(entry.UniqueKey(), entry);
+                    }
+                    _dbHeader.CheckbookEntries = entries;
+                }
+                finally
+                {
+                    JsonDbAccess.Mutex.ReleaseMutex();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Adjust keys for latest version, using Id only.
+        /// </summary>
+        private void AdjustCategoryKeys()
+        {
+            Dictionary<string, FinancialCategory> categories = new Dictionary<string, FinancialCategory>();
+            if (_dbHeader.FinancialCategories.Count > 0)
+            {
+                IEnumerator<KeyValuePair<string, FinancialCategory>> enumerator = _dbHeader.FinancialCategories.GetEnumerator();
+                int possibleOldKindCount = 0;
+                while (enumerator.MoveNext())
+                {
+                    if (enumerator.Current.Key.EndsWith("D") || enumerator.Current.Key.EndsWith("C"))
+                    {
+                        ++possibleOldKindCount;
+                    }
+                }
+                if (possibleOldKindCount > _dbHeader.FinancialCategories.Count / 2)
+                {
+                    JsonDbAccess.Mutex.WaitOne();
+                    try
+                    {
+                        FinancialCategoryIterator iterator = FinancialCategoryIterator;
+                        while (iterator.HasNextEntry())
+                        {
+                            FinancialCategory entry = iterator.GetNextEntry();
+                            categories.Add(entry.UniqueKey(), entry);
+                        }
+                        _dbHeader.FinancialCategories = categories;
+                    }
+                    finally
+                    {
+                        JsonDbAccess.Mutex.ReleaseMutex();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Adjust keys for latest version, using Id only.
+        /// </summary>
+        private void AdjustEventKeys()
+        {
+            Dictionary<string, ScheduledEvent> entries = new Dictionary<string, ScheduledEvent>();
+            if (_dbHeader.ScheduledEvents.Count > 0 && _dbHeader.ScheduledEvents.First().Key.Length > 36)
+            {
+                JsonDbAccess.Mutex.WaitOne();
+                try
+                {
+                    ScheduledEventIterator iterator = ScheduledEventIterator;
+                    while (iterator.HasNextEntry())
+                    {
+                        ScheduledEvent entry = iterator.GetNextEntry();
+                        entries.Add(entry.UniqueKey(), entry);
+                    }
+                    _dbHeader.ScheduledEvents = entries;
+                }
+                finally
+                {
+                    JsonDbAccess.Mutex.ReleaseMutex();
+                }
+            }
+        }
+
+        //////////////////////////// Reconcliliation /////////////////////////
+
         /// <summary>
         /// Get recon values - balance & date.
         /// </summary>
@@ -406,33 +508,6 @@ namespace AbleCheckbook.Db
         {
             _undoTracker.TrackDeletion(GetReconciliationValues());
             return true;
-        }
-
-        /// <summary>
-        /// Normalize keys in case of old version of DB file.
-        /// </summary>
-        private void AdjustKeysForCompatibility()
-        {
-            Dictionary<string, CheckbookEntry> adjustedEntries = new Dictionary<string, CheckbookEntry>();
-            if(_dbHeader.CheckbookEntries.Count > 0 && _dbHeader.CheckbookEntries.First().Key.Length < 50)
-            {
-                return; // latest version, no changes needed
-            }
-            JsonDbAccess.Mutex.WaitOne();
-            try
-            {
-                CheckbookEntryIterator iterator = CheckbookEntryIterator;
-                while (iterator.HasNextEntry())
-                {
-                    CheckbookEntry entry = iterator.GetNextEntry();
-                    adjustedEntries.Add(entry.UniqueKey(), entry);
-                }
-                _dbHeader.CheckbookEntries = adjustedEntries;
-            }
-            finally
-            {
-                JsonDbAccess.Mutex.ReleaseMutex();
-            }
         }
 
         /////////////////////////// CheckbookEntry ///////////////////////////

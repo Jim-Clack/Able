@@ -73,7 +73,7 @@ namespace AbleCheckbook.Db
         /// <returns>Collatable key.</returns>
         public string UniqueKey()
         {
-            return _name.ToLower() + "-" + (_isCredit ? "C" : "D");
+            return _id.ToString();
         }
 
     }

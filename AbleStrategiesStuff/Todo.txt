@@ -3,19 +3,20 @@ Alpha TODO...
  - Deal properly with too many splits
  - Persist ending amt and date for a reconcile in progress (already done?)
  - Year end wrapup doesn't carry over memorized payees (do like categories)
+ - During reconcile or sorted differently the cursor sometimes jumps way down
  - Flesh out online help
  - Deploy website for testing
  - EULA
- - Web Services for online reconciliation (Open Banking API)
- - Implement Activate via Email/Phone as is appropriate 
- - Paypal API
  - Web Services for online purchase and self-service activation
+ - Paypal API
+ - Implement Activate via Email/Phone as is appropriate 
+ - Web Services for online reconciliation (Open Banking API)
  - Move SU user data to website instead of file (superuser)
  - Fix desktop Icon 
- - During reconcile or sorted differently the cursor sometimes jumps way down
  - AreYouSureForm with date/time/user that screen-captures, logs, and read log
  - Once you've entered a payee with bad capitalization, you cannot change it
  - On checkbook entry form, checkbox: "Enter AFTER other daily transactions"
+ - Speed up the many scattered ID searches by changing them to Id lookups. 
  - Much testing 
 
 Longer term TODO...

@@ -73,7 +73,7 @@ namespace AbleCheckbook.Db
         /// <returns>Collatable key.</returns>
         public string UniqueKey()
         {
-            return _payee;
+            return _categoryId.ToString();
         }
 
     }

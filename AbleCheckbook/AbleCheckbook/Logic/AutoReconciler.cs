@@ -17,9 +17,9 @@ namespace AbleCheckbook.Logic
         {
             Mismatch =  0, 
             Unlikely = 38,   // i.e. Amounts Match (generally not useful)
-            Possible = 54,   // Questionable Match (acceptable after exhaustive comparison)
-            Probable = 68,   // But Some Differences (acceptable for cautious matching)
-            Matched =  85,   // Only Minor Differences (acceptable in all cases)
+            Possible = 54,   // Questionable Match (use only with exhaustive comparison)
+            Probable = 60,   // Allow Some Differences (cautious matching)
+            Matched =  85,   // Allow Only Minor Differences (conservative matching)
         }
 
         private IDbAccess _userDb = null;

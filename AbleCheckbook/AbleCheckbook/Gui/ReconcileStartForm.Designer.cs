@@ -213,6 +213,7 @@
             this.textBoxThisBalance.Size = new System.Drawing.Size(90, 22);
             this.textBoxThisBalance.TabIndex = 4;
             this.textBoxThisBalance.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textBoxThisBalance.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxCurrency_KeyPress);
             // 
             // textBoxPrevBalance
             // 
@@ -222,6 +223,7 @@
             this.textBoxPrevBalance.Size = new System.Drawing.Size(90, 22);
             this.textBoxPrevBalance.TabIndex = 366;
             this.textBoxPrevBalance.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textBoxPrevBalance.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxCurrency_KeyPress);
             // 
             // ReconcileStartForm
             // 

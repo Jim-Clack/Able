@@ -11,7 +11,12 @@ Setup
     \Users\USER\source\repos\Able\AbleStrategiesWebsite\UnitTestProject1\bin\Debug\netcoreappX.Y
 
 Caveats
+  Rebuild AbleCheckbook (release & debug) if you alter AbleLicensing, or this will not build.
   The name of the userinfo DB is "users.json" in release mode but "debug.json" in debug mode.
+  Uses ASP.NET Core, not ASP.NET 4.x - see below.
+
+About ASP .NET Core
+  https://docs.microsoft.com/en-us/aspnet/core/fundamentals/choose-aspnet-framework?view=aspnetcore-6.0
 
 Required Reading...
   https://docs.microsoft.com/en-us/aspnet/core/fundamentals/servers/?view=aspnetcore-6.0&tabs=windows#korh

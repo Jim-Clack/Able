@@ -294,7 +294,14 @@ namespace AbleCheckbook.Logic
             {
                 daysOff = Math.Abs(bankEntry.BankTranDate.Subtract(expectedDate).Days);
             }
-            score = score + 32 - Math.Min(32, daysOff);
+            if (bankEntry.DateOfTransaction.Subtract(expectedDate).Days > 25)
+            {   // if a pmt is missing, don't match next month's pmt in its stead
+                score = score - 5; // jbc new 7-24-2022
+            }
+            else
+            { 
+                score = score + 32 - Math.Min(32, daysOff);
+            }
             // if check numbers are specified on both, add 30 or subtract 10 depending on the match
             long userCheckNumber = 0;
             long bankCheckNumber = 0;

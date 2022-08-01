@@ -673,6 +673,18 @@ namespace AbleCheckbook.Gui
 
         /////////////////////////// Event Handlers ///////////////////////////
 
+        /// <summary>
+        /// Should be first listener to be handled.
+        /// </summary>
+        /// textBoxAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxCurrency_KeyPress);
+        private void textBoxCurrency_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (UtilityMethods.ValidCharsCurrency.IndexOf(e.KeyChar) < 0 && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
         private void comboBoxPayee_Leave(object sender, EventArgs e)
         {
             AllowTypedInComboItem(comboBoxPayee);

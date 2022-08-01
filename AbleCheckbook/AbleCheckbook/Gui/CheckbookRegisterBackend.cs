@@ -161,6 +161,7 @@ namespace AbleCheckbook.Gui
                     form.rowCheckbook.Entry.BankTransaction = "";
                     form.rowCheckbook.Entry.BankMergeAccepted = false;
                     CurrentEntryId = newEntry.Id;
+                    ReloadTransactions(); // jbc new 7-24-2022
                 }
                 if (form.DeleteEntry)
                 {

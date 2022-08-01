@@ -224,6 +224,10 @@ namespace AbleStrategiesServices.Support
                 //_dbContent.LastSaved = DateTime.Now;
                 JsonSerializerOptions options = new JsonSerializerOptions();
                 options.WriteIndented = true;
+                options.IgnoreReadOnlyFields = true;
+                options.IgnoreReadOnlyProperties = true;
+                options.IncludeFields = false;
+                options.WriteIndented = true;
                 JsonUsersDb.OuterMutex.WaitOne();
                 try
                 {

@@ -62,6 +62,7 @@
             this.textBoxAmount = new System.Windows.Forms.TextBox();
             this.checkBoxEstimate = new System.Windows.Forms.CheckBox();
             this.groupBoxOccurrences = new System.Windows.Forms.GroupBox();
+            this.radioButtonDisabled = new System.Windows.Forms.RadioButton();
             this.dateTimePickerFinal = new System.Windows.Forms.DateTimePicker();
             this.numericUpDownOccurrences = new System.Windows.Forms.NumericUpDown();
             this.radioButtonFinal = new System.Windows.Forms.RadioButton();
@@ -80,7 +81,6 @@
             this.textBoxMemo = new System.Windows.Forms.TextBox();
             this.labelMemo = new System.Windows.Forms.Label();
             this.checkBoxReminder = new System.Windows.Forms.CheckBox();
-            this.radioButtonDisabled = new System.Windows.Forms.RadioButton();
             this.tabControl.SuspendLayout();
             this.tabPageMonthly.SuspendLayout();
             this.tabPageAnnually.SuspendLayout();
@@ -550,6 +550,7 @@
             this.textBoxAmount.TabIndex = 5;
             this.textBoxAmount.TextChanged += new System.EventHandler(this.textBoxAmount_TextChanged);
             this.textBoxAmount.Enter += new System.EventHandler(this.textBoxAmount_Enter);
+            this.textBoxAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxCurrency_KeyPress);
             this.textBoxAmount.Leave += new System.EventHandler(this.textBoxAmount_Leave);
             // 
             // checkBoxEstimate
@@ -578,6 +579,17 @@
             this.groupBoxOccurrences.TabIndex = 7;
             this.groupBoxOccurrences.TabStop = false;
             this.groupBoxOccurrences.Text = "Duration";
+            // 
+            // radioButtonDisabled
+            // 
+            this.radioButtonDisabled.AutoSize = true;
+            this.radioButtonDisabled.Location = new System.Drawing.Point(124, 20);
+            this.radioButtonDisabled.Name = "radioButtonDisabled";
+            this.radioButtonDisabled.Size = new System.Drawing.Size(84, 21);
+            this.radioButtonDisabled.TabIndex = 12;
+            this.radioButtonDisabled.Text = "Disabled";
+            this.radioButtonDisabled.UseVisualStyleBackColor = true;
+            this.radioButtonDisabled.CheckedChanged += new System.EventHandler(this.radioButtonDisabled_CheckedChanged);
             // 
             // dateTimePickerFinal
             // 
@@ -631,6 +643,7 @@
             this.radioButtonForever.Name = "radioButtonForever";
             this.radioButtonForever.Size = new System.Drawing.Size(78, 21);
             this.radioButtonForever.TabIndex = 8;
+            this.radioButtonForever.TabStop = true;
             this.radioButtonForever.Text = "Forever";
             this.radioButtonForever.UseVisualStyleBackColor = true;
             this.radioButtonForever.CheckedChanged += new System.EventHandler(this.radioButtonForever_CheckedChanged);
@@ -717,6 +730,7 @@
             this.textBoxFinalPayment.TabIndex = 15;
             this.textBoxFinalPayment.TextChanged += new System.EventHandler(this.textBoxFinalPayment_TextChanged);
             this.textBoxFinalPayment.Enter += new System.EventHandler(this.textBoxFinalPayment_Enter);
+            this.textBoxFinalPayment.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxCurrency_KeyPress);
             this.textBoxFinalPayment.Leave += new System.EventHandler(this.textBoxFinalPayment_Leave);
             // 
             // labelFinalPayment
@@ -770,17 +784,6 @@
             this.checkBoxReminder.TabIndex = 20;
             this.checkBoxReminder.Text = "Highlight Entry as a Reminder";
             this.checkBoxReminder.UseVisualStyleBackColor = true;
-            // 
-            // radioButtonDisabled
-            // 
-            this.radioButtonDisabled.AutoSize = true;
-            this.radioButtonDisabled.Location = new System.Drawing.Point(124, 20);
-            this.radioButtonDisabled.Name = "radioButtonDisabled";
-            this.radioButtonDisabled.Size = new System.Drawing.Size(84, 21);
-            this.radioButtonDisabled.TabIndex = 12;
-            this.radioButtonDisabled.Text = "Disabled";
-            this.radioButtonDisabled.UseVisualStyleBackColor = true;
-            this.radioButtonDisabled.CheckedChanged += new System.EventHandler(this.radioButtonDisabled_CheckedChanged);
             // 
             // ScheduledEventEditForm
             // 

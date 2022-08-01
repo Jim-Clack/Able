@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AbleLicensing;
 
 namespace AbleStrategiesServices.Support
 {
@@ -28,6 +29,69 @@ namespace AbleStrategiesServices.Support
         /// List of InteractivityRecords.
         /// </summary>
         private List<InteractivityRecord> interactivityRecords = null;
+
+        /// <summary>
+        /// API State as an int for API usage, typically a Response or Purchase value. Not persisted.
+        /// </summary>
+        private int apiState = 0;
+
+        /// <summary>
+        /// Descriptive or diagnostic or error message. Not persisted.
+        /// </summary>
+        private string message = "";
+
+        /// <summary>
+        /// PIN number, if specifically requested. Not persisted.
+        /// </summary>
+        private string pinNumber = "";
+
+        /// <summary>
+        /// API State, typically a Response or Purchase value. Not persisted.
+        /// </summary>
+        public int ApiState { get => apiState; set => apiState = value; }
+
+        /// <summary>
+        /// Descriptive or diagnostic or error message. Not persisted.
+        /// </summary>
+        public string Message { get => message; set => message = value; }
+
+        /// <summary>
+        /// PIN number, if specifically requested. Not persisted.
+        /// </summary>
+        public string PinNumber { get => pinNumber; set => pinNumber = value; }
+
+        /// <summary>
+        /// Default ctor.
+        /// </summary>
+        public UserInfo()
+        {
+            PinNumber = "";
+            Message = "";
+        }
+
+        /// <summary>
+        /// Initialized ctor.
+        /// </summary>
+        /// <param name="name">name of contact</param>
+        /// <param name="addr">street address</param>
+        /// <param name="city">city and state</param>
+        /// <param name="zip">postal code</param>
+        /// <param name="phone">phone number</param>
+        /// <param name="email">email address</param>
+        public UserInfo(string name, string addr, string city, string zip, string phone, string email)
+        {
+            LicenseRecord = new LicenseRecord();
+            LicenseRecord.ContactName = name;
+            LicenseRecord.ContactAddress = addr;
+            LicenseRecord.ContactCity = city;
+            LicenseRecord.ContactZip = zip;
+            LicenseRecord.ContactPhone = phone;
+            LicenseRecord.ContactEMail = email;
+            LicenseRecord.LicenseFeatures = "";
+            LicenseRecord.LicenseCode = "";
+            PinNumber = "";
+            Message = "";
+        }
 
         /// <summary>
         /// License data.
@@ -131,6 +195,8 @@ namespace AbleStrategiesServices.Support
                 record.Id = Guid.NewGuid();
                 record.EditFlag = EditFlag.New;
             }
+            Message = "";
+            PinNumber = "";
         }
 
         /// <summary>
@@ -202,6 +268,8 @@ namespace AbleStrategiesServices.Support
                     thisRecord.Id = Guid.NewGuid();
                 }
             }
+            Message = "";
+            PinNumber = "";
             return true;
         }
 
@@ -211,14 +279,18 @@ namespace AbleStrategiesServices.Support
         /// <returns></returns>
         public override string ToString()
         {
-            StringBuilder builder = new StringBuilder("UserInfo> ");
+            StringBuilder builder = new StringBuilder("UserInfo> " + Message);
+            if (PinNumber.Trim().Length > 0)
+            {
+                builder.Append(" [" + PinNumber + "]");
+            }
             if (licenseRecord == null)
             {
                 builder.Append("(no LicenseRecord)");
             }
             else
             {
-                builder.Append(licenseRecord.ToString());
+                builder.Append("\n          " + licenseRecord.ToString());
             }
             foreach (PurchaseRecord record in purchaseRecords)
             {

@@ -16,7 +16,8 @@ namespace AbleStrategiesServices.Support
         InPerson = 4,
         UserAlert = 7,
         ActivationWs = 8,
-        OtherWs = 9,
+        PingWs = 9,
+        OtherWs = 20,
     }
 
     public class InteractivityRecord : BaseDbRecord

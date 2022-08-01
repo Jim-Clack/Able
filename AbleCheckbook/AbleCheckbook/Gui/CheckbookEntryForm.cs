@@ -105,6 +105,11 @@ namespace AbleCheckbook.Gui
         private int[] _yOffsets = null;
 
         /// <summary>
+        /// Flag first fisit for _textBoxAmounts.
+        /// </summary>
+        private bool[] _firstVisit = null;
+
+        /// <summary>
         /// Original window dims.
         /// </summary>
         private int _winWidth = 600, _winHeight = 400;
@@ -198,6 +203,7 @@ namespace AbleCheckbook.Gui
             _textBoxAmounts = new TextBox[MaxSplits];
             _labelAmounts = new Label[MaxSplits];
             _labelCategories = new Label[MaxSplits];
+            _firstVisit = new bool[MaxSplits];
 
             for (int rowNumber = 0; rowNumber < MaxSplits; ++rowNumber)
             {
@@ -277,7 +283,9 @@ namespace AbleCheckbook.Gui
                 textBoxAmount.BringToFront();
                 textBoxAmount.Enter += new System.EventHandler(this.textBoxAmount_Enter);
                 textBoxAmount.TextChanged += new System.EventHandler(this.textBoxAmount_TextChanged);
+                textBoxAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxCurrency_KeyPress);
                 textBoxAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxAmount_KeyPress);
+                textBoxAmount.MouseUp += new System.Windows.Forms.MouseEventHandler(this.TextBox_handleMouseClick);
                 textBoxAmount.Leave += new System.EventHandler(this.textBoxAmount_Leave);
 
                 _labelCategories[rowNumber] = labelCategory;
@@ -285,6 +293,7 @@ namespace AbleCheckbook.Gui
                 _comboKinds[rowNumber] = comboKind;
                 _labelAmounts[rowNumber] = labelAmount;
                 _textBoxAmounts[rowNumber] = textBoxAmount;
+                _firstVisit[rowNumber] = true;
             }
 
             _comboCategories[0].TabIndex = 3;
@@ -924,6 +933,18 @@ namespace AbleCheckbook.Gui
             HandlePayeeChanged();
         }
 
+        /// <summary>
+        /// Should be first listener to be handled.
+        /// </summary>
+        /// textBoxAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxCurrency_KeyPress);
+        private void textBoxCurrency_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if(UtilityMethods.ValidCharsCurrency.IndexOf(e.KeyChar) < 0 && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
         private void buttonOk_Click(object sender, EventArgs e)
         {
             if (!ValidateReadyForSubmit())
@@ -1029,6 +1050,34 @@ namespace AbleCheckbook.Gui
             {
                 ((TextBox)sender).SelectAll();
             }
+        }
+
+        /// <summary>
+        /// THe first time the mouse is clicked in an amount, select its content.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TextBox_handleMouseClick(object sender, EventArgs e)
+        {
+            TextBox textBox = sender as TextBox;
+            if (textBox == null)
+            {
+                return;
+            }
+            int splitNumber = -1;
+            for(int split = 0; split < MaxSplits; ++split)
+            {
+                if(sender == _textBoxAmounts[split])
+                {
+                    splitNumber = split;
+                }
+            }
+            if (splitNumber < 0 || _firstVisit[splitNumber] != true)
+            {
+                return;
+            }
+            _firstVisit[splitNumber] = false;
+            textBox.SelectAll();
         }
     }
 }

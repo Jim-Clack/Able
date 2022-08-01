@@ -88,12 +88,12 @@ namespace AbleLicensing
     {
 
         /// <summary>
-        /// URL for calling MASTER web services
+        /// URL for calling Able Checkbook web services
         /// </summary>
 #if DEBUG
-        private string _wsUrl = "https://localhost:44363/as/master";
+        private string _wsUrl = "https://localhost:44363/as/checkbook";
 #else
-        private string _wsUrl = "http://ablestrategies.com:33333/as/master";
+        private string _wsUrl = "http://ablestrategies.com:33333/as/checkbook";
 #endif
 
         /// <summary>
@@ -169,8 +169,8 @@ namespace AbleLicensing
         /// Request a Purch, lCode, and even a PIN from the Able Strategies server. Main entry point.
         /// </summary>
         /// <param name="addr">installation street address</param>
-        /// <param name="zip">installation postal code</param>
         /// <param name="city">installation city</param>
+        /// <param name="zip">installation postal code</param>
         /// <param name="phone">installation phone number</param>
         /// <param name="email">installation email address</param>
         /// <param name="feature">installation edition/features/etc to be purchased, if necessary</param>
@@ -178,6 +178,7 @@ namespace AbleLicensing
         /// <param name="purchase">validation code from the purchase, null if unknown *</param>
         /// <returns>Results of the attempt to activate</returns>
         /// <remarks>
+        /// * addr. zip, city, phone, email are required fields and should be valid
         /// * If both lCode and purchase are passed in as null, it will trigger a PayPal purchase.
         ///   If either are passed in as null, the system will first attempt to find the transaction
         ///   and then, only if it cannot, will it trigger a PayPal purchase.
@@ -253,7 +254,7 @@ namespace AbleLicensing
         }
 
         /////////////////////// Web Service API Calls ////////////////////////
-
+        
         /// <summary>
         /// Verify that we can connect to the server.
         /// </summary>

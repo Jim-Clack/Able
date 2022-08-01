@@ -20,9 +20,9 @@ namespace AbleStrategiesServices.Support
         /// Only allow this IP address to access DB generally
         /// </summary>
 #if DEBUG
-        private string SuperSuperUserIp = "::1";
+        private string HyperUserIp = "::1";
 #else
-        private string SuperSuperUserIp = "192.2.2.2";
+        private string HyperUserIp = "192.2.2.2";
 #endif
 
         /// <summary>
@@ -53,9 +53,9 @@ namespace AbleStrategiesServices.Support
         /// </summary>
         /// <param name="ipAddress">The client IP address</param>
         /// <returns>true if a super super user</returns>
-        public bool IsSuperSuperUser(System.Net.IPAddress ipAddress)
+        public bool IsHyperUser(System.Net.IPAddress ipAddress)
         {
-            return ipAddress.ToString().ToUpper().Contains(SuperSuperUserIp);
+            return ipAddress.ToString().ToUpper().Contains(HyperUserIp);
         }
 
     }

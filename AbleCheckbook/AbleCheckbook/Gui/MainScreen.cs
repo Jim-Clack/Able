@@ -148,9 +148,9 @@ namespace AbleCheckbook
             {
                 e.Row.Height = 12;
             }
-            if (e.Row.Height > 66)
+            if (e.Row.Height > 100)
             {
-                e.Row.Height = 66;
+                e.Row.Height = 100;
             }
             if (e.Row.DataBoundItem != null)
             {

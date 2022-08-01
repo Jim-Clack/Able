@@ -36,24 +36,25 @@ Class Topology...
 
 Developer Tips...
  1. Some APIs are public merely to support serialization or unit testing
- 2. Before performing each operation from the GUI, call MarkUndoBlock()
+ 2. Surround each GUI operation with BeforeOperation() and AfterOperation() 
  3. Allow foreign language Categories and Payees - don't translate
  4. Filenames are in English and NOT translated per i18n
  5. Yes, it's not performant, deliberately -> simplicity until it's stable
  6. When you add/mod quoted text, be sure to update Strings.cs as well
  7. db.UpdateEntry() caveats galore, esp w/Undo, because of live data
  8. db.InsertEntry() caveats as well, don't modify record AFTER the insert
+ 9. Web Services: Rebuild references (i.e. AbleLicensing) after change/build
 
 Design of this project...
  * Avoid the use of sophisticated libraries, as it's intended to be ported
  * Presume nothing about the presentation layer other than in the GUI code
  * A flat-file DB is used but may be ported to a relational DB in the future
  * Don't use a Windows Resource res/rc file as this uses a portable solution
- * Undo of anything that impacts the DB, using granularity based on UI ops
+ * Undo anything that impacts the DB, using granularity based on UI opers
  * Automatic recovery from crashes, corrupt-data, and other such conditions
  * Event handlers must be small, up to five or six statements max
- * Maintain average MI of 75+ and CycComp to 5 or less in 95% of methods
- * 60% test coverage with 99% of happy-path therein (in non-GUI code)
+ * Maintain average MI of 75+ and CycComp to 5 or less in non-GUI methods
+ * 65% test coverage of non-GUI code, addressing all happy-paths therein 
 
 User Levels (and corresponding License Code delimiters)...
  0. Eval (Unlicensed, Time Limited, Limited Undo, No Support, No Admin)
@@ -73,10 +74,10 @@ When writing docs/help, explain...
 
 Kludge to enable your system (via Able Licensing) for Super-User mode...
  Activation.Instance.SetDefaultDays(180, 366); // note1: not needed but shown for completeness
- Activation.Instance.LicenseCode = "MYNAME@99999"; // The @-sign (plus compile/run in DEBUG mode) enables SuperUser mode
+ Activation.Instance.LicenseCode = "MYNAME@99999"; // Name6 + @ + zip5 (plus compile/run in DEBUG mode) enables SuperUser mode
  string pin = Activation.Instance.CalculatePin(Activation.Instance.ChecksumOfString(Activation.Instance.SiteIdentification));
  Activation.Instance.SetActivationPin(pin);
- Activation.Instance.SetFeatureBitmask(0x000000000000000FL, Activation.Instance.ChecksumOfString(Activation.Instance.SiteIdentification)); // note1
+ Activation.Instance.SetFeatureBitmask(0x000000000000000FL, Activation.Instance.ChecksumOfString(Activation.Instance.SiteIdentification));
  Activation.Instance.SetExpiration(2, Activation.Instance.ChecksumOfString(Activation.Instance.SiteIdentification)); // note1
 
 MS DotNet WebBrowser...
@@ -88,6 +89,8 @@ Open Banking API...
 PayPal
  https://developer.paypal.com/home
  https://developer.paypal.com/docs/business/checkout/set-up-standard-payments/
+Desktop Icon
+ https://techcommunity.microsoft.com/t5/windows-dev-appconsult/msix-create-desktop-shortcuts-with-package-support-framework-and/ba-p/3300891
 Info on deploying .NET apps to Linux
  https://docs.microsoft.com/en-us/dotnet/core/deploying/#framework-dependent-deployments-fdd
 Google Drive API...
@@ -117,9 +120,11 @@ Note to critics:
  live data records in memory. But put a neutral DB interface on it so it 
  could be changed later. Do I regret it? Yes. And no. It's fast and achieves
  its objectives. But it's error-prone and non-standard. Yet for now, don't
- fix it if it ain't broke.
+ fix it if it ain't broke. (I learned from this exercise and the server-side
+ JSON DB is much cleaner.)
 
-Notes to developers who are MS/VS virgins:
+Notes to developers who are MS/VS virgins...
+
  For some items in Solution Explorer (and in other views as well) there are 
  two completely separate and distinct collections of settings, one called 
  "Properties" and the other, very interestingly, called "Properties". Yes 
@@ -151,7 +156,9 @@ Notes to developers who are MS/VS virgins:
  form that comes up in a foreign language. Go back to the code and undo 
  whatever you did that caused the issue. You may want to avoid using Undo
  to do this because, when such situations occur, it will often undo much
- more than you expect.
+ more than you expect. You will likely find the offending code to have been
+ appended to the end of the source code but, before deleting it, remove any
+ references to it in the designer - or you'll regret it.
 
  A ComboBox, in its default configuration, allows the user to type in any
  string they want. But when they leave the ComboBox it changes the user's

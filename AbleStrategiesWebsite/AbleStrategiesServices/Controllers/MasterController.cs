@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Razor;
 using AbleStrategiesServices.Support;
 using Newtonsoft.Json;
 
@@ -14,16 +11,22 @@ using Newtonsoft.Json;
 /// </summary>
 namespace AbleStrategiesServices.Controllers
 {
+
+    /// <summary>
+    /// Super User API for DB maintenance and diagnostics.
+    /// </summary>
     [Route("as/[controller]")]
     [ApiController]
     public class MasterController : ControllerBase
     {
 
+        /////////////////////////////// APIs /////////////////////////////////
+
         // GET as/master
         /// <summary>
-        /// Simple APi to verify the connection.
+        /// Simple API to verify the connection.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>array of useful string values</returns>
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
@@ -50,32 +53,16 @@ namespace AbleStrategiesServices.Controllers
         [HttpGet("{by}")]
         public JsonResult Get([FromRoute] string by, [FromQuery]string pattern)
         {
-            UserInfo[] userInfo = null;
             string ipAddress = HttpContext.Connection.RemoteIpAddress.ToString();
-            by = by.Trim().ToLower();
-            if (SupportMethods.HasWildcard(pattern) && !Configuration.Instance.IsSuperSuperUser(HttpContext.Connection.RemoteIpAddress))
+            if (SupportMethods.HasWildcard(pattern) && !Configuration.Instance.IsHyperUser(HttpContext.Connection.RemoteIpAddress))
             {
-                Logger.Warn(ipAddress, "Attempted unauthorized access [" + pattern + "]");
+                Logger.Warn(ipAddress.ToString(), "Attempted unauthorized access [" + pattern + "]");
                 return null;
             }
-            try
-            {
-                Logger.Diag(ipAddress, "Lookup " + by + " [" + pattern + "]");
-                userInfo = LookupUserInfo(by, pattern);
-            }
-            catch (Exception ex)
-            {
-                Logger.Warn(null, "Failed to process", ex);
-            }
-            return AsJsonResult(userInfo);
+            return ApiSupport.AsJsonResult(ApiSupport.GetUserInfoBy(ipAddress, by, pattern, null, true));
         }
 
-        /*
-         TODO
-          - Remove EditFlag from JSON output !!!
-         */
-
-        // POST as/master
+        // POST as/master (JSON Body)
         /// <summary>
         /// Create a new user info.
         /// </summary>
@@ -87,24 +74,24 @@ namespace AbleStrategiesServices.Controllers
         public string Post([FromBody] UserInfo userInfo)
         {
             string ipAddress = HttpContext.Connection.RemoteIpAddress.ToString();
-            if (!Configuration.Instance.IsSuperSuperUser(HttpContext.Connection.RemoteIpAddress))
+            Logger.Diag(ipAddress, "Post - insert new UserInfo...\n" + userInfo.ToString());
+            if (!Configuration.Instance.IsHyperUser(HttpContext.Connection.RemoteIpAddress))
             {
                 Logger.Warn(ipAddress, "Attempted unauthorized access");
                 return "";
             }
-            userInfo.SetIdsAllNew();
-            Logger.Diag(ipAddress, "Post - insert new UserInfo...\n" + userInfo.ToString());
             List<UserInfo> userInfos = UserInfoDbo.Instance.GetByLicenseCode(userInfo.LicenseRecord.LicenseCode.Trim());
-            if(userInfos != null && userInfos.Count != 1)
+            userInfo.SetIdsAllNew();
+            if (userInfos != null && userInfos.Count != 1)
             {
-                Logger.Warn(null, "License Code already exists");
+                Logger.Warn(null, "License Code already exists, cannot create");
                 return "";
             }
             try
             {
                 UserInfoDbo.Instance.Update(userInfo);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Logger.Warn(null, "Problem writing to DB " + ex);
                 return "";
@@ -112,160 +99,85 @@ namespace AbleStrategiesServices.Controllers
             return userInfo.LicenseRecord.Id.ToString();
         }
 
-        // PUT as/master/5
+        // PUT as/master (JSON Body)
         /// <summary>
-        /// Update an existing user info, given the ID (not the license code)
+        /// Update an existing user info, based on the License ID and the license code
         /// </summary>
-        /// <param name="id">the license record ID (not the license code)</param>
-        /// <param name="value">Populated JSON UserInfo (FkLiceseId is ignored, Id is significant)</param>
+        /// <param name="value">Populated JSON UserInfo (License Id and LicenseCode are significant)</param>
         /// <remarks>Unlike Post, this (Put) method requires that the ID of each record be correct.</remarks>
         /// <returns>the ID of the license record (not the license code)</returns>
         [HttpPut("{id}")]
-        public string Put(int id, [FromBody] UserInfo userInfo)
+        public string Put([FromBody] UserInfo userInfo)
         {
-
-
-            return "";
+            string ipAddress = HttpContext.Connection.RemoteIpAddress.ToString();
+            Logger.Diag(ipAddress, "Put - update existing UserInfo...\n" + userInfo.ToString());
+            if (!Configuration.Instance.IsHyperUser(HttpContext.Connection.RemoteIpAddress))
+            {
+                Logger.Warn(ipAddress, "Attempted unauthorized access");
+                return "";
+            }
+            List<UserInfo> userInfos = UserInfoDbo.Instance.GetByLicenseCode(userInfo.LicenseRecord.LicenseCode.Trim());
+            if (userInfos == null || userInfos.Count != 1)
+            {
+                Logger.Warn(null, "Cannot find existing License Code. Cannot update");
+                return "";
+            }
+            if (userInfos[0].LicenseRecord.Id != userInfo.LicenseRecord.Id)
+            {
+                Logger.Warn(null, "Id does not match License. Cannot update");
+                return "";
+            }
+            try
+            {
+                UserInfoDbo.Instance.Update(userInfo);
+            }
+            catch (Exception ex)
+            {
+                Logger.Warn(null, "Problem writing to DB " + ex);
+                return "";
+            }
+            return userInfo.LicenseRecord.Id.ToString();
         }
 
-        // DELETE as/master/5
+        // DELETE as/master/aab54ae5-5329-4807-9878-a1b262c15bff
         /// <summary>
         /// Delete a user info, given the ID (not the license code)
         /// </summary>
-        /// <param name="id">the license record ID (not the license code)</param>
+        /// <param name="id">regex that matches the license record ID(s) (not the license code)</param>
+        /// <returns>0 if not found, else number of records deleted</returns>
         [HttpDelete("{id}")]
-        public void Delete(string id)
+        public int Delete([FromRoute] string id)
         {
-            UserInfo[] userInfo = null;
-            int recordCount = 0;
             string ipAddress = HttpContext.Connection.RemoteIpAddress.ToString();
+            Logger.Diag(ipAddress, "Delete - delete existing UserInfo(s)...\n" + id);
+            if (!Configuration.Instance.IsHyperUser(HttpContext.Connection.RemoteIpAddress))
+            {
+                Logger.Warn(ipAddress, "Attempted unauthorized access");
+                return 0;
+            }
+            UserInfo[] userInfos = null;
+            int recordCount = 0;
             Guid guid = new Guid(id.Trim());
             try
             {
-                Logger.Diag(ipAddress, "Delete " + id + "]");
-                userInfo = LookupUserInfo("id", id);
+                userInfos = ApiSupport.LookupUserInfo(HttpContext.Connection.RemoteIpAddress.ToString(), "id", id, false);
             }
             catch (Exception ex)
             {
                 Logger.Warn(null, "Failed to process", ex);
             }
-            if(userInfo != null && userInfo.Length > 0)
+            if(userInfos != null && userInfos.Length == 1)
             {
-                UserInfoBuilder builder = new UserInfoBuilder(userInfo[0]);
-                recordCount = UserInfoDbo.Instance.Delete(userInfo[0]);
+                UserInfoBuilder builder = new UserInfoBuilder(userInfos[0]);
+                recordCount = UserInfoDbo.Instance.Delete(userInfos[0]);
             }
-            Logger.Warn(ipAddress, "Deleted " + recordCount + " Records from DB, ID=" + userInfo[0].LicenseRecord.Id.ToString());
-        }
-
-        /// <summary>
-        /// Converft a JSON string to a UserInfo object.
-        /// </summary>
-        /// <param name="value">JSON string</param>
-        /// <returns>The user info object, possibly null on error</returns>
-        private static UserInfo JsonToUserInfo(string value)
-        {
-            JsonSerializerSettings settings = new JsonSerializerSettings();
-            settings.Formatting = Formatting.Indented;
-            settings.MaxDepth = 20;
-            settings.NullValueHandling = NullValueHandling.Include;
-            settings.PreserveReferencesHandling = PreserveReferencesHandling.None;
-            settings.CheckAdditionalContent = true;
-            settings.MetadataPropertyHandling = MetadataPropertyHandling.Ignore;
-            settings.Culture = new CultureInfo("en-US");
-            UserInfo userInfo = JsonConvert.DeserializeObject(value, settings) as UserInfo;
-            return userInfo;
-        }
-
-        /// <summary>
-        /// Return the JsonResult representing an object.
-        /// </summary>
-        /// <param name="userInfo">To be represented as JSON, null okay</param>
-        /// <returns>The JsonResult</returns>
-        private JsonResult AsJsonResult(UserInfo[] userInfo)
-        {
-            JsonSerializerSettings settings = new JsonSerializerSettings();
-            settings.Formatting = Formatting.Indented;
-            settings.MaxDepth = 20;
-            settings.NullValueHandling = NullValueHandling.Include;
-            settings.PreserveReferencesHandling = PreserveReferencesHandling.None;
-            settings.CheckAdditionalContent = true;
-            settings.MetadataPropertyHandling = MetadataPropertyHandling.Ignore;
-            settings.Culture = new CultureInfo("en-US");
-            return new JsonResult(userInfo, settings);
-        }
-
-        /// <summary>
-        /// Perform a lookup of UserInfo
-        /// </summary>
-        /// <param name="by">literal: id, license, site, name, address, city, phone, email, interactivity, daterange</param>
-        /// <param name="pattern">Lookup value, often a regular expression (for daterange it must include a hyphen)</param>
-        /// <returns>Array of matching UserInfos, null if not authorized</returns>
-        /// <remarks>For dates, if the date is missing or improperly formatted, the call defaults to "the past 60 days"</remarks>
-        private UserInfo[] LookupUserInfo(string by, string pattern)
-        {
-            List<UserInfo> userInfo = null;
-            string ipAddress = HttpContext.Connection.RemoteIpAddress.ToString();
-            switch (by)
+            else
             {
-                case "id":
-                    userInfo = UserInfoDbo.Instance.GetById(new Guid(pattern));
-                    break;
-                case "license":
-                case "licensecode":
-                    userInfo = UserInfoDbo.Instance.GetByLicenseCode(pattern);
-                    break;
-                case "site":
-                case "siteid":
-                case "sitecode":
-                    userInfo = UserInfoDbo.Instance.GetBySiteCode(pattern);
-                    break;
-                case "name":
-                case "contactname":
-                    userInfo = UserInfoDbo.Instance.GetByContactName(pattern);
-                    break;
-                case "address":
-                case "contactaddress":
-                    userInfo = UserInfoDbo.Instance.GetByContactAddress(pattern);
-                    break;
-                case "city":
-                case "contactcity":
-                    userInfo = UserInfoDbo.Instance.GetByContactCity(pattern);
-                    break;
-                case "email":
-                case "contactemail":
-                    userInfo = UserInfoDbo.Instance.GetByContactEmail(pattern);
-                    break;
-                case "phone":
-                case "contactphone":
-                    userInfo = UserInfoDbo.Instance.GetByContactPhone(pattern);
-                    break;
-                case "interactivity":
-                case "recentinteractivity":
-                    DateTime startDate = DateTime.Now.AddDays(-60);
-                    DateTime.TryParse(pattern, out startDate);
-                    userInfo = UserInfoDbo.Instance.GetByRecentInteractivity(startDate);
-                    break;
-                case "originaldate":
-                case "daterange":
-                    DateTime fromDate = DateTime.Now.AddDays(-60);
-                    DateTime thruDate = DateTime.Now;
-                    string[] dateStrings = pattern.Trim().Split("->");
-                    if(dateStrings.Length == 2)
-                    {
-                        DateTime.TryParse(dateStrings[0].Trim(), out fromDate);
-                        DateTime.TryParse(dateStrings[1].Trim(), out thruDate);
-                    }
-                    userInfo = UserInfoDbo.Instance.GetByOriginalDate(fromDate, thruDate);
-                    break;
-                default: 
-                    Logger.Warn(ipAddress, "Bad lookup by [" + by + "]");
-                    break;
+                Logger.Warn(ipAddress, "Cannot delete records from DB, no single match, ID=" + id);
+                return 0;
             }
-            if (userInfo == null)
-            {
-                return null;
-            }
-            return userInfo.ToArray();
+            Logger.Diag(ipAddress, "Deleted " + recordCount + " Records from DB, ID=" + userInfos[0].LicenseRecord.Id.ToString());
+            return recordCount;
         }
 
     }

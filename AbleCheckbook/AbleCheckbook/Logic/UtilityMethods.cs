@@ -14,6 +14,13 @@ namespace AbleCheckbook.Logic
 {
     public static class UtilityMethods
     {
+        /// <summary>
+        /// Valid characters in a currency field.
+        /// </summary>
+        public static string ValidCharsCurrency = "0123456789().-,$" 
+            + CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol 
+            + CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator 
+            + CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator;
 
         /// <summary>
         /// Clamp a value to a range between a min and a max.

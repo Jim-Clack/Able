@@ -272,6 +272,7 @@ namespace AbleStrategiesServices.Support
         /// </summary>
         /// <param name="userInfo">possibly modified data to be written to the DB</param>
         /// <returns>success, see ErrorMessage</returns>
+        /// <remarks>This will not delete any records, just update and add</remarks>
         public bool Update(UserInfo userInfo)
         {
             bool ok = true;
@@ -335,21 +336,32 @@ namespace AbleStrategiesServices.Support
         /// </summary>
         /// <param name="licenseRecords">License records</param>
         /// <returns>The list of userInfo if all is well; otherwise null</returns>
-        private List<UserInfo> PopulateLists(List<LicenseRecord> licenseRecords)
+        public List<UserInfo> PopulateLists(List<LicenseRecord> licenseRecords)
         {
             List<UserInfo> results = new List<UserInfo>();
             foreach (LicenseRecord record in licenseRecords)
             {
                 UserInfo userInfo = new UserInfo();
                 userInfo.LicenseRecord = record;
-                userInfo.PurchaseRecords = JsonUsersDb.Instance.PurchasesByFkLicense(userInfo.LicenseRecord.Id);
                 userInfo.DeviceRecords = JsonUsersDb.Instance.DevicesByFkLicense(userInfo.LicenseRecord.Id);
-                userInfo.InteractivityRecords = JsonUsersDb.Instance.InteractivitiesByFkLicense(userInfo.LicenseRecord.Id);
                 results.Add(userInfo);
             }
             return results;
         }
 
-    }
+        /// <summary>
+        /// Update a list of userInfo objects.
+        /// </summary>
+        /// <param name="userInfos">UserInfo records to be updates</param>
+        /// <returns>The list of userInfo passed in, updated</returns>
+        public List<UserInfo> UpdateListWithPurchAndInter(List<UserInfo> userInfos)
+        {
+            foreach(UserInfo userInfo in userInfos)
+            {
+                userInfo.PurchaseRecords = JsonUsersDb.Instance.PurchasesByFkLicense(userInfo.LicenseRecord.Id);
+                userInfo.InteractivityRecords = JsonUsersDb.Instance.InteractivitiesByFkLicense(userInfo.LicenseRecord.Id);
+            }
+            return userInfos;
+        }
 
-}
+    }

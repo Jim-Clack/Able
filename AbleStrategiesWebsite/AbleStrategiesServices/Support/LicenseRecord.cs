@@ -27,6 +27,11 @@ namespace AbleStrategiesServices.Support
         private string contactCity = "";
 
         /// <summary>
+        /// Postal code
+        /// </summary>
+        private string contactZip = "";
+
+        /// <summary>
         /// Contact phone.
         /// </summary>
         private string contactPhone = "";
@@ -128,6 +133,22 @@ namespace AbleStrategiesServices.Support
             set
             {
                 contactCity = value;
+                Mod();
+            }
+        }
+
+        /// <summary>
+        /// Postal Code.
+        /// </summary>
+        public string ContactZip
+        {
+            get
+            {
+                return contactZip;
+            }
+            set
+            {
+                contactZip = value;
                 Mod();
             }
         }

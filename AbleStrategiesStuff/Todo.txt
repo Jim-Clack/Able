@@ -1,31 +1,29 @@
-Alpha TODO...
- - Flesh out online help
- - Deploy website for testing
- - EULA
- - Web Services for online purchase and self-service activation
- - Paypal API
- - Implement Activate via Email/Phone as is appropriate 
- - Web Services for online reconciliation (Open Banking API)
- - Move SU user data to website instead of file (superuser)
- - Fix desktop Icon 
- - AreYouSureForm with date/time/user that screen-captures, logs, and read log
- - Once you've entered a payee with bad capitalization, you cannot change it
- - On checkbook entry form, checkbox: "Enter AFTER other daily transactions"
- - Speed up the many scattered ID searches by changing them to Id lookups. 
- - If sorted differently the cursor sometimes jumps way down
+Alpha TODO... (C=client/default, S=server)
+ - Flesh out online help (S)
+ - Deploy website for testing (S)
+ - EULA (C/S)
+ - Web Services for online purchase and self-service activation (S)
+ - Paypal API (S)
+ - Implement Activate via Email/Phone as is appropriate (C/S)
+ - Web Services for online reconciliation (Open Banking API) (S)
+ - Move SU user data to website instead of file (superuser) (C/S)
+ - Implement SU ReadLog (C/S)
+ - Fix desktop Icon (C)
+ - AreYouSureForm with date/time/user that screen-captures, logs, and read log (C/S)
+ - Once you've entered a payee with bad capitalization, you cannot change it (C)
+ - If sorted differently the cursor sometimes jumps way down (C)
  - Much testing 
 
 Longer term TODO...
- - Activation: Add a time-of-day stamp to an image file as a tertiary expiry check
  - Why can't program.cs trap exceptions? (debug mode only?)
  - Refactor to extract large methods
- - Quick yesterday-thru-future condensed report as jpg file (date, payee, amt, bal)
+ - Quick yesterday thru future-low+2 condensed report as jpg file (date, payee, amt, bal)
  - Budgeting, forecasting, trends, etc.
- - Implement SU ReadLog
  - When to call DiscardWeakRefs
  - Better Icon, Toolbar Images, etc.
  - If ending amt (& date ?) is blank in reconcile, read from last entry in CSV file
  - Change JsonDbXxx so that all records derive from DbRecord, like in WebServices
+ - Activation: Add a time-of-day stamp to an image file as a tertiary expiry check
  - Call Dispose() for fonts/colors/etc. (...or, better yet, "using")
  - Need a command to "check for duplicates" and fix them
  - Need a "rename category" that will, if required, merge categories

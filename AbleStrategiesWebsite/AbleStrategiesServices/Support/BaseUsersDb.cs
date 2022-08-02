@@ -54,7 +54,7 @@ namespace AbleStrategiesServices.Support
         /// <summary>
         /// Get a cursor/enumerator over all records.
         /// </summary>
-        public abstract Dictionary<Guid, LicenseRecord>.Enumerator LicencesEnumerator { get; }
+        public abstract Dictionary<Guid, LicenseRecord>.Enumerator LicensesEnumerator { get; }
 
         /// <summary>
         /// Find record with a specific ID

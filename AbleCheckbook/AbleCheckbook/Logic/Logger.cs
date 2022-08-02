@@ -113,7 +113,7 @@ namespace AbleCheckbook.Logic
                 _writer.WriteLine("\r\n###### " + DateTime.Now.ToLocalTime() + " ######\r\n");
                 _writer.WriteLine("DB v: " + Version.DbVersion);
                 _writer.WriteLine("App v: " + Version.AppVersion);
-                _writer.WriteLine("User: " + Environment.UserName + "\r\n");
+                _writer.WriteLine("User: " + Environment.UserName + "\r\n"); 
                 _writer.WriteLine("Level: " + _level);
                 _writer.AutoFlush = true;
             }

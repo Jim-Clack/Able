@@ -32,14 +32,19 @@ namespace AbleStrategiesServices.Support
         private static bool PerformUnecessaryUpdates = true;
 
         /// <summary>
-        /// Here's the in-memory db.
+        /// Are DB operations suspended?
         /// </summary>
-        private DbContent dbContent = null;
+        private static bool suspended = false;
 
         /// <summary>
         /// Our one-and-only instance.
         /// </summary>
         private static JsonUsersDb instance = null;
+
+        /// <summary>
+        /// Here's the in-memory db.
+        /// </summary>
+        private DbContent dbContent = null;
 
         /// <summary>
         /// Path and name of JSON file with all data.
@@ -90,31 +95,70 @@ namespace AbleStrategiesServices.Support
         public static Mutex OuterMutex { get => outerMutex; }
 
         /// <summary>
-        /// Fetch the singleton.
+        /// Fetch the singleton. Note: Do not hold onto the instance, say to store in in a variable. Always call this.
         /// </summary>
         public static JsonUsersDb Instance
         {
             get
-            {
-                // This is NOT a redundant "if" but it is here so we don't lock for 
-                // initial simultaneous Instance reference, crippling performance.
-                if (instance == null)
+            { 
+                long loops = 0;
+                while (suspended)
                 {
-                    outerMutex.WaitOne();
-                    try
+                    Thread.Sleep(500);
+                    if (++loops > 30)
                     {
-                        if (instance == null)
-                        {
-                            instance = new JsonUsersDb();
-                        }
-                    }
-                    finally
-                    {
-                        outerMutex.ReleaseMutex();
+                        Logger.Warn(null, "JsonUsersDb has been suspended for 15 seconds!");
                     }
                 }
+                EnsureInstanceExists();
                 return instance;
             }
+        }
+
+        /// <summary>
+        /// Create the instance if necessary.
+        /// </summary>
+        private static void EnsureInstanceExists()
+        {
+            // This is NOT a redundant "if" but it is here so we don't lock for 
+            // initial simultaneous Instance reference, crippling performance.
+            if (instance == null)
+            {
+                outerMutex.WaitOne();
+                try
+                {
+                    if (instance == null)
+                    {
+                        instance = new JsonUsersDb();
+                    }
+                }
+                finally
+                {
+                    outerMutex.ReleaseMutex();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Pause DB operations, hold back requests.
+        /// </summary>
+        public static void Suspend()
+        {
+            suspended = true;
+            Thread.Sleep(2000); // allow current operations to complete
+            if (instance != null)
+            {
+                instance.SyncAndClose();
+            }
+            instance = null;
+        }
+
+        /// <summary>
+        /// Resume DB operations after a prior Suspend() call.
+        /// </summary>
+        public static void Resume()
+        {
+            suspended = false;
         }
 
         /// <summary>
@@ -208,6 +252,17 @@ namespace AbleStrategiesServices.Support
         public override void Dispose()
         {
             instance = null;
+        }
+
+        /// <summary>
+        /// Return the full absolute path to the DB file.
+        /// </summary>
+        public string FullPath
+        {
+            get
+            {
+                return fullPath;
+            }
         }
 
         /// <summary>
@@ -391,7 +446,7 @@ namespace AbleStrategiesServices.Support
         /// <summary>
         /// Get a cursor/enumerator over all records.
         /// </summary>
-        public override Dictionary<Guid, LicenseRecord>.Enumerator LicencesEnumerator
+        public override Dictionary<Guid, LicenseRecord>.Enumerator LicensesEnumerator
         {
             get
             {

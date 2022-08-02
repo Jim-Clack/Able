@@ -12,6 +12,16 @@ namespace AbleStrategiesServices.Support
     {
 
         /// <summary>
+        /// How many of the oldest interactivity records to retain in each UserInfo.
+        /// </summary>
+        private static int NumOldInteractivityRecsToKeep = 4;
+
+        /// <summary>
+        /// How many of the newest interactivity records to retain in each UserInfo.
+        /// </summary>
+        private static int NumNewInteractivityRecsToKeep = 4;
+
+        /// <summary>
         /// Track errors.
         /// </summary>
         private string errorMessage = "";
@@ -328,7 +338,36 @@ namespace AbleStrategiesServices.Support
                 }
             }
             Sync();
+            PurgeSpuriousInteractivity(userInfo.LicenseRecord.Id);
             return ok;
+        }
+
+        /// <summary>
+        /// Delete all but the oldest and newest interactivity records in a UserInfo.
+        /// </summary>
+        /// <param name="licenseId"></param>
+        private void PurgeSpuriousInteractivity(Guid licenseId)
+        {
+            List<InteractivityRecord> records = JsonUsersDb.Instance.InteractivitiesByFkLicense(licenseId);
+            int numRecs = records.Count;
+            if(numRecs < NumOldInteractivityRecsToKeep + NumNewInteractivityRecsToKeep)
+            {
+                return;
+            }
+            SortedList<DateTime, InteractivityRecord> sortedRecords = new SortedList<DateTime, InteractivityRecord>();
+            foreach(InteractivityRecord record in records)
+            {
+                sortedRecords.Add(record.DateModified, record);
+            }
+            int recNum = 0;
+            foreach(InteractivityRecord record in sortedRecords.Values)
+            {
+                if(recNum >= NumOldInteractivityRecsToKeep && recNum < numRecs - NumNewInteractivityRecsToKeep)
+                {
+                    record.EditFlag = EditFlag.Deleted;
+                    JsonUsersDb.Instance.UpdateDb(record);
+                }
+            }
         }
 
         /// <summary>

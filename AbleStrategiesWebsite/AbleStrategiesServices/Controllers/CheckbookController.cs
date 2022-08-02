@@ -49,13 +49,13 @@ namespace AbleStrategiesServices.Controllers
         /// <summary>
         /// Return user license info.
         /// </summary>
-        /// <param name="licenseCode">expected license code (will be verified - must be correct)</param>
+        /// <param name="lCode">expected license code (will be verified - must be correct)</param>
         /// <returns>List of 0-1 user info records, empty if not found, null if not verified</returns>
-        [HttpGet("{licenseCode}")]
-        public JsonResult Get([FromRoute] string licenseCode)
+        [HttpGet("user/{lCode}")]
+        public JsonResult GetUser([FromRoute] string lCode)
         {
             string ipAddress = HttpContext.Connection.RemoteIpAddress.ToString();
-            UserInfo[] userInfos = ApiSupport.GetUserInfoBy(ipAddress, "license", licenseCode, licenseCode, false);
+            UserInfo[] userInfos = ApiSupport.GetUserInfoBy(ipAddress, "license", lCode, lCode, false);
             return ApiSupport.AsJsonResult(new UserInfoResponse((int)ApiState.ReturnOk, userInfos.ToList()));
         }
 
@@ -67,8 +67,8 @@ namespace AbleStrategiesServices.Controllers
         /// <param name="siteId">site/device code</param>
         /// <returns>success</returns>
         /// <remarks>Body of request contain the log text to be uploaded</remarks>
-        [HttpPut("{lCode}/{siteId}")]
-        public bool Put([FromRoute] string lCode, [FromRoute] string siteId /*, [FromBody] string logContent */)
+        [HttpPut("log/{lCode}/{siteId}")]
+        public bool PutLog([FromRoute] string lCode, [FromRoute] string siteId /*, [FromBody] string logContent */)
         {
             string ipAddress = HttpContext.Connection.RemoteIpAddress.ToString();
             if (lCode.Length < 1 || siteId.Length < 1)
@@ -117,8 +117,8 @@ namespace AbleStrategiesServices.Controllers
         /// * Caution: Multiple devices per user license, each with their own site id, may be returned. 
         ///   (caller must search for the correct one per the site id)
         /// </remarks>
-        [HttpPost("{apiState}")]
-        public JsonResult Post([FromRoute] int apiState, 
+        [HttpPost("db/{apiState}")]
+        public JsonResult PostDb([FromRoute] int apiState, 
             [FromQuery] string name, [FromQuery] string addr, [FromQuery] string city, [FromQuery] string zip, [FromQuery] string phone, 
             [FromQuery] string email, [FromQuery] string feature, [FromQuery] string lCode, [FromQuery] string purchase)
         {
@@ -142,9 +142,9 @@ namespace AbleStrategiesServices.Controllers
             {
                 existingUserInfo = userInfos.First();
             }
-            else if(apiState >= (int)AbleLicensing.ApiState.UpdateInfo)
+            else if(apiState >= (int)AbleLicensing.ApiState.UpdateInfo && apiState != (int)AbleLicensing.ApiState.MakePurchase)
             {
-                Logger.Warn(ipAddress, "ProcessLicense " + apiState + " called but license code not found in DB");
+                Logger.Warn(ipAddress, "PostDb " + apiState + " called, but license code not found in DB");
                 return ApiSupport.AsJsonResult(
                     new UserInfoResponse((int)ApiState.ReturnNotMatched, null, "Cannot find specified license"));
             }

@@ -5,11 +5,11 @@
   "LastAccess": "2022-06-12T12:47:19.2342398-04:00",
   "LicenseRecords": {
     "aab54ae5-5129-4807-9878-a1b262c15bff": {
-      "RecordKind": "LicenseRecord",
       "LicenseCode": "Test-Record",
       "ContactName": "Ben Dover",
       "ContactAddress": "123 Main",
       "ContactCity": "Nowhere",
+      "ContactZip": "",
       "ContactPhone": "123-456-7890",
       "ContactEMail": "abc@xyz.com",
       "LicenseFeatures": "",
@@ -18,11 +18,11 @@
       "DateModified": "2022-06-12T12:47:19.246984-04:00"
     },
     "52983441-3d5c-4dce-8c56-0758a423bdd2": {
-      "RecordKind": "LicenseRecord",
       "LicenseCode": "Second-Test",
       "ContactName": "Hugh Jass",
       "ContactAddress": "100 Main",
       "ContactCity": "Anywhere",
+      "ContactZip": "",
       "ContactPhone": "333-444-5555",
       "ContactEMail": "xxx@xyz.com",
       "LicenseFeatures": "",
@@ -33,7 +33,6 @@
   },
   "DeviceRecords": {
     "c86afde2-e92f-4acd-b2db-54649e694365": {
-      "RecordKind": "DeviceRecord",
       "FkLicenseId": "aab54ae5-5129-4807-9878-a1b262c15bff",
       "DeviceSite": "12345-67890",
       "UserLevelPunct": 45,
@@ -43,7 +42,6 @@
       "DateModified": "2022-06-12T12:47:19.2481189-04:00"
     },
     "439b52cb-420d-4d21-9c1e-f50b016d56ee": {
-      "RecordKind": "DeviceRecord",
       "FkLicenseId": "aab54ae5-5129-4807-9878-a1b262c15bff",
       "DeviceSite": "12345-00000",
       "UserLevelPunct": 45,
@@ -53,7 +51,6 @@
       "DateModified": "2022-06-12T12:47:19.2483316-04:00"
     },
     "a98e81c3-8628-4379-b92f-218b992fe014": {
-      "RecordKind": "DeviceRecord",
       "FkLicenseId": "52983441-3d5c-4dce-8c56-0758a423bdd2",
       "DeviceSite": "00000-00000",
       "UserLevelPunct": 0,
@@ -65,13 +62,13 @@
   },
   "PurchaseRecords": {
     "a52b5dd1-444c-473b-a289-7a46cb709cd1": {
-      "RecordKind": "PurchaseRecord",
       "Details": "nothing",
       "FkLicenseId": "aab54ae5-5129-4807-9878-a1b262c15bff",
       "PurchaseAuthority": 2,
       "PurchaseTransaction": "abc123def456",
       "PurchaseVerification": "5555555",
       "PurchaseDate": "2022-06-12T12:47:19.080596-04:00",
+      "PurchaseAmount": 0,
       "Id": "a52b5dd1-444c-473b-a289-7a46cb709cd1",
       "DateCreated": "2022-06-12T12:47:19.0806007-04:00",
       "DateModified": "2022-06-12T12:47:19.2488932-04:00"
@@ -79,7 +76,6 @@
   },
   "InteractivityRecords": {
     "19b0d330-297a-4057-aeb3-1d1c3936e9b4": {
-      "RecordKind": "InteractivityRecord",
       "FkLicenseId": "aab54ae5-5129-4807-9878-a1b262c15bff",
       "InteractivityClient": 8,
       "ClientInfo": "123.45.67.002 joshf",
@@ -90,18 +86,16 @@
       "DateModified": "2022-06-12T12:47:19.2495973-04:00"
     },
     "151dca5f-b76a-437b-86f2-56cd9eb2ba09": {
-      "RecordKind": "InteractivityRecord",
       "FkLicenseId": "aab54ae5-5129-4807-9878-a1b262c15bff",
       "InteractivityClient": 1,
       "ClientInfo": "123.45.67.007 Josh F",
       "Conversation": "Call back to confirm ok",
-      "History": "##### 6/12/2022 #####\n Spoke w Josh re assistance\n",
+      "History": "",
       "Id": "151dca5f-b76a-437b-86f2-56cd9eb2ba09",
       "DateCreated": "2022-06-12T12:47:19.2039677-04:00",
       "DateModified": "2022-06-12T12:47:19.2498737-04:00"
     },
     "f8700444-117d-4049-8414-92a19b21ce01": {
-      "RecordKind": "InteractivityRecord",
       "FkLicenseId": "52983441-3d5c-4dce-8c56-0758a423bdd2",
       "InteractivityClient": 3,
       "ClientInfo": "123.45.67.111",

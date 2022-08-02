@@ -35,7 +35,7 @@ namespace AbleStrategiesServices.Support
         {
             get
             {
-                if(instance == null)
+                if (instance == null)
                 {
                     instance = new UserInfoDbo();
                 }
@@ -73,7 +73,7 @@ namespace AbleStrategiesServices.Support
             string errorMessage = JsonUsersDb.Instance.ErrorMessage;
             if ((licenseRecords == null || licenseRecords.Count < 1) && !string.IsNullOrEmpty(errorMessage))
             {
-                errorMessage = "License Id " + id + " FAILURE: " + errorMessage;
+                errorMessage = "License Id " + id + " failed: " + errorMessage;
                 return null;
             }
             return PopulateLists(licenseRecords);
@@ -277,16 +277,16 @@ namespace AbleStrategiesServices.Support
         {
             bool ok = true;
             errorMessage = "";
-            if(userInfo == null)
+            if (userInfo == null)
             {
                 return true;
             }
-            if(userInfo.LicenseRecord == null)
+            if (userInfo.LicenseRecord == null)
             {
                 errorMessage = "Null License Record passed into Update()";
                 return false;
             }
-            if(!JsonUsersDb.Instance.UpdateDb(userInfo.LicenseRecord))
+            if (!JsonUsersDb.Instance.UpdateDb(userInfo.LicenseRecord))
             {
                 ok = false;
                 errorMessage = JsonUsersDb.Instance.ErrorMessage;
@@ -356,7 +356,7 @@ namespace AbleStrategiesServices.Support
         /// <returns>The list of userInfo passed in, updated</returns>
         public List<UserInfo> UpdateListWithPurchAndInter(List<UserInfo> userInfos)
         {
-            foreach(UserInfo userInfo in userInfos)
+            foreach (UserInfo userInfo in userInfos)
             {
                 userInfo.PurchaseRecords = JsonUsersDb.Instance.PurchasesByFkLicense(userInfo.LicenseRecord.Id);
                 userInfo.InteractivityRecords = JsonUsersDb.Instance.InteractivitiesByFkLicense(userInfo.LicenseRecord.Id);
@@ -365,3 +365,4 @@ namespace AbleStrategiesServices.Support
         }
 
     }
+}

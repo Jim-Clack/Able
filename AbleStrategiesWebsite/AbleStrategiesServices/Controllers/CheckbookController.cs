@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AbleLicensing;
 using AbleStrategiesServices.Support;
@@ -19,6 +21,7 @@ namespace AbleStrategiesServices.Controllers
     [ApiController]
     public class CheckbookController : ControllerBase
     {
+
         /////////////////////////////// APIs /////////////////////////////////
 
         // GET as/checkbook
@@ -42,7 +45,7 @@ namespace AbleStrategiesServices.Controllers
         }
 
         // WRONG - MAY WORK OKAY, BUT NEEDS TO BE REFACTORED
-        // GET as/checkbook/XXXX
+        // GET as/checkbook/xxxx
         /// <summary>
         /// Return user license info.
         /// </summary>
@@ -52,7 +55,46 @@ namespace AbleStrategiesServices.Controllers
         public JsonResult Get([FromRoute] string licenseCode)
         {
             string ipAddress = HttpContext.Connection.RemoteIpAddress.ToString();
-            return ApiSupport.AsJsonResult(ApiSupport.GetUserInfoBy(ipAddress, "license", licenseCode, licenseCode, false));
+            UserInfo[] userInfos = ApiSupport.GetUserInfoBy(ipAddress, "license", licenseCode, licenseCode, false);
+            return ApiSupport.AsJsonResult(new UserInfoResponse((int)ApiState.ReturnOk, userInfos.ToList()));
+        }
+
+        // PUT as/checkbook/lll/sss (upload file, content from http body) text/plain
+        /// <summary>
+        /// Upload log file content
+        /// </summary>
+        /// <param name="lCode">license code</param>
+        /// <param name="siteId">site/device code</param>
+        /// <returns>success</returns>
+        /// <remarks>Body of request contain the log text to be uploaded</remarks>
+        [HttpPut("{lCode}/{siteId}")]
+        public bool Put([FromRoute] string lCode, [FromRoute] string siteId /*, [FromBody] string logContent */)
+        {
+            string ipAddress = HttpContext.Connection.RemoteIpAddress.ToString();
+            if (lCode.Length < 1 || siteId.Length < 1)
+            {
+                Logger.Warn(ipAddress, "Failed request to upload logfile");
+                return false;
+            }
+            // filename uses id fields, but replacing non-alphanumerics with a hyphen
+            string filePath = Path.GetFullPath(ApiSupport.UploadPath + 
+                Regex.Replace(lCode + siteId, "[^A-Za-z0-9]", "-") + "-" + DateTime.Now.Ticks + ".log");
+            Logger.Diag(ipAddress, "Uploading " + filePath);
+            try
+            {
+                Directory.CreateDirectory(ApiSupport.UploadPath);
+                System.IO.File.Delete(filePath);
+                FileStream outFile = new FileStream(filePath, FileMode.Create);
+                HttpContext.Request.Body.CopyTo(outFile);
+                outFile.Close();
+            }
+            catch (IOException ex)
+            {
+                Logger.Error(ipAddress, "Problem uploading " + filePath, ex);
+                return false;
+            }
+            PurgeOldUploads();
+            return true;
         }
 
         // POST as/checkbook/1?name=nnn&addr=aaa&city=ccc&zip=zzz&phone=ppp&email=eee&feature=fff&lCode=lll&purchase=ppp
@@ -66,19 +108,17 @@ namespace AbleStrategiesServices.Controllers
         /// <param name="zip">installation postal code</param>
         /// <param name="phone">installation phone number</param>
         /// <param name="email">installation email address</param>
-        /// <param name="feature">installation edition/features/etc to be purchased ("" if new or unchanged)</param>
-        /// <param name="lCode">installation assigned license code ("" if unknown)</param>
-        /// <param name="purchase">validation code from the purchase ("" if unknown)</param>
-        /// <returns>UserInfo with populated PIN, PinNumber = "" on error - see Message</returns>
-        /// <returns>Results of the attempt to activate</returns>
+        /// <param name="feature">installation edition/features/etc to be purchased ("" ok, if unchanged)</param>
+        /// <param name="lCode">installation assigned license code ("" ok, if new)</param>
+        /// <param name="purchase">validation(???) code from the purchase ("" ok, if this is not a purchase)</param>
+        /// <returns>UserInfoResponse with populated PIN, PinNumber = "" on error - see Message</returns>
+        /// <returns>Results of the attempt to purchase, activate, or lookup</returns>
         /// <remarks>
-        /// * Caution: Multiple devices, each with their own site id, may be returned. (caller must search for the correct one)
-        /// * If both lCode and purchase are passed in as null, it will trigger a PayPal purchase.
-        ///   If either are passed in as null, the system will first attempt to find the transaction
-        ///   and then, only if it cannot, will it trigger a PayPal purchase.
+        /// * Caution: Multiple devices per user license, each with their own site id, may be returned. 
+        ///   (caller must search for the correct one per the site id)
         /// </remarks>
         [HttpPost("{apiState}")]
-        public JsonResult ProcessLicense([FromRoute] int apiState, 
+        public JsonResult Post([FromRoute] int apiState, 
             [FromQuery] string name, [FromQuery] string addr, [FromQuery] string city, [FromQuery] string zip, [FromQuery] string phone, 
             [FromQuery] string email, [FromQuery] string feature, [FromQuery] string lCode, [FromQuery] string purchase)
         {
@@ -87,12 +127,13 @@ namespace AbleStrategiesServices.Controllers
             userInfo.LicenseRecord.LicenseFeatures = feature;
             userInfo.LicenseRecord.LicenseCode = lCode;
             // validate args
-            if (apiState >= (int)AbleLicensing.ApiState.UpdateInfo && (apiState >= (int)AbleLicensing.ApiState.ReturnOk ||
-                name.Length < 3 || addr.Length < 5 || city.Length < 3 || zip.Length < 5 ||
-                phone.Length < 10 || email.Length < 9 || !email.Contains('@') || !email.Contains('.')))
+            if (apiState >= (int)AbleLicensing.ApiState.UpdateInfo && 
+                (apiState >= (int)AbleLicensing.ApiState.ReturnOk || name.Length < 3 || addr.Length < 5 || city.Length < 3 || 
+                zip.Length < 5 || phone.Length < 10 || email.Length < 9 || !email.Contains('@') || !email.Contains('.')))
             {
-                return ReturnError(ipAddress, ApiState.ReturnBadArg, userInfo,
-                    "ProcessLicense called with missing or incorrect arg", "Invalid state, name, address, city, zip, phone, or email");
+                Logger.Warn(ipAddress, "Invalid arg for state " + apiState + " [" + HttpContext.Request.QueryString + "]");
+                return ApiSupport.AsJsonResult(new UserInfoResponse((int)ApiState.ReturnBadArg, null, 
+                    "Invalid name, address, city, zip, phone, or email"));
             }
             // get existing user info, if any
             UserInfo existingUserInfo = null;
@@ -103,8 +144,9 @@ namespace AbleStrategiesServices.Controllers
             }
             else if(apiState >= (int)AbleLicensing.ApiState.UpdateInfo)
             {
-                return ReturnError(ipAddress, ApiState.ReturnNotMatched, userInfo,
-                    "ProcessLicense " + apiState + " called but license code not found in DB", "Cannot find specified license in DB");
+                Logger.Warn(ipAddress, "ProcessLicense " + apiState + " called but license code not found in DB");
+                return ApiSupport.AsJsonResult(
+                    new UserInfoResponse((int)ApiState.ReturnNotMatched, null, "Cannot find specified license"));
             }
             // handle the API state
             switch (apiState)
@@ -124,28 +166,43 @@ namespace AbleStrategiesServices.Controllers
                 case (int)ApiState.AddlDevice:
                     return AddlDevice(ipAddress, userInfo, existingUserInfo, purchase);
                 default:
-                    return ReturnError(ipAddress, ApiState.ReturnBadArg, userInfo,
-                        "ProcessLicense called with missing or incorrect arg [" + (int)apiState + "}", "Invalid API state passed to call [" + apiState + "]");
+                    Logger.Warn(ipAddress, "ProcessLicense called with missing or incorrect arg [" + (int)apiState + "}");
+                    return ApiSupport.AsJsonResult(new UserInfoResponse((int)ApiState.ReturnBadArg, null, 
+                        "Invalid API state passed to call [" + apiState + "]"));
             }
         }
 
-        ////////////////////////// API Call Handlers /////////////////////////
-        
+        ////////////////////////////// Support ///////////////////////////////
+
         /// <summary>
-        /// Return an error to the caller.
+        /// If there are too many uploaded files, delete the old ones
         /// </summary>
-        /// <param name="ipAddress">textual host id</param>
-        /// <param name="apiState">error return code</param>
-        /// <param name="userInfo">populated from args</param>
-        /// <param name="logMsg">message to be logged</param>
-        /// <param name="ErrorMessage">message to be returned</param>
-        /// <returns></returns>
-        private JsonResult ReturnError(string ipAddress, ApiState apiState, UserInfo userInfo, string logMsg, string errorMessage)
+        private void PurgeOldUploads()
         {
-            Logger.Warn(ipAddress, logMsg);
-            userInfo.ApiState = (int)apiState;
-            userInfo.Message = errorMessage;
-            return ApiSupport.AsJsonResult(new UserInfo[] { userInfo });
+            IEnumerable<string> enumerator = Directory.EnumerateFiles(ApiSupport.UploadPath);
+            long totalDaysOld = 0;
+            int numFiles = 0;
+            foreach (string filePath in enumerator)
+            {
+                FileInfo fileInfo = new FileInfo(filePath);
+                totalDaysOld += Math.Abs((DateTime.Now - fileInfo.CreationTime).Duration().Days);
+                ++numFiles;
+            }
+            if (numFiles < 5)
+            {
+                return;
+            }
+            long numDaysToKeep = Math.Max(4, totalDaysOld / numFiles);
+            enumerator = Directory.EnumerateFiles(ApiSupport.UploadPath);
+            foreach (string filePath in enumerator)
+            {
+                FileInfo fileInfo = new FileInfo(filePath);
+                int fileAge = Math.Abs((DateTime.Now - fileInfo.CreationTime).Duration().Days);
+                if (fileAge > numDaysToKeep)
+                {
+                    System.IO.File.Delete(filePath);
+                }
+            }
         }
 
         /// <summary>
@@ -155,10 +212,11 @@ namespace AbleStrategiesServices.Controllers
         /// <param name="userInfo">passed into the call</param>
         /// <param name="existingUserInfo">as found in the database, null if not found</param>
         /// <param name="purchase">purchase code, "" if none</param>
-        /// <returns></returns>
+        /// <returns>JSON rendition of UserInfoResponse</returns>
         private JsonResult FuzzyLookup(string ipAddress, UserInfo userInfo, UserInfo existingUserInfo, string purchase)
         {
             // TODO
+            Logger.Diag(ipAddress, "???");
             return ApiSupport.AsJsonResult(null);
         }
 
@@ -169,10 +227,11 @@ namespace AbleStrategiesServices.Controllers
         /// <param name="userInfo">passed into the call</param>
         /// <param name="existingUserInfo">as found in the database, null if not found</param>
         /// <param name="purchase">purchase code, "" if none</param>
-        /// <returns></returns>
+        /// <returns>JSON rendition of UserInfoResponse</returns>
         private JsonResult LookupLicense(string ipAddress, UserInfo userInfo, UserInfo existingUserInfo, string purchase)
         {
             // TODO
+            Logger.Diag(ipAddress, "???");
             return ApiSupport.AsJsonResult(null);
         }
 
@@ -183,10 +242,11 @@ namespace AbleStrategiesServices.Controllers
         /// <param name="userInfo">passed into the call</param>
         /// <param name="existingUserInfo">as found in the database, null if not found</param>
         /// <param name="purchase">purchase code, "" if none</param>
-        /// <returns></returns>
+        /// <returns>JSON rendition of UserInfoResponse</returns>
         private JsonResult UpdateInfo(string ipAddress, UserInfo userInfo, UserInfo existingUserInfo, string purchase)
         {
             // TODO
+            Logger.Diag(ipAddress, "???");
             return ApiSupport.AsJsonResult(null);
         }
 
@@ -197,10 +257,11 @@ namespace AbleStrategiesServices.Controllers
         /// <param name="userInfo">passed into the call</param>
         /// <param name="existingUserInfo">as found in the database, null if not found</param>
         /// <param name="purchase">purchase code, "" if none</param>
-        /// <returns></returns>
+        /// <returns>JSON rendition of UserInfoResponse</returns>
         private JsonResult ChangeFeature(string ipAddress, UserInfo userInfo, UserInfo existingUserInfo, string purchase)
         {
             // TODO
+            Logger.Diag(ipAddress, "???");
             return ApiSupport.AsJsonResult(null);
         }
 
@@ -211,10 +272,11 @@ namespace AbleStrategiesServices.Controllers
         /// <param name="userInfo">passed into the call</param>
         /// <param name="existingUserInfo">as found in the database, null if not found</param>
         /// <param name="purchase">purchase code, "" if none</param>
-        /// <returns></returns>
+        /// <returns>JSON rendition of UserInfoResponse</returns>
         private JsonResult ChangeLevel(string ipAddress, UserInfo userInfo, UserInfo existingUserInfo, string purchase)
         {
             // TODO
+            Logger.Diag(ipAddress, "???");
             return ApiSupport.AsJsonResult(null);
         }
 
@@ -225,10 +287,11 @@ namespace AbleStrategiesServices.Controllers
         /// <param name="userInfo">passed into the call</param>
         /// <param name="existingUserInfo">as found in the database, null if not found</param>
         /// <param name="purchase">purchase code, "" if none</param>
-        /// <returns></returns>
+        /// <returns>JSON rendition of UserInfoResponse</returns>
         private JsonResult MakePurchase(string ipAddress, UserInfo userInfo, UserInfo existingUserInfo, string purchase)
         {
             // TODO
+            Logger.Diag(ipAddress, "???");
             return ApiSupport.AsJsonResult(null);
         }
 
@@ -239,13 +302,14 @@ namespace AbleStrategiesServices.Controllers
         /// <param name="userInfo">passed into the call</param>
         /// <param name="existingUserInfo">as found in the database, null if not found</param>
         /// <param name="purchase">purchase code, "" if none</param>
-        /// <returns></returns>
+        /// <returns>JSON rendition of UserInfoResponse</returns>
         private JsonResult AddlDevice(string ipAddress, UserInfo userInfo, UserInfo existingUserInfo, string purchase)
         {
             // TODO
+            Logger.Diag(ipAddress, "???");
             return ApiSupport.AsJsonResult(null);
         }
 
-
     }
+
 }

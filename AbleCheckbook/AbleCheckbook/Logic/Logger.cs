@@ -15,6 +15,11 @@ namespace AbleCheckbook.Logic
     {
 
         /// <summary>
+        /// Maximum log file size in bytes before rolling it over
+        /// </summary>
+        public const long MaxLogSize = 500000;
+
+        /// <summary>
         /// Logging criticalities.
         /// </summary>
         public enum LogLevel
@@ -95,7 +100,7 @@ namespace AbleCheckbook.Logic
                 if (File.Exists(filename))
                 {
                     FileInfo fileInfo = new FileInfo(filename);
-                    if (fileInfo.Length > 2000000L) // 2MB
+                    if (fileInfo.Length > MaxLogSize)
                     {
                         if (File.Exists(filename + ".bak"))
                         {

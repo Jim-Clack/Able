@@ -5,6 +5,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using AbleStrategiesServices.Support;
 using Newtonsoft.Json;
+using AbleLicensing;
+using System.Linq;
+using System.IO;
+using System.Text.RegularExpressions;
+using System.Text;
 
 /// <summary>                                      MASTER
 /// https://domain:port/as/master
@@ -34,7 +39,7 @@ namespace AbleStrategiesServices.Controllers
             string ipAddress = HttpContext.Connection.RemoteIpAddress.ToString();
             Logger.Diag(ipAddress, "Get API Called");
             return new string[] {
-                AbleStrategiesServices.Support.Version.ToString(), 
+                AbleStrategiesServices.Support.Version.ToString(),
                 now.ToString("o", CultureInfo.GetCultureInfo("en-US")),
                 ipAddress,
                 (DateTime.Now.Ticks / (DateTime.Now.Millisecond + 173L)).ToString(), // future
@@ -59,7 +64,50 @@ namespace AbleStrategiesServices.Controllers
                 Logger.Warn(ipAddress.ToString(), "Attempted unauthorized access [" + pattern + "]");
                 return null;
             }
-            return ApiSupport.AsJsonResult(ApiSupport.GetUserInfoBy(ipAddress, by, pattern, null, true));
+            UserInfo[] userInfos = ApiSupport.GetUserInfoBy(ipAddress, by, pattern, null, true);
+            return ApiSupport.AsJsonResult(new UserInfoResponse((int)ApiState.ReturnOk, userInfos.ToList()));
+        }
+
+        // GET as/master/log/lll/sss/0
+        /// <summary>
+        /// Download a client logfile that has been uploaded via as/checkbook.
+        /// </summary>
+        /// <param name="lCode">license code</param>
+        /// <param name="siteId">device site ID</param>
+        /// <param name="countBack">0=latest, 1=previous, 2=previous to that, etc.</param>
+        /// <returns>File contents, message if no more files, "???" on error</returns>
+        [HttpGet("log/{lCode}/{siteId}/{countBack}")]
+        public string Get([FromRoute] string lCode, [FromRoute] string siteId, [FromRoute] int countBack)
+        {
+            string ipAddress = HttpContext.Connection.RemoteIpAddress.ToString();
+            // filename uses id fields, but replacing non-alphanumerics with a hyphen
+            string filePattern = Regex.Replace(lCode + siteId, "[^A-Za-z0-9]", "-") + "-*.log";
+            SortedList<string, string> filePaths = new SortedList<string, string>();
+            IEnumerable<string> enumerator = Directory.EnumerateFiles(ApiSupport.UploadPath, filePattern);
+            foreach (string testFilePath in enumerator)
+            {
+                FileInfo fileInfo = new FileInfo(testFilePath);
+                filePaths.Add(testFilePath, testFilePath);
+            }
+            if(filePaths.Count <= countBack)
+            {
+                return "(No more files for " + lCode + " " + siteId + ")\n";
+            }
+            string filePath = filePaths.Values[filePaths.Count - (countBack + 1)];
+            string fileContent = "";
+            Logger.Diag(ipAddress, "Downloading " + filePath);
+            try
+            {
+                StreamReader reader = new StreamReader(filePath);
+                fileContent = reader.ReadToEnd();
+                reader.Close();
+            }
+            catch (IOException ex)
+            {
+                Logger.Error(ipAddress, "Problem downloading " + filePath, ex);
+                return "???";
+            }
+            return fileContent;
         }
 
         // POST as/master (JSON Body)

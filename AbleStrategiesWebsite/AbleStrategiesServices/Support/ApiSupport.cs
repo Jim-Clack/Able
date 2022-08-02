@@ -10,8 +10,14 @@ namespace AbleStrategiesServices.Support
 {
     public static class ApiSupport
     {
+
         /// <summary>
-        /// Return licenses by various lookups.
+        /// Where do uploads go?
+        /// </summary>
+        public static string UploadPath = "../uploads/";
+
+        /// <summary>
+        /// Return users by various lookups.
         /// </summary>
         /// <param name="ipAddress">Remote IP Address</param>
         /// <param name="by">literal: id, license, site, name, address, city, phone, email, interactivity, daterange</param>
@@ -36,7 +42,7 @@ namespace AbleStrategiesServices.Support
             if(licenseCode != null)
             {
                 if (userInfos == null || userInfos.Length != 1 || userInfos[0].LicenseRecord == null ||
-                    !userInfos[0].LicenseRecord.Id.Equals(licenseCode.Trim()))
+                    !userInfos[0].LicenseRecord.LicenseCode.Equals(licenseCode.Trim()))
                 {
                     return null;
                 }
@@ -66,9 +72,9 @@ namespace AbleStrategiesServices.Support
         /// <summary>
         /// Return the JsonResult representing an object.
         /// </summary>
-        /// <param name="userInfo">To be represented as JSON, null okay</param>
+        /// <param name="userInfoResponse">To be represented as JSON, null okay</param>
         /// <returns>The JsonResult</returns>
-        public static JsonResult AsJsonResult(UserInfo[] userInfo)
+        public static JsonResult AsJsonResult(UserInfoResponse userInfoResponse)
         {
             JsonSerializerSettings settings = new JsonSerializerSettings();
             settings.Formatting = Formatting.Indented;
@@ -78,7 +84,7 @@ namespace AbleStrategiesServices.Support
             settings.CheckAdditionalContent = true;
             settings.MetadataPropertyHandling = MetadataPropertyHandling.Ignore;
             settings.Culture = new CultureInfo("en-US");
-            return new JsonResult(userInfo, settings);
+            return new JsonResult(userInfoResponse, settings);
         }
 
         /// <summary>

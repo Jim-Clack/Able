@@ -136,6 +136,9 @@ Notes to developers who are MS/VS virgins...
  settings, both called Properties. Moreover there is another View named
  Property Manager that has nothing to do with either of these. Confused?
 
+ Weird namespace/packaging: Array.ToList() is found in System.Linq. Really!
+
+
  When you set a background image you also want to set the layout. Of course
  you might think that to set the layout for a BackgroundImage you would set
  the proprety BackgroundImageLayout, but no. That property seems to do NADA.

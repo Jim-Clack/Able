@@ -31,42 +31,10 @@ namespace AbleStrategiesServices.Support
         private List<InteractivityRecord> interactivityRecords = null;
 
         /// <summary>
-        /// API State as an int for API usage, typically a Response or Purchase value. Not persisted.
-        /// </summary>
-        private int apiState = 0;
-
-        /// <summary>
-        /// Descriptive or diagnostic or error message. Not persisted.
-        /// </summary>
-        private string message = "";
-
-        /// <summary>
-        /// PIN number, if specifically requested. Not persisted.
-        /// </summary>
-        private string pinNumber = "";
-
-        /// <summary>
-        /// API State, typically a Response or Purchase value. Not persisted.
-        /// </summary>
-        public int ApiState { get => apiState; set => apiState = value; }
-
-        /// <summary>
-        /// Descriptive or diagnostic or error message. Not persisted.
-        /// </summary>
-        public string Message { get => message; set => message = value; }
-
-        /// <summary>
-        /// PIN number, if specifically requested. Not persisted.
-        /// </summary>
-        public string PinNumber { get => pinNumber; set => pinNumber = value; }
-
-        /// <summary>
         /// Default ctor.
         /// </summary>
         public UserInfo()
         {
-            PinNumber = "";
-            Message = "";
         }
 
         /// <summary>
@@ -89,8 +57,6 @@ namespace AbleStrategiesServices.Support
             LicenseRecord.ContactEMail = email;
             LicenseRecord.LicenseFeatures = "";
             LicenseRecord.LicenseCode = "";
-            PinNumber = "";
-            Message = "";
         }
 
         /// <summary>
@@ -195,8 +161,6 @@ namespace AbleStrategiesServices.Support
                 record.Id = Guid.NewGuid();
                 record.EditFlag = EditFlag.New;
             }
-            Message = "";
-            PinNumber = "";
         }
 
         /// <summary>
@@ -268,8 +232,6 @@ namespace AbleStrategiesServices.Support
                     thisRecord.Id = Guid.NewGuid();
                 }
             }
-            Message = "";
-            PinNumber = "";
             return true;
         }
 
@@ -279,11 +241,7 @@ namespace AbleStrategiesServices.Support
         /// <returns></returns>
         public override string ToString()
         {
-            StringBuilder builder = new StringBuilder("UserInfo> " + Message);
-            if (PinNumber.Trim().Length > 0)
-            {
-                builder.Append(" [" + PinNumber + "]");
-            }
+            StringBuilder builder = new StringBuilder("UserInfo> ");
             if (licenseRecord == null)
             {
                 builder.Append("(no LicenseRecord)");

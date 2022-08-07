@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AbleStrategiesServices.Controllers
 {
     /// <summary>
-    /// These APIs only to be called from an end-user Able Checkbook client regarding its own license.
+    /// These APIs only to be called from an end-user AbleCheckbook client regarding its own license.
     /// </summary>
     /// <remarks>
     /// These calls are expected to occur in the following sequence:
@@ -54,24 +54,30 @@ namespace AbleStrategiesServices.Controllers
             };
         }
 
-        // DEPRECATED !!!!!!
-        // GET as/checkbook/xxxx
+        // GET as/checkbook/user/xxxx/vv-vv
         /// <summary>
-        /// Return user license info.
+        /// Return user license info. - Polling call
         /// </summary>
         /// <param name="lCode">expected license code (will be verified - must be correct)</param>
-        /// <returns>List of 0-1 user info records, empty if not found, null if not verified</returns>
-        [HttpGet("user/{lCode}")]
-        public JsonResult GetUser([FromRoute] string lCode)
+        /// <param name="version">Major-minor - from version of client software</param>
+        /// <returns>List of 0-1 user info records, empty if not found, null if not verified, message may have important info</returns>
+        /// <remarks>
+        /// This call is uniquely for use by unlicensed as well as licensed clients
+        /// </remarks>
+        [HttpGet("user/{lCode}/{version}")]
+        public JsonResult GetUser([FromRoute] string lCode, [FromRoute] string version)
         {
             string ipAddress;
-            if(!ClientCallFilter.Instance.Validate(HttpContext.Connection.RemoteIpAddress, false, out ipAddress))
+            if (!ClientCallFilter.Instance.Validate(HttpContext.Connection.RemoteIpAddress, false, out ipAddress))
             {
                 HttpContext.Abort();
                 return null;
             }
+            lCode = lCode.ToUpper().Trim();
+            // TODO: update ipAdress in a new table named "UniqueClients"
             UserInfo[] userInfos = ApiSupport.GetUserInfoBy(ipAddress, "license", lCode, lCode, false);
-            return ApiSupport.AsJsonResult(new UserInfoResponse((int)ApiState.ReturnOk, userInfos.ToList(), "Deprecated: This API is no longer supported"));
+            string message = ApiSupport.GetVersionSpecificMessage(version);
+            return ApiSupport.AsJsonResult(new UserInfoResponse((int)ApiState.ReturnOk, userInfos.ToList(), message));
         }
 
         // PUT as/checkbook/lll/sss (upload file, content from http body) text/plain
@@ -98,12 +104,12 @@ namespace AbleStrategiesServices.Controllers
             }
             ApiSupport.PurgeOldUploads();
             // filename uses id fields, but replaces non-alphanumerics with a hyphen
-            string filePath = Path.GetFullPath(ApiSupport.UploadPath + 
+            string filePath = Path.GetFullPath(Configuration.Instance.UploadPath + 
                 Regex.Replace(lCode + "-" + siteId, "[^A-Za-z0-9]", "-") + "-" + DateTime.Now.Ticks + ".log");
             Logger.Diag(ipAddress, "Uploading " + filePath);
             try
             {
-                Directory.CreateDirectory(ApiSupport.UploadPath);
+                Directory.CreateDirectory(Configuration.Instance.UploadPath);
                 System.IO.File.Delete(filePath);
                 FileStream outFile = new FileStream(filePath, FileMode.Create);
                 HttpContext.Request.Body.CopyTo(outFile);
@@ -148,6 +154,13 @@ namespace AbleStrategiesServices.Controllers
                 HttpContext.Abort();
                 return ApiSupport.AsJsonResult(new UserInfoResponse((int)ApiState.ReturnDenied, null, "Denied"));
             }
+            if (name == null || addr == null || city == null || zip == null || phone == null || email == null || 
+                feature == null || lCode == null || siteId == null || purchase == null)
+            {
+                Logger.Warn(ipAddress, "All args must be specified, even if empty " + apiState + " [" + HttpContext.Request.QueryString + "]");
+                return ApiSupport.AsJsonResult(new UserInfoResponse((int)ApiState.ReturnBadArg, null,
+                    "Missing arg, poss internal error - contact cupport for help"));
+            }
             UserInfo userInfo = new UserInfo(name, addr, city, zip, phone, email, siteId, UserLevelPunct.Standard);
             userInfo.LicenseRecord.LicenseFeatures = feature;
             userInfo.LicenseRecord.LicenseCode = lCode;
@@ -179,7 +192,7 @@ namespace AbleStrategiesServices.Controllers
                 case (int)ApiState.LookupLicense:
                     return LookupLicense(ipAddress, userInfo, existingUserInfo, purchase);
                 case (int)ApiState.RegisterLicense:
-                    return LookupLicense(ipAddress, userInfo, existingUserInfo, purchase);
+                    return RegisterLicense(ipAddress, userInfo, existingUserInfo, purchase);
                 case (int)ApiState.UpdateInfo:
                     return UpdateInfo(ipAddress, userInfo, existingUserInfo, purchase);
                 case (int)ApiState.ChangeFeature:

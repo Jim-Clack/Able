@@ -141,6 +141,7 @@ namespace AbleStrategiesServices.Support
         public bool Validate(System.Net.IPAddress remoteIp, bool restricted, out string ipAddess)
         {
             bool okay = true;
+            bool isHyperUser = Configuration.Instance.IsHyperUser(remoteIp);
             AntiDdsMutex.WaitOne();
             ipAddess = remoteIp.ToString();
             // Check for DDS attack
@@ -152,7 +153,7 @@ namespace AbleStrategiesServices.Support
             }
             try
             {
-                if (antiDds.IsAttacking)
+                if (!isHyperUser && antiDds.IsAttacking)
                 {
                     Logger.Warn(ipAddess, "Apparent DDS attack is underway, lastAccess=" + 
                         antiDds.lastAccess + " dangerLevel=" + antiDds.dangerLevel);
@@ -177,7 +178,7 @@ namespace AbleStrategiesServices.Support
                 AntiDdsMutex.ReleaseMutex();
             }
             // Check for permission
-            if (restricted && !Configuration.Instance.IsHyperUser(remoteIp))
+            if (restricted && !isHyperUser)
             {
                 Logger.Warn(remoteIp.ToString(), "Attempted unauthorized access, host permission not granted");
                 okay = false;

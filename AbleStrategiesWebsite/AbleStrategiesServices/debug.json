@@ -104,6 +104,16 @@
       "Id": "f8700444-117d-4049-8414-92a19b21ce01",
       "DateCreated": "2022-06-12T12:47:19.2500432-04:00",
       "DateModified": "2022-06-12T12:47:19.250334-04:00"
+    },
+    "9154f1fe-a33f-426f-b1d5-cd1de112dbaa": {
+      "FkLicenseId": "ede2de31-23ca-4433-a605-95b43f4c49dc",
+      "InteractivityClient": 8,
+      "ClientInfo": "::1",
+      "Conversation": "RegisterLicense - License Code rqst: FredY;12345 - generated as: FREDYX-23456",
+      "History": "",
+      "Id": "9154f1fe-a33f-426f-b1d5-cd1de112dbaa",
+      "DateCreated": "2022-08-07T09:47:53.0062981-04:00",
+      "DateModified": "2022-08-07T09:48:18.0937565-04:00"
     }
   }
 }

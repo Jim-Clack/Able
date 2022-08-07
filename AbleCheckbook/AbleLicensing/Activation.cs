@@ -36,7 +36,7 @@ namespace AbleLicensing
         // Requests that license host devices
         MakePurchase = 11,           // Complete the purchase
         // Successful Non-Purchase Responses
-        ReturnOk = 20,               // Completed non-purchase okay
+        ReturnOk = 20,               // Completed non-purchase okay 
         ReturnOkAddlDev = 21,        // Purchase ok, no charge, existing lic, return PinNumber
         ReturnNotActivated = 22,     // Not activated, no paid license found, return Message
         ReturnDeactivate = 23,       // Too many devices, deactive, return Message

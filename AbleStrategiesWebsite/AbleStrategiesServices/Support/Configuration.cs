@@ -17,14 +17,39 @@ namespace AbleStrategiesServices.Support
         private static Configuration instance = null;
 
         /// <summary>
-        /// How many hosts can be activated per license
-        /// </summary>
-        public static readonly int MaxDevicesPerLicense = 3;
-
-        /// <summary>
         /// Only allow these IP addresses to access "as/master" APIs
         /// </summary>
         private string[] HyperUserIp = { "::1", "127.0.0.1", "192.2.2.2" };
+
+        /// <summary>
+        /// How many hosts can be activated per license
+        /// </summary>
+        private readonly int maxDevicesPerLicense = 3;
+
+        /// <summary>
+        /// Where do uploads go?
+        /// </summary>
+        private readonly string uploadPath = "../uploads/";
+
+        /// <summary>
+        /// Where are messages found?
+        /// </summary>
+        private readonly string messagesPath = "../messages/";
+
+        /// <summary>
+        /// How many hosts can be activated per license
+        /// </summary>
+        public int MaxDevicesPerLicense => maxDevicesPerLicense;
+
+        /// <summary>
+        /// Where do uploads go?
+        /// </summary>
+        public string UploadPath => uploadPath;
+
+        /// <summary>
+        /// Where are messages found?
+        /// </summary>
+        public string MessagesPath => messagesPath;
 
         /// <summary>
         /// Ctor.

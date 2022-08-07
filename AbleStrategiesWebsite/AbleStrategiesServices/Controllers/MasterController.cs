@@ -93,7 +93,7 @@ namespace AbleStrategiesServices.Controllers
             // filename uses id fields, but replacing non-alphanumerics with a hyphen
             string filePattern = Regex.Replace(lCode + siteId, "[^A-Za-z0-9]", "-") + "-*.log";
             SortedList<string, string> filePaths = new SortedList<string, string>();
-            IEnumerable<string> enumerator = Directory.EnumerateFiles(ApiSupport.UploadPath, filePattern);
+            IEnumerable<string> enumerator = Directory.EnumerateFiles(Configuration.Instance.UploadPath, filePattern);
             foreach (string testFilePath in enumerator)
             {
                 FileInfo fileInfo = new FileInfo(testFilePath);

@@ -9,16 +9,12 @@ using System.Globalization;
 using System.IO;
 using AbleLicensing;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace AbleStrategiesServices.Support
 {
     public static class ApiSupport
     {
-
-        /// <summary>
-        /// Where do uploads go?
-        /// </summary>
-        public static string UploadPath = "../uploads/";
 
         /// <summary>
         /// Only one at a time.
@@ -39,10 +35,10 @@ namespace AbleStrategiesServices.Support
         /// <param name="licenseCode">null to find all matches, else expected license code</param>
         /// <param name="withPurchAndInter">true to also add purchase and interactivity records</param>
         /// <remarks>For dates, if the date is missing or improperly formatted, the call defaults to "the past 60 days"</remarks>
-        /// <returns>List of matching licenses, null if not verified</returns>
+        /// <returns>List of matching licenses (0-1)</returns>
         public static UserInfo[] GetUserInfoBy(string ipAddress, string by, string pattern, string licenseCode, bool withPurchAndInter)
         {
-            UserInfo[] userInfos = null;
+            UserInfo[] userInfos = new UserInfo[0];
             by = by.Trim().ToLower();
             try
             {
@@ -58,7 +54,7 @@ namespace AbleStrategiesServices.Support
                 if (userInfos == null || userInfos.Length != 1 || userInfos[0].LicenseRecord == null ||
                     !userInfos[0].LicenseRecord.LicenseCode.Equals(licenseCode.Trim()))
                 {
-                    return null;
+                    return new UserInfo[0];
                 }
             }
             return userInfos;
@@ -258,6 +254,7 @@ namespace AbleStrategiesServices.Support
                 existingUserInfo.DeviceRecords.Add(deviceRecord);
                 pinNumber = ApiSupport.CalculatePin(existingUserInfo, deviceRecord.DeviceSite.Trim());
             }
+            // TODO - deal with Configuration.InstanceMaxDevicesPerLicense
             return pinNumber;
         }
 
@@ -304,7 +301,7 @@ namespace AbleStrategiesServices.Support
             PurgeMutex.WaitOne();
             try
             {
-                IEnumerable<string> enumerator = Directory.EnumerateFiles(ApiSupport.UploadPath);
+                IEnumerable<string> enumerator = Directory.EnumerateFiles(Configuration.Instance.UploadPath);
                 long totalDaysOld = 0;
                 int numFiles = 0;
                 foreach (string filePath in enumerator)
@@ -316,7 +313,7 @@ namespace AbleStrategiesServices.Support
                 if (numFiles >= 5)
                 {
                     long numDaysToKeep = Math.Max(8, totalDaysOld / numFiles);
-                    enumerator = Directory.EnumerateFiles(ApiSupport.UploadPath);
+                    enumerator = Directory.EnumerateFiles(Configuration.Instance.UploadPath);
                     foreach (string filePath in enumerator)
                     {
                         FileInfo fileInfo = new FileInfo(filePath);
@@ -341,7 +338,7 @@ namespace AbleStrategiesServices.Support
         /// <returns>generated/adjusted license code, null on error (all searched lCodes are in use)</returns>
         public static string CreateLicenseCodeBasedOn(string lCode)
         {
-            lCode = lCode.Trim().ToUpper();
+            lCode = Regex.Replace(lCode.Trim().ToUpper(), "[^A-Z0-9]", "X");
             List<UserInfo> userInfosTest = UserInfoDbo.Instance.GetByLicenseCode(lCode);
             while (lCode.Length < 12)
             {
@@ -351,7 +348,7 @@ namespace AbleStrategiesServices.Support
             {
                 lCode = lCode.Substring(0, 12);
             }
-            lCode = lCode.Substring(0, 6) + UserLevelPunct.Standard + lCode.Substring(7);
+            lCode = lCode.Substring(0, 6) + (char)UserLevelPunct.Standard + lCode.Substring(7);
             string initialLCode = lCode;
             while(true)
             {
@@ -393,6 +390,24 @@ namespace AbleStrategiesServices.Support
                 code = code.Substring(0, index) + (char)(code[index] + 1) + code.Substring(index + 1);
             }
             return (code[index] == initial[index]);
+        }
+
+        /// <summary>
+        /// Get a message based on the specific client software version
+        /// </summary>
+        /// <param name="version">major-minor</param>
+        /// <returns>message, "" if none</returns>
+        public static string GetVersionSpecificMessage(string version)
+        {
+            string message = "";
+            string filePath = Configuration.Instance + "ver-" + version + ".msg";
+            if (System.IO.File.Exists(filePath))
+            {
+                System.IO.StreamReader reader = new System.IO.StreamReader(filePath);
+                message = reader.ReadToEnd();
+                reader.Close();
+            }
+            return message;
         }
 
     }

@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		AbleCheckbook\Support\A.jpg = AbleCheckbook\Support\A.jpg
 		AbleCheckbook\Support\banner-en-US.png = AbleCheckbook\Support\banner-en-US.png
+		..\AbleStrategiesStuff\eula.txt = ..\AbleStrategiesStuff\eula.txt
 		..\AbleStrategiesStuff\Features.txt = ..\AbleStrategiesStuff\Features.txt
 		AbleCheckbook\Support\logo-en-US.png = AbleCheckbook\Support\logo-en-US.png
 		..\AbleStrategiesStuff\Readme.txt = ..\AbleStrategiesStuff\Readme.txt

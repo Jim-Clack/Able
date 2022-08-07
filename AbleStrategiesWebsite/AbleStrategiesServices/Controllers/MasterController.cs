@@ -36,7 +36,12 @@ namespace AbleStrategiesServices.Controllers
         public ActionResult<IEnumerable<string>> Get()
         {
             DateTime now = DateTime.Now.ToUniversalTime();
-            string ipAddress = HttpContext.Connection.RemoteIpAddress.ToString();
+            string ipAddress;
+            if (!ClientCallFilter.Instance.Validate(HttpContext.Connection.RemoteIpAddress, true, out ipAddress))
+            {
+                HttpContext.Abort();
+                return null;
+            }
             Logger.Diag(ipAddress, "Get API Called");
             return new string[] {
                 AbleStrategiesServices.Support.Version.ToString(),
@@ -58,10 +63,10 @@ namespace AbleStrategiesServices.Controllers
         [HttpGet("by/{by}")]
         public JsonResult GetBy([FromRoute] string by, [FromQuery]string pattern)
         {
-            string ipAddress = HttpContext.Connection.RemoteIpAddress.ToString();
-            if (SupportMethods.HasWildcard(pattern) && !Configuration.Instance.IsHyperUser(HttpContext.Connection.RemoteIpAddress))
+            string ipAddress;
+            if (!ClientCallFilter.Instance.Validate(HttpContext.Connection.RemoteIpAddress, true, out ipAddress))
             {
-                Logger.Warn(ipAddress.ToString(), "Attempted unauthorized access [" + pattern + "]");
+                HttpContext.Abort();
                 return null;
             }
             UserInfo[] userInfos = ApiSupport.GetUserInfoBy(ipAddress, by, pattern, null, true);
@@ -79,10 +84,10 @@ namespace AbleStrategiesServices.Controllers
         [HttpGet("log/{lCode}/{siteId}/{countBack}")]
         public string GetLog([FromRoute] string lCode, [FromRoute] string siteId, [FromRoute] int countBack)
         {
-            string ipAddress = HttpContext.Connection.RemoteIpAddress.ToString();
-            if (!Configuration.Instance.IsHyperUser(HttpContext.Connection.RemoteIpAddress))
+            string ipAddress;
+            if (!ClientCallFilter.Instance.Validate(HttpContext.Connection.RemoteIpAddress, true, out ipAddress))
             {
-                Logger.Warn(ipAddress.ToString(), "Attempted unauthorized access");
+                HttpContext.Abort();
                 return "??? Denied";
             }
             // filename uses id fields, but replacing non-alphanumerics with a hyphen
@@ -96,7 +101,7 @@ namespace AbleStrategiesServices.Controllers
             }
             if(filePaths.Count <= countBack)
             {
-                return "??? End (No more files for " + lCode + " " + siteId + ")\n";
+                return "??? End (No more files for " + lCode + "-" + siteId + ")\n";
             }
             string filePath = filePaths.Values[filePaths.Count - (countBack + 1)];
             string fileContent = "";
@@ -124,10 +129,10 @@ namespace AbleStrategiesServices.Controllers
         [HttpGet("db/{pwd}")]
         public string GetDb([FromRoute] string pwd)
         {
-            string ipAddress = HttpContext.Connection.RemoteIpAddress.ToString();
-            if (!Configuration.Instance.IsHyperUser(HttpContext.Connection.RemoteIpAddress))
+            string ipAddress;
+            if (!ClientCallFilter.Instance.Validate(HttpContext.Connection.RemoteIpAddress, true, out ipAddress))
             {
-                Logger.Warn(ipAddress.ToString(), "Attempted unauthorized access, bad host");
+                HttpContext.Abort();
                 return "??? Denied";
             }
             if (pwd.Length != 10 || pwd[2] % 16 != DateTime.Now.Day % 10)
@@ -168,13 +173,13 @@ namespace AbleStrategiesServices.Controllers
         [HttpPost]
         public string PostUser([FromBody] UserInfo userInfo)
         {
-            string ipAddress = HttpContext.Connection.RemoteIpAddress.ToString();
-            Logger.Diag(ipAddress, "Post - insert new UserInfo...\n" + userInfo.ToString());
-            if (!Configuration.Instance.IsHyperUser(HttpContext.Connection.RemoteIpAddress))
+            string ipAddress;
+            if (!ClientCallFilter.Instance.Validate(HttpContext.Connection.RemoteIpAddress, true, out ipAddress))
             {
-                Logger.Warn(ipAddress, "Attempted unauthorized access");
-                return "";
+                HttpContext.Abort();
+                return "??? Denied";
             }
+            Logger.Diag(ipAddress, "Post - insert new UserInfo...\n" + userInfo.ToString());
             List<UserInfo> userInfos = UserInfoDbo.Instance.GetByLicenseCode(userInfo.LicenseRecord.LicenseCode.Trim());
             userInfo.SetIdsAllNew();
             if (userInfos != null && userInfos.Count != 1)
@@ -204,13 +209,13 @@ namespace AbleStrategiesServices.Controllers
         [HttpPut("user/{id}")]
         public string PutUser([FromBody] UserInfo userInfo)
         {
-            string ipAddress = HttpContext.Connection.RemoteIpAddress.ToString();
-            Logger.Diag(ipAddress, "Put - update existing UserInfo...\n" + userInfo.ToString());
-            if (!Configuration.Instance.IsHyperUser(HttpContext.Connection.RemoteIpAddress))
+            string ipAddress;
+            if (!ClientCallFilter.Instance.Validate(HttpContext.Connection.RemoteIpAddress, true, out ipAddress))
             {
-                Logger.Warn(ipAddress, "Attempted unauthorized access");
-                return "";
+                HttpContext.Abort();
+                return "??? Denied";
             }
+            Logger.Diag(ipAddress, "Put - update existing UserInfo...\n" + userInfo.ToString());
             List<UserInfo> userInfos = UserInfoDbo.Instance.GetByLicenseCode(userInfo.LicenseRecord.LicenseCode.Trim());
             if (userInfos == null || userInfos.Count != 1)
             {
@@ -243,13 +248,13 @@ namespace AbleStrategiesServices.Controllers
         [HttpDelete("{id}")]
         public int DeleteUser([FromRoute] string id)
         {
-            string ipAddress = HttpContext.Connection.RemoteIpAddress.ToString();
-            Logger.Diag(ipAddress, "Delete - delete existing UserInfo(s)...\n" + id);
-            if (!Configuration.Instance.IsHyperUser(HttpContext.Connection.RemoteIpAddress))
+            string ipAddress;
+            if (!ClientCallFilter.Instance.Validate(HttpContext.Connection.RemoteIpAddress, true, out ipAddress))
             {
-                Logger.Warn(ipAddress, "Attempted unauthorized access");
+                HttpContext.Abort();
                 return 0;
             }
+            Logger.Diag(ipAddress, "Delete - delete existing UserInfo(s)...\n" + id);
             UserInfo[] userInfos = null;
             int recordCount = 0;
             Guid guid = new Guid(id.Trim());

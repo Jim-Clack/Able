@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using AbleStrategiesServices.Support;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Globalization;
+using System.IO;
+using AbleLicensing;
+using System.Linq;
 
 namespace AbleStrategiesServices.Support
 {
@@ -15,6 +19,16 @@ namespace AbleStrategiesServices.Support
         /// Where do uploads go?
         /// </summary>
         public static string UploadPath = "../uploads/";
+
+        /// <summary>
+        /// Only one at a time.
+        /// </summary>
+        private static Mutex PurgeMutex = new Mutex();
+
+        /// <summary>
+        /// Only one at a time.
+        /// </summary>
+        private static Mutex ServerSettingsMutex = new Mutex();
 
         /// <summary>
         /// Return users by various lookups.
@@ -163,9 +177,222 @@ namespace AbleStrategiesServices.Support
             }
             if (withPurchAndInter)
             {
-                UserInfoDbo.Instance.UpdateListWithPurchAndInter(userInfo);
+                UserInfoDbo.Instance.PopulateWithPurchAndInteractivity(userInfo);
             }
             return userInfo.ToArray();
+        }
+
+        /// <summary>
+        /// Verify that a purchase went through
+        /// </summary>
+        /// <param name="userInfo">The license user info</param>
+        /// <param name="purchase">purchase transaction/verification, dependent on provide (PayPal begins with "P")</param>
+        /// <param name="amount">Amount of purchase in smallest currency units, i.e. cents</param>
+        /// <returns></returns>
+        public static bool VerifyPurchase(UserInfo userInfo, string purchase, out long amount)
+        {
+            if(string.IsNullOrEmpty(purchase) || purchase.Length < 10 || !purchase.StartsWith("P") || purchase.IndexOf("|") < 1)
+            {
+                amount = 0;
+                return false;
+            }
+
+            // TODO
+
+            amount = 2000;
+            return true;
+        }
+
+        /// <summary>
+        /// Generate a PIN for a registered user.
+        /// </summary>
+        /// <param name="userInfo"></param>
+        /// <param name="siteId">host/device id</param>
+        /// <returns>activation PIN< "" on error</returns>
+        public static string CalculatePin(UserInfo userInfo, string siteId)
+        {
+            string pin = "";
+            ServerSettingsMutex.WaitOne();
+            try
+            {
+                ServerSettings.Instance.LicenseCode = userInfo.LicenseRecord.LicenseCode;
+                long features = 0L;
+                long.TryParse(userInfo.LicenseRecord.LicenseFeatures, out features);
+                ServerSettings.Instance.FeaturesBitMask = features;
+                long checkSum = Activation.Instance.ChecksumOfString(siteId);
+                pin = Activation.Instance.CalculatePin(checkSum, siteId, userInfo.LicenseRecord.LicenseCode);
+            }
+            finally
+            {
+                ServerSettingsMutex.ReleaseMutex();
+            }
+            return pin;
+        }
+
+        /// <summary>
+        /// Activate a site, updating or adding a DeviceRecord, and return the PIN number
+        /// </summary>
+        /// <param name="passedUserInfo">As passed into the API</param>
+        /// <param name="existingUserInfo">As registered in the DB - will be updated</param>
+        /// <returns></returns>
+        public static string ActivateSiteGetPin(UserInfo passedUserInfo, UserInfo existingUserInfo)
+        {
+            string pinNumber = "";
+            // is the site/device already in the DB?
+            foreach (DeviceRecord regDeviceRecord in existingUserInfo.DeviceRecords)
+            {
+                foreach (DeviceRecord apiDeviceRecord in passedUserInfo.DeviceRecords)
+                {
+                    if (regDeviceRecord.DeviceSite.Trim().CompareTo(apiDeviceRecord.DeviceSite.Trim()) == 0)
+                    {
+                        pinNumber = ApiSupport.CalculatePin(existingUserInfo, regDeviceRecord.DeviceSite.Trim());
+                    }
+                }
+            }
+            // add a new site/device
+            if (string.IsNullOrEmpty(pinNumber))
+            {
+                DeviceRecord deviceRecord = new DeviceRecord();
+                deviceRecord.DeviceSite = passedUserInfo.DeviceRecords[0].DeviceSite;
+                deviceRecord.UserLevelPunct = passedUserInfo.DeviceRecords[0].UserLevelPunct;
+                existingUserInfo.DeviceRecords.Add(deviceRecord);
+                pinNumber = ApiSupport.CalculatePin(existingUserInfo, deviceRecord.DeviceSite.Trim());
+            }
+            return pinNumber;
+        }
+
+        /// <summary>
+        /// Add an interactivity record to the user info.
+        /// </summary>
+        /// <param name="userInfo">To be updated</param>
+        /// <param name="clientKind">kind of client</param>
+        /// <param name="clientInfo">Client name, ip address, etc.</param>
+        /// <param name="conversation">text - context and content</param>
+        public static void AddInteractivity(UserInfo userInfo, InteractivityClient clientKind, string clientInfo, string conversation)
+        {
+            InteractivityRecord interactivity = new InteractivityRecord();
+            interactivity.ClientInfo = clientInfo;
+            interactivity.InteractivityClient = clientKind;
+            interactivity.Conversation = conversation;
+            userInfo.InteractivityRecords.Add(interactivity);
+        }
+
+        /// <summary>
+        /// Add a purchase record to a user info
+        /// </summary>
+        /// <param name="userInfo">to be updated</param>
+        /// <param name="purchase">authorityCharacter + transaction + "|" + validationCode, i.e. P12345678|9090909090909</param>
+        /// <param name="purchAmount">amount in smallest currency units, i.e. cents</param>
+        public static void AddPurchase(UserInfo userInfo, string purchase, long purchAmount)
+        {
+            string[] purchaseFields = purchase.Trim().Substring(1).Split("|");
+            PurchaseRecord purchaseRecord = new PurchaseRecord();
+            purchaseRecord.PurchaseAuthority = PurchaseAuthority.PayPalStd;
+            purchaseRecord.PurchaseAmount = purchAmount;
+            purchaseRecord.PurchaseDate = DateTime.Now;
+            purchaseRecord.PurchaseTransaction = purchaseFields[0];
+            purchaseRecord.PurchaseVerification = purchaseFields[1];
+            purchaseRecord.Details = "v1";
+            userInfo.PurchaseRecords.Add(purchaseRecord);
+        }
+
+        /// <summary>
+        /// If there are too many uploaded files, delete the old ones
+        /// </summary>
+        public static void PurgeOldUploads()
+        {
+            PurgeMutex.WaitOne();
+            try
+            {
+                IEnumerable<string> enumerator = Directory.EnumerateFiles(ApiSupport.UploadPath);
+                long totalDaysOld = 0;
+                int numFiles = 0;
+                foreach (string filePath in enumerator)
+                {
+                    FileInfo fileInfo = new FileInfo(filePath);
+                    totalDaysOld += Math.Abs((DateTime.Now - fileInfo.CreationTime).Duration().Days);
+                    ++numFiles;
+                }
+                if (numFiles >= 5)
+                {
+                    long numDaysToKeep = Math.Max(8, totalDaysOld / numFiles);
+                    enumerator = Directory.EnumerateFiles(ApiSupport.UploadPath);
+                    foreach (string filePath in enumerator)
+                    {
+                        FileInfo fileInfo = new FileInfo(filePath);
+                        int fileAge = Math.Abs((DateTime.Now - fileInfo.CreationTime).Duration().Days);
+                        if (fileAge > numDaysToKeep)
+                        {
+                            System.IO.File.Delete(filePath);
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                PurgeMutex.ReleaseMutex();
+            }
+        }
+
+        /// <summary>
+        /// Validate the provided license code and ensure that it is not already in use.
+        /// </summary>
+        /// <param name="lCode">provided base license code, never null</param>
+        /// <returns>generated/adjusted license code, null on error (all searched lCodes are in use)</returns>
+        public static string CreateLicenseCodeBasedOn(string lCode)
+        {
+            lCode = lCode.Trim().ToUpper();
+            List<UserInfo> userInfosTest = UserInfoDbo.Instance.GetByLicenseCode(lCode);
+            while (lCode.Length < 12)
+            {
+                lCode = lCode + DateTime.Now.Ticks; // if too short or not provided
+            }
+            if (lCode.Length > 12)
+            {
+                lCode = lCode.Substring(0, 12);
+            }
+            lCode = lCode.Substring(0, 6) + UserLevelPunct.Standard + lCode.Substring(7);
+            string initialLCode = lCode;
+            while(true)
+            {
+                if(UserInfoDbo.Instance.GetByLicenseCode(lCode).Count == 0)
+                { 
+                    break; // found a license code that is not in-use
+                }
+                if (SpinChar(ref lCode, 5, initialLCode))
+                {
+                    if (SpinChar(ref lCode, 4, initialLCode))
+                    {
+                        Logger.Warn(null, "Exhausted all attempts to generate a license code!");
+                        return null; // give up!
+                    }
+                }
+            }
+            return lCode;
+        }
+
+        /// <summary>
+        /// Spin a character in a string like an odometer digit 
+        /// </summary>
+        /// <param name="code">uppercase string with alphanumerics, will be modified</param>
+        /// <param name="index">index to character to be spun</param>
+        /// <param name="initial">the initial string, before it was spun</param>
+        /// <returns>true if it rolled over to its initial value</returns>
+        private static bool SpinChar(ref string code, int index, string initial)
+        {
+            if (char.IsDigit(initial[index]) && code[index] == '9') // 9 rolls over to 0
+            {
+                code = code.Substring(0, index) + "0" + code.Substring(index + 1);
+            }
+            else if(code.ToUpper()[index] == 'Z') // Z rolls over to A
+            {
+                code = code.Substring(0, index) + "A" + code.Substring(index + 1);
+            }
+            else
+            {
+                code = code.Substring(0, index) + (char)(code[index] + 1) + code.Substring(index + 1);
+            }
+            return (code[index] == initial[index]);
         }
 
     }

@@ -1,0 +1,41 @@
+﻿End User License Agreement (EULA)
+
+Please read this entire agreement and make sure you understand it and accept it before proceeding.
+
+Software Product: AbleCheckbook
+Manufacturer and Licensor: Able Strategies (Acworth, Georgia, USA)
+Device: Computer or other electronic device on which the software product is installed or run
+End User: You, the Licensee
+
+This End-User License Agreement (EULA) is a legal agreement between the end user and the mentioned licensor of this software for the software product identified above, which includes computer software and may include printed materials, and online or electronic documentation. By installing, copying, or otherwise using the software product, the end user agrees to be bounded by the terms of this EULA.  If the end user does not agree to the terms of this EULA, they do not have the right to install or to use the software product. The summary listed after the terms is superficial and does not take legal precedent over the terms and conditions.
+
+Terms and Conditions
+
+1. General.
+The end user or other person or entity is not permitted to charge for distributing this software product, either for profit or merely to recover media and distribution costs, whether as a stand-alone product, or as part of a compilation or anthology. It may be distributed freely on any website or through any other distribution mechanism, as long as no part of it is changed in any way and full credit is given to the manufacturer and licensor. This agreement applies to the basic software product that is distributed without charge but additionally addresses the upgrades and enhancements that can be purchased.
+2. Grant of License. 
+This EULA grants the end user the following rights: Installation and Use. The end user may install and use an unlimited number of copies of the software product. If tese terms and conditions are amended the end user will be given the opportunity to affirm that they have been informed, but if they refuse to accept the new terms, their license to install or use the software prroduct may be terminated per the terms discussed below.
+3. Reproduction and Distribution. 
+The end user may reproduce and distribute an unlimited number of copies of the software product; provided that each copy shall be a true copy, including all copyright and trademark notices, and shall be accompanied by a copy of this EULA. Copies of the software product may be distributed as a standalone product or included with another product as long as The software product is not sold or included in a product or package that intends to receive benefits through the inclusion of the software product. The software product may be included in any free or non-profit packages or products.
+4. Rights and Limitations. 
+This grants the end user limited rights to install and use the software product, only as expressly specified on the licensor's website and documentation. The end user may not reverse engineer, decompile, or disassemble the software product, except and only to the extent that such activity is expressly permitted by applicable law notwithstanding this limitation.
+5. Separation of Components.
+The software product is licensed as a single product on a single device. Its component parts may not be separated for use on more than one device. Upgrades or enhancements that are granted under the terms of this EULA cannot be transferred to another end user without expressed written consent of the licensor.
+6. Software Transfer. 
+The end user may permanently transfer all of their rights under this EULA, provided the recipient agrees to the terms of this EULA and that the current end user relinquishes their rights to the software product.
+7. Termination. 
+Without prejudice to any other rights, the licensor of this software product may terminate this EULA if the end user fails to comply with the terms and conditions of this EULA. The end user may also choose to terminate this agreement. In either case, the end user must destroy all copies of the software product and all of its component parts. 
+8. Upgrades or Enhancements.
+The licensor may charge a fee for certain upgrades or enhancements and enable software restrictions that can only be removed by the licensor including, but not limited to, capacities, performance, and functionality. Any such variations are licensed to a particular device and may not be transferred or distributed except as expressly granted in writing by the licensor. Terms of these and the corresponding charges are to be found on the licensor's website or documentation. It is a violation of this license to subvert these or circumvent their engagement in the software product.
+9. Copyright and Intellectual Rights. 
+All title and copyrights in and to the software product (including but not limited to any images, photographs, clipart, libraries, and examples incorporated into the software product), the accompanying printed materials, and any copies of the software product are owned by the Author of this Software. The software product is protected by copyright laws and international treaty provisions. 
+10. No warranties are granted or implied. 
+The Author of this Software expressly disclaims any warranty for the software product. The Software product and any related documentation is provided “as is” without warranty of any kind, either express or implied, including, without limitation, the implied warranties or merchantability, fitness for a particular purpose, or noninfringement. The entire risk arising out of use or performance of the software product remains with the end user.
+11. No Liability for Damages.
+In no event shall the manufacturer or licensor of this software product be liable for any special, consequential, incidental or indirect damages whatsoever (including, without limitation, damages for loss of business profits, business interruption, loss of business information, or any other pecuniary loss) arising out of the use of or inability to use this product, even if the Author of this Software is aware of the possibility of such damages and known defects.
+12. Resolution.
+Dispute over the software product or the manufacturer or licensor shall be governed in accordance with the laws of the United States and the state of Georgia. It is not governed by the United Nations conventions or contracts in any way. Reparations shall be limited to the price paid for the software product.
+
+Non-Binding Abbreviated Summary
+
+This is a license for a product that may be distributed and used without cost but that has certain limitations that can be overridden by purchasing upgrades or enhancements. The end user is to avoid assigning sole and critical reliance on the software product and use it only as an adjunct, in to expedite, double-check, and help organize their work. The end user is granted specific rights as described in writing by the licensor and has no further rights implied or expressed. The end user is also limited to installing and using the software product in accordance with this agreement and the documentation provided by the licensor. The software product does not have a warranty.

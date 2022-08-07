@@ -18,17 +18,17 @@ namespace AbleStrategiesServices.Support
         /// <summary>
         /// List of PurchaseRecords.
         /// </summary>
-        private List<PurchaseRecord> purchaseRecords = null;
+        private List<PurchaseRecord> purchaseRecords = new List<PurchaseRecord>();
 
         /// <summary>
         /// List of DeviceRecords.
         /// </summary>
-        private List<DeviceRecord> deviceRecords = null;
+        private List<DeviceRecord> deviceRecords = new List<DeviceRecord>();
 
         /// <summary>
         /// List of InteractivityRecords.
         /// </summary>
-        private List<InteractivityRecord> interactivityRecords = null;
+        private List<InteractivityRecord> interactivityRecords = new List<InteractivityRecord>();
 
         /// <summary>
         /// Default ctor.
@@ -46,7 +46,9 @@ namespace AbleStrategiesServices.Support
         /// <param name="zip">postal code</param>
         /// <param name="phone">phone number</param>
         /// <param name="email">email address</param>
-        public UserInfo(string name, string addr, string city, string zip, string phone, string email)
+        /// <param name="siteId">host/device ID</param>
+        /// <param name="punct">UserLevelPunct</param>
+        public UserInfo(string name, string addr, string city, string zip, string phone, string email, string siteId, UserLevelPunct punct)
         {
             LicenseRecord = new LicenseRecord();
             LicenseRecord.ContactName = name;
@@ -57,6 +59,10 @@ namespace AbleStrategiesServices.Support
             LicenseRecord.ContactEMail = email;
             LicenseRecord.LicenseFeatures = "";
             LicenseRecord.LicenseCode = "";
+            DeviceRecord deviceRecord = new DeviceRecord();
+            deviceRecord.DeviceSite = siteId;
+            deviceRecord.UserLevelPunct = punct;
+            DeviceRecords.Add(deviceRecord);
         }
 
         /// <summary>

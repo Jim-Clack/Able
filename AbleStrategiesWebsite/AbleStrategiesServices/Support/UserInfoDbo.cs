@@ -86,7 +86,7 @@ namespace AbleStrategiesServices.Support
                 errorMessage = "License Id " + id + " failed: " + errorMessage;
                 return null;
             }
-            return PopulateLists(licenseRecords);
+            return PopulateWithLicenseAndDevices(licenseRecords);
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace AbleStrategiesServices.Support
                 errorMessage = "License Code " + lCode + " FAILURE: " + errorMessage;
                 return null;
             }
-            return PopulateLists(licenseRecords);
+            return PopulateWithLicenseAndDevices(licenseRecords);
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace AbleStrategiesServices.Support
                 errorMessage = "Name " + nameRegex + " FAILURE: " + errorMessage;
                 return null;
             }
-            return PopulateLists(licenseRecords);
+            return PopulateWithLicenseAndDevices(licenseRecords);
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace AbleStrategiesServices.Support
                 errorMessage = "Address " + addressRegex + " FAILURE: " + errorMessage;
                 return null;
             }
-            return PopulateLists(licenseRecords);
+            return PopulateWithLicenseAndDevices(licenseRecords);
         }
 
         /// <summary>
@@ -154,7 +154,7 @@ namespace AbleStrategiesServices.Support
                 errorMessage = "City " + cityRegex + " FAILURE: " + errorMessage;
                 return null;
             }
-            return PopulateLists(licenseRecords);
+            return PopulateWithLicenseAndDevices(licenseRecords);
         }
 
         /// <summary>
@@ -171,7 +171,7 @@ namespace AbleStrategiesServices.Support
                 errorMessage = "EMail " + emailRegex + " FAILURE: " + errorMessage;
                 return null;
             }
-            return PopulateLists(licenseRecords);
+            return PopulateWithLicenseAndDevices(licenseRecords);
         }
 
         /// <summary>
@@ -188,7 +188,7 @@ namespace AbleStrategiesServices.Support
                 errorMessage = "Phone " + contactPhone + " FAILURE: " + errorMessage;
                 return null;
             }
-            return PopulateLists(licenseRecords);
+            return PopulateWithLicenseAndDevices(licenseRecords);
         }
 
         /// <summary>
@@ -205,7 +205,7 @@ namespace AbleStrategiesServices.Support
                 errorMessage = "Site Code " + siteCode + " FAILURE: " + errorMessage;
                 return null;
             }
-            return PopulateLists(licenseRecords);
+            return PopulateWithLicenseAndDevices(licenseRecords);
         }
 
         /// <summary>
@@ -222,7 +222,7 @@ namespace AbleStrategiesServices.Support
                 errorMessage = "Interactivity Since " + startDate.ToString() + " FAILURE: " + errorMessage;
                 return null;
             }
-            return PopulateLists(licenseRecords);
+            return PopulateWithLicenseAndDevices(licenseRecords);
         }
 
         /// <summary>
@@ -240,7 +240,7 @@ namespace AbleStrategiesServices.Support
                 errorMessage = "Description " + startDate.ToString() + " - " + endDate.ToString() + " FAILURE: " + errorMessage;
                 return null;
             }
-            return PopulateLists(licenseRecords);
+            return PopulateWithLicenseAndDevices(licenseRecords);
         }
 
         /// <summary>
@@ -375,7 +375,7 @@ namespace AbleStrategiesServices.Support
         /// </summary>
         /// <param name="licenseRecords">License records</param>
         /// <returns>The list of userInfo if all is well; otherwise null</returns>
-        public List<UserInfo> PopulateLists(List<LicenseRecord> licenseRecords)
+        public List<UserInfo> PopulateWithLicenseAndDevices(List<LicenseRecord> licenseRecords)
         {
             List<UserInfo> results = new List<UserInfo>();
             foreach (LicenseRecord record in licenseRecords)
@@ -393,7 +393,7 @@ namespace AbleStrategiesServices.Support
         /// </summary>
         /// <param name="userInfos">UserInfo records to be updates</param>
         /// <returns>The list of userInfo passed in, updated</returns>
-        public List<UserInfo> UpdateListWithPurchAndInter(List<UserInfo> userInfos)
+        public List<UserInfo> PopulateWithPurchAndInteractivity(List<UserInfo> userInfos)
         {
             foreach (UserInfo userInfo in userInfos)
             {

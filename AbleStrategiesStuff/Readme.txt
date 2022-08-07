@@ -25,7 +25,7 @@ Terminology...
  - Cleared == Reconciled == Archived (transaction locked unless admin mode)
  - During reconcile, entry check-off "IsChecked" means "IsCleared Tentatively"
  - Technical details: ".adb", auto-save, rolling-backups, weekly-backups, etc.
-
+  
 Class Topology...
  a. Start from IDbAccess in order to understand the class heirarchy
  b. DB Class Inheritance: JsonDbAccess -> UndoableDbAccess -> IDbAccess
@@ -71,6 +71,7 @@ When writing docs/help, explain...
  - Translation/i18n, strings (i.e sequence doesn't matter), etc.
  - Licensing, UserLevel, Activation, Expiration, and Admin Mode
  - Time-limited: Days of use vs days since installed
+ - Show credit for Upcounsel EULA, icons/fonts, and other third parties
 
 Kludge to enable your system (via Able Licensing) for Super-User mode...
  Activation.Instance.SetDefaultDays(180, 366); // note1: not needed but shown for completeness
@@ -80,6 +81,8 @@ Kludge to enable your system (via Able Licensing) for Super-User mode...
  Activation.Instance.SetFeatureBitmask(0x000000000000000FL, Activation.Instance.ChecksumOfString(Activation.Instance.SiteIdentification));
  Activation.Instance.SetExpiration(2, Activation.Instance.ChecksumOfString(Activation.Instance.SiteIdentification)); // note1
 
+EULA...
+ https://www.upcounsel.com/end-user-license-agreement
 MS DotNet WebBrowser...
  https://docs.microsoft.com/en-us/dotnet/desktop/winforms/controls/implement-two-way-com-between-dhtml-and-client?view=netframeworkdesktop-4.8
 Open Banking API...
@@ -117,11 +120,11 @@ Note to critics:
  or expected royalties. I also knew that this app did not need the scale of a
  full DB and that all data could easily fit into memory for any expected user
  checkbook register. So I chose the JSON format as a temporary cheat, with
- live data records in memory. But put a neutral DB interface on it so it 
+ live data records in memory. But I put a neutral DB interface on it so it 
  could be changed later. Do I regret it? Yes. And no. It's fast and achieves
- its objectives. But it's error-prone and non-standard. Yet for now, don't
+ its objectives. But it's non-standard and nont extensible. Yet for now, don't
  fix it if it ain't broke. (I learned from this exercise and the server-side
- JSON DB is much cleaner.)
+ JSON DB is much cleaner. But it really should be replaced with SQL.)
 
 Notes to developers who are MS/VS virgins...
 
@@ -137,7 +140,6 @@ Notes to developers who are MS/VS virgins...
  Property Manager that has nothing to do with either of these. Confused?
 
  Weird namespace/packaging: Array.ToList() is found in System.Linq. Really!
-
 
  When you set a background image you also want to set the layout. Of course
  you might think that to set the layout for a BackgroundImage you would set

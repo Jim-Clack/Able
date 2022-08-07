@@ -17,13 +17,14 @@ namespace AbleStrategiesServices.Support
         private static Configuration instance = null;
 
         /// <summary>
-        /// Only allow this IP address to access DB generally
+        /// How many hosts can be activated per license
         /// </summary>
-#if DEBUG
-        private string HyperUserIp = "::1";
-#else
-        private string HyperUserIp = "192.2.2.2";
-#endif
+        public static readonly int MaxDevicesPerLicense = 3;
+
+        /// <summary>
+        /// Only allow these IP addresses to access "as/master" APIs
+        /// </summary>
+        private string[] HyperUserIp = { "::1", "127.0.0.1", "192.2.2.2" };
 
         /// <summary>
         /// Ctor.
@@ -55,7 +56,7 @@ namespace AbleStrategiesServices.Support
         /// <returns>true if a super super user</returns>
         public bool IsHyperUser(System.Net.IPAddress ipAddress)
         {
-            return ipAddress.ToString().ToUpper().Contains(HyperUserIp);
+            return HyperUserIp.Contains(ipAddress.ToString().Trim().ToUpper());
         }
 
     }

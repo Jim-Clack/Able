@@ -20,35 +20,37 @@ namespace AbleLicensing
     }
 
     /// <summary>
-    /// Web service API states (both request and response states)
+    /// Web service API states (both requests and responses, not really a state any more)
     /// </summary>
     public enum ApiState
     {
         Unknown = 0,
-        // Requests that Pass Minimal Info
-        FuzzyLookup = 1,             // Find by fuzzy match on license code, addr, phone, etc.
-        LookupLicense = 2,           // Find by license code
+        // Request that passes minimal info and does not update DB
+        LookupLicense = 2,           // Find my info by license code
         // Requests that expect info, as is known, to be populated
-        UpdateInfo = 3,              // Change addr, phone, email, etc
-        ChangeFeature = 4,           // Change the feature mask
-        ChangeLevel = 5,             // Change permission level (and site id)
+        RegisterLicense = 5,         // May alter/update licenseCode in returned UserInfo
+        UpdateInfo = 6,              // Change addr, phone, email, etc
+        ChangeFeature = 7,           // Change the feature mask
+        ChangeLevel = 8,             // Change permission level (and licenseCode punctuation))
+        AddlDevice = 9,              // Activate add'l device on same license, no charge
         // Requests that license host devices
         MakePurchase = 11,           // Complete the purchase
-        AddlDevice = 12,             // Activate add'l device on same license at no charge
         // Successful Non-Purchase Responses
-        ReturnOk = 20,               // Completed non-purchase okay, return PinNumber
-        ReturnOkAddlDev = 21,        // Purchase ok, no charge, existing lic, return PinNumber, SiteId
+        ReturnOk = 20,               // Completed non-purchase okay
+        ReturnOkAddlDev = 21,        // Purchase ok, no charge, existing lic, return PinNumber
         ReturnNotActivated = 22,     // Not activated, no paid license found, return Message
         ReturnDeactivate = 23,       // Too many devices, deactive, return Message
         // Failed Non-Purchase Responses
         ReturnBadArg = 31,           // Invalid city, phone, email, etc, return Message
         ReturnNotFound = 32,         // License not found, return Message
-        ReturnNotMatched = 33,       // Name or other incorrect, return Message
+        ReturnNotMatched = 33,       // Name or other info incorrect, return Message
+        ReturnError = 34,            // Internal error, typically all similar license codes in use
+        ReturnDenied = 35,           // Caller does not have permission, return Message
         // Purchase Responses
-        PurchaseOk = 40,             // Purchase went thru, return PinNumber, SiteId, LicCode
-        PurchaseOkUpgrade = 41,      // Purchase ok, upgrade fee, existing lic, return PinNumber, SiteId
+        PurchaseOk = 40,             // Purchase went thru, return PinNumber, new LicCode
+        PurchaseOkUpgrade = 41,      // Purchase ok, upgrade existing, return PinNumber, new LicCode
         PurchaseFailed = 42,         // Purchase failed, return Message, LicCode
-        PurchaseOkOtherFailed = 43,  // Purchase went thru but something else failed, return Message
+        PurchaseIncomplete = 43,     // Purchase went thru but something else failed, return Message
     }
 
     /// <summary>
@@ -78,7 +80,7 @@ namespace AbleLicensing
     ///  Feature: Future use, ignored for now.
     /// Notes:
     /// - Be sure to call dummy method VerifyPin() in key places to act as a hacker distraction.
-    /// - Thre must be Different SiteSettings implementations for the client and the server.
+    /// - There must be Different SiteSettings implementations for the client and the server.
     /// - There must be exactly one class in the entry assembly that implements SiteSettings.
     /// - Client SiteSettings implementation must persist and restore all data from setters.
     /// - SiteSettings class should return the same MfrAndAppName as is used during installation.

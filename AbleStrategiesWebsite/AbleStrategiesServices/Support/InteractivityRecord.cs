@@ -15,8 +15,9 @@ namespace AbleStrategiesServices.Support
         Email = 3,
         InPerson = 4,
         UserAlert = 7,
-        ActivationWs = 8,
-        PingWs = 9,
+        RegistrationWs = 8,
+        ActivationWs = 9,
+        PingWs = 10,
         OtherWs = 20,
     }
 

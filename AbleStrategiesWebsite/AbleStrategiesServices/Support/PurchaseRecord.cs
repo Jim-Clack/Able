@@ -7,13 +7,6 @@ using System.Threading.Tasks;
 namespace AbleStrategiesServices.Support
 {
 
-    public enum PurchaseAuthority
-    {
-        Unknown = 0,
-        NoCharge = 1,
-        PayPalStd = 2,
-    }
-
     public class PurchaseRecord : BaseDbRecord
     {
 
@@ -57,26 +50,6 @@ namespace AbleStrategiesServices.Support
         /// </summary>
         public PurchaseRecord() : base()
         {
-        }
-
-        /// <summary>
-        /// [static] Unique record type discriminator.
-        /// </summary>
-        /// <returns>unique string discriminator</returns>
-        public static string GetRecordKind()
-        {
-            return typeof(PurchaseRecord).Name;
-        }
-
-        /// <summary>
-        /// Unique record type discriminator (note: implement as a call to a static method)
-        /// </summary>
-        public override string RecordKind
-        {
-            get
-            {
-                return PurchaseRecord.GetRecordKind();
-            }
         }
 
         /// <summary>

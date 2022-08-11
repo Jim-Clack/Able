@@ -54,26 +54,6 @@ namespace AbleStrategiesServices.Support
         }
 
         /// <summary>
-        /// [static] Unique record type discriminator.
-        /// </summary>
-        /// <returns>unique string discriminator</returns>
-        public static string GetRecordKind()
-        {
-            return typeof(LicenseRecord).Name;
-        }
-
-        /// <summary>
-        /// Unique record type discriminator (note: implement as a call to a static method)
-        /// </summary>
-        public override string RecordKind
-        {
-            get
-            {
-                return LicenseRecord.GetRecordKind();
-            }
-        }
-
-        /// <summary>
         /// License number.
         /// </summary>
         public string LicenseCode

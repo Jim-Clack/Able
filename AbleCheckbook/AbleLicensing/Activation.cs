@@ -39,13 +39,14 @@ namespace AbleLicensing
         ReturnOk = 20,               // Completed non-purchase okay 
         ReturnOkAddlDev = 21,        // Purchase ok, no charge, existing lic, return PinNumber
         ReturnNotActivated = 22,     // Not activated, no paid license found, return Message
-        ReturnDeactivate = 23,       // Too many devices, deactive, return Message
+        ReturnDeactivate = 23,       // Too many devices, deactivate, return Message
         // Failed Non-Purchase Responses
         ReturnBadArg = 31,           // Invalid city, phone, email, etc, return Message
         ReturnNotFound = 32,         // License not found, return Message
         ReturnNotMatched = 33,       // Name or other info incorrect, return Message
-        ReturnError = 34,            // Internal error, typically all similar license codes in use
-        ReturnDenied = 35,           // Caller does not have permission, return Message
+        ReturnLCodeTaken = 34,       // License code already in use by a different user
+        ReturnError = 35,            // Internal error, typically all similar license codes in use
+        ReturnDenied = 36,           // Caller does not have permission, return Message
         // Purchase Responses
         PurchaseOk = 40,             // Purchase went thru, return PinNumber, new LicCode
         PurchaseOkUpgrade = 41,      // Purchase ok, upgrade existing, return PinNumber, new LicCode
@@ -441,6 +442,25 @@ namespace AbleLicensing
             string pin = "" + (1000 + accumulator % 9000);
             LoggerHook("[Y8] ResetAllEntries() " + sid + " " + lCode + " " + pin);
             return pin;
+        }
+
+        /// <summary>
+        /// Get web service API URL.
+        /// </summary>
+        public string WsUrlOverride
+        {
+            get
+            {
+                if(!string.IsNullOrEmpty(_siteSettings.WsUrlOverride))
+                {
+                    return _siteSettings.WsUrlOverride;
+                }
+#if DEBUG
+                return "https://localhost:44363/as/checkbook";
+#else
+                return "https://ablestrategies.com/as/checkbook/";
+#endif
+            }
         }
 
         /// <summary>

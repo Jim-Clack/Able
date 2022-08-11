@@ -422,22 +422,22 @@ namespace AbleStrategiesServices.Support
             Dictionary<Guid, LicenseRecord>.Enumerator licenseEnum = dbContent.LicenseRecords.GetEnumerator();
             while (licenseEnum.MoveNext())
             {
-                licenseEnum.Current.Value.UnMod();
+                ((LicenseRecord)licenseEnum.Current.Value).UnMod();
             }
             Dictionary<Guid, DeviceRecord>.Enumerator deviceEnum = dbContent.DeviceRecords.GetEnumerator();
             while (deviceEnum.MoveNext())
             {
-                deviceEnum.Current.Value.UnMod();
+                ((DeviceRecord)deviceEnum.Current.Value).UnMod();
             }
             Dictionary<Guid, PurchaseRecord>.Enumerator purchaseEnum = dbContent.PurchaseRecords.GetEnumerator();
             while (purchaseEnum.MoveNext())
             {
-                purchaseEnum.Current.Value.UnMod();
+                ((PurchaseRecord)purchaseEnum.Current.Value).UnMod();
             }
             Dictionary<Guid, InteractivityRecord>.Enumerator interactivityEnum = dbContent.InteractivityRecords.GetEnumerator();
             while (interactivityEnum.MoveNext())
             {
-                interactivityEnum.Current.Value.UnMod();
+                ((InteractivityRecord)interactivityEnum.Current.Value).UnMod();
             }
         }
 
@@ -858,7 +858,7 @@ namespace AbleStrategiesServices.Support
         /// <returns>Success</returns>
         public override bool UpdateDb(LicenseRecord record)
         {
-            return UpdateDbPerEditFlag<LicenseRecord>(record, dbContent.LicenseRecords);
+            return UpdateDbPerEditFlag<LicenseRecord>((LicenseRecord)record, dbContent.LicenseRecords);
         }
 
         //////////////////////////// DeviceRecord ////////////////////////////

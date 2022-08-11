@@ -73,6 +73,22 @@ namespace AbleStrategiesServices.Controllers
             return ApiSupport.AsJsonResult(new UserInfoResponse((int)ApiState.ReturnOk, userInfos.ToList()));
         }
 
+        /// <summary>
+        /// Get all logged warning and error message since last call to this API.
+        /// </summary>
+        /// <returns>multi-line list of messages</returns>
+        [HttpGet("msgs")]
+        public string GetMsgs()
+        {
+            string ipAddress;
+            if (!ClientCallFilter.Instance.Validate(HttpContext.Connection.RemoteIpAddress, true, out ipAddress))
+            {
+                HttpContext.Abort();
+                return null;
+            }
+            return Logger.Instance.GetWarningMessages();
+        }
+
         // GET as/master/log/lll/sss/0
         /// <summary>
         /// Download a client logfile that has been uploaded via as/checkbook.
@@ -171,7 +187,7 @@ namespace AbleStrategiesServices.Controllers
         /// <param name="value">Populated JSON representing the UserInfo (FkLiceseId and Id are ignored)</param>
         /// <returns>the ID of the license record (not the license code), "" on failure or if the licenseCode already exists</returns>
         [HttpPost]
-        public string PostUser([FromBody] UserInfo userInfo)
+        public string PostUser([FromBody] Support.UserInfo userInfo)
         {
             string ipAddress;
             if (!ClientCallFilter.Instance.Validate(HttpContext.Connection.RemoteIpAddress, true, out ipAddress))
@@ -180,7 +196,7 @@ namespace AbleStrategiesServices.Controllers
                 return "??? Denied";
             }
             Logger.Diag(ipAddress, "Post - insert new UserInfo...\n" + userInfo.ToString());
-            List<UserInfo> userInfos = UserInfoDbo.Instance.GetByLicenseCode(userInfo.LicenseRecord.LicenseCode.Trim());
+            List<Support.UserInfo> userInfos = UserInfoDbo.Instance.GetByLicenseCode(userInfo.LicenseRecord.LicenseCode.Trim());
             userInfo.SetIdsAllNew();
             if (userInfos != null && userInfos.Count != 1)
             {
@@ -207,7 +223,7 @@ namespace AbleStrategiesServices.Controllers
         /// <remarks>Unlike Post, this (Put) method requires that the ID of each record be correct.</remarks>
         /// <returns>the ID of the license record (not the license code)</returns>
         [HttpPut("user/{id}")]
-        public string PutUser([FromBody] UserInfo userInfo)
+        public string PutUser([FromBody] Support.UserInfo userInfo)
         {
             string ipAddress;
             if (!ClientCallFilter.Instance.Validate(HttpContext.Connection.RemoteIpAddress, true, out ipAddress))
@@ -216,7 +232,7 @@ namespace AbleStrategiesServices.Controllers
                 return "??? Denied";
             }
             Logger.Diag(ipAddress, "Put - update existing UserInfo...\n" + userInfo.ToString());
-            List<UserInfo> userInfos = UserInfoDbo.Instance.GetByLicenseCode(userInfo.LicenseRecord.LicenseCode.Trim());
+            List<Support.UserInfo> userInfos = UserInfoDbo.Instance.GetByLicenseCode(userInfo.LicenseRecord.LicenseCode.Trim());
             if (userInfos == null || userInfos.Count != 1)
             {
                 Logger.Warn(null, "Cannot find existing License Code. Cannot update");
@@ -255,7 +271,7 @@ namespace AbleStrategiesServices.Controllers
                 return 0;
             }
             Logger.Diag(ipAddress, "Delete - delete existing UserInfo(s)...\n" + id);
-            UserInfo[] userInfos = null;
+            Support.UserInfo[] userInfos = null;
             int recordCount = 0;
             Guid guid = new Guid(id.Trim());
             try

@@ -46,12 +46,6 @@ namespace AbleStrategiesServices.Support
         private DateTime dateModified = DateTime.Now;
 
         /// <summary>
-        /// Unique record type discriminator (note: implement as a call to a static method)
-        /// </summary>
-        [JsonIgnore]
-        public virtual string RecordKind { get; }
-
-        /// <summary>
         /// Ctor.
         /// </summary>
         protected BaseDbRecord()
@@ -138,9 +132,9 @@ namespace AbleStrategiesServices.Support
         /// <returns>success</returns>
         protected bool PopulateBaseFrom(BaseDbRecord source)
         {
-            if (source.RecordKind != RecordKind)
+            if (source.GetType() != this.GetType())
             {
-                Logger.Error(null, "Bad DB Record mismatch " + RecordKind + " != " + source.RecordKind);
+                Logger.Error(null, "Bad DB Record mismatch " + this.GetType() + " != " + source.GetType());
                 return false;
             }
             this.id = source.id;

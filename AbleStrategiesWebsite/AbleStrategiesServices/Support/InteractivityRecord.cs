@@ -7,20 +7,6 @@ using System.Threading.Tasks;
 namespace AbleStrategiesServices.Support
 {
 
-    public enum InteractivityClient
-    {
-        Unknown = 0,
-        PhoneCall = 1,
-        OnlineChat = 2,
-        Email = 3,
-        InPerson = 4,
-        UserAlert = 7,
-        RegistrationWs = 8,
-        ActivationWs = 9,
-        PingWs = 10,
-        OtherWs = 20,
-    }
-
     public class InteractivityRecord : BaseDbRecord
     {
 
@@ -54,26 +40,6 @@ namespace AbleStrategiesServices.Support
         /// </summary>
         public InteractivityRecord() : base()
         {
-        }
-
-        /// <summary>
-        /// [static] Unique record type discriminator.
-        /// </summary>
-        /// <returns>unique string discriminator</returns>
-        public static string GetRecordKind()
-        {
-            return typeof(InteractivityRecord).Name;
-        }
-
-        /// <summary>
-        /// Unique record type discriminator (note: implement as a call to a static method)
-        /// </summary>
-        public override string RecordKind
-        {
-            get
-            {
-                return InteractivityRecord.GetRecordKind();
-            }
         }
 
         /// <summary>

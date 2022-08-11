@@ -671,7 +671,8 @@ namespace AbleCheckbook.Db
             JsonDbAccess.Mutex.WaitOne();
             try
             {
-                entry = _dbHeader.CheckbookEntries[id.ToString()];
+                _dbHeader.CheckbookEntries.TryGetValue(id.ToString(), out entry);
+                // entry = _dbHeader.CheckbookEntries[id.ToString()];
                 /*
                 IEnumerator<KeyValuePair<string, CheckbookEntry>> enumerator = _dbHeader.CheckbookEntries.GetEnumerator();
                 while (enumerator.MoveNext())
@@ -827,7 +828,8 @@ namespace AbleCheckbook.Db
             JsonDbAccess.Mutex.WaitOne();
             try
             {
-                schEvent = _dbHeader.ScheduledEvents[id.ToString()];
+                _dbHeader.ScheduledEvents.TryGetValue(id.ToString(), out schEvent);
+                // schEvent = _dbHeader.ScheduledEvents[id.ToString()];
                 /*
                 IEnumerator<KeyValuePair<string, ScheduledEvent>> enumerator = _dbHeader.ScheduledEvents.GetEnumerator();
                 while (enumerator.MoveNext())
@@ -1018,7 +1020,8 @@ namespace AbleCheckbook.Db
             JsonDbAccess.Mutex.WaitOne();
             try
             {
-                finCateg = _dbHeader.FinancialCategories[id.ToString()];
+                _dbHeader.FinancialCategories.TryGetValue(id.ToString(), out finCateg);
+                //finCateg = _dbHeader.FinancialCategories[id.ToString()];
                 /*
                 IEnumerator<KeyValuePair<string, FinancialCategory>> enumerator = _dbHeader.FinancialCategories.GetEnumerator();
                 while (enumerator.MoveNext())

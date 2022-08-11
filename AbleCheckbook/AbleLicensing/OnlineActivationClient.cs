@@ -7,6 +7,8 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
+// NOT USED - OBSOLETE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 namespace AbleLicensing
 {
 

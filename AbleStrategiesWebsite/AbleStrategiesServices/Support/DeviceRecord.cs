@@ -23,7 +23,7 @@ namespace AbleStrategiesServices.Support
         /// <summary>
         /// Current status of device activation.
         /// </summary>
-        private UserLevelPunct userLevelPunct = UserLevelPunct.Unlicensed;
+        private int userLevelPunct = (int)(AbleLicensing.UserLevelPunct.Unlicensed);
 
         /// <summary>
         /// Binary authentication/authorization info.
@@ -35,27 +35,6 @@ namespace AbleStrategiesServices.Support
         /// </summary>
         public DeviceRecord() : base()
         {
-            
-        }
-
-        /// <summary>
-        /// [static] Unique record type discriminator.
-        /// </summary>
-        /// <returns>unique string discriminator</returns>
-        public static string GetRecordKind()
-        {
-            return typeof(DeviceRecord).Name;
-        }
-
-        /// <summary>
-        /// Unique record type discriminator (note: implement as a call to a static method)
-        /// </summary>
-        public override string RecordKind
-        {
-            get
-            {
-                return DeviceRecord.GetRecordKind();
-            }
         }
 
         /// <summary>
@@ -93,7 +72,7 @@ namespace AbleStrategiesServices.Support
         /// <summary>
         /// Current status of device activation.
         /// </summary>
-        public UserLevelPunct UserLevelPunct
+        public int UserLevelPunct
         {
             get
             {

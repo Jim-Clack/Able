@@ -29,6 +29,58 @@
       "Id": "52983441-3d5c-4dce-8c56-0758a423bdd2",
       "DateCreated": "2022-06-12T12:47:19.2500369-04:00",
       "DateModified": "2022-06-12T12:47:19.2500448-04:00"
+    },
+    "7754e5c2-3b21-463a-9a81-0dd01f68ccf2": {
+      "LicenseCode": "FREDYX-23456",
+      "ContactName": "Fred",
+      "ContactAddress": "123 Main",
+      "ContactCity": "NYC",
+      "ContactZip": "12345",
+      "ContactPhone": "1234567890",
+      "ContactEMail": "a.b@abc.com",
+      "LicenseFeatures": "0",
+      "Id": "7754e5c2-3b21-463a-9a81-0dd01f68ccf2",
+      "DateCreated": "2022-08-09T16:28:50.4657855-04:00",
+      "DateModified": "2022-08-09T16:28:50.6775157-04:00"
+    },
+    "2908398b-d153-4b5e-87d8-c8fc736c0c27": {
+      "LicenseCode": "FREDYY-23456",
+      "ContactName": "Fred",
+      "ContactAddress": "123 Main",
+      "ContactCity": "NYC",
+      "ContactZip": "12345",
+      "ContactPhone": "1234567890",
+      "ContactEMail": "a.b@abc.com",
+      "LicenseFeatures": "0",
+      "Id": "2908398b-d153-4b5e-87d8-c8fc736c0c27",
+      "DateCreated": "2022-08-09T16:29:45.9440931-04:00",
+      "DateModified": "2022-08-09T16:29:45.9472974-04:00"
+    },
+    "159e59c5-bd6d-4b11-8104-4a73f10d2288": {
+      "LicenseCode": "FREDYZ-23456",
+      "ContactName": "Fred",
+      "ContactAddress": "123 Main",
+      "ContactCity": "NYC",
+      "ContactZip": "12345",
+      "ContactPhone": "1234567890",
+      "ContactEMail": "a.b@abc.com",
+      "LicenseFeatures": "0",
+      "Id": "159e59c5-bd6d-4b11-8104-4a73f10d2288",
+      "DateCreated": "2022-08-09T16:51:11.676602-04:00",
+      "DateModified": "2022-08-09T16:51:11.6819606-04:00"
+    },
+    "9429472a-429d-4a67-abce-fed6db90dff3": {
+      "LicenseCode": "FREDYA-23456",
+      "ContactName": "Fred",
+      "ContactAddress": "123 Main",
+      "ContactCity": "NYC",
+      "ContactZip": "12345",
+      "ContactPhone": "1234567890",
+      "ContactEMail": "a.b@abc.com",
+      "LicenseFeatures": "0",
+      "Id": "9429472a-429d-4a67-abce-fed6db90dff3",
+      "DateCreated": "2022-08-09T16:54:11.3775198-04:00",
+      "DateModified": "2022-08-09T16:54:11.3914641-04:00"
     }
   },
   "DeviceRecords": {
@@ -58,6 +110,42 @@
       "Id": "a98e81c3-8628-4379-b92f-218b992fe014",
       "DateCreated": "2022-06-12T12:47:19.2500421-04:00",
       "DateModified": "2022-06-12T12:47:19.2502222-04:00"
+    },
+    "2b369198-984a-4083-9b06-230c109af1e1": {
+      "FkLicenseId": "7754e5c2-3b21-463a-9a81-0dd01f68ccf2",
+      "DeviceSite": "aBcD123",
+      "UserLevelPunct": 45,
+      "CodesAndPin": "",
+      "Id": "2b369198-984a-4083-9b06-230c109af1e1",
+      "DateCreated": "2022-08-09T16:28:50.4663824-04:00",
+      "DateModified": "2022-08-09T16:28:50.6780342-04:00"
+    },
+    "ae9766be-60fd-426b-ae23-24762f70c977": {
+      "FkLicenseId": "2908398b-d153-4b5e-87d8-c8fc736c0c27",
+      "DeviceSite": "aBcD123",
+      "UserLevelPunct": 45,
+      "CodesAndPin": "",
+      "Id": "ae9766be-60fd-426b-ae23-24762f70c977",
+      "DateCreated": "2022-08-09T16:29:45.9441046-04:00",
+      "DateModified": "2022-08-09T16:29:45.9479129-04:00"
+    },
+    "f4fef85d-066c-4c9a-b178-55ec1c436152": {
+      "FkLicenseId": "159e59c5-bd6d-4b11-8104-4a73f10d2288",
+      "DeviceSite": "aBcD123",
+      "UserLevelPunct": 45,
+      "CodesAndPin": "",
+      "Id": "f4fef85d-066c-4c9a-b178-55ec1c436152",
+      "DateCreated": "2022-08-09T16:51:11.6766095-04:00",
+      "DateModified": "2022-08-09T16:51:11.6829522-04:00"
+    },
+    "019136d1-c922-4a42-beca-5c7f84d522af": {
+      "FkLicenseId": "9429472a-429d-4a67-abce-fed6db90dff3",
+      "DeviceSite": "aBcD123",
+      "UserLevelPunct": 45,
+      "CodesAndPin": "",
+      "Id": "019136d1-c922-4a42-beca-5c7f84d522af",
+      "DateCreated": "2022-08-09T16:54:11.3775296-04:00",
+      "DateModified": "2022-08-09T16:54:11.3926269-04:00"
     }
   },
   "PurchaseRecords": {
@@ -114,6 +202,46 @@
       "Id": "9154f1fe-a33f-426f-b1d5-cd1de112dbaa",
       "DateCreated": "2022-08-07T09:47:53.0062981-04:00",
       "DateModified": "2022-08-07T09:48:18.0937565-04:00"
+    },
+    "78e6a016-f5b3-471b-9ced-be75346e2c1b": {
+      "FkLicenseId": "7754e5c2-3b21-463a-9a81-0dd01f68ccf2",
+      "InteractivityClient": 8,
+      "ClientInfo": "::1",
+      "Conversation": "RegisterLicense - License Code rqst: FredY;12345 - generated as: FREDYX-23456",
+      "History": "",
+      "Id": "78e6a016-f5b3-471b-9ced-be75346e2c1b",
+      "DateCreated": "2022-08-09T16:28:50.6752278-04:00",
+      "DateModified": "2022-08-09T16:28:50.6785061-04:00"
+    },
+    "5f6d5d75-bc97-4b64-95d0-f979d6647970": {
+      "FkLicenseId": "2908398b-d153-4b5e-87d8-c8fc736c0c27",
+      "InteractivityClient": 8,
+      "ClientInfo": "::1",
+      "Conversation": "RegisterLicense - License Code rqst: FredY;12345 - generated as: FREDYY-23456",
+      "History": "",
+      "Id": "5f6d5d75-bc97-4b64-95d0-f979d6647970",
+      "DateCreated": "2022-08-09T16:29:45.9472846-04:00",
+      "DateModified": "2022-08-09T16:29:45.9484617-04:00"
+    },
+    "caa614de-ce5b-484d-9e6a-b7c2bc347125": {
+      "FkLicenseId": "159e59c5-bd6d-4b11-8104-4a73f10d2288",
+      "InteractivityClient": 8,
+      "ClientInfo": "::1",
+      "Conversation": "RegisterLicense - License Code rqst: FredY;12345 - generated as: FREDYZ-23456",
+      "History": "",
+      "Id": "caa614de-ce5b-484d-9e6a-b7c2bc347125",
+      "DateCreated": "2022-08-09T16:51:11.6791335-04:00",
+      "DateModified": "2022-08-09T16:51:11.6834755-04:00"
+    },
+    "0dcf0b78-253b-4235-87c0-ea2a62b82001": {
+      "FkLicenseId": "9429472a-429d-4a67-abce-fed6db90dff3",
+      "InteractivityClient": 8,
+      "ClientInfo": "::1",
+      "Conversation": "RegisterLicense - License Code rqst: FredY;12345 - generated as: FREDYA-23456",
+      "History": "",
+      "Id": "0dcf0b78-253b-4235-87c0-ea2a62b82001",
+      "DateCreated": "2022-08-09T16:54:11.3833554-04:00",
+      "DateModified": "2022-08-09T16:54:11.3934769-04:00"
     }
   }
 }

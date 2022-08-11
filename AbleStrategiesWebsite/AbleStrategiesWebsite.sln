@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AbleStrategiesWebsite", "Ab
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AbleStrategiesServices", "AbleStrategiesServices\AbleStrategiesServices.csproj", "{E6EF29BD-0EB9-41AC-BC86-DF45349A492E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbleStrategiesWebsiteTests", "UnitTestProject1\AbleStrategiesWebsiteTests.csproj", "{B0D4DB2E-C267-4D16-BE25-464A9DB6DBE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AbleStrategiesWebsiteTests", "UnitTestProject1\AbleStrategiesWebsiteTests.csproj", "{B0D4DB2E-C267-4D16-BE25-464A9DB6DBE1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

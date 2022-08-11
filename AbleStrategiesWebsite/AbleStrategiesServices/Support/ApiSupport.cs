@@ -254,7 +254,6 @@ namespace AbleStrategiesServices.Support
                 existingUserInfo.DeviceRecords.Add(deviceRecord);
                 pinNumber = ApiSupport.CalculatePin(existingUserInfo, deviceRecord.DeviceSite.Trim());
             }
-            // TODO - deal with Configuration.InstanceMaxDevicesPerLicense
             return pinNumber;
         }
 
@@ -285,12 +284,74 @@ namespace AbleStrategiesServices.Support
             string[] purchaseFields = purchase.Trim().Substring(1).Split("|");
             PurchaseRecord purchaseRecord = new PurchaseRecord();
             purchaseRecord.PurchaseAuthority = PurchaseAuthority.PayPalStd;
+            // TODO No, get these from paypal api...
             purchaseRecord.PurchaseAmount = purchAmount;
             purchaseRecord.PurchaseDate = DateTime.Now;
             purchaseRecord.PurchaseTransaction = purchaseFields[0];
             purchaseRecord.PurchaseVerification = purchaseFields[1];
+            purchaseRecord.PurchaseDate = DateTime.Now; 
             purchaseRecord.Details = "v1";
             userInfo.PurchaseRecords.Add(purchaseRecord);
+        }
+
+        /// <summary>
+        /// Handle a polling web service. (licensed v unlicensed, registered v unregistered, activate v deactivate, etc.)
+        /// </summary>
+        /// <param name="ipAddress">man-readable host id</param>
+        /// <param name="lCode">expected license code (will be verified - must be correct)</param>
+        /// <param name="siteId">device/site ID</param>
+        /// <param name="version">Major-minor - from version of client software</param>
+        /// <returns>UserInfo, null if unlicensed</returns>
+        public static UserInfo ProcessPollWs(string ipAddress, string lCode, string siteId, string version)
+        {
+            List<UserInfo> userInfos = UserInfoDbo.Instance.GetByLicenseCode(lCode); // NOTE: Future: Punctuation should match any via regex
+            // TODO: right here, update ipAdress in a new table named "UniqueWsClients"
+            if (userInfos.Count < 1 || userInfos.First().PurchaseRecords.Count < 1)
+            {
+                return null; // unlicensed
+            }
+            UserInfo userInfo = userInfos.First();
+            DateTime oldestDateTime = DateTime.Now;
+            DeviceRecord oldestRecord = null;
+            DeviceRecord matchedRecord = null;
+            int numActiveDevices = 0;
+            // find oldest active device and matching siteId device in userinfo
+            foreach (DeviceRecord deviceRecord in userInfo.DeviceRecords)
+            {
+                if (deviceRecord.DateModified < oldestDateTime && oldestRecord.UserLevelPunct != (int)(AbleLicensing.UserLevelPunct.Deactivated))
+                {
+                    oldestDateTime = deviceRecord.DateModified;
+                    oldestRecord = deviceRecord;
+                    ++numActiveDevices;
+                }
+                if (siteId.ToUpper().Trim().CompareTo(deviceRecord.DeviceSite) == 0)
+                {
+                    matchedRecord = deviceRecord;
+                }
+            }
+            // if there are too many activated devices, deactivate the oldest, which may be the matched one
+            if (numActiveDevices > Configuration.Instance.MaxDevicesPerLicense && oldestRecord != null)
+            {
+                oldestRecord.UserLevelPunct = (int)(AbleLicensing.UserLevelPunct.Deactivated); // deactivate it!
+            }
+            // not found?
+            if(matchedRecord == null)
+            {
+                Logger.Diag(ipAddress, "Poll from registered but UNlicensed client [" + ipAddress + "] " + lCode + "-" + siteId);
+                return null;
+            }
+            // found, update interactivity record
+            foreach (InteractivityRecord interactivityRecord in userInfo.InteractivityRecords)
+            {
+                if(interactivityRecord.InteractivityClient == InteractivityClient.PollWs)
+                {
+                    userInfo.InteractivityRecords.Remove(interactivityRecord); // remove prior poll notice
+                    break;
+                }
+            }
+            AddInteractivity(userInfo, InteractivityClient.PollWs, ipAddress, "Poll - version [" + version + "]");
+            Logger.Diag(ipAddress, "Poll from registered and licensed client [" + ipAddress + "] " + lCode + "-" + siteId);
+            return userInfo;
         }
 
         /// <summary>
@@ -334,9 +395,10 @@ namespace AbleStrategiesServices.Support
         /// <summary>
         /// Validate the provided license code and ensure that it is not already in use.
         /// </summary>
+        /// <param name="ipAddress">man-readable host id</param>
         /// <param name="lCode">provided base license code, never null</param>
         /// <returns>generated/adjusted license code, null on error (all searched lCodes are in use)</returns>
-        public static string CreateLicenseCodeBasedOn(string lCode)
+        public static string CreateLicenseCodeBasedOn(string ipAddress, string lCode)
         {
             lCode = Regex.Replace(lCode.Trim().ToUpper(), "[^A-Z0-9]", "X");
             List<UserInfo> userInfosTest = UserInfoDbo.Instance.GetByLicenseCode(lCode);
@@ -360,7 +422,7 @@ namespace AbleStrategiesServices.Support
                 {
                     if (SpinChar(ref lCode, 4, initialLCode))
                     {
-                        Logger.Warn(null, "Exhausted all attempts to generate a license code!");
+                        Logger.Warn(ipAddress, "Exhausted all attempts to generate a license code!");
                         return null; // give up!
                     }
                 }
@@ -400,7 +462,7 @@ namespace AbleStrategiesServices.Support
         public static string GetVersionSpecificMessage(string version)
         {
             string message = "";
-            string filePath = Configuration.Instance + "ver-" + version + ".msg";
+            string filePath = Configuration.Instance.MessagesPath + "ver-" + version + ".msg";
             if (System.IO.File.Exists(filePath))
             {
                 System.IO.StreamReader reader = new System.IO.StreamReader(filePath);

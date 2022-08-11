@@ -1,4 +1,5 @@
 Alpha TODO... (C=client/default, S=server)
+ - Year-end is not saving categories
  - Flesh out online help (S)
  - Deploy website for testing (S)
  - EULA (C/S)
@@ -58,3 +59,4 @@ Server DB
  - Site_T: Site_Pk, Purch_Fk, Sid, Desc, Name, Email, Phone, DateCreated, DatePinged, Status, etc.
  - PurchStatus: GotPrePurchaseQuery, PurchaseFailed, PurchaseOkay, PurchaseCancelled
  - SiteStatus: GotPreActivationQuery, ActivationFailed, ActivationOkay, SiteDisabled
+

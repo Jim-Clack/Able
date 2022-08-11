@@ -41,11 +41,11 @@ namespace AbleStrategies.Testing
             userInfo.PurchaseRecords.Add(purchase);
             DeviceRecord device0 = new DeviceRecord();
             device0.DeviceSite = "12345-67890";
-            device0.UserLevelPunct = UserLevelPunct.Standard;
+            device0.UserLevelPunct = (int)UserLevelPunct.Standard;
             device0.CodesAndPin = "1234-56-7890";
             DeviceRecord device1 = new DeviceRecord();
             device1.DeviceSite = "12345-00000";
-            device1.UserLevelPunct = UserLevelPunct.Standard;
+            device1.UserLevelPunct = (int)UserLevelPunct.Standard;
             device1.CodesAndPin = "9999-56-7890";
             userInfo.DeviceRecords.Add(device0);
             userInfo.DeviceRecords.Add(device1);
@@ -82,7 +82,7 @@ namespace AbleStrategies.Testing
             userInfo.LicenseRecord.LicenseFeatures = "";
             DeviceRecord device2 = new DeviceRecord();
             device2.DeviceSite = "00000-00000";
-            device2.UserLevelPunct = UserLevelPunct.Unlicensed;
+            device2.UserLevelPunct = (int)UserLevelPunct.Unlicensed;
             device2.CodesAndPin = "5555-5555-555";
             userInfo.DeviceRecords.Add(device2);
             InteractivityRecord interactivity2 = new InteractivityRecord();

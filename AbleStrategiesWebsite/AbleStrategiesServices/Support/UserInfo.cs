@@ -61,7 +61,7 @@ namespace AbleStrategiesServices.Support
             LicenseRecord.LicenseCode = "";
             DeviceRecord deviceRecord = new DeviceRecord();
             deviceRecord.DeviceSite = siteId;
-            deviceRecord.UserLevelPunct = punct;
+            deviceRecord.UserLevelPunct = (int)punct;
             DeviceRecords.Add(deviceRecord);
         }
 

@@ -113,7 +113,7 @@ namespace AbleStrategiesServices.Support
         {
             DeviceRecord deviceRecord = new DeviceRecord();
             deviceRecord.DeviceSite = siteId;
-            deviceRecord.UserLevelPunct = punct;
+            deviceRecord.UserLevelPunct = (int)punct;
             deviceRecord.CodesAndPin = codes;
             this.userInfo.DeviceRecords.Add(deviceRecord);
             return this;
@@ -196,7 +196,7 @@ namespace AbleStrategiesServices.Support
                 deviceRecord = new DeviceRecord();
                 deviceRecord.DeviceSite = siteId;
             }
-            deviceRecord.UserLevelPunct = punct;
+            deviceRecord.UserLevelPunct = (int)punct;
             deviceRecord.CodesAndPin = codes;
             return this;
         }

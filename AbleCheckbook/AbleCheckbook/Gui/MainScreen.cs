@@ -521,6 +521,8 @@ namespace AbleCheckbook
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            OnlineActivation.Instance.DoNothing();
+            OnlineActivation.Instance.CheckConnection();
             /*
             Activation.Instance.SetDefaultDays(180, 366); 
             Activation.Instance.LicenseCode = "MYNAME@99999"; 

@@ -121,6 +121,7 @@ namespace AbleCheckbook.Logic
         private static void LoadHardCodedDefaults()
         {
             AddString("AboutThisFile", "Loads from exe path, i.e. chkbk-EN-us.json (depending on locale)");
+            AddString("Able Strategies");
             AddString("PuncHash", "#");
             AddString("PuncQuestion", "?");
             AddString("Error");

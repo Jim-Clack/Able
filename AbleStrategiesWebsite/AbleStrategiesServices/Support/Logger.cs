@@ -54,6 +54,11 @@ namespace AbleStrategiesServices.Support
         private static Mutex outerMutex = new Mutex();
 
         /// <summary>
+        /// Outer mutex to avoid races.
+        /// </summary>
+        private static Mutex messageMutex = new Mutex();
+
+        /// <summary>
         /// Force an immediate backup conditionally.
         /// </summary>
         private DateTime lastBackupCheck = DateTime.Now.AddHours(-1000);
@@ -172,6 +177,10 @@ namespace AbleStrategiesServices.Support
             string className = "";
             string methodName = "";
             string callStack = "";
+            if((int)level >= (int)LogLevel.Warn)
+            {
+                AddWarningMessage(now.ToShortDateString() + "|" + now.ToShortTimeString() + " [" + ipAddress + "] " + level + " " + message);
+            }
             StackTrace stackTrace = new StackTrace();
             if(level == LogLevel.Warn) // only check for "time to backup" on a warn level message
             {
@@ -391,6 +400,52 @@ namespace AbleStrategiesServices.Support
         public void Dispose()
         {
             Close();
+        }
+
+        /// <summary>
+        /// Append a line to the warning messages.
+        /// </summary>
+        /// <param name="message">To be appended</param>
+        private void AddWarningMessage(string message)
+        {
+            string filePath = Configuration.Instance.MessagesPath + "warnings.msg";
+            try
+            {
+                messageMutex.WaitOne();
+                System.IO.StreamWriter writer = new StreamWriter(filePath, true);
+                writer.WriteLine(message);
+                writer.Close();
+            }
+            finally
+            {
+                messageMutex.ReleaseMutex();
+            }
+        }
+
+        /// <summary>
+        /// Return a multi-line string containing log warnings and errors since last call to this method.
+        /// </summary>
+        /// <returns></returns>
+        public string GetWarningMessages()
+        {
+            string message = "";
+            string filePath = Configuration.Instance.MessagesPath + "warnings.msg";
+            try
+            {
+                messageMutex.WaitOne();
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.StreamReader reader = new System.IO.StreamReader(filePath);
+                    message = reader.ReadToEnd();
+                    reader.Close();
+                    System.IO.File.Delete(filePath);
+                }
+            }
+            finally
+            {
+                messageMutex.ReleaseMutex();
+            }
+            return message;
         }
     }
 

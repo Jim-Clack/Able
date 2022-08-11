@@ -255,7 +255,7 @@ namespace AbleStrategiesServices.Support
             {
                 return numRecords;
             }
-            userInfo.LicenseRecord.EditFlag = EditFlag.Deleted;
+            ((LicenseRecord)(userInfo.LicenseRecord)).EditFlag = EditFlag.Deleted;
             ++numRecords;
             foreach (PurchaseRecord purchaseRecord in userInfo.PurchaseRecords)
             {
@@ -296,7 +296,7 @@ namespace AbleStrategiesServices.Support
                 errorMessage = "Null License Record passed into Update()";
                 return false;
             }
-            if (!JsonUsersDb.Instance.UpdateDb(userInfo.LicenseRecord))
+            if (!JsonUsersDb.Instance.UpdateDb((LicenseRecord)(userInfo.LicenseRecord)))
             {
                 ok = false;
                 errorMessage = JsonUsersDb.Instance.ErrorMessage;

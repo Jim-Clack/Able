@@ -2,49 +2,51 @@
 using System.Collections.Generic;
 using System.Text;
 
+NO - OBSOLETE
+
 namespace AbleStrategies.CheckbookWsApi
 {
-    public interface InteractivityRecord
+    public class InteractivityRecord
     {
         /// <summary>
         /// Globally unique Id for this record.
         /// </summary>
-        Guid Id { get; set; }
+        public Guid Id;
 
         /// <summary>
         /// When was this record created?
         /// </summary>
-        DateTime DateCreated { get; set; }
+        public DateTime DateCreated;
 
         /// <summary>
         /// When was this record last modified?
         /// </summary>
-        DateTime DateModified { get; set; }
+        public DateTime DateModified;
 
         /// <summary>
         /// Foreign key to license data.
         /// </summary>
-        Guid FkLicenseId { get; set; }
+        public Guid FkLicenseId;
 
         /// <summary>
         /// Interactivity by phone, web service, or what?
         /// </summary>
-        int InteractivityClient { get; set; }
+        public int InteractivityClient;
 
         /// <summary>
         /// Client name, email, and/or IP address.
         /// </summary>
-        string ClientInfo { get; set; }
+        public string ClientInfo;
 
         /// <summary>
         /// Content - what occurred during interactivity.
         /// </summary>
-        string Conversation { get; set; }
+        public string Conversation;
 
         /// <summary>
         /// Keep track of changes.
         /// </summary>
-        string History { get; set; }
+        public string History;
 
     }
 }

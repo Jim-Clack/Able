@@ -39,11 +39,6 @@ namespace AbleCheckbook.Gui
                 textBoxSiteDesc.Text = Strings.Get("Expired") + " " + Math.Abs(expDays) + Strings.Get(" days");
             }
             textBoxHeading.Select(0, 0);
-
-            // JBC - NO, for debugging only...
-   OnlineActivationClient onlineClient = new OnlineActivationClient();
-   bool ok = onlineClient.CallServerToCheckConnection();
-
         }
 
         private void linkLabelEula_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

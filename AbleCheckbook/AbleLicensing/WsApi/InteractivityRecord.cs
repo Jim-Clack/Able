@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AbleStrategies.CheckbookWsApi
+namespace AbleLicensing.WsApi
 {
-
-    public class PurchaseRecord
+    public class InteractivityRecord
     {
         /// <summary>
         /// Globally unique Id for this record.
@@ -28,33 +27,24 @@ namespace AbleStrategies.CheckbookWsApi
         public Guid FkLicenseId;
 
         /// <summary>
-        /// Comments, additional info.
+        /// Interactivity by phone, web service, or what?
         /// </summary>
-        public string Details;
-        /// <summary>
-        /// Typically PayPalStd.
-        /// </summary>
-        public int PurchaseAuthority;
+        public int InteractivityClient;
 
         /// <summary>
-        /// Authority's transaction number.
+        /// Client name, email, and/or IP address.
         /// </summary>
-        public string PurchaseTransaction;
+        public string ClientInfo;
 
         /// <summary>
-        /// Authority's verification code.
+        /// Content - what occurred during interactivity.
         /// </summary>
-        public string PurchaseVerification;
+        public string Conversation;
 
         /// <summary>
-        /// Date of purchase.
+        /// Keep track of changes.
         /// </summary>
-        public DateTime PurchaseDate;
+        public string History;
 
-        /// <summary>
-        /// Price paid.
-        /// </summary>
-        public long PurchaseAmount;
-
-}
+    }
 }

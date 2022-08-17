@@ -117,27 +117,30 @@ namespace AbleCheckbook.Logic
         }
 
         /// <summary>
-        /// Is reconciliation due? (More than 8 days into the month after most of the uncleared entries.)
+        /// Is reconciliation due? (About 6 days into a new month and at least 3 uncleared entries.)
         /// </summary>
         public bool IsTimeToReconcile
         {
             get
             {
-                int numUncleared = 0;
-                int numOldEnough = 0;
-                foreach(KeyValuePair<Guid, OpenEntry> pair in _openEntries)
+                DateTime now = DateTime.Now;
+                DateTime dateOfLastReconcile = _db.GetReconciliationValues().Date;
+                DateTime startOfNewMonth = dateOfLastReconcile.AddDays(30);
+                if ((now - dateOfLastReconcile).TotalDays < 36)
                 {
-                    ++numUncleared;
+                    return false;
+                }
+                int numUnclearedLastMonth = 0;
+                foreach (KeyValuePair<Guid, OpenEntry> pair in _openEntries)
+                {
                     CheckbookEntry entry = pair.Value.CheckbookEntry;
                     DateTime transDate = entry.DateOfTransaction;
-                    DateTime eighthOfNextMonth = 
-                        (new DateTime(transDate.Year, transDate.Month, 1)).AddMonths(1).AddDays(8);
-                    if(eighthOfNextMonth.CompareTo(DateTime.Now) < 0)
-                    {
-                        ++numOldEnough;
+                    if(transDate < startOfNewMonth)
+                    { 
+                        ++numUnclearedLastMonth;
                     }
                 }
-                return (numOldEnough * 3 > numUncleared);
+                return numUnclearedLastMonth >= 3;
             }
         }
 

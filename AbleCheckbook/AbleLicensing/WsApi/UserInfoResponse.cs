@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AbleStrategies.CheckbookWsApi
+namespace AbleLicensing.WsApi
 {
     public class UserInfoResponse
     {

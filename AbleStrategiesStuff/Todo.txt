@@ -1,5 +1,6 @@
 Alpha TODO... (C=client/default, S=server)
- - Year-end is not saving categories
+ - Prompts for reconcile when it is not yet time (fixed?)
+ - Year-end is not saving categories (fixed?)
  - Flesh out online help (S)
  - Deploy website for testing (S)
  - EULA (C/S)

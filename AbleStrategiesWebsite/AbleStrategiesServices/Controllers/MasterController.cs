@@ -33,9 +33,9 @@ namespace AbleStrategiesServices.Controllers
         /// </summary>
         /// <returns>array of useful string values</returns>
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public JsonResult Get()
         {
-            DateTime now = DateTime.Now.ToUniversalTime();
+            JsonSerializerSettings settings = new JsonSerializerSettings();
             string ipAddress;
             if (!ClientCallFilter.Instance.Validate(HttpContext.Connection.RemoteIpAddress, true, out ipAddress))
             {
@@ -43,13 +43,7 @@ namespace AbleStrategiesServices.Controllers
                 return null;
             }
             Logger.Diag(ipAddress, "Get API Called");
-            return new string[] {
-                AbleStrategiesServices.Support.Version.ToString(),
-                now.ToString("o", CultureInfo.GetCultureInfo("en-US")),
-                ipAddress,
-                (DateTime.Now.Ticks / (DateTime.Now.Millisecond + 173L)).ToString(), // future
-                "X" // future use
-            };
+            return new JsonResult(new ConnectionData(ipAddress), settings);
         }
 
         // GET as/master/by/license?pattern=.*

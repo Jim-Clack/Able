@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AbleStrategies.CheckbookWsApi
+namespace AbleCheckbook.WsApi
 {
     public class LicenseRecord
     {

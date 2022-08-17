@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using AbleLicensing;
 using AbleStrategiesServices.Support;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 /// <summary>                                      CHECKBOOK
 /// https://domain:port/as/checkbook
@@ -35,9 +36,9 @@ namespace AbleStrategiesServices.Controllers
         /// </summary>
         /// <returns>array of useful string values</returns>
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public JsonResult Get()
         {
-            DateTime now = DateTime.Now.ToUniversalTime();
+            JsonSerializerSettings settings = new JsonSerializerSettings();
             string ipAddress;
             if (!ClientCallFilter.Instance.Validate(HttpContext.Connection.RemoteIpAddress, false, out ipAddress))
             {
@@ -45,16 +46,10 @@ namespace AbleStrategiesServices.Controllers
                 return null;
             }
             Logger.Diag(ipAddress, "Get API Called");
-            return new string[] {
-                AbleStrategiesServices.Support.Version.ToString(),
-                now.ToString("o", CultureInfo.GetCultureInfo("en-US")),
-                ipAddress,
-                (DateTime.Now.Ticks / (DateTime.Now.Millisecond + 173L)).ToString(), // future
-                "X" // future use
-            };
+            return new JsonResult(new ConnectionData(ipAddress), settings);
         }
 
-        // GET as/checkbook/user/lcode/siteid/vv-vv
+        // GET as/checkbook/poll/lcode/siteid/vv-vv
         /// <summary>
         /// Return user license info. - Polling call
         /// </summary>
@@ -66,8 +61,8 @@ namespace AbleStrategiesServices.Controllers
         /// This call is uniquely for use by unlicensed as well as licensed clients. Note that the caller must look at the
         /// corresponding devicerecord (by siteId) and see if the UserLevelPunct has changed to deactivated and handle it.
         /// </remarks>
-        [HttpGet("user/{lCode}/{siteId}/{version}")]
-        public JsonResult GetUser([FromRoute] string lCode, [FromRoute] string siteId, [FromRoute] string version)
+        [HttpGet("poll/{lCode}/{siteId}/{version}")]
+        public JsonResult GetPoll([FromRoute] string lCode, [FromRoute] string siteId, [FromRoute] string version)
         {
             string ipAddress;
             if (!ClientCallFilter.Instance.Validate(HttpContext.Connection.RemoteIpAddress, false, out ipAddress))

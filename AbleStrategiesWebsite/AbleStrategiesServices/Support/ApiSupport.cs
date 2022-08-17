@@ -13,6 +13,38 @@ using System.Text.RegularExpressions;
 
 namespace AbleStrategiesServices.Support
 {
+
+    /// <summary>
+    /// Returned JSON for connection test.
+    /// </summary>
+    public class ConnectionData
+    {
+        public ConnectionData(string ipAddress)
+        {
+            DateTime now = DateTime.Now.ToUniversalTime();
+            ServerVersion = AbleStrategiesServices.Support.Version.ToString();
+            TimeStamp = now.ToString("o", CultureInfo.GetCultureInfo("en-US"));
+            IpAddress = ipAddress;
+            RandomSeed = (DateTime.Now.Ticks / (DateTime.Now.Millisecond + 173L)).ToString();
+            ClientFlags = "x7700"; // future use
+        }
+
+        private string serverVersion = "";
+        private string timeStamp = "";
+        private string ipAddress = "";
+        private string randomSeed = "";
+        private string clientFlags = "";
+        
+        public string ServerVersion { get => serverVersion; set => serverVersion = value; }
+        public string TimeStamp { get => timeStamp; set => timeStamp = value; }
+        public string IpAddress { get => ipAddress; set => ipAddress = value; }
+        public string RandomSeed { get => randomSeed; set => randomSeed = value; }
+        public string ClientFlags { get => clientFlags; set => clientFlags = value; }
+    }
+
+    /// <summary>
+    /// Business end of controllers.
+    /// </summary>
     public static class ApiSupport
     {
 

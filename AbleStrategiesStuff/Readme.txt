@@ -178,9 +178,11 @@ Notes to developers who are MS/VS virgins...
  etc. until afterward. Also after changing the DataSource you may have 
  to ComboBoxXxx.BindingContext = new BindingContext(). 
 
- JSON REST API
+ JSON REST API (All return a JsonUserInfoResponse except for the verify connection call)
   GET as/checkbook
     (...to verify connection)
+  GET as/checkbook/poll/lcode/siteid/vv-vv
+    (...to poll licensed hosts, periodically)
   POST as/checkbook/2?name=Fred&addr=123%20Main&city=NYC&zip=12345&phone=1234567890&email=a.b%40abc.com&feature=0&lCode=abcde.12345&siteId=aBcD123&purchase=
     (returns ReturnNotFound, ReturnLCodeTaken, or ReturnOk)
   POST as/checkbook/5?name=Fred&addr=123%20Main&city=NYC&zip=12345&phone=1234567890&email=a.b%40abc.com&feature=0&lCode=abcde.12345&siteId=aBcD123&purchase=
@@ -189,8 +191,6 @@ Notes to developers who are MS/VS virgins...
     (collect date from response in "purchase" string "PtransactionNumber|dotDelimitedValidationData")
   POST as/checkbook/11?name=Fred&addr=123%20Main&city=NYC&zip=12345&phone=1234567890&email=a.b%40abc.com&feature=0&lCode=abcde.12345&siteId=aBcD123&purchase=P12345%7C67.890
     (if successful, get PinNumber from response)
-  GET as/checkbook/user/lcode/siteid/vv-vv
-    (...to poll, periodically)
   Example Response
   {
     "ApiState": 20,

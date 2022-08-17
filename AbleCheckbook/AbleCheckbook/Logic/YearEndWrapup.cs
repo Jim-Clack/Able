@@ -130,6 +130,10 @@ namespace AbleCheckbook.Logic
         /// </summary>
         /// <param name="force">true to force the operation even though it is not recommended</param>
         /// <returns>success, populates message on failure</returns>
+        /// <remarks>
+        /// Note that entries in any table must be cloned before copying to _oldDb so that
+        /// the newly assigned Id doesn't overwrite the Id in the original.
+        /// </remarks>
         public bool SplitDbsAtDec31(bool force)
         {
             if (!force)
@@ -264,6 +268,18 @@ namespace AbleCheckbook.Logic
             CheckbookEntry clonedEntry = entry.Clone(true);
             if (_oldDb.GetCheckbookEntryById(entry.Id) == null)
             {
+                // Update CategoryId in each split
+                foreach(SplitEntry split in clonedEntry.Splits)
+                {
+                    FinancialCategory existingCategory = _newDb.GetFinancialCategoryById(split.CategoryId);
+                    if (existingCategory != null)
+                    {
+                        existingCategory = UtilityMethods.GetCategoryOrUnknown(_oldDb, existingCategory.Name, existingCategory.IsCredit);
+                        FinancialCategory clonedCategory = existingCategory.Clone();
+                        _oldDb.InsertEntry(clonedCategory);
+                        split.CategoryId = clonedCategory.Id;
+                    }
+                }
                 _oldDb.InsertEntry(clonedEntry);
             }
             else

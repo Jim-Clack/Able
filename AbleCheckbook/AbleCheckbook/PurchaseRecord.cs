@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AbleStrategies.CheckbookWsApi
+namespace AbleCheckbook.WsApi
 {
-    public class LicenseRecord
+
+    public class PurchaseRecord
     {
         /// <summary>
         /// Globally unique Id for this record.
@@ -22,44 +23,38 @@ namespace AbleStrategies.CheckbookWsApi
         public DateTime DateModified;
 
         /// <summary>
-        /// Unique record discriminator.
+        /// Foreign key to license data.
         /// </summary>
-        public string LicenseCode;
+        public Guid FkLicenseId;
 
         /// <summary>
-        /// Contact name.
+        /// Comments, additional info.
         /// </summary>
-        public string ContactName;
+        public string Details;
+        /// <summary>
+        /// Typically PayPalStd.
+        /// </summary>
+        public int PurchaseAuthority;
 
         /// <summary>
-        /// Street address.
+        /// Authority's transaction number.
         /// </summary>
-        public string ContactAddress;
+        public string PurchaseTransaction;
 
         /// <summary>
-        /// City and state
+        /// Authority's verification code.
         /// </summary>
-        public string ContactCity;
+        public string PurchaseVerification;
 
         /// <summary>
-        /// Postal code
+        /// Date of purchase.
         /// </summary>
-        public string ContactZip;
+        public DateTime PurchaseDate;
 
         /// <summary>
-        /// Contact phone.
+        /// Price paid.
         /// </summary>
-        public string ContactPhone;
+        public long PurchaseAmount;
 
-        /// <summary>
-        /// Contact email.
-        /// </summary>
-        public string ContactEMail;
-
-        /// <summary>
-        /// License features bitmap.
-        /// </summary>
-        public string LicenseFeatures;
-
-    }
+}
 }

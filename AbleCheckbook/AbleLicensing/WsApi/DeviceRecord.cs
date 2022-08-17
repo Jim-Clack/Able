@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AbleStrategies.CheckbookWsApi
+namespace AbleLicensing.WsApi
 {
 
-    public class PurchaseRecord
+    /// <summary>
+    /// Host/device info.
+    /// </summary>
+    public class DeviceRecord
     {
         /// <summary>
         /// Globally unique Id for this record.
@@ -28,33 +31,19 @@ namespace AbleStrategies.CheckbookWsApi
         public Guid FkLicenseId;
 
         /// <summary>
-        /// Comments, additional info.
+        /// Site ID (device) abbreviation.
         /// </summary>
-        public string Details;
-        /// <summary>
-        /// Typically PayPalStd.
-        /// </summary>
-        public int PurchaseAuthority;
+        public string DeviceSite;
 
         /// <summary>
-        /// Authority's transaction number.
+        /// Current status of device activation.
         /// </summary>
-        public string PurchaseTransaction;
+        public int UserLevelPunct;
 
         /// <summary>
-        /// Authority's verification code.
+        /// Binary authentication/authorization info.
         /// </summary>
-        public string PurchaseVerification;
+        public string CodesAndPin;
 
-        /// <summary>
-        /// Date of purchase.
-        /// </summary>
-        public DateTime PurchaseDate;
-
-        /// <summary>
-        /// Price paid.
-        /// </summary>
-        public long PurchaseAmount;
-
-}
+    }
 }

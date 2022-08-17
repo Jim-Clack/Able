@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 
+NO - OBSOLETE
+
 namespace AbleStrategies.CheckbookWsApi
 {
 
@@ -13,37 +15,37 @@ namespace AbleStrategies.CheckbookWsApi
         /// <summary>
         /// Globally unique Id for this record.
         /// </summary>
-        Guid Id;
+        public Guid Id;
 
         /// <summary>
         /// When was this record created?
         /// </summary>
-        DateTime DateCreated;
+        public DateTime DateCreated;
 
         /// <summary>
         /// When was this record last modified?
         /// </summary>
-        DateTime DateModified;
+        public DateTime DateModified;
 
         /// <summary>
         /// Foreign key to license data.
         /// </summary>
-        Guid FkLicenseId;
+        public Guid FkLicenseId;
 
         /// <summary>
         /// Site ID (device) abbreviation.
         /// </summary>
-        string DeviceSite;
+        public string DeviceSite;
 
         /// <summary>
         /// Current status of device activation.
         /// </summary>
-        int UserLevelPunct;
+        public int UserLevelPunct;
 
         /// <summary>
         /// Binary authentication/authorization info.
         /// </summary>
-        string CodesAndPin;
+        public string CodesAndPin;
 
     }
 }

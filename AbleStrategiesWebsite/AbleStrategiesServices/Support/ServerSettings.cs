@@ -131,14 +131,30 @@ namespace AbleStrategiesServices.Support
         }
 
         /// <summary>
+        /// For storing contact and site data. 
+        /// </summary>
+        public override string[] ContactValues
+        {
+            get
+            {
+                Logger.Diag(null, "Shouldn't Happen 8");
+                return new string[] { "XXX8XXX" };
+            }
+            set
+            {
+                Logger.Diag(null, "Shouldn't Happen 8");
+            }
+        }
+
+        /// <summary>
         /// Persisted activation PIN. May be set by the app (prompt user for pin) or by Activation. (web service)
         /// </summary>
         public override string ActivationPin
         {
             get
             {
-                Logger.Diag(null, "Shouldn't Happen 8");
-                return "XXX8XXX";
+                Logger.Diag(null, "Shouldn't Happen 9");
+                return "XXX9XXX";
             }
             set
             {

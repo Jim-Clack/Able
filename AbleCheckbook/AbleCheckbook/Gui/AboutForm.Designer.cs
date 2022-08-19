@@ -38,7 +38,7 @@
             this.textBoxVersion = new System.Windows.Forms.TextBox();
             this.linkLabelEula = new System.Windows.Forms.LinkLabel();
             this.buttonOk = new System.Windows.Forms.Button();
-            this.textBoxSiteDesc = new System.Windows.Forms.TextBox();
+            this.textBoxLicenseCode = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -160,19 +160,19 @@
             this.buttonOk.Text = "OK";
             this.buttonOk.UseVisualStyleBackColor = true;
             // 
-            // textBoxSiteDesc
+            // textBoxLicenseCode
             // 
-            this.textBoxSiteDesc.BackColor = System.Drawing.Color.White;
-            this.textBoxSiteDesc.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBoxSiteDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxSiteDesc.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(90)))), ((int)(((byte)(0)))));
-            this.textBoxSiteDesc.Location = new System.Drawing.Point(3, 233);
-            this.textBoxSiteDesc.Name = "textBoxSiteDesc";
-            this.textBoxSiteDesc.ReadOnly = true;
-            this.textBoxSiteDesc.Size = new System.Drawing.Size(600, 20);
-            this.textBoxSiteDesc.TabIndex = 18;
-            this.textBoxSiteDesc.Text = "-";
-            this.textBoxSiteDesc.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBoxLicenseCode.BackColor = System.Drawing.Color.White;
+            this.textBoxLicenseCode.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBoxLicenseCode.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxLicenseCode.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(90)))), ((int)(((byte)(0)))));
+            this.textBoxLicenseCode.Location = new System.Drawing.Point(3, 233);
+            this.textBoxLicenseCode.Name = "textBoxLicenseCode";
+            this.textBoxLicenseCode.ReadOnly = true;
+            this.textBoxLicenseCode.Size = new System.Drawing.Size(600, 20);
+            this.textBoxLicenseCode.TabIndex = 18;
+            this.textBoxLicenseCode.Text = "-";
+            this.textBoxLicenseCode.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // AboutForm
             // 
@@ -181,7 +181,7 @@
             this.BackColor = System.Drawing.Color.White;
             this.CancelButton = this.buttonOk;
             this.ClientSize = new System.Drawing.Size(608, 395);
-            this.Controls.Add(this.textBoxSiteDesc);
+            this.Controls.Add(this.textBoxLicenseCode);
             this.Controls.Add(this.buttonOk);
             this.Controls.Add(this.linkLabelEula);
             this.Controls.Add(this.textBoxVersion);
@@ -213,6 +213,6 @@
         private System.Windows.Forms.TextBox textBoxVersion;
         private System.Windows.Forms.LinkLabel linkLabelEula;
         private System.Windows.Forms.Button buttonOk;
-        private System.Windows.Forms.TextBox textBoxSiteDesc;
+        private System.Windows.Forms.TextBox textBoxLicenseCode;
     }
 }

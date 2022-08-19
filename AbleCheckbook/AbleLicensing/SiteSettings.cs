@@ -55,6 +55,11 @@ namespace AbleLicensing
         public abstract string ActivityTracking { get; set; }
 
         /// <summary>
+        /// For storing contact and site data. 
+        /// </summary>
+        public abstract string[] ContactValues { get; set; }
+
+        /// <summary>
         /// Persisted activation PIN. May be set by the app (prompt user for pin) or by Activation. (web service)
         /// </summary>
         public abstract string ActivationPin { get; set;  }

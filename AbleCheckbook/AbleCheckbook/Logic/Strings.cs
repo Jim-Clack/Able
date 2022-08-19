@@ -319,7 +319,7 @@ namespace AbleCheckbook.Logic
             AddString("Note: No Importable Entries Read");
             AddString("Open Backup of DB File: ");
             AddString("Save the current DB as ");
-            AddString("If already paid-for, enter the Purchase Val Code here");
+            AddString("Purchase designation (if known)");
             AddString("; Open the selected backup as ");
             AddString("Search only those Entries before or on:");
             AddString("Search for substring in Payee");
@@ -348,9 +348,11 @@ namespace AbleCheckbook.Logic
             AddString("Not Yet");
             AddString("Sorry");
             AddString("Admin Mode - Force Year-End Wrap-Up?");
+            AddString("I accept these terms. (If you do not accept then close and uninstall this program)");
             AddString("Try Again?");
             AddString("Category Report");
             AddString("Print Register");
+            AddString("Reset");
             AddString("Undo");
             AddString("Redo");
             AddString("Copy");
@@ -409,6 +411,7 @@ namespace AbleCheckbook.Logic
             AddString("File contains transactions up to ");
             AddString("! Adjust ending date? (Recommendation: NO)");
             AddString(" duplicates ignored ");
+            AddString("EULA");
             AddString("Able Strategies AbleCheckbook - See Terms of License");
             AddString("Activation");
             AddString("Activate");
@@ -425,15 +428,15 @@ namespace AbleCheckbook.Logic
             AddString("I have read and accept the terms of the EULA");
             AddString("EULA - End User License Agreement");
             AddString("Assigned License Code");
-            AddString("Offline/Manual Activation PIN");
-            AddString("Use manual activation - Call support for a PIN");
+            AddString("Coded Activation PIN");
+            AddString("Use manual activation - Contact support for a PIN");
             AddString("Invalid License Code and/or PIN");
             AddString("User name too short");
             AddString("Invalid postal/CC code");
             AddString("Phone and email required");
             AddString("You must accept the EULA");
-            AddString("Call support for License Code");
-            AddString("Call for an Activation PIN");
+            AddString("Contact support for License Code");
+            AddString("Contact support for Activation PIN");
             AddString("Turning Off Admin Mode");
             AddString("Time's Up");
             AddString(" days");
@@ -527,6 +530,7 @@ namespace AbleCheckbook.Logic
             AddString("Invalid Final Date");
             AddString("Must be Within 2 Wks");
             AddString("Time-Limited Evaluation Copy");
+            AddString("Record the following values in a safe place as your proof of purchase and activation numbers");
             AddString("Licensed to: ");
             AddString("Level: ");
             AddString("Version: ");

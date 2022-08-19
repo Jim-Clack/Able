@@ -54,6 +54,8 @@
             this.labelStreetAddress = new System.Windows.Forms.Label();
             this.textBoxPurchase = new System.Windows.Forms.TextBox();
             this.labelPurchase = new System.Windows.Forms.Label();
+            this.labelNotice = new System.Windows.Forms.Label();
+            this.buttonReset = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // textBoxSiteId
@@ -63,7 +65,7 @@
             this.textBoxSiteId.Name = "textBoxSiteId";
             this.textBoxSiteId.ReadOnly = true;
             this.textBoxSiteId.Size = new System.Drawing.Size(124, 24);
-            this.textBoxSiteId.TabIndex = 0;
+            this.textBoxSiteId.TabIndex = 12;
             this.textBoxSiteId.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // textBoxUserId
@@ -81,7 +83,7 @@
             this.textBoxPostalCode.Location = new System.Drawing.Point(169, 116);
             this.textBoxPostalCode.Name = "textBoxPostalCode";
             this.textBoxPostalCode.Size = new System.Drawing.Size(124, 24);
-            this.textBoxPostalCode.TabIndex = 1;
+            this.textBoxPostalCode.TabIndex = 4;
             this.textBoxPostalCode.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // textBoxPhoneNumber
@@ -90,7 +92,7 @@
             this.textBoxPhoneNumber.Location = new System.Drawing.Point(459, 116);
             this.textBoxPhoneNumber.Name = "textBoxPhoneNumber";
             this.textBoxPhoneNumber.Size = new System.Drawing.Size(150, 24);
-            this.textBoxPhoneNumber.TabIndex = 3;
+            this.textBoxPhoneNumber.TabIndex = 5;
             this.textBoxPhoneNumber.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // textBoxEmailAddress
@@ -99,25 +101,24 @@
             this.textBoxEmailAddress.Location = new System.Drawing.Point(459, 49);
             this.textBoxEmailAddress.Name = "textBoxEmailAddress";
             this.textBoxEmailAddress.Size = new System.Drawing.Size(150, 24);
-            this.textBoxEmailAddress.TabIndex = 2;
+            this.textBoxEmailAddress.TabIndex = 1;
             this.textBoxEmailAddress.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // textBoxPin
             // 
-            this.textBoxPin.Enabled = false;
             this.textBoxPin.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxPin.Location = new System.Drawing.Point(510, 264);
+            this.textBoxPin.Location = new System.Drawing.Point(459, 280);
             this.textBoxPin.Name = "textBoxPin";
-            this.textBoxPin.Size = new System.Drawing.Size(100, 24);
-            this.textBoxPin.TabIndex = 7;
+            this.textBoxPin.Size = new System.Drawing.Size(150, 24);
+            this.textBoxPin.TabIndex = 11;
             this.textBoxPin.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // buttonActivate
             // 
-            this.buttonActivate.Location = new System.Drawing.Point(433, 215);
+            this.buttonActivate.Location = new System.Drawing.Point(459, 178);
             this.buttonActivate.Name = "buttonActivate";
-            this.buttonActivate.Size = new System.Drawing.Size(176, 32);
-            this.buttonActivate.TabIndex = 5;
+            this.buttonActivate.Size = new System.Drawing.Size(150, 32);
+            this.buttonActivate.TabIndex = 7;
             this.buttonActivate.Text = "Activate";
             this.buttonActivate.UseVisualStyleBackColor = true;
             this.buttonActivate.Click += new System.EventHandler(this.buttonActivate_Click);
@@ -125,11 +126,11 @@
             // labelPin
             // 
             this.labelPin.AutoSize = true;
-            this.labelPin.Location = new System.Drawing.Point(306, 267);
+            this.labelPin.Location = new System.Drawing.Point(308, 283);
             this.labelPin.Name = "labelPin";
-            this.labelPin.Size = new System.Drawing.Size(190, 17);
+            this.labelPin.Size = new System.Drawing.Size(140, 17);
             this.labelPin.TabIndex = 7;
-            this.labelPin.Text = "Offline/Manual Activation PIN";
+            this.labelPin.Text = "Coded Activation PIN";
             // 
             // labelSiteId
             // 
@@ -179,10 +180,10 @@
             // checkBoxAcceptTerms
             // 
             this.checkBoxAcceptTerms.AutoSize = true;
-            this.checkBoxAcceptTerms.Location = new System.Drawing.Point(13, 184);
+            this.checkBoxAcceptTerms.Location = new System.Drawing.Point(13, 148);
             this.checkBoxAcceptTerms.Name = "checkBoxAcceptTerms";
             this.checkBoxAcceptTerms.Size = new System.Drawing.Size(318, 21);
-            this.checkBoxAcceptTerms.TabIndex = 4;
+            this.checkBoxAcceptTerms.TabIndex = 6;
             this.checkBoxAcceptTerms.Text = "I have read and accept the terms of the EULA";
             this.checkBoxAcceptTerms.UseVisualStyleBackColor = true;
             // 
@@ -202,33 +203,34 @@
             this.textBoxIpAddress.Name = "textBoxIpAddress";
             this.textBoxIpAddress.ReadOnly = true;
             this.textBoxIpAddress.Size = new System.Drawing.Size(150, 24);
-            this.textBoxIpAddress.TabIndex = 4;
+            this.textBoxIpAddress.TabIndex = 13;
             this.textBoxIpAddress.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // linkLabelEula
             // 
             this.linkLabelEula.AutoSize = true;
-            this.linkLabelEula.Location = new System.Drawing.Point(346, 184);
+            this.linkLabelEula.Location = new System.Drawing.Point(346, 148);
             this.linkLabelEula.Name = "linkLabelEula";
             this.linkLabelEula.Size = new System.Drawing.Size(242, 17);
             this.linkLabelEula.TabIndex = 16;
             this.linkLabelEula.TabStop = true;
             this.linkLabelEula.Text = "EULA - End User License Agreement";
+            this.linkLabelEula.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelEula_LinkClicked);
             // 
             // textBoxLicenseCode
             // 
-            this.textBoxLicenseCode.Enabled = false;
+            this.textBoxLicenseCode.BackColor = System.Drawing.SystemColors.Control;
             this.textBoxLicenseCode.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxLicenseCode.Location = new System.Drawing.Point(173, 264);
+            this.textBoxLicenseCode.Location = new System.Drawing.Point(171, 280);
             this.textBoxLicenseCode.Name = "textBoxLicenseCode";
             this.textBoxLicenseCode.Size = new System.Drawing.Size(124, 24);
-            this.textBoxLicenseCode.TabIndex = 6;
+            this.textBoxLicenseCode.TabIndex = 28;
             this.textBoxLicenseCode.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // labelLicenseCode
             // 
             this.labelLicenseCode.AutoSize = true;
-            this.labelLicenseCode.Location = new System.Drawing.Point(5, 267);
+            this.labelLicenseCode.Location = new System.Drawing.Point(8, 283);
             this.labelLicenseCode.Name = "labelLicenseCode";
             this.labelLicenseCode.Size = new System.Drawing.Size(156, 17);
             this.labelLicenseCode.TabIndex = 18;
@@ -237,12 +239,13 @@
             // buttonCancel
             // 
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(249, 215);
+            this.buttonCancel.Location = new System.Drawing.Point(304, 178);
             this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(158, 32);
-            this.buttonCancel.TabIndex = 19;
-            this.buttonCancel.Text = "Cancel";
+            this.buttonCancel.Size = new System.Drawing.Size(131, 32);
+            this.buttonCancel.TabIndex = 8;
+            this.buttonCancel.Text = "Close";
             this.buttonCancel.UseVisualStyleBackColor = true;
+            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
             // textBoxCityState
             // 
@@ -250,7 +253,7 @@
             this.textBoxCityState.Location = new System.Drawing.Point(459, 82);
             this.textBoxCityState.Name = "textBoxCityState";
             this.textBoxCityState.Size = new System.Drawing.Size(150, 24);
-            this.textBoxCityState.TabIndex = 21;
+            this.textBoxCityState.TabIndex = 3;
             this.textBoxCityState.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // textBoxStreetAddress
@@ -259,7 +262,7 @@
             this.textBoxStreetAddress.Location = new System.Drawing.Point(169, 82);
             this.textBoxStreetAddress.Name = "textBoxStreetAddress";
             this.textBoxStreetAddress.Size = new System.Drawing.Size(124, 24);
-            this.textBoxStreetAddress.TabIndex = 20;
+            this.textBoxStreetAddress.TabIndex = 2;
             this.textBoxStreetAddress.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // labelCityState
@@ -283,27 +286,51 @@
             // textBoxPurchase
             // 
             this.textBoxPurchase.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxPurchase.Location = new System.Drawing.Point(367, 150);
+            this.textBoxPurchase.Location = new System.Drawing.Point(224, 246);
             this.textBoxPurchase.Name = "textBoxPurchase";
-            this.textBoxPurchase.Size = new System.Drawing.Size(242, 24);
-            this.textBoxPurchase.TabIndex = 24;
+            this.textBoxPurchase.Size = new System.Drawing.Size(385, 24);
+            this.textBoxPurchase.TabIndex = 9;
             this.textBoxPurchase.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // labelPurchase
             // 
             this.labelPurchase.AutoSize = true;
-            this.labelPurchase.Location = new System.Drawing.Point(8, 152);
+            this.labelPurchase.Location = new System.Drawing.Point(7, 248);
             this.labelPurchase.Name = "labelPurchase";
-            this.labelPurchase.Size = new System.Drawing.Size(342, 17);
+            this.labelPurchase.Size = new System.Drawing.Size(210, 17);
             this.labelPurchase.TabIndex = 25;
-            this.labelPurchase.Text = "If already paid-for, enter the Purchase Val Code here";
+            this.labelPurchase.Text = "Purchase designation (if known)";
+            // 
+            // labelNotice
+            // 
+            this.labelNotice.AutoSize = true;
+            this.labelNotice.ForeColor = System.Drawing.Color.Red;
+            this.labelNotice.Location = new System.Drawing.Point(6, 219);
+            this.labelNotice.Name = "labelNotice";
+            this.labelNotice.Size = new System.Drawing.Size(595, 17);
+            this.labelNotice.TabIndex = 26;
+            this.labelNotice.Text = "Record the following values in a safe place as your proof of purchase and activat" +
+    "ion numbers";
+            this.labelNotice.Visible = false;
+            // 
+            // buttonReset
+            // 
+            this.buttonReset.Location = new System.Drawing.Point(14, 178);
+            this.buttonReset.Name = "buttonReset";
+            this.buttonReset.Size = new System.Drawing.Size(143, 32);
+            this.buttonReset.TabIndex = 27;
+            this.buttonReset.Text = "Reset";
+            this.buttonReset.UseVisualStyleBackColor = true;
+            this.buttonReset.Click += new System.EventHandler(this.buttonReset_Click);
             // 
             // ActivationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(622, 297);
+            this.ClientSize = new System.Drawing.Size(622, 317);
+            this.Controls.Add(this.buttonReset);
+            this.Controls.Add(this.labelNotice);
             this.Controls.Add(this.textBoxPurchase);
             this.Controls.Add(this.labelPurchase);
             this.Controls.Add(this.textBoxCityState);
@@ -330,8 +357,8 @@
             this.Controls.Add(this.labelEmailAddress);
             this.Controls.Add(this.labelPhoneNumber);
             this.Controls.Add(this.labelPin);
-            this.MaximumSize = new System.Drawing.Size(640, 344);
-            this.MinimumSize = new System.Drawing.Size(640, 344);
+            this.MaximumSize = new System.Drawing.Size(640, 364);
+            this.MinimumSize = new System.Drawing.Size(640, 364);
             this.Name = "ActivationForm";
             this.Text = "Activation";
             this.Load += new System.EventHandler(this.ActivationForm_Load);
@@ -368,5 +395,7 @@
         private System.Windows.Forms.Label labelStreetAddress;
         private System.Windows.Forms.TextBox textBoxPurchase;
         private System.Windows.Forms.Label labelPurchase;
+        private System.Windows.Forms.Label labelNotice;
+        private System.Windows.Forms.Button buttonReset;
     }
 }

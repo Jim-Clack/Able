@@ -2,6 +2,7 @@ using AbleCheckbook.Db;
 using AbleCheckbook.Gui;
 using AbleCheckbook.Logic;
 using AbleLicensing;
+using AbleLicensing.WsApi;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,6 +28,7 @@ namespace AbleCheckbook
             BgWorkerThread.WorkerReportsProgress = false;
             BgWorkerThread.WorkerSupportsCancellation = true;
             BgWorkerThread.RunWorkerAsync();
+            OnlineActivation.Instance.Poll(Activation.Instance.LicenseCode, Activation.Instance.SiteIdentification, Logic.Version.AppMajor, Logic.Version.AppMinor);
         }
 
         /////////////////////////// Event Handlers ///////////////////////////
@@ -521,8 +523,8 @@ namespace AbleCheckbook
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OnlineActivation.Instance.CheckConnection();
-            OnlineActivation.Instance.Poll("Test-Record", "12345-67890", Logic.Version.AppMajor, Logic.Version.AppMinor);
+            OnlineActivation.Instance.TestConnection();
+#if DEBUG
             /*
             Activation.Instance.SetDefaultDays(180, 366); 
             Activation.Instance.LicenseCode = "MYNAME@99999"; 
@@ -531,6 +533,7 @@ namespace AbleCheckbook
             Activation.Instance.SetFeatureBitmask(0x000000000000000FL, Activation.Instance.ChecksumOfString(Activation.Instance.SiteIdentification)); 
             Activation.Instance.SetExpiration(2, Activation.Instance.ChecksumOfString(Activation.Instance.SiteIdentification)); 
             */
+#endif
             AboutForm form = new AboutForm();
             form.ShowDialog();
         }

@@ -50,9 +50,3 @@ In no event shall the manufacturer or licensor of this software product be liabl
 
 12. Resolution.
 Dispute over the software product or the manufacturer or licensor shall be governed in accordance with the laws of the United States and the state of Georgia. It is not governed by the United Nations conventions or contracts in any way. Reparations shall be limited to the price paid for the software product.
-
----------------------------------
-Non-Binding Abbreviated Summary
----------------------------------
-
-This is a license for a product that may be distributed and used without cost but that has certain limitations that can be overridden by purchasing upgrades or enhancements. The end user is to avoid assigning sole and critical reliance on the software product and use it only as an adjunct, in to expedite, double-check, and help organize their work. The end user is granted specific rights as described in writing by the licensor and has no further rights implied or expressed. The end user is also limited to installing and using the software product in accordance with this agreement and the documentation provided by the licensor. The software product does not have a warranty.

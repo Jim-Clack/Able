@@ -134,6 +134,12 @@
       <DependentUpon>BrowserForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\CheckbookRegisterView.cs" />
+    <Compile Include="Gui\EulaForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\EulaForm.Designer.cs">
+      <DependentUpon>EulaForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\MainScreen.Reconciler.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -296,6 +302,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\BrowserForm.resx">
       <DependentUpon>BrowserForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\EulaForm.resx">
+      <DependentUpon>EulaForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\PreferencesForm.resx">
       <DependentUpon>PreferencesForm.cs</DependentUpon>

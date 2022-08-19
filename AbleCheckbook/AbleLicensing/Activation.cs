@@ -13,45 +13,11 @@ namespace AbleLicensing
     public enum UserLevelPunct
     {
         Unlicensed = 0,
+        Unknown = '~',
         Deactivated = (int)'–', // note: en-dash, not a hyphen
         Standard = (int)'-',
         ProCPA = (int)'&',
         SuperUser = (int)'@',
-    }
-
-    /// <summary>
-    /// Web service API states (both requests and responses, not really a state any more)
-    /// </summary>
-    public enum ApiState
-    {
-        Unknown = 0,
-        // Request that passes minimal info and does not update DB
-        LookupLicense = 2,           // Find my info by license code
-        // Requests that expect info, as is known, to be populated
-        RegisterLicense = 5,         // May alter/update licenseCode in returned UserInfo
-        UpdateInfo = 6,              // Change addr, phone, email, etc
-        ChangeFeature = 7,           // Change the feature mask
-        ChangeLevel = 8,             // Change permission level (and licenseCode punctuation))
-        AddlDevice = 9,              // Activate add'l device on same license, no charge
-        // Requests that license host devices
-        MakePurchase = 11,           // Complete the purchase
-        // Successful Non-Purchase Responses
-        ReturnOk = 20,               // Completed non-purchase okay 
-        ReturnOkAddlDev = 21,        // Purchase ok, no charge, existing lic, return PinNumber
-        ReturnNotActivated = 22,     // Not activated, no paid license found, return Message
-        ReturnDeactivate = 23,       // Too many devices, deactivate, return Message
-        // Failed Non-Purchase Responses
-        ReturnBadArg = 31,           // Invalid city, phone, email, etc, return Message
-        ReturnNotFound = 32,         // License not found, return Message
-        ReturnNotMatched = 33,       // Name or other info incorrect, return Message
-        ReturnLCodeTaken = 34,       // License code already in use by a different user
-        ReturnError = 35,            // Internal error, typically all similar license codes in use
-        ReturnDenied = 36,           // Caller does not have permission, return Message
-        // Purchase Responses
-        PurchaseOk = 40,             // Purchase went thru, return PinNumber, new LicCode
-        PurchaseOkUpgrade = 41,      // Purchase ok, upgrade existing, return PinNumber, new LicCode
-        PurchaseFailed = 42,         // Purchase failed, return Message, LicCode
-        PurchaseIncomplete = 43,     // Purchase went thru but something else failed, return Message
     }
 
     /// <summary>
@@ -235,7 +201,14 @@ namespace AbleLicensing
                 {
                     return false;
                 }
-                if(_isLicensed)
+                if(string.IsNullOrEmpty(LicenseCode) || (
+                    LicenseCode.Trim()[6] != (char)(int)UserLevelPunct.Standard && 
+                    LicenseCode.Trim()[6] != (char)(int)UserLevelPunct.SuperUser && 
+                    LicenseCode.Trim()[6] != (char)(int)UserLevelPunct.ProCPA))
+                {
+                    return false;
+                }
+                if (_isLicensed)
                 {
                     return true;
                 }

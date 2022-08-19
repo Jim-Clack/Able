@@ -178,6 +178,13 @@ Notes to developers who are MS/VS virgins...
  etc. until afterward. Also after changing the DataSource you may have 
  to ComboBoxXxx.BindingContext = new BindingContext(). 
 
+ Very confusing snag: If you move a folder, add then remove a project, or
+ update a project outside of the current solution, Visual Studio may still
+ hold onto the old version. You can do a Clean/Rebuild, you can even do 
+ somersaults in your underoos, and it will still use the obsolete and even
+ non-existent code. And the error message may be very misleading, related
+ to an indirect effect.
+
  JSON REST API (All return a JsonUserInfoResponse except for the verify connection call)
   GET as/checkbook
     (...to verify connection)

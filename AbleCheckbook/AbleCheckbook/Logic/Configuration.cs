@@ -63,6 +63,7 @@ namespace AbleCheckbook.Logic
         private string _licenseCode = "";
         private string _activityTracking = "";
         private string _activationPin = "";
+        public string[] _contactValues = { };
 
         // Getters/Setters
         public string DirectoryLogs { get => _directoryLogs; set => _directoryLogs = value; }
@@ -292,7 +293,7 @@ namespace AbleCheckbook.Logic
         /// <summary>
         /// Get the path and name of a support file based on locale. i.e. "custom", "en-US", "en-*".
         /// </summary>
-        /// <param name="baseName">Name of existing file with no path, with a ### rep-symbol in it.</param>
+        /// <param name="baseName">Name of existing file with no path, poss with a ### rep-symbol in it.</param>
         /// <returns>Full path to support file. May be non-existant file if it cannot be found.</returns>
         public string FindSupportFilePath(string baseName)
         {
@@ -539,6 +540,21 @@ namespace AbleCheckbook.Logic
             set
             {
                 _activityTracking = value;
+            }
+        }
+
+        /// <summary>
+        /// For storing contact and site data. 
+        /// </summary>
+        public override string[] ContactValues
+        {
+            get
+            {
+                return _contactValues;
+            }
+            set
+            {
+                _contactValues = value;
             }
         }
 

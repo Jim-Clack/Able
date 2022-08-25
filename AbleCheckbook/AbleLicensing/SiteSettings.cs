@@ -26,7 +26,7 @@ namespace AbleLicensing
         /// <summary>
         /// URL override for calling MASTER web services
         /// </summary>
-        public abstract string WsUrlOverride { get; }
+        public abstract string WsUrlOverride { get; set; }
 
         /// <summary>
         /// Hook for Activation to call the logger with a DIAG-level mesage.
@@ -57,7 +57,7 @@ namespace AbleLicensing
         /// <summary>
         /// For storing contact and site data. 
         /// </summary>
-        public abstract string[] ContactValues { get; set; }
+        public abstract string[] LicenseTextboxValues { get; set; }
 
         /// <summary>
         /// Persisted activation PIN. May be set by the app (prompt user for pin) or by Activation. (web service)

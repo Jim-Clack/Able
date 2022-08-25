@@ -18,7 +18,7 @@ namespace AbleStrategiesServices.Support
         /// <summary>
         /// Site ID (device) abbreviation.
         /// </summary>
-        private string deviceSite = "";
+        private string deviceSiteId = "";
 
         /// <summary>
         /// Current status of device activation.
@@ -56,15 +56,15 @@ namespace AbleStrategiesServices.Support
         /// <summary>
         /// Site abbreviation.
         /// </summary>
-        public string DeviceSite
+        public string DeviceSiteId
         {
             get
             {
-                return deviceSite;
+                return deviceSiteId;
             }
             set
             {
-                deviceSite = value;
+                deviceSiteId = value;
                 Mod();
             }
         }
@@ -110,7 +110,7 @@ namespace AbleStrategiesServices.Support
             return "DevRec{" + SupportMethods.Shorten(Id.ToString()) +
                 "," + SupportMethods.Shorten(fkLicenseId.ToString()) +
                 "," + userLevelPunct.ToString() +
-                "," + deviceSite + "}";
+                "," + deviceSiteId + "}";
         }
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace AbleStrategiesServices.Support
                 return;
             }
             this.FkLicenseId = ((DeviceRecord)source).FkLicenseId;
-            this.DeviceSite = ((DeviceRecord)source).DeviceSite;
+            this.DeviceSiteId = ((DeviceRecord)source).DeviceSiteId;
             this.UserLevelPunct = ((DeviceRecord)source).UserLevelPunct;
             this.CodesAndPin = ((DeviceRecord)source).CodesAndPin;
         }

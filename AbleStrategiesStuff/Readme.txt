@@ -181,23 +181,22 @@ Notes to developers who are MS/VS virgins...
  Very confusing snag: If you move a folder, add then remove a project, or
  update a project outside of the current solution, Visual Studio may still
  hold onto the old version. You can do a Clean/Rebuild, you can even do 
- somersaults in your underoos, and it will still use the obsolete and even
- non-existent code. And the error message may be very misleading, related
- to an indirect effect.
+ somersaults in your underoos, and it will still use the obsolete. And the 
+ error message may be very misleading, related to an indirect effect.
 
- JSON REST API (All return a JsonUserInfoResponse except for the verify connection call)
-  GET as/checkbook
-    (...to verify connection)
-  GET as/checkbook/poll/lcode/siteid/vv-vv
-    (...to poll licensed hosts, periodically)
-  POST as/checkbook/2?name=Fred&addr=123%20Main&city=NYC&zip=12345&phone=1234567890&email=a.b%40abc.com&feature=0&lCode=abcde.12345&siteId=aBcD123&purchase=
-    (returns ReturnNotFound, ReturnLCodeTaken, or ReturnOk)
-  POST as/checkbook/5?name=Fred&addr=123%20Main&city=NYC&zip=12345&phone=1234567890&email=a.b%40abc.com&feature=0&lCode=abcde.12345&siteId=aBcD123&purchase=
-    (if successful, update LicenseCode from response)
+ JSON REST API (All return a JsonUserInfoResponse except for GET verify connection)
+  Verify connection
+    GET as/checkbook (returns strings)
+  Poll periodically, returns ReturnOk, ReturnOkReconfigure, ReturnNotFound, or ReturnDeactivate
+    GET as/checkbook/poll/lcode/siteid/vv-vv
+  Lookup license: returns ReturnOk, ReturnNotFound, ot ReturnLCodeTaken
+    POST as/checkbook/2?name=Fred&addr=123%20Main&city=NYC&zip=12345&phone=1234567890&email=a.b%40abc.com&feature=0&lCode=abcde.12345&siteId=aBcD123&designator=
+  Register site: if successful, update LicenseCode from response
+    POST as/checkbook/5?name=Fred&addr=123%20Main&city=NYC&zip=12345&phone=1234567890&email=a.b%40abc.com&feature=0&lCode=abcde.12345&siteId=aBcD123&designator=
   Call PayPal to make purchase
-    (collect date from response in "purchase" string "PtransactionNumber|dotDelimitedValidationData")
-  POST as/checkbook/11?name=Fred&addr=123%20Main&city=NYC&zip=12345&phone=1234567890&email=a.b%40abc.com&feature=0&lCode=abcde.12345&siteId=aBcD123&purchase=P12345%7C67.890
-    (if successful, get PinNumber from response)
+    Collect date from response in "designator" string "PtransactionNumber|dotDelimitedValidationData"
+  Purchase: if successful, get PinNumber from response
+    POST as/checkbook/11?name=Fred&addr=123%20Main&city=NYC&zip=12345&phone=1234567890&email=a.b%40abc.com&feature=0&lCode=abcde.12345&siteId=aBcD123&designator=P12345|7C67.890
   Example Response
   {
     "ApiState": 20,

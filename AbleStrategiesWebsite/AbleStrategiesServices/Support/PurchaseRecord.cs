@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AbleLicensing;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
@@ -26,14 +27,9 @@ namespace AbleStrategiesServices.Support
         private PurchaseAuthority purchaseAuthority = PurchaseAuthority.Unknown;
 
         /// <summary>
-        /// Authority's transaction number.
+        /// Provider-specific string containing transaction, verification, etc.
         /// </summary>
-        private string purchaseTransaction = "";
-
-        /// <summary>
-        /// Authority's verification code.
-        /// </summary>
-        private string purchaseVerification = "";
+        private string purchaseDesignator = "";
 
         /// <summary>
         /// Date of purchase.
@@ -103,31 +99,15 @@ namespace AbleStrategiesServices.Support
         /// <summary>
         /// Authority's transaction number.
         /// </summary>
-        public string PurchaseTransaction
+        public string PurchaseDesignator
         {
             get
             {
-                return purchaseTransaction;
+                return purchaseDesignator;
             }
             set
             {
-                purchaseTransaction = value;
-                Mod();
-            }
-        }
-
-        /// <summary>
-        /// Authority's verification code.
-        /// </summary>
-        public string PurchaseVerification
-        {
-            get
-            {
-                return purchaseVerification;
-            }
-            set
-            {
-                purchaseVerification = value;
+                purchaseDesignator = value;
                 Mod();
             }
         }
@@ -172,7 +152,7 @@ namespace AbleStrategiesServices.Support
         {
             return "PurRec{" + SupportMethods.Shorten(Id.ToString()) +
                 "," + SupportMethods.Shorten(fkLicenseId.ToString()) +
-                "," + purchaseTransaction +
+                "," + purchaseDesignator +
                 "," + SupportMethods.Shorten(purchaseAmount.ToString()) +
                 "," + purchaseDate.ToShortDateString() + "}";
         }
@@ -190,8 +170,7 @@ namespace AbleStrategiesServices.Support
             this.Details = ((PurchaseRecord)source).Details;
             this.FkLicenseId = ((PurchaseRecord)source).FkLicenseId;
             this.PurchaseAuthority = ((PurchaseRecord)source).PurchaseAuthority;
-            this.PurchaseTransaction = ((PurchaseRecord)source).PurchaseTransaction;
-            this.PurchaseVerification = ((PurchaseRecord)source).PurchaseVerification;
+            this.purchaseDesignator = ((PurchaseRecord)source).purchaseDesignator;
             this.PurchaseDate = ((PurchaseRecord)source).PurchaseDate;
         }
 

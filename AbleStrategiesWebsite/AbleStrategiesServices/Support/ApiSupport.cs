@@ -271,9 +271,9 @@ namespace AbleStrategiesServices.Support
             {
                 foreach (DeviceRecord apiDeviceRecord in passedUserInfo.DeviceRecords)
                 {
-                    if (regDeviceRecord.DeviceSite.Trim().CompareTo(apiDeviceRecord.DeviceSite.Trim()) == 0)
+                    if (regDeviceRecord.DeviceSiteId.Trim().CompareTo(apiDeviceRecord.DeviceSiteId.Trim()) == 0)
                     {
-                        pinNumber = ApiSupport.CalculatePin(existingUserInfo, regDeviceRecord.DeviceSite.Trim());
+                        pinNumber = ApiSupport.CalculatePin(existingUserInfo, regDeviceRecord.DeviceSiteId.Trim());
                     }
                 }
             }
@@ -281,10 +281,10 @@ namespace AbleStrategiesServices.Support
             if (string.IsNullOrEmpty(pinNumber))
             {
                 DeviceRecord deviceRecord = new DeviceRecord();
-                deviceRecord.DeviceSite = passedUserInfo.DeviceRecords[0].DeviceSite;
+                deviceRecord.DeviceSiteId = passedUserInfo.DeviceRecords[0].DeviceSiteId;
                 deviceRecord.UserLevelPunct = passedUserInfo.DeviceRecords[0].UserLevelPunct;
                 existingUserInfo.DeviceRecords.Add(deviceRecord);
-                pinNumber = ApiSupport.CalculatePin(existingUserInfo, deviceRecord.DeviceSite.Trim());
+                pinNumber = ApiSupport.CalculatePin(existingUserInfo, deviceRecord.DeviceSiteId.Trim());
             }
             return pinNumber;
         }
@@ -296,11 +296,11 @@ namespace AbleStrategiesServices.Support
         /// <param name="clientKind">kind of client</param>
         /// <param name="clientInfo">Client name, ip address, etc.</param>
         /// <param name="conversation">text - context and content</param>
-        public static void AddInteractivity(UserInfo userInfo, InteractivityClient clientKind, string clientInfo, string conversation)
+        public static void AddInteractivity(UserInfo userInfo, InteractivityKind clientKind, string clientInfo, string conversation)
         {
             InteractivityRecord interactivity = new InteractivityRecord();
             interactivity.ClientInfo = clientInfo;
-            interactivity.InteractivityClient = clientKind;
+            interactivity.InteractivityKind = clientKind;
             interactivity.Conversation = conversation;
             userInfo.InteractivityRecords.Add(interactivity);
         }
@@ -316,11 +316,12 @@ namespace AbleStrategiesServices.Support
             string[] purchaseFields = purchase.Trim().Substring(1).Split("|");
             PurchaseRecord purchaseRecord = new PurchaseRecord();
             purchaseRecord.PurchaseAuthority = PurchaseAuthority.PayPalStd;
+
             // TODO No, get these from paypal api...
+
             purchaseRecord.PurchaseAmount = purchAmount;
             purchaseRecord.PurchaseDate = DateTime.Now;
-            purchaseRecord.PurchaseTransaction = purchaseFields[0];
-            purchaseRecord.PurchaseVerification = purchaseFields[1];
+            purchaseRecord.PurchaseDesignator = purchase;
             purchaseRecord.PurchaseDate = DateTime.Now; 
             purchaseRecord.Details = "v1";
             userInfo.PurchaseRecords.Add(purchaseRecord);
@@ -356,7 +357,7 @@ namespace AbleStrategiesServices.Support
                     oldestRecord = deviceRecord;
                     ++numActiveDevices;
                 }
-                if (siteId.ToUpper().Trim().CompareTo(deviceRecord.DeviceSite) == 0)
+                if (siteId.ToUpper().Trim().CompareTo(deviceRecord.DeviceSiteId) == 0)
                 {
                     matchedRecord = deviceRecord;
                 }
@@ -375,13 +376,13 @@ namespace AbleStrategiesServices.Support
             // found, update interactivity record
             foreach (InteractivityRecord interactivityRecord in userInfo.InteractivityRecords)
             {
-                if(interactivityRecord.InteractivityClient == InteractivityClient.PollWs)
+                if(interactivityRecord.InteractivityKind == InteractivityKind.PollWs)
                 {
-                    userInfo.InteractivityRecords.Remove(interactivityRecord); // remove prior poll notice
+                    userInfo.InteractivityRecords.Remove(interactivityRecord); // remove any prior poll notice
                     break;
                 }
             }
-            AddInteractivity(userInfo, InteractivityClient.PollWs, ipAddress, "Poll - version [" + version + "]");
+            AddInteractivity(userInfo, InteractivityKind.PollWs, ipAddress, "Poll - version [" + version + "]");
             Logger.Diag(ipAddress, "Poll from registered and licensed client [" + ipAddress + "] " + lCode + "-" + siteId);
             return userInfo;
         }

@@ -769,7 +769,7 @@ namespace AbleStrategiesServices.Support
                     List<DeviceRecord> devices = DevicesByFkLicense(license.Id);
                     foreach(DeviceRecord device in devices)
                     {
-                        if (regex.Match(device.DeviceSite).Success)
+                        if (regex.Match(device.DeviceSiteId).Success)
                         {
                             Logger.Diag(null, "Matches device site code " + siteCode + " -> " + license.ToString());
                             results.Add(license);

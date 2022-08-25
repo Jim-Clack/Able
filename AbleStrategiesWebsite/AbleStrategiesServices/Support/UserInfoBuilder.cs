@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AbleLicensing;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -89,8 +90,7 @@ namespace AbleStrategiesServices.Support
         {
             PurchaseRecord purchaseRecord = new PurchaseRecord();
             purchaseRecord.PurchaseAuthority = PurchaseAuthority.PayPalStd;
-            purchaseRecord.PurchaseTransaction = "";
-            purchaseRecord.PurchaseVerification = "";
+            purchaseRecord.PurchaseDesignator = "";
             purchaseRecord.PurchaseAmount = amt;
             purchaseRecord.Details = details;
             DateTime dateTime = DateTime.Now;
@@ -112,7 +112,7 @@ namespace AbleStrategiesServices.Support
         public UserInfoBuilder AddDevice(string siteId, AbleLicensing.UserLevelPunct punct, string codes)
         {
             DeviceRecord deviceRecord = new DeviceRecord();
-            deviceRecord.DeviceSite = siteId;
+            deviceRecord.DeviceSiteId = siteId;
             deviceRecord.UserLevelPunct = (int)punct;
             deviceRecord.CodesAndPin = codes;
             this.userInfo.DeviceRecords.Add(deviceRecord);
@@ -126,10 +126,10 @@ namespace AbleStrategiesServices.Support
         /// <param name="clientInfo">Client name, email, and/or IP address.</param>
         /// <param name="convers">Content - what occurred during interactivity.</param>
         /// <returns>The updated UserInfoBuilder</returns>
-        public UserInfoBuilder AddInteractivity(InteractivityClient client, string clientInfo, string convers)
+        public UserInfoBuilder AddInteractivity(InteractivityKind client, string clientInfo, string convers)
         {
             InteractivityRecord interactivityRecord = new InteractivityRecord();
-            interactivityRecord.InteractivityClient = client;
+            interactivityRecord.InteractivityKind = client;
             interactivityRecord.ClientInfo = clientInfo;
             interactivityRecord.Conversation = convers;
             this.userInfo.InteractivityRecords.Add(interactivityRecord);
@@ -155,8 +155,7 @@ namespace AbleStrategiesServices.Support
             }
             purchaseRecord = this.userInfo.PurchaseRecords[0];
             purchaseRecord.PurchaseAuthority = PurchaseAuthority.PayPalStd;
-            purchaseRecord.PurchaseTransaction = "";
-            purchaseRecord.PurchaseVerification = "";
+            purchaseRecord.PurchaseDesignator = "";
             purchaseRecord.PurchaseAmount = amt;
             if (details != null)
             {
@@ -185,7 +184,7 @@ namespace AbleStrategiesServices.Support
             DeviceRecord deviceRecord = null;
             foreach (DeviceRecord record in this.userInfo.DeviceRecords)
             {
-                if(record.DeviceSite == siteId)
+                if(record.DeviceSiteId == siteId)
                 {
                     deviceRecord = record;
                     break;
@@ -194,7 +193,7 @@ namespace AbleStrategiesServices.Support
             if(deviceRecord == null) // if not found, create new device
             {
                 deviceRecord = new DeviceRecord();
-                deviceRecord.DeviceSite = siteId;
+                deviceRecord.DeviceSiteId = siteId;
             }
             deviceRecord.UserLevelPunct = (int)punct;
             deviceRecord.CodesAndPin = codes;

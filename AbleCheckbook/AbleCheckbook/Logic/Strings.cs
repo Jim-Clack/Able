@@ -126,6 +126,7 @@ namespace AbleCheckbook.Logic
             AddString("PuncQuestion", "?");
             AddString("Error");
             AddString("Warning");
+            AddString("Accept");
             AddString("Notification");
             AddString("Reconcile");
             AddString("Adjustment");
@@ -316,10 +317,11 @@ namespace AbleCheckbook.Logic
             AddString("Export CSV");
             AddString("Export QIF");
             AddString("Successful");
+            AddString("Configuration updated for");
             AddString("Note: No Importable Entries Read");
             AddString("Open Backup of DB File: ");
             AddString("Save the current DB as ");
-            AddString("Purchase designation (if known)");
+            AddString("Purchase designator (if known)");
             AddString("; Open the selected backup as ");
             AddString("Search only those Entries before or on:");
             AddString("Search for substring in Payee");
@@ -349,6 +351,7 @@ namespace AbleCheckbook.Logic
             AddString("Sorry");
             AddString("Admin Mode - Force Year-End Wrap-Up?");
             AddString("I accept these terms. (If you do not accept then close and uninstall this program)");
+            AddString("If you have already paid and are licensed, you may fill out your codes in the spaces below");
             AddString("Try Again?");
             AddString("Category Report");
             AddString("Print Register");
@@ -416,6 +419,7 @@ namespace AbleCheckbook.Logic
             AddString("Activation");
             AddString("Activate");
             AddString("Activated");
+            AddString("(Licensed)");
             AddString("(Unlicensed)");
             AddString("Site Identification Code");
             AddString("Contact/User Name");
@@ -425,18 +429,18 @@ namespace AbleCheckbook.Logic
             AddString("10-12 Digit Phone Nbr");
             AddString("Contact Email Address");
             AddString("Computer Identification");
+            AddString("You changed a greyed-out critical entry, if you did not wish to do this, click Cancel");
             AddString("I have read and accept the terms of the EULA");
             AddString("EULA - End User License Agreement");
             AddString("Assigned License Code");
             AddString("Coded Activation PIN");
-            AddString("Use manual activation - Contact support for a PIN");
             AddString("Invalid License Code and/or PIN");
             AddString("User name too short");
             AddString("Invalid postal/CC code");
             AddString("Phone and email required");
             AddString("You must accept the EULA");
-            AddString("Contact support for License Code");
-            AddString("Contact support for Activation PIN");
+            AddString("Improper License Code");
+            AddString("Improper Activation PIN");
             AddString("Turning Off Admin Mode");
             AddString("Time's Up");
             AddString(" days");

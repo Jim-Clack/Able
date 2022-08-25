@@ -119,7 +119,7 @@ namespace AbleStrategiesServices.Controllers
             return true;
         }
 
-        // POST as/checkbook/2?name=Fred&addr=123%20Main&city=NYC&zip=12345&phone=1234567890&email=a.b%40abc.com&feature=0&lCode=abcde.12345&siteId=aBcD123&purchase=P12345%7C67890
+        // POST as/checkbook/db/2?name=Fred&addr=123%20Main&city=NYC&zip=12345&phone=1234567890&email=a.b%40abc.com&feature=0&lCode=abcde.12345&siteId=aBcD123&purchase=P12345%7C67890
         /// <summary>
         /// Process an activation state.
         /// </summary>
@@ -133,7 +133,7 @@ namespace AbleStrategiesServices.Controllers
         /// <param name="feature">installation edition/features/etc to be purchased ("" ok, if unchanged)</param>
         /// <param name="lCode">installation assigned license code</param>
         /// <param name="siteId">installation host device code</param>
-        /// <param name="purchase">Ptran|val codes from the purchase ("" ok, if this is not a purchase)</param>
+        /// <param name="designator">Ptran|val codes from the purchase ("" ok, if this is not a purchase)</param>
         /// <returns>UserInfoResponse with new ApiState, and possible Message or PinNumber</returns>
         /// <remarks>
         /// * Caution: Multiple devices per user license, each with their own site id, may be returned. 
@@ -142,7 +142,7 @@ namespace AbleStrategiesServices.Controllers
         [HttpPost("db/{apiState}")]
         public JsonResult PostDb([FromRoute] int apiState, 
             [FromQuery] string name, [FromQuery] string addr, [FromQuery] string city, [FromQuery] string zip, [FromQuery] string phone, 
-            [FromQuery] string email, [FromQuery] string feature, [FromQuery] string lCode, [FromQuery] string siteId, [FromQuery] string purchase)
+            [FromQuery] string email, [FromQuery] string feature, [FromQuery] string lCode, [FromQuery] string siteId, [FromQuery] string designator)
         {
             string ipAddress;
             if (!ClientCallFilter.Instance.Validate(HttpContext.Connection.RemoteIpAddress, false, out ipAddress))
@@ -151,7 +151,7 @@ namespace AbleStrategiesServices.Controllers
                 return ApiSupport.AsJsonResult(new UserInfoResponse((int)ApiState.ReturnDenied, null, "Denied"));
             }
             if (name == null || addr == null || city == null || zip == null || phone == null || email == null || 
-                feature == null || lCode == null || siteId == null || purchase == null)
+                feature == null || lCode == null || siteId == null || designator == null)
             {
                 Logger.Warn(ipAddress, "All args must be specified, even if empty " + apiState + " [" + HttpContext.Request.QueryString + "]");
                 return ApiSupport.AsJsonResult(new UserInfoResponse((int)ApiState.ReturnBadArg, null,
@@ -185,19 +185,19 @@ namespace AbleStrategiesServices.Controllers
             switch (apiState)
             {
                 case (int)ApiState.LookupLicense:
-                    return LookupLicense(ipAddress, userInfo, existingUserInfo, purchase);
+                    return LookupLicense(ipAddress, userInfo, existingUserInfo, designator);
                 case (int)ApiState.RegisterLicense:
-                    return RegisterLicense(ipAddress, userInfo, existingUserInfo, purchase);
+                    return RegisterLicense(ipAddress, userInfo, existingUserInfo, designator);
                 case (int)ApiState.UpdateInfo:
-                    return UpdateInfo(ipAddress, userInfo, existingUserInfo, purchase);
+                    return UpdateInfo(ipAddress, userInfo, existingUserInfo, designator);
                 case (int)ApiState.ChangeFeature:
-                    return ChangeFeature(ipAddress, userInfo, existingUserInfo, purchase);
+                    return ChangeFeature(ipAddress, userInfo, existingUserInfo, designator);
                 case (int)ApiState.ChangeLevel:
-                    return ChangeLevel(ipAddress, userInfo, existingUserInfo, purchase);
+                    return ChangeLevel(ipAddress, userInfo, existingUserInfo, designator);
                 case (int)ApiState.MakePurchase:
-                    return MakePurchase(ipAddress, userInfo, existingUserInfo, purchase);
+                    return MakePurchase(ipAddress, userInfo, existingUserInfo, designator);
                 case (int)ApiState.AddlDevice:
-                    return AddlDevice(ipAddress, userInfo, existingUserInfo, purchase);
+                    return AddlDevice(ipAddress, userInfo, existingUserInfo, designator);
                 default:
                     Logger.Warn(ipAddress, "ProcessLicense called with missing or incorrect arg [" + (int)apiState + "}");
                     return ApiSupport.AsJsonResult(new UserInfoResponse((int)ApiState.ReturnBadArg, null, 
@@ -213,9 +213,9 @@ namespace AbleStrategiesServices.Controllers
         /// <param name="ipAddress">textual host id, for logging and security</param>
         /// <param name="userInfo">passed into the call</param>
         /// <param name="existingUserInfo">as found in the database, null if not found</param>
-        /// <param name="purchase">purchase code, "" if none</param>
+        /// <param name="designator">purchase code, "" if none</param>
         /// <returns>JSON rendition of UserInfoResponse</returns>
-        private JsonResult LookupLicense(string ipAddress, Support.UserInfo userInfo, Support.UserInfo existingUserInfo, string purchase)
+        private JsonResult LookupLicense(string ipAddress, Support.UserInfo userInfo, Support.UserInfo existingUserInfo, string designator)
         {
             Logger.Diag(ipAddress, "LookupLicense API Call - " + userInfo);
             List<UserInfo> userInfos = new List<UserInfo>();
@@ -230,7 +230,7 @@ namespace AbleStrategiesServices.Controllers
                 matches += (userInfo.LicenseRecord.ContactEMail.ToUpper().CompareTo(existingUserInfo.LicenseRecord.ContactEMail.ToUpper()) == 0) ? 1 : 0;
                 matches += (userInfo.LicenseRecord.ContactZip.ToUpper().CompareTo(existingUserInfo.LicenseRecord.ContactZip.ToUpper()) == 0) ? 1 : 0;
                 matches += (userInfo.LicenseRecord.ContactPhone.ToUpper().CompareTo(existingUserInfo.LicenseRecord.ContactPhone.ToUpper()) == 0) ? 1 : 0;
-                matches += (userInfo.DeviceRecords[0].DeviceSite.CompareTo(existingUserInfo.DeviceRecords[0].DeviceSite.ToUpper()) == 0) ? 1 : 0;
+                matches += (userInfo.DeviceRecords[0].DeviceSiteId.CompareTo(existingUserInfo.DeviceRecords[0].DeviceSiteId.ToUpper()) == 0) ? 1 : 0;
                 if (matches >= 3)
                 {
                     apiState = (int)ApiState.ReturnOk;
@@ -247,9 +247,9 @@ namespace AbleStrategiesServices.Controllers
         /// <param name="ipAddress">textual host id, for logging and security</param>
         /// <param name="userInfo">passed into the call</param>
         /// <param name="existingUserInfo">as found in the database, null if not found</param>
-        /// <param name="purchase">purchase code, "" if none</param>
+        /// <param name="designator">purchase code, "" if none</param>
         /// <returns>JSON rendition of UserInfoResponse</returns>
-        private JsonResult UpdateInfo(string ipAddress, Support.UserInfo userInfo, Support.UserInfo existingUserInfo, string purchase)
+        private JsonResult UpdateInfo(string ipAddress, Support.UserInfo userInfo, Support.UserInfo existingUserInfo, string designator)
         {
             Logger.Diag(ipAddress, "UpdateInfo API Call - " + userInfo);
             List<UserInfo> userInfos = new List<UserInfo>();
@@ -271,10 +271,10 @@ namespace AbleStrategiesServices.Controllers
         /// <param name="ipAddress">textual host id, for logging and security</param>
         /// <param name="userInfo">passed into the call</param>
         /// <param name="existingUserInfo">as found in the database, null if not found</param>
-        /// <param name="purchase">purchase code, "" if none</param>
+        /// <param name="designator">purchase code, "" if none</param>
         /// <returns>JSON rendition of UserInfoResponse</returns>
         /// <remarks>CAUTION!!! Currently this does no confirmation, and no purchase necessary</remarks>
-        private JsonResult ChangeFeature(string ipAddress, Support.UserInfo userInfo, Support.UserInfo existingUserInfo, string purchase)
+        private JsonResult ChangeFeature(string ipAddress, Support.UserInfo userInfo, Support.UserInfo existingUserInfo, string designator)
         {
             // See CAUTION!!! above - No big deal at this time because the PIN will be wrong, so this is unsupported
             Logger.Diag(ipAddress, "ChangeFeature API Call - " + userInfo);
@@ -296,10 +296,10 @@ namespace AbleStrategiesServices.Controllers
         /// <param name="ipAddress">textual host id, for logging and security</param>
         /// <param name="userInfo">passed into the call</param>
         /// <param name="existingUserInfo">as found in the database, null if not found</param>
-        /// <param name="purchase">purchase code, "" if none</param>
+        /// <param name="designator">purchase code, "" if none</param>
         /// <returns>JSON rendition of UserInfoResponse</returns>
         /// <remarks>CAUTION!!!  Currently this does no confirmation, and no purchase necessary</remarks>
-        private JsonResult ChangeLevel(string ipAddress, Support.UserInfo userInfo, Support.UserInfo existingUserInfo, string purchase)
+        private JsonResult ChangeLevel(string ipAddress, Support.UserInfo userInfo, Support.UserInfo existingUserInfo, string designator)
         {
             // See CAUTION!!! above - No big deal at this time because the PIN will be wrong, so this is unsupported
             Logger.Diag(ipAddress, "ChangeLevel API Call - " + userInfo);
@@ -320,9 +320,9 @@ namespace AbleStrategiesServices.Controllers
         /// <param name="ipAddress">textual host id, for logging and security</param>
         /// <param name="userInfo">passed into the call - contact info, lCode, and siteId are necessary</param>
         /// <param name="existingUserInfo">as found in the database, null if not found</param>
-        /// <param name="purchase">purchase code, "" if none</param>
+        /// <param name="designator">purchase code, "" if none</param>
         /// <returns>JSON rendition of UserInfoResponse - NOTE: LicenseCode may be different from that passed in</returns>
-        private JsonResult RegisterLicense(string ipAddress, Support.UserInfo userInfo, Support.UserInfo existingUserInfo, string purchase)
+        private JsonResult RegisterLicense(string ipAddress, Support.UserInfo userInfo, Support.UserInfo existingUserInfo, string designator)
         {
             Logger.Diag(ipAddress, "RegisterLicense API Call - " + userInfo);
             string lCode = ApiSupport.CreateLicenseCodeBasedOn(ipAddress, userInfo.LicenseRecord.LicenseCode);
@@ -332,7 +332,7 @@ namespace AbleStrategiesServices.Controllers
                 return ApiSupport.AsJsonResult(new UserInfoResponse((int)ApiState.ReturnError,
                     null, "Internal Error - Cannot Generate License Code"));
             }
-            ApiSupport.AddInteractivity(userInfo, InteractivityClient.RegistrationWs, ipAddress,
+            ApiSupport.AddInteractivity(userInfo, AbleLicensing.InteractivityKind.RegistrationWs, ipAddress,
                 "RegisterLicense - License Code rqst: " + userInfo.LicenseRecord.LicenseCode + " - generated as: " + lCode);
             userInfo.LicenseRecord.LicenseCode = lCode;
             userInfo.LicenseRecord.LicenseFeatures = "0";
@@ -350,11 +350,11 @@ namespace AbleStrategiesServices.Controllers
         /// <param name="ipAddress">textual host id, for logging and security</param>
         /// <param name="userInfo">passed into the call</param>
         /// <param name="existingUserInfo">as found in the database, null if not found</param>
-        /// <param name="purchase">purchase code, "" if none</param>
+        /// <param name="designator">purchase code, "" if none</param>
         /// <returns>JSON rendition of UserInfoResponse with PIN populated on success</returns>
-        private JsonResult MakePurchase(string ipAddress, Support.UserInfo userInfo, Support.UserInfo existingUserInfo, string purchase)
+        private JsonResult MakePurchase(string ipAddress, Support.UserInfo userInfo, Support.UserInfo existingUserInfo, string designator)
         {
-            Logger.Diag(ipAddress, "MakePurchase API Call (" + purchase + ") " + userInfo);
+            Logger.Diag(ipAddress, "MakePurchase API Call (" + designator + ") " + userInfo);
             if (existingUserInfo == null)
             {
                 Logger.Warn(ipAddress, "Cannot complete purchase for unregistered user " + userInfo);
@@ -362,9 +362,9 @@ namespace AbleStrategiesServices.Controllers
                     null, "License not yet registered, poss internal error - purchase out of sequence"));
             }
             long purchAmount = 0L;
-            if (!ApiSupport.VerifyPurchase(existingUserInfo, purchase, out purchAmount))
+            if (!ApiSupport.VerifyPurchase(existingUserInfo, designator, out purchAmount))
             {
-                Logger.Warn(ipAddress, "Purchase not verified for (" + purchase + ") " + userInfo);
+                Logger.Warn(ipAddress, "Purchase not verified for (" + designator + ") " + userInfo);
                 return ApiSupport.AsJsonResult(new UserInfoResponse((int)ApiState.PurchaseFailed,
                     null, "Cannot verify purchase through pay underwriter service - contact support for help"));
             }
@@ -373,9 +373,9 @@ namespace AbleStrategiesServices.Controllers
             {
                 foreach (DeviceRecord apiDeviceRecord in existingUserInfo.DeviceRecords)
                 {
-                    if (regDeviceRecord.DeviceSite.Trim().CompareTo(apiDeviceRecord.DeviceSite.Trim()) == 0)
+                    if (regDeviceRecord.DeviceSiteId.Trim().CompareTo(apiDeviceRecord.DeviceSiteId.Trim()) == 0)
                     {
-                        pinNumber = ApiSupport.CalculatePin(existingUserInfo, regDeviceRecord.DeviceSite.Trim());
+                        pinNumber = ApiSupport.CalculatePin(existingUserInfo, regDeviceRecord.DeviceSiteId.Trim());
                     }
                 }
             }
@@ -385,9 +385,9 @@ namespace AbleStrategiesServices.Controllers
                 return ApiSupport.AsJsonResult(new UserInfoResponse((int)ApiState.PurchaseIncomplete,
                     null, "License code or device/site ID is corrupt - contact support for help"));
             }
-            ApiSupport.AddInteractivity(userInfo, InteractivityClient.ActivationWs, ipAddress,
-                "MakePurchase - License Code: " + existingUserInfo.LicenseRecord.LicenseCode + " - purchase: " + purchase);
-            ApiSupport.AddPurchase(existingUserInfo, purchase, purchAmount);
+            ApiSupport.AddInteractivity(userInfo, InteractivityKind.ActivationWs, ipAddress,
+                "MakePurchase - License Code: " + existingUserInfo.LicenseRecord.LicenseCode + " - purchase: " + designator);
+            ApiSupport.AddPurchase(existingUserInfo, designator, purchAmount);
             List<UserInfo> userInfos = new List<UserInfo>();
             userInfos.Add(existingUserInfo);
             return ApiSupport.AsJsonResult(new UserInfoResponse((int)ApiState.PurchaseOk, userInfos, null, pinNumber));
@@ -399,9 +399,9 @@ namespace AbleStrategiesServices.Controllers
         /// <param name="ipAddress">textual host id, for logging and security</param>
         /// <param name="userInfo">passed into the call</param>
         /// <param name="existingUserInfo">as found in the database, null if not found</param>
-        /// <param name="purchase">purchase code, "" if none</param>
+        /// <param name="designator">purchase code, "" if none</param>
         /// <returns>JSON rendition of UserInfoResponse</returns>
-        private JsonResult AddlDevice(string ipAddress, Support.UserInfo userInfo, Support.UserInfo existingUserInfo, string purchase)
+        private JsonResult AddlDevice(string ipAddress, Support.UserInfo userInfo, Support.UserInfo existingUserInfo, string designator)
         {
             Logger.Diag(ipAddress, "AddlDevice API Call " + userInfo);
             if (existingUserInfo == null)
@@ -423,7 +423,7 @@ namespace AbleStrategiesServices.Controllers
                 return ApiSupport.AsJsonResult(new UserInfoResponse((int)ApiState.PurchaseIncomplete,
                     null, "License code or device/site ID is corrupt - contact support for help"));
             }
-            ApiSupport.AddInteractivity(userInfo, InteractivityClient.OtherWs, ipAddress,
+            ApiSupport.AddInteractivity(userInfo, InteractivityKind.OtherWs, ipAddress,
                 "AddlDevice - License Code: " + existingUserInfo.LicenseRecord.LicenseCode);
             List<UserInfo> userInfos = new List<UserInfo>();
             userInfos.Add(existingUserInfo);

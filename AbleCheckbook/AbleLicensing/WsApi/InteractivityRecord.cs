@@ -29,7 +29,7 @@ namespace AbleLicensing.WsApi
         /// <summary>
         /// Interactivity by phone, web service, or what?
         /// </summary>
-        public int InteractivityClient;
+        public int InteractivityKind;
 
         /// <summary>
         /// Client name, email, and/or IP address.
@@ -46,5 +46,15 @@ namespace AbleLicensing.WsApi
         /// </summary>
         public string History;
 
+        /// <summary>
+        /// Return a man-readable representation.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return "IntRec{" + InteractivityKind + "," + ClientInfo + ", " + Conversation + "}";
+        }
+
     }
+
 }

@@ -233,7 +233,7 @@ namespace AbleCheckbook
                 {
                     MessageBox.Show(Strings.Get("Expired Trial Evaluation Period"), Strings.Get("Expired"), MessageBoxButtons.OK);
                 }
-                Thread.Sleep(500 + 20 * Math.Abs(expDays));
+                Thread.Sleep(1000 + 10 * Math.Abs(expDays));
             }
             AdjustVisibilities();
             _busy = false;
@@ -755,8 +755,7 @@ namespace AbleCheckbook
                     // ignore, fall thru
                 }
             }
-            _helpForm = new BrowserForm("Help", "https://ablestrategies.com/ablecheckbook/help", 
-                "https://www.google.com/search?q=site%3Aablestrategies.com+checkbook+help+", this);
+            _helpForm = new BrowserForm("Help", Configuration.Instance.HelpPageUrl, Configuration.Instance.HelpSearchUrl, this);
             _helpForm.Show();
             if (searchPattern != null)
             {

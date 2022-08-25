@@ -37,14 +37,9 @@ namespace AbleLicensing.WsApi
         public int PurchaseAuthority;
 
         /// <summary>
-        /// Authority's transaction number.
+        /// Authority's coded values for this transaction.
         /// </summary>
-        public string PurchaseTransaction;
-
-        /// <summary>
-        /// Authority's verification code.
-        /// </summary>
-        public string PurchaseVerification;
+        public string PurchaseDesignator;
 
         /// <summary>
         /// Date of purchase.
@@ -56,5 +51,15 @@ namespace AbleLicensing.WsApi
         /// </summary>
         public long PurchaseAmount;
 
-}
+        /// <summary>
+        /// Return a man-readable representation.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return "PurRec{" + PurchaseDesignator + ", " + PurchaseAmount.ToString() + ", " + PurchaseDate.ToShortDateString() + ", " + Details + "}";
+        }
+
+    }
+
 }

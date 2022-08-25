@@ -35,6 +35,8 @@ namespace AbleCheckbook.Logic
 
         private string[] _legalFilenames = new string[] { "Checking", "Business", "Personal", "Alternate" };
         private string _wsUrlOverride = "";
+        private string _helpPageUrl = "https://ablestrategies.com/ablecheckbook/help";
+        private string _helpSearchUrl = "https://www.google.com/search?q=site%3Aablestrategies.com+checkbook+help+";
         private string _directoryLogs = "";
         private string _directoryDatabase = "";
         private string _directorySupportFiles = "";
@@ -43,6 +45,8 @@ namespace AbleCheckbook.Logic
         private string _directoryBackup1 = "";
         private string _directoryBackup2 = "";
         private string _lastDbName = "";
+        private string _smtpServer = "smtp.gmail.com";
+        private string _supportEmail = "support@ablestrategies.com";
         private int _postEventAdvanceDays = 30;
         private LogLevel _logLevel = LogLevel.Diag;
         private string _loadedFrom = "";
@@ -63,7 +67,11 @@ namespace AbleCheckbook.Logic
         private string _licenseCode = "";
         private string _activityTracking = "";
         private string _activationPin = "";
-        public string[] _contactValues = { };
+        public string[] _licenseTextboxValues = { }; // persist user entries in license activation form textboxes
+
+        // Non-persisted
+        [System.Text.Json.Serialization.JsonIgnore()]
+        private bool _firstTime = false;
 
         // Getters/Setters
         public string DirectoryLogs { get => _directoryLogs; set => _directoryLogs = value; }
@@ -84,6 +92,9 @@ namespace AbleCheckbook.Logic
         public int WindowWidth { get => _windowWidth; set => _windowWidth = value; }
         public int WindowHeight { get => _windowHeight; set => _windowHeight = value; }
         public LogLevel LogLevel { get => _logLevel; set => _logLevel = value; }
+
+        [System.Text.Json.Serialization.JsonIgnore()]
+        public bool FirstTime { get => _firstTime; set => _firstTime = value; }
 
         /// <summary>
         /// Ctor - should be private, as this is a singleton, but you know, json serialization. 
@@ -261,6 +272,36 @@ namespace AbleCheckbook.Logic
         }
 
         /// <summary>
+        /// URL override for calling support/help
+        /// </summary>
+        public string HelpPageUrl
+        {
+            get
+            {
+                return _helpPageUrl;
+            }
+            set
+            {
+                _helpPageUrl = value;
+            }
+        }
+
+        /// <summary>
+        /// URL override for seearching help pages
+        /// </summary>
+        public string HelpSearchUrl
+        {
+            get
+            {
+                return _helpSearchUrl;
+            }
+            set
+            {
+                _helpSearchUrl = value;
+            }
+        }
+
+        /// <summary>
         /// Save window bounds.
         /// </summary>
         /// <param name="left">x of left</param>
@@ -347,8 +388,7 @@ namespace AbleCheckbook.Logic
         /// </summary>
         private void SetDefaults()
         {
-            String backup2DefaultPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), 
-                "G:/My Drive");
+            String backup2DefaultPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "G:/My Drive");
             _directoryLogs = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ACheckbook");
             _directoryImportExport = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             _directorySupportFiles = AppContext.BaseDirectory;
@@ -425,6 +465,7 @@ namespace AbleCheckbook.Logic
                     using (FileStream stream = File.OpenRead(filename))
                     {
                         _instance = JsonSerializer.DeserializeAsync<Configuration>(stream).GetAwaiter().GetResult();
+                        _instance.FirstTime = false;
                     }
                 }
             }
@@ -480,6 +521,10 @@ namespace AbleCheckbook.Logic
             get
             {
                 return _wsUrlOverride;
+            }
+            set
+            {
+                _wsUrlOverride = value;
             }
         }
 
@@ -546,15 +591,15 @@ namespace AbleCheckbook.Logic
         /// <summary>
         /// For storing contact and site data. 
         /// </summary>
-        public override string[] ContactValues
+        public override string[] LicenseTextboxValues
         {
             get
             {
-                return _contactValues;
+                return _licenseTextboxValues;
             }
             set
             {
-                _contactValues = value;
+                _licenseTextboxValues = value;
             }
         }
 
@@ -570,6 +615,36 @@ namespace AbleCheckbook.Logic
             set
             {
                 _activationPin = value;
+            }
+        }
+
+        /// <summary>
+        /// The server for sending support messages
+        /// </summary>
+        public string SmtpServer
+        {
+            get
+            {
+                return _smtpServer;
+            }
+            set
+            {
+                _smtpServer = value;
+            }
+        }
+
+        /// <summary>
+        /// Where to send support messages
+        /// </summary>
+        public string SupportEmail
+        {
+            get
+            {
+                return _supportEmail;
+            }
+            set
+            {
+                _supportEmail = value;
             }
         }
 

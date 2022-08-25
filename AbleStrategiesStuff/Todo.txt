@@ -1,14 +1,23 @@
 Alpha TODO... (C=client/default, S=server)
+ - WS Server: Searches for license code should use wildcard for punct char
+ - WS Server: Latent site ID for abused License Code should return Deactivated
+ - WS Server: Poll may return ReturnOkReconfigure codes
+ - Preserve Ids and FkLicenseIds appropriately to DB in web services
+ - Always ensure there is no more than one purchase record
+ - Deleting obsolete records from CheckbookController WS API
+ - Web Services for online purchase and self-service activation (S)
+ - Paypal API (S)
  - Prompts for reconcile when it is not yet time (fixed?)
  - Year-end is not saving categories (fixed?)
+ - Deactivate after polling if appropriate
  - Flesh out online help (S)
  - Deploy website for testing (S)
  - EULA (C/S)
- - Web Services for online purchase and self-service activation (S)
- - Paypal API (S)
  - Implement Activate via Email/Phone as is appropriate (C/S)
  - Web Services for online reconciliation (Open Banking API) (S)
  - Move SU user data to website instead of file (superuser) (C/S)
+ - Refactor Due-Notice, _alertType, add check-number-gap notification
+ - Preserve Undo/Redo histories in acb file (max 100 levels?)
  - Implement SU ReadLog (C/S)
  - Fix desktop Icon (C)
  - AreYouSureForm with date/time/user that screen-captures, logs, and read log (C/S)
@@ -37,7 +46,6 @@ Longer term TODO...
  - Print preview
  - Overflow Undo-Queues to disk - sync to db via GUID
  - View: Load Custom View, Save Custom View (Sort, ColWdts, ColSeq)
- - Refactor Due-Notice, _alertType
  - Performance: Cache and maintain collections, optimize for speed
  - Mobile App
  - Mac edition

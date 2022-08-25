@@ -164,6 +164,8 @@
     <Compile Include="Gui\ReconcileStartForm.Designer.cs">
       <DependentUpon>ReconcileStartForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Logic\Emailer.cs" />
+    <Compile Include="Logic\Poller.cs" />
     <Compile Include="Logic\RowOfSchEvents.cs" />
     <Compile Include="Gui\ScheduledEventEditForm.cs">
       <SubType>Form</SubType>

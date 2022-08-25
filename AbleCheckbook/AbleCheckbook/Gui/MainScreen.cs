@@ -28,7 +28,17 @@ namespace AbleCheckbook
             BgWorkerThread.WorkerReportsProgress = false;
             BgWorkerThread.WorkerSupportsCancellation = true;
             BgWorkerThread.RunWorkerAsync();
-            OnlineActivation.Instance.Poll(Activation.Instance.LicenseCode, Activation.Instance.SiteIdentification, Logic.Version.AppMajor, Logic.Version.AppMinor);
+            new Poller().Poll(Activation.Instance.LicenseCode, Activation.Instance.SiteIdentification);
+            if(Configuration.Instance.FirstTime)
+            {
+                EulaForm form = new EulaForm();
+                form.ShowDialog();
+                if(!form.Accepted)
+                {
+                    System.Windows.Forms.Application.Exit();
+                    this.Close();
+                }
+            }
         }
 
         /////////////////////////// Event Handlers ///////////////////////////

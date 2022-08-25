@@ -17,6 +17,12 @@ namespace AbleCheckbook.Gui
 {
     public partial class ActivationForm : Form
     {
+
+        private bool criticalValueChanged = false;
+
+        /// <summary>
+        /// Ctor.
+        /// </summary>
         public ActivationForm()
         {
             InitializeComponent();
@@ -36,12 +42,13 @@ namespace AbleCheckbook.Gui
             checkBoxAcceptTerms.Text = Strings.Get("I have read and accept the terms of the EULA");
             linkLabelEula.Text = Strings.Get("EULA - End User License Agreement");
             buttonActivate.Text = Strings.Get("Activate");
-            buttonCancel.Text = Strings.Get("Close");
+            buttonClose.Text = Strings.Get("Close");
             buttonReset.Text = Strings.Get("Reset");
             labelLicenseCode.Text = Strings.Get("Assigned License Code");
             labelPin.Text = Strings.Get("Coded Activation PIN");
-            labelPurchase.Text = Strings.Get("Purchase designation (if known)");
-            labelNotice.Text = Strings.Get("Record the following values in a safe place as your proof of purchase and activation numbers");
+            labelPurchase.Text = Strings.Get("Purchase designator (if known)");
+            labelSaveTheseNotice.Text = Strings.Get("Record the following values in a safe place as your proof of purchase and activation numbers");
+            labelAlreadyPurchased.Text = Strings.Get("If you have already paid and are licensed, you may fill out your codes in the spaces below");
             SetToInitialValues();
             UserLevel userLevel = Configuration.Instance.GetUserLevel();
             if (userLevel != UserLevel.Unlicensed)
@@ -52,8 +59,14 @@ namespace AbleCheckbook.Gui
                     Close();
                 }
             }
+            criticalValueChanged = false;
         }
 
+        /// <summary>
+        /// Activate button event handler.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void buttonActivate_Click(object sender, EventArgs e)
         {
             if(textBoxUserId.Text.Trim().Length < 6)
@@ -81,36 +94,65 @@ namespace AbleCheckbook.Gui
                 MessageBox.Show(this, Strings.Get("You must accept the EULA"), Strings.Get("Sorry"), MessageBoxButtons.OK);
                 return;
             }
+            if(criticalValueChanged)
+            {
+                if(MessageBox.Show(
+                    Strings.Get("You changed a greyed-out critical entry, if you did not wish to do this, click Cancel"),
+                    Strings.Get("Verify"), MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+                {
+                    SetToInitialValues();
+                    return;
+                }
+            }
+            criticalValueChanged = false;
             if (textBoxPin.Text.Trim().Length > 3)
             {
                 if (textBoxLicenseCode.Text.Trim().Length != 12)
                 {
-                    MessageBox.Show(this, Strings.Get("Contact support for License Code"), Strings.Get("Sorry"), MessageBoxButtons.OK);
+                    MessageBox.Show(this, Strings.Get("Improper License Code"), Strings.Get("Sorry"), MessageBoxButtons.OK);
                     return;
                 }
                 if (textBoxPin.Text.Trim().Length != 4)
                 {
-                    MessageBox.Show(this, Strings.Get("Contact support for Activation PIN"), Strings.Get("Sorry"), MessageBoxButtons.OK);
+                    MessageBox.Show(this, Strings.Get("Improper Activation PIN"), Strings.Get("Sorry"), MessageBoxButtons.OK);
                     return;
                 }
-                SaveContactValues();
+                SaveTextboxValues();
                 Configuration.Instance.Save();
                 ActivateManually();
             }
             else
             {
-                SaveContactValues();
+                SaveTextboxValues();
                 Configuration.Instance.Save();
-                ActivateOnline();
+                if (textBoxPurchase.Text.Trim().Length > 6)
+                {
+                    ActivateOnline();
+                }
+                else
+                {
+                    PurchaseAndActivateOnline();
+                }
             }
+            SaveTextboxValues();
             Configuration.Instance.Save();
-            if (textBoxPin.Text.Trim().Length > 3 && Activation.Instance.IsLicensed)
+            criticalValueChanged = false;
+            bool isLicensed = Activation.Instance.IsLicensed;
+            if (textBoxPin.Text.Trim().Length > 3 && isLicensed)
             {
-                labelNotice.Visible = true;
+                labelSaveTheseNotice.Visible = true;
+                labelAlreadyPurchased.Visible = false;
             }
+            MessageBox.Show("------------ " + Strings.Get(isLicensed ? "(Licensed)" : "(Unlicensed)") + " ------------", 
+                Strings.Get("Notice"), MessageBoxButtons.OK);
         }
 
-        private void buttonCancel_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Calose buttone event handler.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonClose_Click(object sender, EventArgs e)
         {
             OnlineActivation.Instance.AdjustTimeout(false);
             Close();
@@ -121,13 +163,21 @@ namespace AbleCheckbook.Gui
             SetToInitialValues();
         }
 
-        //////////////////////////////// Support /////////////////////////////
-
-        private void ActivateOnline()
+        private void linkLabelEula_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            // TODO
+            new EulaForm().ShowDialog();
         }
 
+        private void criticalEntry_TextChanged(object sender, EventArgs e)
+        {
+            criticalValueChanged = true;
+        }
+
+        //////////////////////////////// Support /////////////////////////////
+
+        /// <summary>
+        /// If a PIN is specified, call this to activate without a call to the server.
+        /// </summary>
         private void ActivateManually()
         {
             string originalLicensedTo = Configuration.Instance.LicenseCode;
@@ -148,9 +198,94 @@ namespace AbleCheckbook.Gui
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        private void ActivateOnline()
+        {
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void PurchaseAndActivateOnline()
+        {
+
+        }
+
+        /// <summary>
+        /// Report a problem to customer support.
+        /// </summary>
+        /// <param name="message">Error message, containing HTTP response code if not 200</param>
+        /// <param name="userInfoResponse">optional WS response, possibly null</param>
+        /// <returns>Error message concatenated with intended next step.</returns>
+        private string SendMessageToSupport(string message, UserInfoResponse userInfoResponse)
+        {
+            string action = "Activating Online";
+            if(textBoxPin.Text.Trim().Length > 3)
+            {
+                action = "Activating Manually";
+                if(textBoxPurchase.Text.Trim().Length > 10)
+                {
+                    action = "Activating an Existing Prior Purchase";
+                }
+            }
+            string apiState = "(null response)";
+            string serverMsg = "(none)"; 
+            if(userInfoResponse != null)
+            {
+                apiState = "" + userInfoResponse.ApiState;
+                serverMsg = userInfoResponse.Message;
+            }
+            DateTime now = DateTime.Now;
+            string body = "Problem " + action + " - " + now.ToShortDateString() + " " + now.ToShortTimeString() + "...\r\n" +
+                " Error:    " + message + "\r\n" +
+                " Response: " + serverMsg + "\r\n" +
+                " ApiState: " + apiState + "\r\n" +
+                " SiteId:   " + textBoxSiteId.Text + "\r\n" +
+                " Host:     " + textBoxIpAddress.Text + "\r\n" +
+                " UserId:   " + textBoxUserId.Text + "\r\n" +
+                " EMail:    " + textBoxEmailAddress.Text + "\r\n" +
+                " Address:  " + textBoxStreetAddress.Text + "\r\n" +
+                " CitySt:   " + textBoxCityState.Text + "\r\n" +
+                " Postal:   " + textBoxPostalCode.Text + "\r\n" +
+                " Phone:    " + textBoxPhoneNumber.Text + "\r\n" +
+                " PurchDes: " + textBoxPurchase.Text + "\r\n" +
+                " License:  " + textBoxLicenseCode.Text + "\r\n" +
+                " PIN:      " + textBoxPin.Text + "\r\n";
+            string jpgPath = null;
+            try
+            {
+                jpgPath = UiHelperMethods.FormCapture(this);
+            }
+            catch (Exception)
+            {
+                jpgPath = null;
+            }
+            if (jpgPath != null)
+            {
+                body += " Attached: Activation Form Capture\r\n";
+            }
+            if(Emailer.SendEmail("ATTENTION - CUSTOMER SUPPORT ISSUE !!!", body, jpgPath))
+            {
+                message += " NOTE: Problem report was sent to customer support. Please check your email in the next business day or two for a response.";
+            }
+            else
+            {
+                message += " NOTE: Cannot contact server at this time. Please contact support by email or phone with the info on the activation screen.";
+            }
+            return message;
+        }
+
+        /// <summary>
+        /// Set the textboxes to their initial values.
+        /// </summary>
         private void SetToInitialValues()
         {
-            LoadContactValues();
+            labelSaveTheseNotice.Visible = false;
+            labelAlreadyPurchased.Visible = true;
+            LoadTextboxValues();
             string licCode = Activation.Instance.LicenseCode.Trim();
             if (string.IsNullOrEmpty(licCode) || licCode.Length != 12)
             {
@@ -160,39 +295,41 @@ namespace AbleCheckbook.Gui
                     Regex.Replace(location.Trim().ToUpper(), "[^A-Z0-9-]", "9").Substring(0, 5);
             }
             textBoxLicenseCode.Text = licCode;
-            PollAndSetContactValues();
+            PollAndSetTextboxValues();
             textBoxSiteId.Text = Activation.Instance.SiteIdentification;
-            textBoxUserId.Text = System.Environment.UserName;
+            if (textBoxUserId.Text.Trim().Length < 6)
+            {
+                textBoxUserId.Text = textBoxUserId.Text + "X" + System.Environment.UserName.Trim();
+            }
             textBoxIpAddress.Text = System.Environment.UserDomainName;
         }
 
-        private void PollAndSetContactValues()
+        /// <summary>
+        /// Try to call the server, then set the textbox values accordingly.
+        /// </summary>
+        private void PollAndSetTextboxValues()
         {
-            UserInfoResponse userInfoResponse = 
-                OnlineActivation.Instance.Poll(textBoxLicenseCode.Text.Trim(), textBoxSiteId.Text.Trim(), Logic.Version.AppMajor, Logic.Version.AppMinor);
-            if(userInfoResponse == null)
+            UserInfoResponse userInfoResponse = new Poller().Poll(textBoxLicenseCode.Text.Trim(), textBoxSiteId.Text.Trim());
+            if (userInfoResponse != null && userInfoResponse.UserInfos != null && userInfoResponse.UserInfos.Count > 0)
             {
-                return;
+                textBoxLicenseCode.Text = userInfoResponse.UserInfos[0].LicenseRecord.LicenseCode;
+                LoadTexboxValuesFrom(userInfoResponse.UserInfos.First(), textBoxSiteId.Text);
             }
-            if(userInfoResponse.ApiState == (int)ApiState.ReturnTimeout)
-            {
-                OnlineActivation.Instance.AdjustTimeout(true);
-            }
-            if(userInfoResponse.UserInfos != null && userInfoResponse.UserInfos.Count > 0)
-            {
-                LoadContactValuesFrom(userInfoResponse.UserInfos.First(), textBoxSiteId.Text);
-            }
-
         }
 
-        private void LoadContactValuesFrom(UserInfo userInfo, string siteId)
+        /// <summary>
+        /// Load the textbox values from the server response.
+        /// </summary>
+        /// <param name="userInfo">server response</param>
+        /// <param name="siteId">this host's calculated site ID</param>
+        private void LoadTexboxValuesFrom(UserInfo userInfo, string siteId)
         {
             DeviceRecord deviceRecord = null;
             if (!string.IsNullOrEmpty(siteId) && userInfo.DeviceRecords != null)
             {
                 foreach (DeviceRecord testDeviceRecord in userInfo.DeviceRecords)
                 {
-                    if (testDeviceRecord.DeviceSite.Trim() == siteId.Trim())
+                    if (testDeviceRecord.DeviceSiteId.Trim() == siteId.Trim())
                     {
                         deviceRecord = testDeviceRecord;
                     }
@@ -200,7 +337,7 @@ namespace AbleCheckbook.Gui
             }
             if(deviceRecord != null)
             {
-                textBoxSiteId.Text = deviceRecord.DeviceSite;
+                textBoxSiteId.Text = deviceRecord.DeviceSiteId;
                 textBoxPin.Text = deviceRecord.CodesAndPin;
             }
             textBoxUserId.Text = userInfo.LicenseRecord.ContactName;
@@ -212,11 +349,16 @@ namespace AbleCheckbook.Gui
             textBoxLicenseCode.Text = userInfo.LicenseRecord.LicenseCode;
             if (userInfo.PurchaseRecords != null && userInfo.PurchaseRecords.Count > 0)
             {
-                textBoxPurchase.Text = "P" + userInfo.PurchaseRecords[0].PurchaseTransaction + "|" + userInfo.PurchaseRecords[0].PurchaseVerification;
+                textBoxPurchase.Text = userInfo.PurchaseRecords[0].PurchaseDesignator;
             }
+            criticalValueChanged = false;
         }
 
-        private void SaveContactValuesTo(UserInfo userInfo)
+        /// <summary>
+        /// Save the textbox values to a UserInfo object.
+        /// </summary>
+        /// <param name="userInfo">Must exist - will be populated</param>
+        private void SaveTexboxValuesTo(UserInfo userInfo)
         {
             DeviceRecord deviceRecord = null;
             if (userInfo.DeviceRecords == null)
@@ -225,7 +367,7 @@ namespace AbleCheckbook.Gui
             }
             foreach (DeviceRecord testDeviceRecord in userInfo.DeviceRecords)
             {
-                if (testDeviceRecord.DeviceSite.Trim() == textBoxSiteId.Text.Trim())
+                if (testDeviceRecord.DeviceSiteId.Trim() == textBoxSiteId.Text.Trim())
                 {
                     deviceRecord = testDeviceRecord;
                 }
@@ -234,7 +376,7 @@ namespace AbleCheckbook.Gui
             {
                 deviceRecord = new DeviceRecord();
                 deviceRecord.CodesAndPin = textBoxPin.Text.Trim();
-                deviceRecord.DeviceSite = textBoxSiteId.Text.Trim();
+                deviceRecord.DeviceSiteId = textBoxSiteId.Text.Trim();
                 deviceRecord.UserLevelPunct = 0;
                 userInfo.DeviceRecords.Add(deviceRecord);
             }
@@ -249,53 +391,53 @@ namespace AbleCheckbook.Gui
             userInfo.LicenseRecord.ContactZip = textBoxPostalCode.Text.Trim();
             userInfo.LicenseRecord.ContactPhone = textBoxPhoneNumber.Text.Trim();
             userInfo.LicenseRecord.LicenseCode = textBoxLicenseCode.Text.Trim();
-            if(textBoxPurchase.Text.Trim().Length > 10 && textBoxPurchase.Text.Contains("|") && textBoxPurchase.Text.StartsWith("P"))
+            if(textBoxPurchase.Text.Trim().Length > 10)
             {
-                string[] purchaseFields = textBoxPurchase.Text.Trim().Substring(1).Split('|');
-                userInfo.PurchaseRecords[0].PurchaseTransaction = purchaseFields[0];
-                userInfo.PurchaseRecords[0].PurchaseVerification = purchaseFields[1];
+                userInfo.PurchaseRecords[0].PurchaseDesignator = textBoxPurchase.Text.Trim();
             }
         }
 
-        private void LoadContactValues()
+        /// <summary>
+        /// Set the textbox values to what they were the last time the user set them on this machine. 
+        /// </summary>
+        private void LoadTextboxValues()
         {
-            string[] contactValues = Configuration.Instance.ContactValues;
-            if (contactValues != null && contactValues.Length >= 11)
+            string[] textboxValues = Configuration.Instance.LicenseTextboxValues;
+            if (textboxValues != null && textboxValues.Length >= 11)
             {
-                textBoxSiteId.Text = contactValues[0];
-                textBoxIpAddress.Text = contactValues[1];
-                textBoxUserId.Text = contactValues[2];
-                textBoxEmailAddress.Text = contactValues[3];
-                textBoxStreetAddress.Text = contactValues[4];
-                textBoxCityState.Text = contactValues[5];
-                textBoxPostalCode.Text = contactValues[6];
-                textBoxPhoneNumber.Text = contactValues[7];
-                textBoxPurchase.Text = contactValues[8];
-                textBoxLicenseCode.Text = contactValues[9];
-                textBoxPin.Text = contactValues[10];
+                textBoxSiteId.Text = textboxValues[0];
+                textBoxIpAddress.Text = textboxValues[1];
+                textBoxUserId.Text = textboxValues[2];
+                textBoxEmailAddress.Text = textboxValues[3];
+                textBoxStreetAddress.Text = textboxValues[4];
+                textBoxCityState.Text = textboxValues[5];
+                textBoxPostalCode.Text = textboxValues[6];
+                textBoxPhoneNumber.Text = textboxValues[7];
+                textBoxPurchase.Text = textboxValues[8];
+                textBoxLicenseCode.Text = textboxValues[9];
+                textBoxPin.Text = textboxValues[10];
             }
+            criticalValueChanged = false;
         }
 
-        private void SaveContactValues()
+        /// <summary>
+        /// Save the textbox values to the configuration file so they can be reloaded at a later date.
+        /// </summary>
+        private void SaveTextboxValues()
         {
-            string[] contactValues = new string[11];
-            contactValues[0] = textBoxSiteId.Text.Trim();
-            contactValues[1] = textBoxIpAddress.Text.Trim();
-            contactValues[2] = textBoxUserId.Text.Trim();
-            contactValues[3] = textBoxEmailAddress.Text.Trim();
-            contactValues[4] = textBoxStreetAddress.Text.Trim();
-            contactValues[5] = textBoxCityState.Text.Trim();
-            contactValues[6] = textBoxPostalCode.Text.Trim();
-            contactValues[7] = textBoxPhoneNumber.Text.Trim();
-            contactValues[8] = textBoxPurchase.Text.Trim();
-            contactValues[9] = textBoxLicenseCode.Text.Trim();
-            contactValues[10] = textBoxPin.Text.Trim();
-            Configuration.Instance.ContactValues = contactValues;
-        }
-
-        private void linkLabelEula_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            new EulaForm().ShowDialog();
+            string[] textboxValues = new string[11];
+            textboxValues[0] = textBoxSiteId.Text.Trim();
+            textboxValues[1] = textBoxIpAddress.Text.Trim();
+            textboxValues[2] = textBoxUserId.Text.Trim();
+            textboxValues[3] = textBoxEmailAddress.Text.Trim();
+            textboxValues[4] = textBoxStreetAddress.Text.Trim();
+            textboxValues[5] = textBoxCityState.Text.Trim();
+            textboxValues[6] = textBoxPostalCode.Text.Trim();
+            textboxValues[7] = textBoxPhoneNumber.Text.Trim();
+            textboxValues[8] = textBoxPurchase.Text.Trim();
+            textboxValues[9] = textBoxLicenseCode.Text.Trim();
+            textboxValues[10] = textBoxPin.Text.Trim();
+            Configuration.Instance.LicenseTextboxValues = textboxValues;
         }
     }
 

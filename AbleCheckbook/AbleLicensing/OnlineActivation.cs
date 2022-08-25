@@ -8,42 +8,6 @@ using System.Text.Json;
 
 namespace AbleLicensing
 {
-    /// <summary>
-    /// Web service API states (both requests and responses, not really a state any more)
-    /// </summary>
-    public enum ApiState
-    {
-        Unknown = 0,
-        // Request that passes minimal info and does not update DB
-        LookupLicense = 2,           // Find my info by license code
-        // Requests that expect info, as is known, to be populated
-        RegisterLicense = 5,         // May alter/update licenseCode in returned UserInfo
-        UpdateInfo = 6,              // Change addr, phone, email, etc
-        ChangeFeature = 7,           // Change the feature mask
-        ChangeLevel = 8,             // Change permission level (and licenseCode punctuation))
-        AddlDevice = 9,              // Activate add'l device on same license, no charge
-        // Requests that license host devices
-        MakePurchase = 11,           // Complete the purchase
-        // Successful Non-Purchase Responses
-        ReturnOk = 20,               // Completed non-purchase okay 
-        ReturnOkAddlDev = 21,        // Purchase ok, no charge, existing lic, return PinNumber
-        ReturnNotActivated = 22,     // Not activated, no paid license found, return Message
-        ReturnDeactivate = 23,       // Too many devices, deactivate, return Message
-        // Failed Non-Purchase Responses
-        ReturnBadArg = 31,           // Invalid city, phone, email, etc, return Message
-        ReturnNotFound = 32,         // License not found, return Message
-        ReturnNotMatched = 33,       // Name or other info incorrect, return Message
-        ReturnLCodeTaken = 34,       // License code already in use by a different user
-        ReturnError = 35,            // Internal error, typically all similar license codes in use
-        ReturnDenied = 36,           // Caller does not have permission, return Message
-        ReturnTimeout = 37,          // Set by Activation when the ws call times out
-        // Purchase Responses
-        PurchaseOk = 50,             // Purchase went thru, return PinNumber, new LicCode
-        PurchaseOkUpgrade = 51,      // Purchase ok, upgrade existing, return PinNumber, new LicCode
-        PurchaseFailed = 52,         // Purchase failed, return Message, LicCode
-        PurchaseIncomplete = 53,     // Purchase went thru but something else failed, return Message
-    }
-
     public class OnlineActivation
     {
         /// <summary>
@@ -141,7 +105,6 @@ namespace AbleLicensing
         /// <returns>user info response, populated with user info if licensed</returns>
         public UserInfoResponse Poll(string licenseCode, string siteId, int majorVersion, int minorVersion)
         {
-            Activation.Instance.LoggerHook("-----------------");
             UserInfoResponse userInfoResponse = null;
             try
             {
@@ -151,66 +114,134 @@ namespace AbleLicensing
                 request.Timeout = PollTimeout + addlTimeout;
                 request.Method = "GET";
                 request.Accept = "application/json";
-                //request.ContentType = ""
-                //request.ContentLength = DATA.Length;
-                Activation.Instance.LoggerHook("XXX 1 " + url);
+                Activation.Instance.LoggerHook("Poll " + licenseCode + " " + siteId);
                 using (var response = (HttpWebResponse)request.GetResponse())
                 {
-                    Activation.Instance.LoggerHook("XXX 2 ");
                     using (var reader = new StreamReader(response.GetResponseStream()))
                     {
                         string json = reader.ReadToEnd();
-                        Activation.Instance.LoggerHook("XXX 3 " + json);
                         userInfoResponse = (UserInfoResponse)JsonSerializer.Deserialize(json, typeof(UserInfoResponse));
-                        Activation.Instance.LoggerHook("XXX 4 " + userInfoResponse.ToString());
                     }
                 }
             }
             catch (Exception e)
             {
-                Activation.Instance.LoggerHook(e.Message);
+                Activation.Instance.LoggerHook("Exception" + e.Message);
             }
             Activation.Instance.LicenseCode = licenseCode;
             if (userInfoResponse != null)
             {
-                // TODO
-                // update or delete device per siteId
-                // update or delete license per punct
+                Activation.Instance.LoggerHook(userInfoResponse.ToString());
                 return userInfoResponse;
-                
             }
+            Activation.Instance.LoggerHook("Response is null");
             userInfoResponse = new UserInfoResponse();
-            userInfoResponse.ApiState = (int)ApiState.ReturnNotFound;
+            userInfoResponse.ApiState = (int)ApiState.ReturnTimeout;
             userInfoResponse.PinNumber = "";
             userInfoResponse.Message = "Not Found";
             userInfoResponse.UserInfos = new List<UserInfo>();
             return userInfoResponse;
         }
 
-        public void Poll()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="apiState">ApiState.LookupLicense, RegisterLicense, or MakePurchase</param>
+        /// <param name="name">Contact name</param>
+        /// <param name="addr">Contact address</param>
+        /// <param name="city">Contact city and state</param>
+        /// <param name="zip">Contact postal code</param>
+        /// <param name="phone">Contact phone number</param>
+        /// <param name="email">Contact Email</param>
+        /// <param name="feature">License feature mask requested</param>
+        /// <param name="lCode">License code including punct for user level</param>
+        /// <param name="siteId">Host device code (license may be used for more than one device)</param>
+        /// <param name="purchDes">Trans/Verification codes from purcahse provider</param>
+        /// <returns>
+        /// User license information. Note that there may be multiple devices under a licence, so you will
+        /// need to search the DeviceRecords for the one with the corresponding siteId. Only certain args need
+        /// to be populated and only certain return fields will be correct, depending on the passed apiState.
+        /// </returns>
+        public UserInfoResponse DbCall(int apiState, string name, string addr, string city, 
+            string zip, string phone, string email, string feature, string lCode, string siteId, string purchDes)
         {
-
-        }
-
-        public bool IsAlreadyLicensed()
-        {
-
-            return true;
-        }
-
-        public bool Register()
-        {
-
-            return true;
-        }
-
-        public string Purchase()
-        {
-
-            return null;
+            UserInfoResponse userInfoResponse = null;
+            try
+            {
+                UriBuilder builder = new UriBuilder(Activation.Instance.WsUrlOverride + "/db/" + apiState);
+                AppendQueryArg(builder, "name", name);
+                AppendQueryArg(builder, "addr", addr);
+                AppendQueryArg(builder, "city", city);
+                AppendQueryArg(builder, "zip", zip);
+                AppendQueryArg(builder, "phone", phone);
+                AppendQueryArg(builder, "email", email);
+                AppendQueryArg(builder, "feature", feature);
+                AppendQueryArg(builder, "lCode", lCode);
+                AppendQueryArg(builder, "siteId", siteId);
+                AppendQueryArg(builder, "purchDes", purchDes);
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(builder.Uri);
+                request.Timeout = PollTimeout + addlTimeout;
+                request.Method = "POST";
+                request.Accept = "application/json";
+                //request.ContentType = ""
+                //request.ContentLength = DATA.Length;
+                Activation.Instance.LoggerHook("DB lookup " + lCode + " " + siteId);
+                using (var response = (HttpWebResponse)request.GetResponse())
+                {
+                    using (var reader = new StreamReader(response.GetResponseStream()))
+                    {
+                        string json = reader.ReadToEnd();
+                        userInfoResponse = (UserInfoResponse)JsonSerializer.Deserialize(json, typeof(UserInfoResponse));
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Activation.Instance.LoggerHook("Exception" + e.Message);
+            }
+            Activation.Instance.LicenseCode = lCode;
+            if (userInfoResponse != null)
+            {
+                Activation.Instance.LoggerHook(userInfoResponse.ToString());
+                return userInfoResponse;
+            }
+            Activation.Instance.LoggerHook("Response is null");
+            userInfoResponse = new UserInfoResponse();
+            userInfoResponse.ApiState = (int)ApiState.ReturnTimeout;
+            userInfoResponse.PinNumber = "";
+            userInfoResponse.Message = "Not Found";
+            userInfoResponse.UserInfos = new List<UserInfo>();
+            return userInfoResponse;
         }
 
         //////////////////////////////// Support /////////////////////////////
+
+        /// <summary>
+        /// Append a query to a URL
+        /// </summary>
+        /// <param name="builder">URL to be updated</param>
+        /// <param name="argName">name of query arg</param>
+        /// <param name="argValue">value of query arg</param>
+        private void AppendQueryArg(UriBuilder builder, string argName, string argValue)
+        {
+            string queryToAppend = argName + "=" + Uri.EscapeDataString(argValue);
+            // UriBuilder.Query get/set are not strict complimentary - set prepends a question mark
+            if (builder.Query != null && builder.Query.Length > 1)
+            {
+                builder.Query = builder.Query.Substring(1) + "&" + queryToAppend;
+            }
+            else
+            {
+                builder.Query = queryToAppend;
+            }
+        }
+
+        private bool PurchaseViaPaypal(ref UserInfo userInfo, string descript, long amount)
+        {
+            IPurchaseProvider purchaseProvider = new PayPalPurchaseProvider();
+            purchaseProvider.CompletePurchase(ref userInfo, amount, descript);
+            return true;
+        }
         
    }
 }

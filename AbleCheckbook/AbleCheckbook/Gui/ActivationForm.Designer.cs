@@ -47,15 +47,16 @@
             this.linkLabelEula = new System.Windows.Forms.LinkLabel();
             this.textBoxLicenseCode = new System.Windows.Forms.TextBox();
             this.labelLicenseCode = new System.Windows.Forms.Label();
-            this.buttonCancel = new System.Windows.Forms.Button();
+            this.buttonClose = new System.Windows.Forms.Button();
             this.textBoxCityState = new System.Windows.Forms.TextBox();
             this.textBoxStreetAddress = new System.Windows.Forms.TextBox();
             this.labelCityState = new System.Windows.Forms.Label();
             this.labelStreetAddress = new System.Windows.Forms.Label();
             this.textBoxPurchase = new System.Windows.Forms.TextBox();
             this.labelPurchase = new System.Windows.Forms.Label();
-            this.labelNotice = new System.Windows.Forms.Label();
+            this.labelSaveTheseNotice = new System.Windows.Forms.Label();
             this.buttonReset = new System.Windows.Forms.Button();
+            this.labelAlreadyPurchased = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // textBoxSiteId
@@ -67,6 +68,7 @@
             this.textBoxSiteId.Size = new System.Drawing.Size(124, 24);
             this.textBoxSiteId.TabIndex = 12;
             this.textBoxSiteId.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textBoxSiteId.TextChanged += new System.EventHandler(this.criticalEntry_TextChanged);
             // 
             // textBoxUserId
             // 
@@ -106,18 +108,20 @@
             // 
             // textBoxPin
             // 
+            this.textBoxPin.BackColor = System.Drawing.SystemColors.Control;
             this.textBoxPin.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxPin.Location = new System.Drawing.Point(459, 280);
+            this.textBoxPin.Location = new System.Drawing.Point(459, 282);
             this.textBoxPin.Name = "textBoxPin";
             this.textBoxPin.Size = new System.Drawing.Size(150, 24);
             this.textBoxPin.TabIndex = 11;
             this.textBoxPin.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textBoxPin.TextChanged += new System.EventHandler(this.criticalEntry_TextChanged);
             // 
             // buttonActivate
             // 
-            this.buttonActivate.Location = new System.Drawing.Point(459, 178);
+            this.buttonActivate.Location = new System.Drawing.Point(197, 177);
             this.buttonActivate.Name = "buttonActivate";
-            this.buttonActivate.Size = new System.Drawing.Size(150, 32);
+            this.buttonActivate.Size = new System.Drawing.Size(234, 32);
             this.buttonActivate.TabIndex = 7;
             this.buttonActivate.Text = "Activate";
             this.buttonActivate.UseVisualStyleBackColor = true;
@@ -126,7 +130,7 @@
             // labelPin
             // 
             this.labelPin.AutoSize = true;
-            this.labelPin.Location = new System.Drawing.Point(308, 283);
+            this.labelPin.Location = new System.Drawing.Point(308, 285);
             this.labelPin.Name = "labelPin";
             this.labelPin.Size = new System.Drawing.Size(140, 17);
             this.labelPin.TabIndex = 7;
@@ -205,6 +209,7 @@
             this.textBoxIpAddress.Size = new System.Drawing.Size(150, 24);
             this.textBoxIpAddress.TabIndex = 13;
             this.textBoxIpAddress.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textBoxIpAddress.TextChanged += new System.EventHandler(this.criticalEntry_TextChanged);
             // 
             // linkLabelEula
             // 
@@ -221,31 +226,32 @@
             // 
             this.textBoxLicenseCode.BackColor = System.Drawing.SystemColors.Control;
             this.textBoxLicenseCode.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxLicenseCode.Location = new System.Drawing.Point(171, 280);
+            this.textBoxLicenseCode.Location = new System.Drawing.Point(171, 282);
             this.textBoxLicenseCode.Name = "textBoxLicenseCode";
             this.textBoxLicenseCode.Size = new System.Drawing.Size(124, 24);
             this.textBoxLicenseCode.TabIndex = 28;
             this.textBoxLicenseCode.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textBoxLicenseCode.TextChanged += new System.EventHandler(this.criticalEntry_TextChanged);
             // 
             // labelLicenseCode
             // 
             this.labelLicenseCode.AutoSize = true;
-            this.labelLicenseCode.Location = new System.Drawing.Point(8, 283);
+            this.labelLicenseCode.Location = new System.Drawing.Point(8, 285);
             this.labelLicenseCode.Name = "labelLicenseCode";
             this.labelLicenseCode.Size = new System.Drawing.Size(156, 17);
             this.labelLicenseCode.TabIndex = 18;
             this.labelLicenseCode.Text = "Assigned License Code";
             // 
-            // buttonCancel
+            // buttonClose
             // 
-            this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(304, 178);
-            this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(131, 32);
-            this.buttonCancel.TabIndex = 8;
-            this.buttonCancel.Text = "Close";
-            this.buttonCancel.UseVisualStyleBackColor = true;
-            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
+            this.buttonClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.buttonClose.Location = new System.Drawing.Point(478, 177);
+            this.buttonClose.Name = "buttonClose";
+            this.buttonClose.Size = new System.Drawing.Size(131, 32);
+            this.buttonClose.TabIndex = 8;
+            this.buttonClose.Text = "Close";
+            this.buttonClose.UseVisualStyleBackColor = true;
+            this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
             // 
             // textBoxCityState
             // 
@@ -285,58 +291,72 @@
             // 
             // textBoxPurchase
             // 
+            this.textBoxPurchase.BackColor = System.Drawing.SystemColors.Control;
             this.textBoxPurchase.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxPurchase.Location = new System.Drawing.Point(224, 246);
+            this.textBoxPurchase.Location = new System.Drawing.Point(224, 248);
             this.textBoxPurchase.Name = "textBoxPurchase";
             this.textBoxPurchase.Size = new System.Drawing.Size(385, 24);
             this.textBoxPurchase.TabIndex = 9;
             this.textBoxPurchase.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textBoxPurchase.TextChanged += new System.EventHandler(this.criticalEntry_TextChanged);
             // 
             // labelPurchase
             // 
             this.labelPurchase.AutoSize = true;
-            this.labelPurchase.Location = new System.Drawing.Point(7, 248);
+            this.labelPurchase.Location = new System.Drawing.Point(8, 250);
             this.labelPurchase.Name = "labelPurchase";
-            this.labelPurchase.Size = new System.Drawing.Size(210, 17);
+            this.labelPurchase.Size = new System.Drawing.Size(204, 17);
             this.labelPurchase.TabIndex = 25;
-            this.labelPurchase.Text = "Purchase designation (if known)";
+            this.labelPurchase.Text = "Purchase designator (if known)";
             // 
             // labelNotice
             // 
-            this.labelNotice.AutoSize = true;
-            this.labelNotice.ForeColor = System.Drawing.Color.Red;
-            this.labelNotice.Location = new System.Drawing.Point(6, 219);
-            this.labelNotice.Name = "labelNotice";
-            this.labelNotice.Size = new System.Drawing.Size(595, 17);
-            this.labelNotice.TabIndex = 26;
-            this.labelNotice.Text = "Record the following values in a safe place as your proof of purchase and activat" +
+            this.labelSaveTheseNotice.AutoSize = true;
+            this.labelSaveTheseNotice.ForeColor = System.Drawing.Color.Red;
+            this.labelSaveTheseNotice.Location = new System.Drawing.Point(8, 218);
+            this.labelSaveTheseNotice.Name = "labelNotice";
+            this.labelSaveTheseNotice.Size = new System.Drawing.Size(595, 17);
+            this.labelSaveTheseNotice.TabIndex = 26;
+            this.labelSaveTheseNotice.Text = "Record the following values in a safe place as your proof of purchase and activat" +
     "ion numbers";
-            this.labelNotice.Visible = false;
+            this.labelSaveTheseNotice.Visible = false;
             // 
             // buttonReset
             // 
-            this.buttonReset.Location = new System.Drawing.Point(14, 178);
+            this.buttonReset.Location = new System.Drawing.Point(10, 177);
             this.buttonReset.Name = "buttonReset";
-            this.buttonReset.Size = new System.Drawing.Size(143, 32);
+            this.buttonReset.Size = new System.Drawing.Size(130, 32);
             this.buttonReset.TabIndex = 27;
             this.buttonReset.Text = "Reset";
             this.buttonReset.UseVisualStyleBackColor = true;
             this.buttonReset.Click += new System.EventHandler(this.buttonReset_Click);
             // 
+            // labelAlreadyPurchased
+            // 
+            this.labelAlreadyPurchased.AutoSize = true;
+            this.labelAlreadyPurchased.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.labelAlreadyPurchased.Location = new System.Drawing.Point(8, 218);
+            this.labelAlreadyPurchased.Name = "labelAlreadyPurchased";
+            this.labelAlreadyPurchased.Size = new System.Drawing.Size(572, 17);
+            this.labelAlreadyPurchased.TabIndex = 29;
+            this.labelAlreadyPurchased.Text = "If you have already paid and are licensed, you may fill out your codes in the spa" +
+    "ces below";
+            this.labelAlreadyPurchased.Visible = false;
+            // 
             // ActivationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.buttonCancel;
+            this.CancelButton = this.buttonClose;
             this.ClientSize = new System.Drawing.Size(622, 317);
+            this.Controls.Add(this.labelSaveTheseNotice);
             this.Controls.Add(this.buttonReset);
-            this.Controls.Add(this.labelNotice);
             this.Controls.Add(this.textBoxPurchase);
             this.Controls.Add(this.labelPurchase);
             this.Controls.Add(this.textBoxCityState);
             this.Controls.Add(this.textBoxStreetAddress);
             this.Controls.Add(this.labelStreetAddress);
-            this.Controls.Add(this.buttonCancel);
+            this.Controls.Add(this.buttonClose);
             this.Controls.Add(this.textBoxPin);
             this.Controls.Add(this.textBoxLicenseCode);
             this.Controls.Add(this.linkLabelEula);
@@ -357,6 +377,7 @@
             this.Controls.Add(this.labelEmailAddress);
             this.Controls.Add(this.labelPhoneNumber);
             this.Controls.Add(this.labelPin);
+            this.Controls.Add(this.labelAlreadyPurchased);
             this.MaximumSize = new System.Drawing.Size(640, 364);
             this.MinimumSize = new System.Drawing.Size(640, 364);
             this.Name = "ActivationForm";
@@ -388,14 +409,15 @@
         private System.Windows.Forms.LinkLabel linkLabelEula;
         private System.Windows.Forms.TextBox textBoxLicenseCode;
         private System.Windows.Forms.Label labelLicenseCode;
-        private System.Windows.Forms.Button buttonCancel;
+        private System.Windows.Forms.Button buttonClose;
         private System.Windows.Forms.TextBox textBoxCityState;
         private System.Windows.Forms.TextBox textBoxStreetAddress;
         private System.Windows.Forms.Label labelCityState;
         private System.Windows.Forms.Label labelStreetAddress;
         private System.Windows.Forms.TextBox textBoxPurchase;
         private System.Windows.Forms.Label labelPurchase;
-        private System.Windows.Forms.Label labelNotice;
+        private System.Windows.Forms.Label labelSaveTheseNotice;
         private System.Windows.Forms.Button buttonReset;
+        private System.Windows.Forms.Label labelAlreadyPurchased;
     }
 }

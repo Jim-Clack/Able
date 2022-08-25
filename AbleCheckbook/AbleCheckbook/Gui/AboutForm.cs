@@ -43,7 +43,7 @@ namespace AbleCheckbook.Gui
 
         private void linkLabelEula_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            new EulaForm().ShowDialog();
+            new EulaForm("Close").ShowDialog();
         }
     }
 

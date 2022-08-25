@@ -10,11 +10,11 @@ namespace AbleStrategies.Testing
         public void TestUpdate()
         {
             DeviceRecord record = new DeviceRecord();
-            record.DeviceSite = "Test Record";
+            record.DeviceSiteId = "Test Record";
             Assert.AreEqual(EditFlag.New, record.EditFlag);
             DeviceRecord record2 = new DeviceRecord();
             record2.PopulateFrom(record);
-            Assert.AreEqual(record2.DeviceSite, "Test Record");
+            Assert.AreEqual(record2.DeviceSiteId, "Test Record");
             Assert.AreEqual(EditFlag.New, record2.EditFlag);
             Assert.AreEqual(EditFlag.Zombie, record.EditFlag);
         }

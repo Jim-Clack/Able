@@ -36,15 +36,14 @@ namespace AbleStrategies.Testing
             PurchaseRecord purchase = new PurchaseRecord();
             purchase.Details = "nothing";
             purchase.PurchaseAuthority = PurchaseAuthority.PayPalStd;
-            purchase.PurchaseTransaction = "abc123def456";
-            purchase.PurchaseVerification = "5555555";
+            purchase.PurchaseDesignator = "abc123def456|5555555";
             userInfo.PurchaseRecords.Add(purchase);
             DeviceRecord device0 = new DeviceRecord();
-            device0.DeviceSite = "12345-67890";
+            device0.DeviceSiteId = "12345-67890";
             device0.UserLevelPunct = (int)UserLevelPunct.Standard;
             device0.CodesAndPin = "1234-56-7890";
             DeviceRecord device1 = new DeviceRecord();
-            device1.DeviceSite = "12345-00000";
+            device1.DeviceSiteId = "12345-00000";
             device1.UserLevelPunct = (int)UserLevelPunct.Standard;
             device1.CodesAndPin = "9999-56-7890";
             userInfo.DeviceRecords.Add(device0);
@@ -52,7 +51,7 @@ namespace AbleStrategies.Testing
             InteractivityRecord interactivity0 = new InteractivityRecord();
             interactivity0.ClientInfo = "123.45.67.002 joshf";
             interactivity0.Conversation = "Initial Activation";
-            interactivity0.InteractivityClient = InteractivityClient.ActivationWs;
+            interactivity0.InteractivityKind = InteractivityKind.ActivationWs;
             userInfo.InteractivityRecords.Add(interactivity0);
             // Pause, then add another Interactivity
             System.Threading.Thread.Sleep(50);
@@ -63,7 +62,7 @@ namespace AbleStrategies.Testing
             interactivity1.Conversation = "Spoke w Josh re assistance";
             interactivity1.ClientInfo = "123.45.67.007 Josh F";
             interactivity1.Conversation = "Call back to confirm ok";
-            interactivity1.InteractivityClient = InteractivityClient.PhoneCall;
+            interactivity1.InteractivityKind = InteractivityKind.PhoneCall;
             userInfo.InteractivityRecords.Add(interactivity1);
             UserInfoDbo.Instance.Update(userInfo);
             id1 = userInfo.LicenseRecord.Id;
@@ -81,14 +80,14 @@ namespace AbleStrategies.Testing
             userInfo.LicenseRecord.ContactPhone = "333-444-5555";
             userInfo.LicenseRecord.LicenseFeatures = "";
             DeviceRecord device2 = new DeviceRecord();
-            device2.DeviceSite = "00000-00000";
+            device2.DeviceSiteId = "00000-00000";
             device2.UserLevelPunct = (int)UserLevelPunct.Unlicensed;
             device2.CodesAndPin = "5555-5555-555";
             userInfo.DeviceRecords.Add(device2);
             InteractivityRecord interactivity2 = new InteractivityRecord();
             interactivity2.ClientInfo = "123.45.67.111";
             interactivity2.Conversation = "Another Test";
-            interactivity2.InteractivityClient = InteractivityClient.Email;
+            interactivity2.InteractivityKind = InteractivityKind.Email;
             userInfo.InteractivityRecords.Add(interactivity2);
             UserInfoDbo.Instance.Update(userInfo);
             id2 = userInfo.LicenseRecord.Id;
@@ -107,13 +106,12 @@ namespace AbleStrategies.Testing
             Assert.AreEqual(licenses[0].LicenseRecord.ContactPhone, "123-456-7890");
             Assert.AreEqual(1, licenses[0].PurchaseRecords.Count);
             Assert.AreEqual(PurchaseAuthority.PayPalStd, licenses[0].PurchaseRecords[0].PurchaseAuthority);
-            Assert.AreEqual("abc123def456", licenses[0].PurchaseRecords[0].PurchaseTransaction);
-            Assert.AreEqual("5555555", licenses[0].PurchaseRecords[0].PurchaseVerification);
+            Assert.AreEqual("abc123def456|5555555", licenses[0].PurchaseRecords[0].PurchaseDesignator);
             Assert.AreEqual("nothing", licenses[0].PurchaseRecords[0].Details);
             Assert.AreEqual(2, licenses[0].DeviceRecords.Count);
             int index0 = 0;
             int index1 = 1;
-            if(licenses[0].DeviceRecords[0].DeviceSite.CompareTo("12345-00000") == 0)
+            if(licenses[0].DeviceRecords[0].DeviceSiteId.CompareTo("12345-00000") == 0)
             {
                 index0 = 1;
                 index1 = 0;
@@ -129,14 +127,14 @@ namespace AbleStrategies.Testing
                 index1 = 0;
             }
             Assert.AreEqual("123.45.67.002 joshf", licenses[0].InteractivityRecords[index0].ClientInfo);
-            Assert.AreEqual(InteractivityClient.PhoneCall, licenses[0].InteractivityRecords[index1].InteractivityClient);
+            Assert.AreEqual(InteractivityKind.PhoneCall, licenses[0].InteractivityRecords[index1].InteractivityKind);
 
             licenses = UserInfoDbo.Instance.GetById(id2);
             Assert.IsNotNull(licenses);
             Assert.AreEqual(1, licenses.Count);
             Assert.AreEqual(licenses[0].LicenseRecord.ContactName, "Hugh Jass");
             Assert.AreEqual(1, licenses[0].DeviceRecords.Count);
-            Assert.AreEqual("00000-00000", licenses[0].DeviceRecords[0].DeviceSite);
+            Assert.AreEqual("00000-00000", licenses[0].DeviceRecords[0].DeviceSiteId);
 
             licenses = UserInfoDbo.Instance.GetById(Guid.Empty);
             Assert.IsNotNull(licenses);

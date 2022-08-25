@@ -8,19 +8,6 @@ namespace AbleLicensing
 {
 
     /// <summary>
-    /// Delimiter in LicenseCode corresponds to user level in Configuration.
-    /// </summary>
-    public enum UserLevelPunct
-    {
-        Unlicensed = 0,
-        Unknown = '~',
-        Deactivated = (int)'–', // note: en-dash, not a hyphen
-        Standard = (int)'-',
-        ProCPA = (int)'&',
-        SuperUser = (int)'@',
-    }
-
-    /// <summary>
     /// Because this is deliberately obfuscated, you'll have to read the code to figure out some things.
     /// </summary>
     /// <remarks>

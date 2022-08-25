@@ -61,5 +61,15 @@ namespace AbleLicensing.WsApi
         /// </summary>
         public string LicenseFeatures;
 
+        /// <summary>
+        /// Return a man-readable representation.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return "LicRec{" + LicenseCode + "," + ContactName + ", " + ContactEMail + ", " + ContactPhone + "}";
+        }
+
     }
+
 }

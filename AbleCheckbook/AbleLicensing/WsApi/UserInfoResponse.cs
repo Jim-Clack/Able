@@ -26,5 +26,18 @@ namespace AbleLicensing.WsApi
         /// </summary>
         public List<UserInfo> UserInfos;
 
+        /// <summary>
+        /// Format man-readable string.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            string result = "UiResp{" + ApiState + ", " + PinNumber + ", " + Message + "}";
+            foreach(UserInfo userInfo in UserInfos)
+            {
+                result = result + "\n " + userInfo.ToString();
+            }
+            return result;
+        }
     }
 }

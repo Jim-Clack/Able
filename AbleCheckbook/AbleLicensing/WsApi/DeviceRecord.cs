@@ -33,7 +33,7 @@ namespace AbleLicensing.WsApi
         /// <summary>
         /// Site ID (device) abbreviation.
         /// </summary>
-        public string DeviceSite;
+        public string DeviceSiteId;
 
         /// <summary>
         /// Current status of device activation.
@@ -44,6 +44,15 @@ namespace AbleLicensing.WsApi
         /// Binary authentication/authorization info.
         /// </summary>
         public string CodesAndPin;
+
+        /// <summary>
+        /// Return a man-readable representation.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return "DevRec{" + UserLevelPunct + ", " + DeviceSiteId + "}";
+        }
 
     }
 }

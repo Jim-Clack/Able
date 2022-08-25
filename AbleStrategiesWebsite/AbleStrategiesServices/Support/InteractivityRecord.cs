@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AbleLicensing;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
@@ -18,7 +19,7 @@ namespace AbleStrategiesServices.Support
         /// <summary>
         /// Interactivity by phone, web service, or what?
         /// </summary>
-        private InteractivityClient interactivityClient = InteractivityClient.Unknown;
+        private InteractivityKind interactivityKind = InteractivityKind.Unknown;
 
         /// <summary>
         /// Client name, email, and/or IP address.
@@ -61,15 +62,15 @@ namespace AbleStrategiesServices.Support
         /// <summary>
         /// Interactivity by phone, web service, or what?
         /// </summary>
-        public InteractivityClient InteractivityClient
+        public InteractivityKind InteractivityKind
         {
             get
             {
-                return interactivityClient;
+                return interactivityKind;
             }
             set
             {
-                interactivityClient = value;
+                interactivityKind = value;
                 Mod();
             }
         }
@@ -119,7 +120,7 @@ namespace AbleStrategiesServices.Support
         {
             return "IntRec{" + SupportMethods.Shorten(Id.ToString()) +
                 "," + SupportMethods.Shorten(fkLicenseId.ToString()) +
-                "," + interactivityClient.ToString() +
+                "," + InteractivityKind.ToString() +
                 "," + clientInfo + 
                 "," + SupportMethods.Shorten(conversation, 20) + "}";
         }
@@ -150,7 +151,7 @@ namespace AbleStrategiesServices.Support
                 return;
             }
             this.FkLicenseId = ((InteractivityRecord)source).FkLicenseId;
-            this.InteractivityClient = ((InteractivityRecord)source).InteractivityClient;
+            this.InteractivityKind = ((InteractivityRecord)source).InteractivityKind;
             this.ClientInfo = ((InteractivityRecord)source).ClientInfo;
             this.Conversation = ((InteractivityRecord)source).Conversation;
         }

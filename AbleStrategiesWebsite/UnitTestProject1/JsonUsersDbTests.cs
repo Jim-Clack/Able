@@ -62,7 +62,7 @@ namespace AbleStrategies.Testing
 
             DeviceRecord record = new DeviceRecord();
             Guid id = record.Id;
-            record.DeviceSite = "Test Record";
+            record.DeviceSiteId = "Test Record";
             Guid fkId = Guid.NewGuid();
             record.FkLicenseId = fkId;
             Assert.AreEqual(EditFlag.New, record.EditFlag);
@@ -74,7 +74,7 @@ namespace AbleStrategies.Testing
             DeviceRecord record2 = records[0];
             Assert.AreEqual(id, record2.Id);
             Assert.AreEqual(EditFlag.Unchanged, record2.EditFlag);
-            record2.DeviceSite = "Altered Desc";
+            record2.DeviceSiteId = "Altered Desc";
             Assert.AreEqual(EditFlag.Modified, record2.EditFlag);
 
             DeviceRecord record3 = new DeviceRecord();
@@ -82,7 +82,7 @@ namespace AbleStrategies.Testing
             Assert.AreEqual(id, record3.Id);
             Assert.AreEqual(EditFlag.Zombie, record2.EditFlag);
             Assert.AreEqual(EditFlag.Modified, record3.EditFlag);
-            Assert.AreEqual("Altered Desc", record3.DeviceSite);
+            Assert.AreEqual("Altered Desc", record3.DeviceSiteId);
             bool ok = db.UpdateDb(record3);
             Assert.IsTrue(ok);
             ok = db.UpdateDb(record2);
@@ -92,7 +92,7 @@ namespace AbleStrategies.Testing
             Assert.AreEqual(1, records.Count);
             DeviceRecord record4 = records[0];
             Assert.AreEqual(id, record4.Id);
-            Assert.AreEqual("Altered Desc", record4.DeviceSite);
+            Assert.AreEqual("Altered Desc", record4.DeviceSiteId);
 
             db.SyncAndClose();
         }

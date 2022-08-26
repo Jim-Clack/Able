@@ -193,6 +193,8 @@ Notes to developers who are MS/VS virgins...
     POST as/checkbook/2?name=Fred&addr=123%20Main&city=NYC&zip=12345&phone=1234567890&email=a.b%40abc.com&feature=0&lCode=abcde.12345&siteId=aBcD123&designator=
   Register site: if successful, update LicenseCode from response
     POST as/checkbook/5?name=Fred&addr=123%20Main&city=NYC&zip=12345&phone=1234567890&email=a.b%40abc.com&feature=0&lCode=abcde.12345&siteId=aBcD123&designator=
+  Additional Device: if successful, update LicenseCode from response
+    POST as/checkbook/9?name=Fred&addr=123%20Main&city=NYC&zip=12345&phone=1234567890&email=a.b%40abc.com&feature=0&lCode=abcde.12345&siteId=aBcD123&designator=
   Call PayPal to make purchase
     Collect date from response in "designator" string "PtransactionNumber|dotDelimitedValidationData"
   Purchase: if successful, get PinNumber from response

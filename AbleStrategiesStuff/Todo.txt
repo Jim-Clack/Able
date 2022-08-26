@@ -1,10 +1,11 @@
 Alpha TODO... (C=client/default, S=server)
- - WS Server: Searches for license code should use wildcard for punct char
- - WS Server: Latent site ID for abused License Code should return Deactivated
- - WS Server: Poll may return ReturnOkReconfigure codes
- - Preserve Ids and FkLicenseIds appropriately to DB in web services
- - Always ensure there is no more than one purchase record
- - Deleting obsolete records from CheckbookController WS API
+ - WS Server: Searches for license code should use wildcard for punct char (S)
+ - WS Server: Latent site ID for abused License Code should return Deactivated (S)
+ - WS Server: Poll may return ReturnOkReconfigure codes (S)
+ - WS Server: Append activations to activated.log (S)
+ - Preserve Ids and FkLicenseIds appropriately to DB in web services (S)
+ - Always ensure there is no more than one purchase record (S)
+ - Deleting obsolete records from CheckbookController WS API (S)
  - Web Services for online purchase and self-service activation (S)
  - Paypal API (S)
  - Prompts for reconcile when it is not yet time (fixed?)
@@ -12,7 +13,7 @@ Alpha TODO... (C=client/default, S=server)
  - Deactivate after polling if appropriate
  - Flesh out online help (S)
  - Deploy website for testing (S)
- - EULA (C/S)
+ - Change Licensed/Unlicensed verbiage to Activated/Evaluation (C/S)
  - Implement Activate via Email/Phone as is appropriate (C/S)
  - Web Services for online reconciliation (Open Banking API) (S)
  - Move SU user data to website instead of file (superuser) (C/S)

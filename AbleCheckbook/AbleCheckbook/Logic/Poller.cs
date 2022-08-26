@@ -24,6 +24,7 @@ namespace AbleCheckbook.Logic
                 licenseCode = Activation.Instance.LicenseCode.Trim();
                 siteId = Activation.Instance.SiteIdentification.Trim();
             }
+            OnlineActivation.Instance.AdjustTimeout(false); // never wait too long for these incidental polls
             UserInfoResponse userInfoResponse =
                 AbleLicensing.OnlineActivation.Instance.Poll(licenseCode, siteId, Logic.Version.AppMajor, Logic.Version.AppMinor);
             if (userInfoResponse == null || userInfoResponse.UserInfos.Count < 1)

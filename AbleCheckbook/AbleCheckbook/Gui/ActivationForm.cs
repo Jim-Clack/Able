@@ -199,11 +199,19 @@ namespace AbleCheckbook.Gui
         }
 
         /// <summary>
-        /// 
+        /// If the purchaseDesignator is known, then this can be used to re-activate or to activate a new host.
         /// </summary>
         private void ActivateOnline()
         {
-
+            UserInfoResponse userInfoResponse = DbCall((int)ApiState.AddlDevice, true);
+            if (!IsValidResponse(userInfoResponse, new int[] { (int)ApiState.ReturnOk, (int)ApiState.ReturnOkAddlDev, (int)ApiState.ReturnOkReconfigure }))
+            {
+                // TODO popup a message box
+                return; // Do nothing, failed
+            }
+            textBoxLicenseCode.Text = userInfoResponse.UserInfos[0].LicenseRecord.LicenseCode;
+            textBoxPin.Text = userInfoResponse.UserInfos[0].DeviceRecords[0].CodesAndPin;
+            SaveTextboxValues();
         }
 
         /// <summary>
@@ -211,7 +219,153 @@ namespace AbleCheckbook.Gui
         /// </summary>
         private void PurchaseAndActivateOnline()
         {
+            // Register this license
+            UserInfoResponse userInfoResponse = DbCall((int)ApiState.RegisterLicense, true);
+            if (!IsValidResponse(userInfoResponse, new int[] { (int)ApiState.ReturnOk, (int)ApiState.ReturnOkAddlDev, (int)ApiState.ReturnOkReconfigure }))
+            {
+                // TODO popup a message box
+                return; // Do nothing, failed
+            }
+            textBoxLicenseCode.Text = userInfoResponse.UserInfos[0].LicenseRecord.LicenseCode;
+            SaveTextboxValues();
+            // Call PayPal
 
+            // TODO
+
+            // textBoxPurchase.Text = XXX
+            // Make purchase
+            userInfoResponse = DbCall((int)ApiState.MakePurchase, true);
+            if (!IsValidResponse(userInfoResponse, new int[] { (int)ApiState.PurchaseOk, (int)ApiState.PurchaseOkUpgrade }))
+            {
+                // TODO popup a message box
+                return; // Do nothing, failed
+            }
+            textBoxPin.Text = userInfoResponse.UserInfos[0].DeviceRecords[0].CodesAndPin;
+            SaveTextboxValues();
+        }
+
+        /// <summary>
+        /// Validate a response
+        /// </summary>
+        /// <param name="userInfoResponse">To be validated</param>
+        /// <param name="validApiStates">Expected ApiStates (should change this to a bitmask)</param>
+        /// <returns>true if there is a userinfo and a valid license and siteId, and the apiState is valid</returns>
+        private bool IsValidResponse(UserInfoResponse userInfoResponse, int[] validApiStates)
+        {
+            if (userInfoResponse == null || userInfoResponse.UserInfos.Count < 1 || userInfoResponse.UserInfos[0].LicenseRecord == null)
+            {
+                return false;
+            }
+            bool foundSiteId = false;
+            foreach(DeviceRecord deviceRecord in userInfoResponse.UserInfos[0].DeviceRecords)
+            {
+                if(deviceRecord.DeviceSiteId.CompareTo(Activation.Instance.SiteIdentification) == 0)
+                {
+                    textBoxSiteId.Text = deviceRecord.DeviceSiteId;
+                    foundSiteId = true;
+                    break;
+                }
+            }
+            if(!foundSiteId)
+            {
+                return false;
+            }
+            foreach(int apiState in validApiStates)
+            {
+                if(userInfoResponse.ApiState == apiState)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Make the call to the server DB.
+        /// </summary>
+        /// <param name="apiState">(int)ApiState.LookupLicense, RegisterLicense, AddlDevice, or MakePurchase</param>
+        /// <param name="prune">true to prune off irrelevant data: DeviceRecords for other hosts</param>
+        /// <returns>User info response, varies per passed apiState and response ApiState</returns>
+        private UserInfoResponse DbCall(int apiState, bool prune)
+        {
+            Logger.Info("Calling server DB API " + apiState + " with LC " + textBoxLicenseCode.Text);
+            UserInfoResponse userInfoResponse = OnlineActivation.Instance.DbCall(apiState,
+                textBoxUserId.Text, textBoxStreetAddress.Text, textBoxCityState.Text, textBoxPostalCode.Text, textBoxPhoneNumber.Text,
+                    textBoxEmailAddress.Text, 0, textBoxLicenseCode.Text, textBoxSiteId.Text, textBoxPurchase.Text);
+            if(userInfoResponse == null) 
+            {
+                Logger.Info("Server returned null ");
+                return null;
+            }
+            Logger.Info("Server returned " + userInfoResponse.ToString());
+            int responseState = userInfoResponse.ApiState;
+            string pinNumber = userInfoResponse.PinNumber;
+            string message = userInfoResponse.Message;
+            UserInfo userInfo = null;
+            if (userInfoResponse.UserInfos == null || userInfoResponse.UserInfos.Count == 0)
+            {
+                return userInfoResponse;
+            }
+            userInfo = userInfoResponse.UserInfos[0];
+            if (prune)
+            {
+                PruneDevices(userInfo);
+                if(userInfo.DeviceRecords.Count < 1 && apiState != (int)ApiState.LookupLicense)
+                {
+                    Logger.Warn("Server returned UserInfo without SideId DeviceRecord " + textBoxSiteId.Text);
+                }
+            }
+
+            // TODO? - do these belong in the calling methods
+
+            switch (responseState)
+            {
+                case (int)ApiState.ReturnOk:
+                case (int)ApiState.ReturnOkReconfigure:
+                case (int)ApiState.ReturnOkAddlDev:
+                    break;
+                case (int)ApiState.ReturnDeactivate:
+                    break;
+                case (int)ApiState.ReturnBadArg:
+                case (int)ApiState.ReturnDenied:
+                case (int)ApiState.ReturnError:
+                case (int)ApiState.ReturnLCodeTaken:
+                case (int)ApiState.ReturnNotActivated:
+                case (int)ApiState.ReturnNotFound:
+                case (int)ApiState.ReturnNotMatched:
+                case (int)ApiState.ReturnTimeout:
+                    break;
+                case (int)ApiState.PurchaseOk:
+                case (int)ApiState.PurchaseOkUpgrade:
+                    break;
+                case (int)ApiState.PurchaseFailed:
+                case (int)ApiState.PurchaseIncomplete:
+                    break;
+                default:
+                    Logger.Warn("Server return bad ApiState " + responseState);
+                    break;
+            }
+            return userInfoResponse;
+        }
+
+        /// <summary>
+        /// Prune DeviceRecords other than the one for this host (if any)
+        /// </summary>
+        /// <param name="userInfo">To be pruned</param>
+        private void PruneDevices(UserInfo userInfo)
+        {
+            List<DeviceRecord> pruneOff = new List<DeviceRecord>();
+            foreach (DeviceRecord deviceRecord in userInfo.DeviceRecords)
+            {
+                if (deviceRecord.DeviceSiteId.CompareTo(textBoxSiteId.Text.Trim()) != 0)
+                {
+                    pruneOff.Add(deviceRecord);
+                }
+            }
+            foreach (DeviceRecord deviceRecord in pruneOff)
+            {
+                userInfo.DeviceRecords.Remove(deviceRecord);
+            }
         }
 
         /// <summary>

@@ -158,7 +158,7 @@ namespace AbleLicensing
         /// <param name="siteId">Host device code (license may be used for more than one device)</param>
         /// <param name="purchDes">Trans/Verification codes from purcahse provider</param>
         /// <returns>
-        /// User license information. Note that there may be multiple devices under a licence, so you will
+        /// User license information. Note that there may be multiple devices under a license, so you will
         /// need to search the DeviceRecords for the one with the corresponding siteId. Only certain args need
         /// to be populated and only certain return fields will be correct, depending on the passed apiState.
         /// </returns>

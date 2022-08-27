@@ -240,7 +240,7 @@ namespace AbleLicensing
         {
             // TODO
       //      IPurchaseProvider purchaseProvider = new PayPalPurchaseProvider();
-            purchaseProvider.CompletePurchase(ref userInfo, amount, descript);
+      //      purchaseProvider.CompletePurchase(ref userInfo, amount, descript);
             return true;
         }
         

@@ -1,7 +1,10 @@
 ﻿using AbleLicensing.WsApi;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net;
 using System.Text;
+using System.Text.Json;
 
 namespace AbleLicensing
 {
@@ -22,6 +25,27 @@ namespace AbleLicensing
         /// Field delimiter in purchase desgnator string.
         /// </summary>
         private string Delimiter = "|";
+
+        /// <summary>
+        /// URL for paypal WS.
+        /// </summary>
+        private string payPalUrl = "";
+
+        /// <summary>
+        /// Configuration settings.
+        /// </summary>
+        private string payPalConfiguration = "";
+
+        /// <summary>
+        /// Ctor.
+        /// </summary>
+        /// <param name="url">URL for paypal WS</param>
+        /// <param name="configuration">Configuration settings</param>
+        public PayPalPurchaseProvider(string url, string configuration)
+        {
+            payPalUrl = url;
+            payPalConfiguration = configuration;
+        }
 
         /// <summary>
         /// Create a purchase designator string.
@@ -72,6 +96,42 @@ namespace AbleLicensing
 
             // TODO
             return true;
+        }
+
+        private string PerformTransaction(int timeout)
+        {
+            string accessToken = "???"; // TODO
+            string paymentResponse = null;
+            try
+            {
+                string url = payPalUrl + "???";
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.Timeout = timeout;
+                request.Method = "GET";
+                request.Accept = "application/json";
+                request.ContentType = "application/json";
+                request.Headers.Add("Authorization", "Bearer " + accessToken);
+                Activation.Instance.LoggerHook("???");
+                using (var response = (HttpWebResponse)request.GetResponse())
+                {
+                    using (var reader = new StreamReader(response.GetResponseStream()))
+                    {
+                        string json = reader.ReadToEnd();
+                        paymentResponse = (string)JsonSerializer.Deserialize(json, typeof(string));
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Activation.Instance.LoggerHook("Exception" + e.Message);
+            }
+            if (paymentResponse != null)
+            {
+                Activation.Instance.LoggerHook(paymentResponse.ToString());
+                return paymentResponse;
+            }
+            Activation.Instance.LoggerHook("Response is null");
+            return null;
         }
 
         /// <summary>

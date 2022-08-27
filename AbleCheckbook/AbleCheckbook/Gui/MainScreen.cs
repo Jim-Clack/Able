@@ -28,7 +28,7 @@ namespace AbleCheckbook
             BgWorkerThread.WorkerReportsProgress = false;
             BgWorkerThread.WorkerSupportsCancellation = true;
             BgWorkerThread.RunWorkerAsync();
-            new Poller().Poll(Activation.Instance.LicenseCode, Activation.Instance.SiteIdentification);
+            new Poller().Poll(true, Activation.Instance.LicenseCode, Activation.Instance.SiteIdentification);
             if(Configuration.Instance.FirstTime)
             {
                 EulaForm form = new EulaForm();

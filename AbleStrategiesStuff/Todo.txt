@@ -10,14 +10,13 @@ Alpha TODO... (C=client/default, S=server)
  - Paypal API (S)
  - Prompts for reconcile when it is not yet time (fixed?)
  - Year-end is not saving categories (fixed?)
- - Deactivate after polling if appropriate
  - Flesh out online help (S)
  - Deploy website for testing (S)
  - Change Licensed/Unlicensed verbiage to Activated/Evaluation (C/S)
  - Implement Activate via Email/Phone as is appropriate (C/S)
  - Web Services for online reconciliation (Open Banking API) (S)
  - Move SU user data to website instead of file (superuser) (C/S)
- - Refactor Due-Notice, _alertType, add check-number-gap notification
+ - Refactor Due-Notice, _alertType, add check-number-gap and AlertNotification
  - Preserve Undo/Redo histories in acb file (max 100 levels?)
  - Implement SU ReadLog (C/S)
  - Fix desktop Icon (C)

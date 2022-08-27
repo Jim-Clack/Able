@@ -37,6 +37,13 @@ namespace AbleCheckbook.Logic
         private string _wsUrlOverride = "";
         private string _helpPageUrl = "https://ablestrategies.com/ablecheckbook/help";
         private string _helpSearchUrl = "https://www.google.com/search?q=site%3Aablestrategies.com+checkbook+help+";
+#if DEBUG
+        private string _payPalUrl = "https://api-m.sandbox.paypal.com";
+#else
+        private string _payPalUrl = "https://api-m.paypal.com";
+#endif
+        private string _alertNotification = "";
+        private string _payPalConfiguration = "default|default";
         private string _directoryLogs = "";
         private string _directoryDatabase = "";
         private string _directorySupportFiles = "";
@@ -287,6 +294,21 @@ namespace AbleCheckbook.Logic
         }
 
         /// <summary>
+        /// Alert notification, set to "" after notifying user.
+        /// </summary>
+        public string AlertNotification
+        {
+            get
+            {
+                return _alertNotification;
+            }
+            set
+            {
+                _alertNotification = value;
+            }
+        }
+
+        /// <summary>
         /// URL override for seearching help pages
         /// </summary>
         public string HelpSearchUrl
@@ -298,6 +320,40 @@ namespace AbleCheckbook.Logic
             set
             {
                 _helpSearchUrl = value;
+            }
+        }
+
+        /// <summary>
+        /// URL for calling PayPal
+        /// </summary>
+        public string PayPalUrl
+        {
+            get
+            {
+                return _payPalUrl;
+            }
+            set
+            {
+#if DEBUG
+                // safety net: never alter the PayPal URL when debugging
+#else
+                _payPalUrl = value;
+#endif
+            }
+        }
+
+        /// <summary>
+        /// Configuration for calling PayPal
+        /// </summary>
+        public string PayPalConfiguration
+        {
+            get
+            {
+                return _payPalConfiguration;
+            }
+            set
+            {
+                _payPalConfiguration = value;
             }
         }
 

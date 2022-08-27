@@ -238,7 +238,8 @@ namespace AbleLicensing
 
         private bool PurchaseViaPaypal(ref UserInfo userInfo, string descript, long amount)
         {
-            IPurchaseProvider purchaseProvider = new PayPalPurchaseProvider();
+            // TODO
+      //      IPurchaseProvider purchaseProvider = new PayPalPurchaseProvider();
             purchaseProvider.CompletePurchase(ref userInfo, amount, descript);
             return true;
         }

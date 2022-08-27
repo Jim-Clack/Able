@@ -432,6 +432,7 @@ namespace AbleCheckbook.Logic
             AddString("You changed a greyed-out critical entry, if you did not wish to do this, click Cancel");
             AddString("I have read and accept the terms of the EULA");
             AddString("EULA - End User License Agreement");
+            AddString("You are about to be redirected to PayPal");
             AddString("Assigned License Code");
             AddString("Coded Activation PIN");
             AddString("Invalid License Code and/or PIN");

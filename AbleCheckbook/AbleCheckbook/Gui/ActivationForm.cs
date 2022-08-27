@@ -229,6 +229,14 @@ namespace AbleCheckbook.Gui
             textBoxLicenseCode.Text = userInfoResponse.UserInfos[0].LicenseRecord.LicenseCode;
             SaveTextboxValues();
             // Call PayPal
+            if (!Configuration.Instance.PayPalUrl.ToLower().Contains("sandbox"))
+            {
+                if (MessageBox.Show(Strings.Get("You are about to be redirected to PayPal"), Strings.Get("Confirm"), MessageBoxButtons.OKCancel) != DialogResult.OK)
+                {
+                    return;
+                }
+            }
+            PayPalPurchaseProvider provider = new PayPalPurchaseProvider(Configuration.Instance.PayPalUrl, Configuration.Instance.PayPalConfiguration);
 
             // TODO
 
@@ -291,7 +299,7 @@ namespace AbleCheckbook.Gui
             Logger.Info("Calling server DB API " + apiState + " with LC " + textBoxLicenseCode.Text);
             UserInfoResponse userInfoResponse = OnlineActivation.Instance.DbCall(apiState,
                 textBoxUserId.Text, textBoxStreetAddress.Text, textBoxCityState.Text, textBoxPostalCode.Text, textBoxPhoneNumber.Text,
-                    textBoxEmailAddress.Text, 0, textBoxLicenseCode.Text, textBoxSiteId.Text, textBoxPurchase.Text);
+                    textBoxEmailAddress.Text, "0", textBoxLicenseCode.Text, textBoxSiteId.Text, textBoxPurchase.Text);
             if(userInfoResponse == null) 
             {
                 Logger.Info("Server returned null ");
@@ -463,7 +471,7 @@ namespace AbleCheckbook.Gui
         /// </summary>
         private void PollAndSetTextboxValues()
         {
-            UserInfoResponse userInfoResponse = new Poller().Poll(textBoxLicenseCode.Text.Trim(), textBoxSiteId.Text.Trim());
+            UserInfoResponse userInfoResponse = new Poller().Poll(false, textBoxLicenseCode.Text.Trim(), textBoxSiteId.Text.Trim());
             if (userInfoResponse != null && userInfoResponse.UserInfos != null && userInfoResponse.UserInfos.Count > 0)
             {
                 textBoxLicenseCode.Text = userInfoResponse.UserInfos[0].LicenseRecord.LicenseCode;

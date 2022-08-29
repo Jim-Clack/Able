@@ -380,8 +380,8 @@ namespace AbleCheckbook.Logic
             AddString("New Account, Starting Balance");
             AddString("Initial Account Balance:");
             AddString("Starting Balance for New Account...");
-            AddString("Prev Reconcile");
-            AddString("This Reconcile");
+            AddString("Prev Period Start");
+            AddString("This Period Start");
             AddString("As of:");
             AddString("Go To Most Recent");
             AddString("Sort Matches First");

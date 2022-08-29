@@ -13,37 +13,37 @@ namespace AbleLicensing.WsApi
         /// <summary>
         /// Globally unique Id for this record.
         /// </summary>
-        public Guid Id;
+        public Guid Id = Guid.Empty;
 
         /// <summary>
         /// When was this record created?
         /// </summary>
-        public DateTime DateCreated;
+        public DateTime DateCreated = DateTime.Now;
 
         /// <summary>
         /// When was this record last modified?
         /// </summary>
-        public DateTime DateModified;
+        public DateTime DateModified = DateTime.Now;
 
         /// <summary>
         /// Foreign key to license data.
         /// </summary>
-        public Guid FkLicenseId;
+        public Guid FkLicenseId = Guid.Empty;
 
         /// <summary>
         /// Site ID (device) abbreviation.
         /// </summary>
-        public string DeviceSiteId;
+        public string DeviceSiteId = "";
 
         /// <summary>
         /// Current status of device activation.
         /// </summary>
-        public int UserLevelPunct;
+        public int UserLevelPunct = 0;
 
         /// <summary>
         /// Binary authentication/authorization info.
         /// </summary>
-        public string CodesAndPin;
+        public string CodesAndPin = "";
 
         /// <summary>
         /// Return a man-readable representation.

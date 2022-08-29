@@ -1,0 +1,357 @@
+{
+	"info": {
+		"_postman_id": "6db18367-2f89-4e81-8357-c85afec17dad",
+		"name": "AbleCheckbook",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6604650"
+	},
+	"item": [
+		{
+			"name": "checkbook PutLog",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "This is also a test log\r\nLine 2\r\nmore\r\npunctuation !@#$%^&*()~`-_=+{}[]\"':;?/>.<,|\\",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44363/as/checkbook/log/Test-Record/12345-67890",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44363",
+					"path": [
+						"as",
+						"checkbook",
+						"log",
+						"Test-Record",
+						"12345-67890"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "master GetBy",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44363/as/master/by/license?pattern=.*",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44363",
+					"path": [
+						"as",
+						"master",
+						"by",
+						"license"
+					],
+					"query": [
+						{
+							"key": "pattern",
+							"value": ".*"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "checkbook GetPoll",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44363/as/checkbook/poll/Test-Record/12345-67890/1-0",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44363",
+					"path": [
+						"as",
+						"checkbook",
+						"poll",
+						"Test-Record",
+						"12345-67890",
+						"1-0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "master Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44363/as/master/ede2de31-23ca-4433-a605-95b43f4c49dc",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44363",
+					"path": [
+						"as",
+						"master",
+						"ede2de31-23ca-4433-a605-95b43f4c49dc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "master GetLog",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44363/as/master/log/Test-Record/12345-67890/0",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44363",
+					"path": [
+						"as",
+						"master",
+						"log",
+						"Test-Record",
+						"12345-67890",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "checkbook Get",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44363/as/checkbook",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44363",
+					"path": [
+						"as",
+						"checkbook"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "master GetDb",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44363/as/master/db/0123456789",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44363",
+					"path": [
+						"as",
+						"master",
+						"db",
+						"0123456789"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "checkbook PostDb2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44363/as/checkbook/db/2?name=Fred&addr=123%20Main&city=NYC&zip=12345&phone=1234567890&email=a.b%40abc.com&feature=0&lCode=Test-Record&siteId=aBcD123&purchase=P12345%7C67890",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44363",
+					"path": [
+						"as",
+						"checkbook",
+						"db",
+						"2"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Fred"
+						},
+						{
+							"key": "addr",
+							"value": "123%20Main"
+						},
+						{
+							"key": "city",
+							"value": "NYC"
+						},
+						{
+							"key": "zip",
+							"value": "12345"
+						},
+						{
+							"key": "phone",
+							"value": "1234567890"
+						},
+						{
+							"key": "email",
+							"value": "a.b%40abc.com"
+						},
+						{
+							"key": "feature",
+							"value": "0"
+						},
+						{
+							"key": "lCode",
+							"value": "Test-Record"
+						},
+						{
+							"key": "siteId",
+							"value": "aBcD123"
+						},
+						{
+							"key": "purchase",
+							"value": "P12345%7C67890"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "checkbook PostDb5",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44363/as/checkbook/db/5?name=Fred&addr=123%20Main&city=NYC&zip=12345&phone=1234567890&email=a.b%40abc.com&feature=0&lCode=FredY;12345&siteId=aBcD123&purchase=P12345%7C67890",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44363",
+					"path": [
+						"as",
+						"checkbook",
+						"db",
+						"5"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Fred"
+						},
+						{
+							"key": "addr",
+							"value": "123%20Main"
+						},
+						{
+							"key": "city",
+							"value": "NYC"
+						},
+						{
+							"key": "zip",
+							"value": "12345"
+						},
+						{
+							"key": "phone",
+							"value": "1234567890"
+						},
+						{
+							"key": "email",
+							"value": "a.b%40abc.com"
+						},
+						{
+							"key": "feature",
+							"value": "0"
+						},
+						{
+							"key": "lCode",
+							"value": "FredY;12345"
+						},
+						{
+							"key": "siteId",
+							"value": "aBcD123"
+						},
+						{
+							"key": "purchase",
+							"value": "P12345%7C67890"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PayPal Token",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "ELlCB3sJ6-hfhAuiqZI-8Dk9ykeWyqQdLrjJ0raYXBkd_2p2QqF_2bjzl8eyMpPUn0JaB6ZFzDg1OjB8",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "AflprzxmNo52GWqoFsivWm8Ozk9SCuLZPBieSB2oEEUL-P67ghOb9TdxE-GG7EgOlk6dfYdUl1OJgI_u",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://api-m.sandbox.paypal.com/v1/oauth2/token",
+					"protocol": "https",
+					"host": [
+						"api-m",
+						"sandbox",
+						"paypal",
+						"com"
+					],
+					"path": [
+						"v1",
+						"oauth2",
+						"token"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

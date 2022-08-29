@@ -32,6 +32,11 @@ namespace AbleStrategiesServices.Support
         private string purchaseDesignator = "";
 
         /// <summary>
+        /// i.e. AbleCheckbookStd, AbleCheckbookANY(combo mask), etc.
+        /// </summary>
+        private ProductBitMask productBitMask = ProductBitMask.None;
+
+        /// <summary>
         /// Date of purchase.
         /// </summary>
         private DateTime purchaseDate = DateTime.Now;
@@ -145,6 +150,21 @@ namespace AbleStrategiesServices.Support
         }
 
         /// <summary>
+        /// What product was purchased
+        /// </summary>
+        public ProductBitMask ProductBitMask
+        {
+            get
+            {
+                return productBitMask;
+            }
+            set
+            {
+                productBitMask = value;
+            }
+        }
+
+        /// <summary>
         /// Return a man-readable representation.
         /// </summary>
         /// <returns></returns>
@@ -152,6 +172,7 @@ namespace AbleStrategiesServices.Support
         {
             return "PurRec{" + SupportMethods.Shorten(Id.ToString()) +
                 "," + SupportMethods.Shorten(fkLicenseId.ToString()) +
+                "," + productBitMask +
                 "," + purchaseDesignator +
                 "," + SupportMethods.Shorten(purchaseAmount.ToString()) +
                 "," + purchaseDate.ToShortDateString() + "}";
@@ -171,6 +192,7 @@ namespace AbleStrategiesServices.Support
             this.FkLicenseId = ((PurchaseRecord)source).FkLicenseId;
             this.PurchaseAuthority = ((PurchaseRecord)source).PurchaseAuthority;
             this.purchaseDesignator = ((PurchaseRecord)source).purchaseDesignator;
+            this.productBitMask = ((PurchaseRecord)source).ProductBitMask;
             this.PurchaseDate = ((PurchaseRecord)source).PurchaseDate;
         }
 

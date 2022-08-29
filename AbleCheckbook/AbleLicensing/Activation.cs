@@ -407,19 +407,11 @@ namespace AbleLicensing
         /// <summary>
         /// Get web service API URL.
         /// </summary>
-        public string WsUrlOverride
+        public string WebServiceUrl
         {
             get
             {
-                if(!string.IsNullOrEmpty(_siteSettings.WsUrlOverride))
-                {
-                    return _siteSettings.WsUrlOverride;
-                }
-#if DEBUG
-                return "https://localhost:44363/as/checkbook";
-#else
-                return "https://ablestrategies.com/as/checkbook/";
-#endif
+                return _siteSettings.WebServiceUrl;
             }
         }
 

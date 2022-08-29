@@ -146,13 +146,9 @@ namespace AbleStrategiesServices.Support
         /// <param name="details">Related data - optional</param>
         /// <param name="date">Date of purchase. null to leave unchanged</param>
         /// <returns>The updated UserInfoBuilder</returns>
-        public UserInfoBuilder UpdatePurchase(PurchaseAuthority auth, string trans, string verif, long amt, string details = null, string date = null)
+        public UserInfoBuilder UpdatePurchase(PurchaseAuthority auth, ProductBitMask product, string trans, string verif, long amt, string details = null, string date = null)
         {
-            PurchaseRecord purchaseRecord = null;
-            if (this.userInfo.PurchaseRecords.Count < 1) // if not found, create new purchase
-            {
-                purchaseRecord = new PurchaseRecord();
-            }
+            PurchaseRecord purchaseRecord = UserInfo.GetPurchaseRecord(product, true);
             purchaseRecord = this.userInfo.PurchaseRecords[0];
             purchaseRecord.PurchaseAuthority = PurchaseAuthority.PayPalStd;
             purchaseRecord.PurchaseDesignator = "";

@@ -1215,9 +1215,9 @@ namespace AbleCheckbook
             // buttonAbandonReconcile
             // 
             this.buttonAbandonReconcile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonAbandonReconcile.Location = new System.Drawing.Point(211, 390);
+            this.buttonAbandonReconcile.Location = new System.Drawing.Point(216, 390);
             this.buttonAbandonReconcile.Name = "buttonAbandonReconcile";
-            this.buttonAbandonReconcile.Size = new System.Drawing.Size(182, 32);
+            this.buttonAbandonReconcile.Size = new System.Drawing.Size(177, 32);
             this.buttonAbandonReconcile.TabIndex = 7;
             this.buttonAbandonReconcile.Text = "Abandon Reconcile";
             this.buttonAbandonReconcile.UseVisualStyleBackColor = true;
@@ -1229,9 +1229,9 @@ namespace AbleCheckbook
             this.labelLastClosing.AutoSize = true;
             this.labelLastClosing.Location = new System.Drawing.Point(116, 368);
             this.labelLastClosing.Name = "labelLastClosing";
-            this.labelLastClosing.Size = new System.Drawing.Size(91, 17);
+            this.labelLastClosing.Size = new System.Drawing.Size(116, 17);
             this.labelLastClosing.TabIndex = 45;
-            this.labelLastClosing.Text = "Prev Closing:";
+            this.labelLastClosing.Text = "Prev Period Start";
             this.labelLastClosing.Visible = false;
             // 
             // labelThisClosing
@@ -1240,9 +1240,9 @@ namespace AbleCheckbook
             this.labelThisClosing.AutoSize = true;
             this.labelThisClosing.Location = new System.Drawing.Point(116, 398);
             this.labelThisClosing.Name = "labelThisClosing";
-            this.labelThisClosing.Size = new System.Drawing.Size(89, 17);
+            this.labelThisClosing.Size = new System.Drawing.Size(114, 17);
             this.labelThisClosing.TabIndex = 46;
-            this.labelThisClosing.Text = "This Closing:";
+            this.labelThisClosing.Text = "This Period Start";
             this.labelThisClosing.Visible = false;
             // 
             // pictureBoxLogo

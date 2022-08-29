@@ -40,10 +40,9 @@ namespace AbleLicensing
         MakePurchase = 11,           // Complete the purchase
         // Successful Non-Purchase Responses
         ReturnOk = 20,               // Completed non-purchase okay 
-        ReturnOkReconfigure = 21,    // Message contains reconfiguration instructions
-        ReturnOkAddlDev = 22,        // Purchase ok, no charge, existing lic, return PinNumber
-        ReturnNotActivated = 23,     // Not activated, no paid license found, return Message
-        ReturnDeactivate = 24,       // Too many devices, deactivate, return Message
+        ReturnOkAddlDev = 21,        // Purchase ok, no charge, existing lic, return PinNumber
+        ReturnNotActivated = 22,     // Not activated, no paid license found, return Message
+        ReturnDeactivate = 23,       // Too many devices, deactivate, return Message
         // Failed Non-Purchase Responses
         ReturnBadArg = 31,           // Invalid city, phone, email, etc, return Message
         ReturnNotFound = 32,         // License not found, return Message
@@ -70,6 +69,18 @@ namespace AbleLicensing
     }
 
     /// <summary>
+    /// Bitmask (1, 2, 4, 8, 16, 32, 64, 128, 256, etc.) and combo-masks, for product purchases.
+    /// </summary>
+    public enum ProductBitMask
+    {
+        None = 0,               // default
+        AbleCheckbookStd = 2,
+        AbleCheckbookPro = 8,
+        AbleCheckbookANY = 31,  // combo mask
+        FutureProduct = 32,
+    }
+
+    /// <summary>
     /// What is the intent/originator of an interactivity?
     /// </summary>
     public enum InteractivityKind
@@ -85,6 +96,19 @@ namespace AbleLicensing
         PurchaseHistory = 10,
         PollWs = 11,
         OtherWs = 20,
+    }
+
+    /// <summary>
+    /// What to reconfigure
+    /// </summary>
+    public enum ReconfigurationSelection
+    {
+        Unknown = 0,
+        Email = (int)'E',
+        Help = (int)'H',
+        PayPal = (int)'P',
+        WebService = (int)'W',
+        Alert = (int)'A',
     }
 
 }

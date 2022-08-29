@@ -9,42 +9,42 @@ namespace AbleLicensing.WsApi
         /// <summary>
         /// Globally unique Id for this record.
         /// </summary>
-        public Guid Id;
+        public Guid Id = Guid.Empty;
 
         /// <summary>
         /// When was this record created?
         /// </summary>
-        public DateTime DateCreated;
+        public DateTime DateCreated = DateTime.Now;
 
         /// <summary>
         /// When was this record last modified?
         /// </summary>
-        public DateTime DateModified;
+        public DateTime DateModified = DateTime.Now;
 
         /// <summary>
         /// Foreign key to license data.
         /// </summary>
-        public Guid FkLicenseId;
+        public Guid FkLicenseId = Guid.Empty;
 
         /// <summary>
         /// Interactivity by phone, web service, or what?
         /// </summary>
-        public int InteractivityKind;
+        public int InteractivityKind = 0;
 
         /// <summary>
         /// Client name, email, and/or IP address.
         /// </summary>
-        public string ClientInfo;
+        public string ClientInfo = "";
 
         /// <summary>
         /// Content - what occurred during interactivity.
         /// </summary>
-        public string Conversation;
+        public string Conversation = "";
 
         /// <summary>
         /// Keep track of changes.
         /// </summary>
-        public string History;
+        public string History = "";
 
         /// <summary>
         /// Return a man-readable representation.

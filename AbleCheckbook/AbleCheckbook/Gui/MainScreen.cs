@@ -682,6 +682,7 @@ namespace AbleCheckbook
         {
             _backend.Db.PendingReconcileEndDate = dateTimePickerThisRecon.Value;
         }
+
     }
 
 }

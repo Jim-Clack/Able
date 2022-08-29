@@ -58,8 +58,12 @@ namespace AbleStrategiesServices.Support
         /// <summary>
         /// URL override for calling MASTER web services
         /// </summary>
-        public override string WsUrlOverride
+        public override string WebServiceUrl
         {
+            set
+            {
+                // do nothing
+            }
             get
             {
                 Logger.Diag(null, "Shouldn't Happen 1");
@@ -127,22 +131,6 @@ namespace AbleStrategiesServices.Support
             set
             {
                 Logger.Diag(null, "Shouldn't Happen 7");
-            }
-        }
-
-        /// <summary>
-        /// For storing contact and site data. 
-        /// </summary>
-        public override string[] ContactValues
-        {
-            get
-            {
-                Logger.Diag(null, "Shouldn't Happen 8");
-                return new string[] { "XXX8XXX" };
-            }
-            set
-            {
-                Logger.Diag(null, "Shouldn't Happen 8");
             }
         }
 

@@ -9,22 +9,22 @@ namespace AbleLicensing.WsApi
         /// <summary>
         /// License data.
         /// </summary>
-        public LicenseRecord LicenseRecord;
+        public LicenseRecord LicenseRecord = null; // Note: null = no license!
 
         /// <summary>
         /// List of PurchaseRecords.
         /// </summary>
-        public List<PurchaseRecord> PurchaseRecords;
+        public List<PurchaseRecord> PurchaseRecords = new List<PurchaseRecord>();
 
         /// <summary>
         /// List of DeviceRecords.
         /// </summary>
-        public List<DeviceRecord> DeviceRecords;
+        public List<DeviceRecord> DeviceRecords = new List<DeviceRecord>();
 
         /// <summary>
         /// List of InteractivityRecords.
         /// </summary>
-        public List<InteractivityRecord> InteractivityRecords;
+        public List<InteractivityRecord> InteractivityRecords = new List<InteractivityRecord>();
 
         /// <summary>
         /// Find a particular interactivity record by ClientKind

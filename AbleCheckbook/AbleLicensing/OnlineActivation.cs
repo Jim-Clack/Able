@@ -77,7 +77,7 @@ namespace AbleLicensing
             Activation.Instance.LoggerHook("-----------------");
             try
             {
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Activation.Instance.WsUrlOverride);
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Activation.Instance.WebServiceUrl);
                 request.Timeout = TestTimeout + addlTimeout;
                 request.Method = "GET";
                 request.Accept = "application/json";
@@ -108,7 +108,7 @@ namespace AbleLicensing
             UserInfoResponse userInfoResponse = null;
             try
             {
-                string url = Activation.Instance.WsUrlOverride +
+                string url = Activation.Instance.WebServiceUrl +
                     "/poll/" + licenseCode.Trim() + "/" + siteId.Trim() + "/" + majorVersion + "-" + minorVersion + "/";
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.Timeout = PollTimeout + addlTimeout;
@@ -126,7 +126,7 @@ namespace AbleLicensing
             }
             catch (Exception e)
             {
-                Activation.Instance.LoggerHook("Exception" + e.Message);
+                // silently ignore problems, caller may choose to do something about the null return
             }
             Activation.Instance.LicenseCode = licenseCode;
             if (userInfoResponse != null)
@@ -168,7 +168,7 @@ namespace AbleLicensing
             UserInfoResponse userInfoResponse = null;
             try
             {
-                UriBuilder builder = new UriBuilder(Activation.Instance.WsUrlOverride + "/db/" + apiState);
+                UriBuilder builder = new UriBuilder(Activation.Instance.WebServiceUrl + "/db/" + apiState);
                 AppendQueryArg(builder, "name", name);
                 AppendQueryArg(builder, "addr", addr);
                 AppendQueryArg(builder, "city", city);
@@ -197,7 +197,7 @@ namespace AbleLicensing
             }
             catch (Exception e)
             {
-                Activation.Instance.LoggerHook("Exception" + e.Message);
+                Activation.Instance.LoggerHook("[A1a] OnlineActivation ERROR - DbCall Exception" + e.Message);
             }
             Activation.Instance.LicenseCode = lCode;
             if (userInfoResponse != null)
@@ -236,13 +236,6 @@ namespace AbleLicensing
             }
         }
 
-        private bool PurchaseViaPaypal(ref UserInfo userInfo, string descript, long amount)
-        {
-            // TODO
-      //      IPurchaseProvider purchaseProvider = new PayPalPurchaseProvider();
-      //      purchaseProvider.CompletePurchase(ref userInfo, amount, descript);
-            return true;
-        }
-        
    }
+
 }

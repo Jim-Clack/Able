@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace AbleStrategiesServices.Support
 {
+    /// <summary>
+    /// This is a JSON record, never a DB resord - not persisted.
+    /// </summary>
     public class UserInfoResponse
 
     {
@@ -30,6 +33,11 @@ namespace AbleStrategiesServices.Support
         private List<UserInfo> userInfos = new List<UserInfo>();
 
         /// <summary>
+        /// Used for pushing reconfiguration changes.
+        /// </summary>
+        private List<ReconfigurationRecord> reconfigurationRecords = new List<ReconfigurationRecord>();
+
+        /// <summary>
         /// API State, typically a Response or Purchase value. Not persisted.
         /// </summary>
         public int ApiState { get => apiState; set => apiState = value; }
@@ -43,6 +51,11 @@ namespace AbleStrategiesServices.Support
         /// PIN number, if specifically requested. Not persisted.
         /// </summary>
         public string PinNumber { get => pinNumber; set => pinNumber = value; }
+
+        /// <summary>
+        /// Used for pushing reconfiguration changes.
+        /// </summary>
+        public List<ReconfigurationRecord> ReconfigurationRecords { get => reconfigurationRecords; set => reconfigurationRecords = value; }
 
         /// <summary>
         /// List of returned user info objects.

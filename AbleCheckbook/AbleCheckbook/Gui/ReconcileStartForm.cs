@@ -79,8 +79,8 @@ namespace AbleCheckbook.Gui
             buttonCancel.Text = Strings.Get("Cancel");
             buttonOk.Text = Strings.Get("Ok");
             labelPrompt.Text = Strings.Get("Start/Prev Date is Inclusive, End/This date is Exclusive (after)");
-            labelPrevRecon.Text = Strings.Get("Prev Reconcile");
-            labelThisRecon.Text = Strings.Get("This Reconcile");
+            labelPrevRecon.Text = Strings.Get("Prev Period Start");
+            labelThisRecon.Text = Strings.Get("This Period Start");
             dateTimePickerPrevRecon.ShowUpDown = !Configuration.Instance.ShowCalendars;
             dateTimePickerThisRecon.ShowUpDown = !Configuration.Instance.ShowCalendars;
             try

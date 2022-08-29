@@ -163,8 +163,8 @@ namespace AbleCheckbook
             buttonAllDone.Text = Strings.Get("Create Balance Adjustment");
             buttonAbandonReconcile.Text = Strings.Get("Abandon Reconcile");
             buttonReconcileTips.Text = Strings.Get("Tips");
-            labelLastClosing.Text = Strings.Get("Prev Closing:");
-            labelThisClosing.Text = Strings.Get("This Closing:");
+            labelLastClosing.Text = Strings.Get("Prev Period Start");
+            labelThisClosing.Text = Strings.Get("This Period Start");
             AddStartingBalanceIfNeeded();
             PeriodicalCheck();
             _backend.ReloadTransactions();
@@ -307,9 +307,9 @@ namespace AbleCheckbook
                 toolStripButtonDeleteEntry.Enabled = false;
                 yearEndToolStripMenuItem.Enabled = false;
                 dataGridView1.Height = dataGridView1.Parent.Height - 150;
-                labelLastClosing.Visible = labelThisClosing.Visible = this.Width > 552;
-                textBoxPrevReconBalance.Left = textBoxThisReconBalance.Left = (this.Width > 552) ? 160 : 88;
-                labelInstructions.Left = (this.Width > 552) ? 224 : 154;
+                labelLastClosing.Visible = labelThisClosing.Visible = this.Width > 560;
+                textBoxPrevReconBalance.Left = textBoxThisReconBalance.Left = (this.Width > 560) ? 172 : 88;
+                labelInstructions.Left = (this.Width > 560) ? 235 : 154;
             }
             else
             {

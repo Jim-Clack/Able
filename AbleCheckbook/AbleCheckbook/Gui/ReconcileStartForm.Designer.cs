@@ -188,27 +188,27 @@
             // 
             this.labelPrevRecon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelPrevRecon.AutoSize = true;
-            this.labelPrevRecon.Location = new System.Drawing.Point(143, 173);
+            this.labelPrevRecon.Location = new System.Drawing.Point(145, 173);
             this.labelPrevRecon.Name = "labelPrevRecon";
-            this.labelPrevRecon.Size = new System.Drawing.Size(103, 17);
+            this.labelPrevRecon.Size = new System.Drawing.Size(116, 17);
             this.labelPrevRecon.TabIndex = 9;
-            this.labelPrevRecon.Text = "Prev Reconcile";
+            this.labelPrevRecon.Text = "Prev Period Start";
             // 
             // labelThisRecon
             // 
             this.labelThisRecon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelThisRecon.AutoSize = true;
-            this.labelThisRecon.Location = new System.Drawing.Point(143, 207);
+            this.labelThisRecon.Location = new System.Drawing.Point(145, 207);
             this.labelThisRecon.Name = "labelThisRecon";
-            this.labelThisRecon.Size = new System.Drawing.Size(101, 17);
+            this.labelThisRecon.Size = new System.Drawing.Size(114, 17);
             this.labelThisRecon.TabIndex = 10;
-            this.labelThisRecon.Text = "This Reconcile";
+            this.labelThisRecon.Text = "This Period Start";
             // 
             // textBoxThisBalance
             // 
             this.textBoxThisBalance.AcceptsReturn = true;
             this.textBoxThisBalance.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.textBoxThisBalance.Location = new System.Drawing.Point(250, 204);
+            this.textBoxThisBalance.Location = new System.Drawing.Point(270, 204);
             this.textBoxThisBalance.Name = "textBoxThisBalance";
             this.textBoxThisBalance.Size = new System.Drawing.Size(90, 22);
             this.textBoxThisBalance.TabIndex = 4;
@@ -218,7 +218,7 @@
             // textBoxPrevBalance
             // 
             this.textBoxPrevBalance.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.textBoxPrevBalance.Location = new System.Drawing.Point(250, 170);
+            this.textBoxPrevBalance.Location = new System.Drawing.Point(270, 170);
             this.textBoxPrevBalance.Name = "textBoxPrevBalance";
             this.textBoxPrevBalance.Size = new System.Drawing.Size(90, 22);
             this.textBoxPrevBalance.TabIndex = 366;

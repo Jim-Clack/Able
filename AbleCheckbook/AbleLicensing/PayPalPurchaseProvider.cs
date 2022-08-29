@@ -104,6 +104,23 @@ namespace AbleLicensing
             string paymentResponse = null;
             try
             {
+                /* TOKEN REQUEST
+                 * Request:
+                 *   https://api-m.sandbox.paypal.com/v1/oauth2/token
+                 *   POST
+                 *   Authorization: Basic QWZscHJ6...4wSmFCNlpGekRnMU9qQjg= (from Client ID and Secret)
+                 *   Content-Type: application/x-www-form-urlencoded
+                 *   Body: grant_type:client_credentials
+                 * Response:
+                 *   {
+                 *       "scope": "https://uri.paypal.com/services/invoicing ... openid ... https://uri.paypal.com/services/applications/webhooks",
+                 *       "access_token": "A21AALDNImyn3a0FvcFRxl_AuZh-V99wi5M_UnxAKQHocQrdUjRrPZsI91Q8rgua47FxY7-Fh92SpHGJ06YPPOA48D-QTbPig",
+                 *       "token_type": "Bearer",
+                 *       "app_id": "APP-80W284485P519543T",
+                 *       "expires_in": 32310,
+                 *       "nonce": "2022-08-27T23:01:39ZoyZ2NnVEKuu3f-8vN30bz8CInmQ2pnJVgAj4Zt1z11I"
+                 *   }
+                 */
                 string url = payPalUrl + "???";
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.Timeout = timeout;

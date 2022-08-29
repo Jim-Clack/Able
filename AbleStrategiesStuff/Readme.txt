@@ -5,12 +5,14 @@ Workstation Setup Notes...
  A. Install MS 2019 Visual Studio complete
  B. Install MS 2017 Installer for Application Deployment via MSIx
  C. Install via NuGet: System.Text.Json (AbleCheckbook & AbleLicensing)
+ C. Install via NuGet: PayPal .NET SDK (AbleLicensing only)
  D. Install git and/or GitHub desktop
- E. You may want to install Postman and WinSCP as well
+ E. You will want to install Postman and WinSCP as well
  F. AbleCheckbook VS Pre-Build Event: copy $(ProjectDir)Support\* $(TargetDir)
  G. Set Build Configuration Symbols: Debug: SUPERUSER, Release: RELEASE 
  H. In AssemblyInfo.cs, if necessary, change to [assembly: AssemblyVersion("1.0.*")]
- I. Options:Debug:General Uncheck "Step over propertes and operators" (Critical!)
+ I. Import AbleCheckbook.postman_collection.json into PostMan for sandboxing 
+ J. Options:Debug:General Uncheck "Step over propertes and operators" (Critical!)
 
  Caveats...
  . If you are new to MS VS, see the notes at the end of this document
@@ -91,6 +93,8 @@ Open Banking API...
  https://www.programmableweb.com/api/
 PayPal
  https://developer.paypal.com/home
+ https://github.com/paypal/PayPal-NET-SDK/wiki/Configuration
+ https://github.com/paypal/PayPal-NET-SDK/wiki/Make-Your-First-Call
  https://developer.paypal.com/docs/business/checkout/set-up-standard-payments/
 Desktop Icon
  https://techcommunity.microsoft.com/t5/windows-dev-appconsult/msix-create-desktop-shortcuts-with-package-support-framework-and/ba-p/3300891
@@ -184,9 +188,58 @@ Notes to developers who are MS/VS virgins...
  somersaults in your underoos, and it will still use the obsolete. And the 
  error message may be very misleading, related to an indirect effect.
 
- JSON REST API (All return a JsonUserInfoResponse except for GET verify connection)
+PayPal WS
+ jim.clack@gmail.com p8
+ https://developer.paypal.com/
+ Account Type:     Personal (Merchant)
+ Account Name:     AbleStrategies
+ Sandbox Accounts:  
+   App ID:         APP-80W284485P519543T
+   Name:           John Doe
+   Bus Email:      sb-lyvur20481988@business.example.com
+   Bus Passwd:     %*#r2?rX
+   Bus Phone:      4086517743
+   Bus Acct:       4DV7CG5A7HN7Y
+   Pers Email:     sb-krbto20482028@personal.example.com
+   Pers Passwd:    aGVs5%sm
+   Pers Phone:     4087983656
+   Pers Acct:      BBG6Q73XGCFFL
+   Client ID:      AflprzxmNo52GWqoFsivWm8Ozk9SCuLZPBieSB2oEEUL-P67ghOb9TdxE-GG7EgOlk6dfYdUl1OJgI_u
+   Secret:         ELlCB3sJ6-hfhAuiqZI-8Dk9ykeABLEWyqQdLrjJ0raYXBkd_2p2QqF_2bjzSTRATEGIESl8eyMpPUn0JaB6ZFzDg1OjB8 (fake)
+   Return URL:     (not set up yet)
+ Live Account:  
+   App ID:         
+   Name:           
+   Bus Email:      
+   Bus Passwd:     
+   Bus Phone:      
+   Bus Acct:       
+   Client ID:      
+   Secret:         (do not list here)
+   Return URL:     (not set up yet)
+ TOKEN REQUEST
+   Request:
+     https://api-m.sandbox.paypal.com/v1/oauth2/token
+     POST
+     Authorization: Basic QWZscHJ6 ... 4wSmFCNlpGekRnMU9qQjg= (base64 from Client ID and Secret)
+     Content-Type: application/x-www-form-urlencoded
+     Body: grant_type:client_credentials
+   Response: {
+       "scope": "https://uri.paypal.com/services/invoicing ... openid ... https://uri.paypal.com/services/applications/webhooks",
+       "access_token": "A21AALDNImyn3a0Fv ... 1Q8rgua47FxY7-Fh92SpHGJ06YPPOA48D-QTbPig",
+       "token_type": "Bearer",
+       "app_id": "APP-80W284485P519543T",
+       "expires_in": 32310,
+       "nonce": "2022-08-27T23:01:39ZoyZ2NnVEKuu3f-8vN30bz8CInmQ2pnJVgAj4Zt1z11I"
+     }
+ PURCHASE:
+
+   TODO
+
+JSON REST API 
+  All return a JsonUserInfoResponse except for GET verify connection
   Verify connection
-    GET as/checkbook (returns strings)
+    GET as/checkbook (returns strings in a JSON wrapper)
   Poll periodically, returns ReturnOk, ReturnOkReconfigure, ReturnNotFound, or ReturnDeactivate
     GET as/checkbook/poll/lcode/siteid/vv-vv
   Lookup license: returns ReturnOk, ReturnNotFound, ot ReturnLCodeTaken

@@ -34,12 +34,13 @@ namespace AbleCheckbook.Logic
         private static Configuration _instance = null;
 
         private string[] _legalFilenames = new string[] { "Checking", "Business", "Personal", "Alternate" };
-        private string _wsUrlOverride = "";
         private string _helpPageUrl = "https://ablestrategies.com/ablecheckbook/help";
         private string _helpSearchUrl = "https://www.google.com/search?q=site%3Aablestrategies.com+checkbook+help+";
 #if DEBUG
+        private string _webServiceUrl = "https://localhost:44363/as/checkbook";
         private string _payPalUrl = "https://api-m.sandbox.paypal.com";
 #else
+        private string _webServiceUrl = "https://ablestrategies.com/as/checkbook/";
         private string _payPalUrl = "https://api-m.paypal.com";
 #endif
         private string _alertNotification = "";
@@ -334,9 +335,7 @@ namespace AbleCheckbook.Logic
             }
             set
             {
-#if DEBUG
-                // safety net: never alter the PayPal URL when debugging
-#else
+#if !DEBUG
                 _payPalUrl = value;
 #endif
             }
@@ -572,15 +571,15 @@ namespace AbleCheckbook.Logic
         /// <summary>
         /// URL override for calling MASTER web services
         /// </summary>
-        public override string WsUrlOverride
+        public override string WebServiceUrl
         {
             get
             {
-                return _wsUrlOverride;
+                return _webServiceUrl;
             }
             set
             {
-                _wsUrlOverride = value;
+                _webServiceUrl = value;
             }
         }
 
@@ -647,7 +646,7 @@ namespace AbleCheckbook.Logic
         /// <summary>
         /// For storing contact and site data. 
         /// </summary>
-        public override string[] LicenseTextboxValues
+        public string[] LicenseTextboxValues
         {
             get
             {

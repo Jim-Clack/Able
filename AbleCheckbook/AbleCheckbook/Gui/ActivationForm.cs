@@ -204,7 +204,7 @@ namespace AbleCheckbook.Gui
         private void ActivateOnline()
         {
             UserInfoResponse userInfoResponse = DbCall((int)ApiState.AddlDevice, true);
-            if (!IsValidResponse(userInfoResponse, new int[] { (int)ApiState.ReturnOk, (int)ApiState.ReturnOkAddlDev, (int)ApiState.ReturnOkReconfigure }))
+            if (!IsValidResponse(userInfoResponse, new int[] { (int)ApiState.ReturnOk, (int)ApiState.ReturnOkAddlDev}))
             {
                 // TODO popup a message box
                 return; // Do nothing, failed
@@ -221,7 +221,7 @@ namespace AbleCheckbook.Gui
         {
             // Register this license
             UserInfoResponse userInfoResponse = DbCall((int)ApiState.RegisterLicense, true);
-            if (!IsValidResponse(userInfoResponse, new int[] { (int)ApiState.ReturnOk, (int)ApiState.ReturnOkAddlDev, (int)ApiState.ReturnOkReconfigure }))
+            if (!IsValidResponse(userInfoResponse, new int[] { (int)ApiState.ReturnOk, (int)ApiState.ReturnOkAddlDev}))
             {
                 // TODO popup a message box
                 return; // Do nothing, failed
@@ -329,7 +329,6 @@ namespace AbleCheckbook.Gui
             switch (responseState)
             {
                 case (int)ApiState.ReturnOk:
-                case (int)ApiState.ReturnOkReconfigure:
                 case (int)ApiState.ReturnOkAddlDev:
                     break;
                 case (int)ApiState.ReturnDeactivate:

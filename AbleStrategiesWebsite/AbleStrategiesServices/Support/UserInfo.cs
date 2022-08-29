@@ -339,6 +339,43 @@ namespace AbleStrategiesServices.Support
         }
 
         /// <summary>
+        /// Return purchase record indicated by designator; if not found replace the record and put the history in an interactiviry record.
+        /// </summary>
+        /// <param name="productBitMask">to look for, NOT a combo mask</param>
+        /// <param name="overwriteIfNecessary">true to overwrite it if it doesn't exist</param>
+        /// <returns>the found or created record, else null</returns>
+        public PurchaseRecord GetPurchaseRecord(ProductBitMask productBitMask, bool overwriteIfNecessary)
+        {
+            PurchaseRecord purchaseRecord = null;
+            // should never be more than one purchase record
+            foreach (PurchaseRecord purchRecord in PurchaseRecords)
+            {
+                if (purchRecord.ProductBitMask == productBitMask)
+                {
+                    if (overwriteIfNecessary)
+                    {
+                        InteractivityRecord interactivityRecord = GetInteractivityByKind(InteractivityKind.PurchaseHistory, true);
+                        interactivityRecord.InteractivityKind = InteractivityKind.PurchaseHistory;
+                        interactivityRecord.ClientInfo = "Purchase History Tracking";
+                        interactivityRecord.Conversation = "Overwrite old purchase record: " + purchaseRecord.ToString();
+                    }
+                    purchaseRecord = purchRecord;
+                    break;
+                }
+            }
+            if (purchaseRecord == null && overwriteIfNecessary)
+            {
+                purchaseRecord = new PurchaseRecord();
+                PurchaseRecords.Add(purchaseRecord);
+            }
+            if (purchaseRecord != null)
+            {
+                purchaseRecord.ProductBitMask = purchaseRecord.ProductBitMask | productBitMask; // OR the bits
+            }
+            return purchaseRecord;
+        }
+
+        /// <summary>
         /// Return a man-readable representation.
         /// </summary>
         /// <returns></returns>

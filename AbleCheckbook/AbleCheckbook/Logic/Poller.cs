@@ -45,10 +45,7 @@ namespace AbleCheckbook.Logic
             {
                 DeactivateSite(userInfoResponse);
             }
-            if (userInfoResponse.ApiState == (int)ApiState.ReturnOkReconfigure)
-            {
-                Reconfigure(userInfoResponse);
-            }
+            Reconfigure(userInfoResponse.ReconfigurationRecords);
             Configuration.Instance.Save();
             return userInfoResponse;
         }
@@ -68,73 +65,52 @@ namespace AbleCheckbook.Logic
         }
 
         /// <summary>
-        /// Perform reconfiguration per the message returned in userInfoResponse
+        /// Perform reconfiguration per userInfoResponse
         /// </summary>
-        /// <param name="userInfoResponse">Contains Message that may contain reconfiguration commands appended to it</param>
-        /// <remarks>
-        /// userInfoResponse.Message is appended with reconfiguration commands, each preceded by a dollar signs.
-        /// Each reconfiguration command begins with a key letter followed by arguments, separated by pipe symbols.
-        /// i.e. Successful $ W httpt://ablestrategies.com/as/checkbook/ $ Ehttpt://mail.google.com | support@ablestrategies.com
-        ///   W httpt://ablestrategies.com/as/checkbook/             -- reconfigure web service URL
-        ///   E httpt://mail.google.com support@ablestrategies.com   -- reconfigure email server and address
-        /// Blank spaces are not needed around delimiters but are shown above to make them obvious.
-        /// The original message will be updated so that the reconfiguration commands are no longer present in it
-        /// </remarks>
-        private static void Reconfigure(UserInfoResponse userInfoResponse)
+        /// <param name="reconfigurationRecords">list of reconfiguration records</param>
+        private static void Reconfigure(List<ReconfigurationRecord> reconfigurationRecords)
         {
-            if(string.IsNullOrEmpty(userInfoResponse.Message.Trim()) || !userInfoResponse.Message.Contains("$"))
+            if(reconfigurationRecords == null || reconfigurationRecords.Count < 1)
             {
                 return;
             }
-            string keys = "";
-            string[] commands = userInfoResponse.Message.Trim().Split('$');
-            for(int commandNumber = 1; commandNumber < commands.Length; ++commandNumber)
+            foreach(ReconfigurationRecord reconfig in reconfigurationRecords)
             {
-                string command = commands[commandNumber].Trim();
-                if(command.Length < 3)
+                Logger.Info("Reconfiguring " + reconfig.ToString());
+                switch ((int)reconfig.ReconfigureSelector)
                 {
-                    continue;
-                }
-                Logger.Info("Reconfiguring for " + command);
-                char key = command.ToUpper()[0];
-                keys += key;
-                string[] args = command.Trim().Substring(1).Split('|');
-                switch (key)
-                {
-                    case 'E':
-                        if (args.Length > 1)
+                    case (int)ReconfigurationSelection.Email:
+                        if (reconfig.NewValues.Count > 1)
                         {
-                            Configuration.Instance.SmtpServer = args[0].Trim();
-                            Configuration.Instance.SupportEmail = args[1].Trim();
+                            Configuration.Instance.SmtpServer = reconfig.NewValues[0].Trim();
+                            Configuration.Instance.SupportEmail = reconfig.NewValues[1].Trim();
                         }
                         break;
-                    case 'H':
-                        if (args.Length > 1)
+                    case (int)ReconfigurationSelection.Help:
+                        if (reconfig.NewValues.Count > 1)
                         {
-                            Configuration.Instance.HelpPageUrl = args[0].Trim();
-                            Configuration.Instance.HelpSearchUrl = args[1].Trim();
+                            Configuration.Instance.HelpPageUrl = reconfig.NewValues[0].Trim();
+                            Configuration.Instance.HelpSearchUrl = reconfig.NewValues[1].Trim();
                         }
                         break;
-                    case 'P':
-                        if (args.Length > 1)
+                    case (int)ReconfigurationSelection.PayPal:
+                        if (reconfig.NewValues.Count > 1)
                         {
-                            Configuration.Instance.PayPalUrl = args[0].Trim();
-                            Configuration.Instance.PayPalConfiguration = args[1].Trim();
+                            Configuration.Instance.PayPalUrl = reconfig.NewValues[0].Trim();
+                            Configuration.Instance.PayPalConfiguration = reconfig.NewValues[1].Trim();
                         }
                         break;
-                    case 'W':
-                        Configuration.Instance.WsUrlOverride = args[0].Trim();
+                    case (int)ReconfigurationSelection.WebService:
+                        Configuration.Instance.WebServiceUrl = reconfig.NewValues[0].Trim();
                         break;
-                    case 'A':
-                        Configuration.Instance.AlertNotification = args[0].Trim();
+                    case (int)ReconfigurationSelection.Alert:
+                        Configuration.Instance.AlertNotification = reconfig.NewValues[0].Trim();
                         break;
                     default:
-                        Logger.Warn("Bad case for ReturnOkReconfigure: " + command);
+                        Logger.Warn("Bad case for ReturnOkReconfigure: " + reconfig.ToString());
                         break;
                 }
             }
-            // truncate to trim off reconfiguration commands
-            userInfoResponse.Message = commands[0] + "\n(" + Strings.Get("Configuration updated for") + " " + keys + ")";
         }
 
     }

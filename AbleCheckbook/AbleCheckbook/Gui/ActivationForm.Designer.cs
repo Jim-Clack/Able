@@ -339,7 +339,7 @@
             this.labelAlreadyPurchased.Name = "labelAlreadyPurchased";
             this.labelAlreadyPurchased.Size = new System.Drawing.Size(572, 17);
             this.labelAlreadyPurchased.TabIndex = 29;
-            this.labelAlreadyPurchased.Text = "If you have already paid and are licensed, you may fill out your codes in the spa" +
+            this.labelAlreadyPurchased.Text = "If you have already paid and activated, you may fill out your codes in the spa" +
     "ces below";
             this.labelAlreadyPurchased.Visible = false;
             // 

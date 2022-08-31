@@ -477,8 +477,8 @@ namespace AbleCheckbook.Gui
                 _widthChart = _height * 0.49F - 40;
                 _xChart = _width - (_widthChart + 40);
             }
-            _licensedTo = Strings.Get("UNLICENSED_VERSION");
-            if (Configuration.Instance.GetIsLicensedVersion())
+            _licensedTo = Strings.Get("EVALUATION_VERSION");
+            if (Configuration.Instance.GetIsActivated())
             {
                 _licensedTo = Configuration.Instance.LicenseCode;
             }

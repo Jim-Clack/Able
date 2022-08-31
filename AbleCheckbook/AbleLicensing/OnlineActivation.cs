@@ -102,7 +102,7 @@ namespace AbleLicensing
         /// <param name="siteId"></param>
         /// <param name="majorVersion"></param>
         /// <param name="minorVersion"></param>
-        /// <returns>user info response, populated with user info if licensed</returns>
+        /// <returns>user info response, populated with user info if activated</returns>
         public UserInfoResponse Poll(string licenseCode, string siteId, int majorVersion, int minorVersion)
         {
             UserInfoResponse userInfoResponse = null;

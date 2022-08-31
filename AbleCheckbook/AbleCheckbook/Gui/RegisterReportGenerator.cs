@@ -222,8 +222,8 @@ namespace AbleCheckbook.Gui
             _boxDebitBrush = new SolidBrush(Color.FromArgb(255, 255, 230, 230));
             _boxCreditBrush = new SolidBrush(Color.FromArgb(255, 230, 255, 230));
             _logoFilePath = Configuration.Instance.FindSupportFilePath("logo-###.png");
-            _licensedTo = Strings.Get("UNLICENSED_VERSION");
-            if (Configuration.Instance.GetIsLicensedVersion())
+            _licensedTo = Strings.Get("EVALUATION_VERSION");
+            if (Configuration.Instance.GetIsActivated())
             {
                 _licensedTo = Configuration.Instance.LicenseCode;
             }

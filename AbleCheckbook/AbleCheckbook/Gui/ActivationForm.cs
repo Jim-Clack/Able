@@ -48,10 +48,10 @@ namespace AbleCheckbook.Gui
             labelPin.Text = Strings.Get("Coded Activation PIN");
             labelPurchase.Text = Strings.Get("Purchase designator (if known)");
             labelSaveTheseNotice.Text = Strings.Get("Record the following values in a safe place as your proof of purchase and activation numbers");
-            labelAlreadyPurchased.Text = Strings.Get("If you have already paid and are licensed, you may fill out your codes in the spaces below");
+            labelAlreadyPurchased.Text = Strings.Get("If you have already paid and activated, you may fill out your codes in the spaces below");
             SetToInitialValues();
             UserLevel userLevel = Configuration.Instance.GetUserLevel();
-            if (userLevel != UserLevel.Unlicensed)
+            if (userLevel != UserLevel.Evaluation)
             {
                 if (MessageBox.Show(this, Strings.Get("Already activated - Do you wish to continue?"),
                     Strings.Get("Warning"), MessageBoxButtons.YesNo) != DialogResult.Yes)
@@ -137,13 +137,13 @@ namespace AbleCheckbook.Gui
             SaveTextboxValues();
             Configuration.Instance.Save();
             criticalValueChanged = false;
-            bool isLicensed = Activation.Instance.IsLicensed;
-            if (textBoxPin.Text.Trim().Length > 3 && isLicensed)
+            bool isActivated = Activation.Instance.IsActivated;
+            if (textBoxPin.Text.Trim().Length > 3 && isActivated)
             {
                 labelSaveTheseNotice.Visible = true;
                 labelAlreadyPurchased.Visible = false;
             }
-            MessageBox.Show("------------ " + Strings.Get(isLicensed ? "(Licensed)" : "(Unlicensed)") + " ------------", 
+            MessageBox.Show("------------ " + Strings.Get(isActivated ? "(Activated)" : "(Evaluation)") + " ------------", 
                 Strings.Get("Notice"), MessageBoxButtons.OK);
         }
 
@@ -185,7 +185,7 @@ namespace AbleCheckbook.Gui
             Configuration.Instance.LicenseCode = textBoxLicenseCode.Text.Trim();
             Configuration.Instance.ActivationPin = textBoxPin.Text.Trim();
             UserLevel userLevel = Configuration.Instance.GetUserLevel();
-            if (userLevel == UserLevel.Unlicensed)
+            if (userLevel == UserLevel.Evaluation)
             {
                 Configuration.Instance.LicenseCode = originalLicensedTo;
                 Configuration.Instance.ActivationPin = originalPin;
@@ -219,6 +219,7 @@ namespace AbleCheckbook.Gui
         /// </summary>
         private void PurchaseAndActivateOnline()
         {
+            new PayPalPurchaseProvider(Configuration.Instance.PayPalUrl, Configuration.Instance.PayPalConfiguration, 20000);
             // Register this license
             UserInfoResponse userInfoResponse = DbCall((int)ApiState.RegisterLicense, true);
             if (!IsValidResponse(userInfoResponse, new int[] { (int)ApiState.ReturnOk, (int)ApiState.ReturnOkAddlDev}))
@@ -236,7 +237,7 @@ namespace AbleCheckbook.Gui
                     return;
                 }
             }
-            PayPalPurchaseProvider provider = new PayPalPurchaseProvider(Configuration.Instance.PayPalUrl, Configuration.Instance.PayPalConfiguration);
+            PayPalPurchaseProvider provider = new PayPalPurchaseProvider(Configuration.Instance.PayPalUrl, Configuration.Instance.PayPalConfiguration, 20000);
 
             // TODO
 

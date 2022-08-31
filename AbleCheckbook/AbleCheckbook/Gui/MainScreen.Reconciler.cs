@@ -74,6 +74,7 @@ namespace AbleCheckbook
                 balanceAsAString = UtilityMethods.FormatCurrency(closingBalance);
             }
             textBoxThisReconBalance.Text = balanceAsAString;
+            textBoxPrevReconBalance.Enabled = textBoxThisReconBalance.Enabled = Configuration.Instance.GetAdminMode();
             _backend.UpdateCheckedEntries(_reconHelper);
             long disparity = _reconHelper.GetDisparity(closingBalance);
             if (textBoxPrevReconBalance.Text.Trim().Length > 0)
@@ -167,7 +168,7 @@ namespace AbleCheckbook
                 textBoxPrevReconBalance.Text = form.PrevReconBalance;
                 textBoxThisReconBalance.Text = form.ThisReconBalance;
                 dateTimePickerPrevRecon.Enabled = dateTimePickerThisRecon.Enabled = false;
-                textBoxPrevReconBalance.Enabled = textBoxThisReconBalance.Enabled = false;
+                textBoxPrevReconBalance.Enabled = textBoxThisReconBalance.Enabled = Configuration.Instance.GetAdminMode();
                 _backend.Db.PendingReconcileEndDate = dateTimePickerThisRecon.Value;
                 _backend.Db.PendingReconcileEndAmount = UtilityMethods.ParseCurrency(textBoxThisReconBalance.Text);
             }

@@ -39,7 +39,7 @@ namespace AbleLicensing
     /// - Client SiteSettings implementation must persist and restore all data from setters.
     /// - SiteSettings class should return the same MfrAndAppName as is used during installation.
     /// - The main steps in activation are setting the LicenseCode and ActivationPin.
-    /// - To check "is licensed": if(Activation.Instance.IsLicensed) ...
+    /// - To check "is activated": if(Activation.Instance.IsActivated) ...
     /// - LicenseCode is typically 12-chars: 6-char name, 1-char hyphen/punct, 5-char location
     /// - Calc activation PIN: string pin = ResetAllEntries(ChecksumOfString(SiteIdentification));
     /// - PIN must be set correctly before setting features or expiration
@@ -87,7 +87,7 @@ namespace AbleLicensing
         /// <summary>
         /// Optimization so it doesn't need to be rechecked too often.
         /// </summary>
-        private bool _isLicensed = false;
+        private bool _isActivated = false;
 
         /// <summary>
         /// When did we last attempt to activate locally?
@@ -177,10 +177,10 @@ namespace AbleLicensing
         }
 
         /// <summary>
-        /// Is this a licensed copy? (Is PIN valid?)
+        /// Is this an activated copy? (Is PIN valid?)
         /// </summary>
-        /// <returns>true if licensed</returns>
-        public bool IsLicensed
+        /// <returns>true if activated</returns>
+        public bool IsActivated
         {
             get
             {
@@ -195,22 +195,22 @@ namespace AbleLicensing
                 {
                     return false;
                 }
-                if (_isLicensed)
+                if (_isActivated)
                 {
                     return true;
                 }
                 long verificationCode = ChecksumOfString(SiteIdentification);
-                LoggerHook("[X7] IsLicensed() " + verificationCode);
+                LoggerHook("[X7] IsActivated() " + verificationCode);
                 string pin = CalculatePin(verificationCode);
                 bool ok = CheckVerificationCode(verificationCode, _lastAttempt.Ticks); // no-op: hacker diversion
-                _isLicensed = (pin == SiteSettings.ActivationPin);
+                _isActivated = (pin == SiteSettings.ActivationPin);
                 ok = !VerifyPin(verificationCode); // no-op: hacker diversion
                 pin = XorString(SiteIdentification + ok.ToString());  // no-op: hacker diversion
                 if(pin.Length < 1)  // no-op: hacker diversion (never happens)
                 {
                     _siteSettings = null;
                 }
-                return _isLicensed;
+                return _isActivated;
             }
         }
 
@@ -310,7 +310,7 @@ namespace AbleLicensing
         /// Use the ordinals of an enum to check for enabled features.
         /// </summary>
         /// <param name="featureBitmask">Or'ed feature numbers bitmask, i.e. 4 | 32</param>
-        /// <returns>true if feature is enabled AND this is a licensed version</returns>
+        /// <returns>true if feature is enabled AND this is an activated version</returns>
         public bool IsFeatureEnabled(long featureBitmask)
         {
             long mask = TranslateLong(SiteSettings.FeaturesBitMask);
@@ -418,7 +418,7 @@ namespace AbleLicensing
         /// <summary>
         /// GetExpirationDays().
         /// </summary>
-        /// <returns>Number of days remaining before expiration, negative if expired. 10000 if licensed/non-expiring.</returns>
+        /// <returns>Number of days remaining before expiration, negative if expired. 10000 if activated/non-expiring.</returns>
         /// <remarks>
         /// Expiration is based on the more pessimistic of two metrics:
         ///  1. The number of dates seen/tracked by UpdateSiteSettings()
@@ -431,7 +431,7 @@ namespace AbleLicensing
         /// </remarks>
         public int GetExpirationDays()
         {
-            if (IsLicensed)
+            if (IsActivated)
             {
                 return 10000;
             }

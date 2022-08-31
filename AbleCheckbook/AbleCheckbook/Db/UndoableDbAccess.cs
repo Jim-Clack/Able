@@ -1088,7 +1088,7 @@ namespace AbleCheckbook.Db
             _redoSteps = new List<UndoStep>();
             _redoMarkerCount = 0;
             _redoDescription = "";
-            while(!Configuration.Instance.GetIsLicensedVersion() && _undoMarkerCount > 3)
+            while(!Configuration.Instance.GetIsActivated() && _undoMarkerCount > 3)
             {
                 ReleaseWeakData(1);
             }

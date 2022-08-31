@@ -57,7 +57,7 @@ namespace AbleCheckbook.Gui
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.Text = textBoxHeading.Text = Strings.Get("Able Strategies AbleCheckbook - See Terms of License");
             textBox2.Text = Strings.Get("Time-Limited Evaluation Copy");
-            if (Configuration.Instance.GetIsLicensedVersion())
+            if (Configuration.Instance.GetIsActivated())
             {
                 textBox2.Text = Strings.Get("Licensed to: ") + Configuration.Instance.LicenseCode;
             }

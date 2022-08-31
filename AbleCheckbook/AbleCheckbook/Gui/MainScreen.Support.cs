@@ -294,7 +294,7 @@ namespace AbleCheckbook
             toolStripButtonRedo.Text = redoDesc;
             toolStripButtonRedo.ToolTipText = redoDesc;
             diagnosticsToolStripMenuItem.Visible = adminModeToolStripMenuItem.Visible = 
-                (Configuration.Instance.GetUserLevel() != UserLevel.Unlicensed);
+                (Configuration.Instance.GetUserLevel() != UserLevel.Evaluation);
             copyToolStripMenuItem.Enabled = dataGridView1.SelectedRows.Count == 1;
             toolStripButtonCopy.Enabled = dataGridView1.SelectedRows.Count == 1;
             deleteEntryToolStripMenuItem.Enabled = dataGridView1.SelectedRows.Count == 1;

@@ -137,7 +137,7 @@ namespace AbleStrategiesServices.Support
         }
 
         /// <summary>
-        /// Modify/Upsert the first purchase related to the license, insert new otherwise.
+        /// Modify/Upsert the purchase related to the license and product, insert new otherwise.
         /// </summary>
         /// <param name="auth">Typically PayPalStd.</param>
         /// <param name="trans">Authority's transaction number.</param>

@@ -4,15 +4,15 @@ Development Notes
 Workstation Setup Notes...
  A. Install MS 2019 Visual Studio complete
  B. Install MS 2017 Installer for Application Deployment via MSIx
- C. Install via NuGet: System.Text.Json (AbleCheckbook & AbleLicensing)
- C. Install via NuGet: PayPal .NET SDK (AbleLicensing only)
- D. Install git and/or GitHub desktop
- E. You will want to install Postman and WinSCP as well
- F. AbleCheckbook VS Pre-Build Event: copy $(ProjectDir)Support\* $(TargetDir)
- G. Set Build Configuration Symbols: Debug: SUPERUSER, Release: RELEASE 
- H. In AssemblyInfo.cs, if necessary, change to [assembly: AssemblyVersion("1.0.*")]
- I. Import AbleCheckbook.postman_collection.json into PostMan for sandboxing 
- J. Options:Debug:General Uncheck "Step over propertes and operators" (Critical!)
+ C. Install git and/or GitHub desktop
+ D. You will want to install Postman and WinSCP as well
+ E. AbleCheckbook VS Pre-Build Event: copy $(ProjectDir)Support\* $(TargetDir)
+ F. Set Build Configuration Symbols: Debug: SUPERUSER, Release: RELEASE 
+ G. Install via NuGet: System.Text.Json (AbleCheckbook & AbleLicensing)
+ H. Install via NuGet: PayPal .NET SDK (AbleLicensing only)
+ I. In AssemblyInfo.cs, if necessary, change to [assembly: AssemblyVersion("1.0.*")]
+ J. Import AbleCheckbook.postman_collection.json into PostMan for sandboxing 
+ K. Options:Debug:General Uncheck "Step over propertes and operators" (Critical!)
 
  Caveats...
  . If you are new to MS VS, see the notes at the end of this document
@@ -59,9 +59,9 @@ Design of this project...
  * 65% test coverage of non-GUI code, addressing all happy-paths therein 
 
 User Levels (and corresponding License Code delimiters)...
- 0. Eval (Unlicensed, Time Limited, Limited Undo, No Support, No Admin)
+ 0. Eval (Evaluation, Time Limited, Limited Undo, No Support, No Admin)
  1. Deactivated (abuse deactivates most latent)     en-dash, not a hyphen: –
- 2. Standard (Regular licensed version)                            hyphen: -
+ 2. Standard (Regular activated version)                           hyphen: -
  3. ProCPA (Named Accts, SLA, Live Support, Mult Instances)     ampersand: &
  4. SuperUser (UserDb Maint, Log Reader, Activation Codes, etc.) (+DEBUG): @
 
@@ -93,9 +93,9 @@ Open Banking API...
  https://www.programmableweb.com/api/
 PayPal
  https://developer.paypal.com/home
- https://github.com/paypal/PayPal-NET-SDK/wiki/Configuration
  https://github.com/paypal/PayPal-NET-SDK/wiki/Make-Your-First-Call
  https://developer.paypal.com/docs/business/checkout/set-up-standard-payments/
+ https://stackoverflow.com/questions/29474270/c-sharp-paypal-rest-api-checkout-with-credit-card
 Desktop Icon
  https://techcommunity.microsoft.com/t5/windows-dev-appconsult/msix-create-desktop-shortcuts-with-package-support-framework-and/ba-p/3300891
 Info on deploying .NET apps to Linux
@@ -147,20 +147,23 @@ Notes to developers who are MS/VS virgins...
 
  When you set a background image you also want to set the layout. Of course
  you might think that to set the layout for a BackgroundImage you would set
- the proprety BackgroundImageLayout, but no. That property seems to do NADA.
- Instead you should set SizeMode. Yes, really.
+ the proprety BackgroundImageLayout, but no. Instead you should set SizeMode.
+ Yes, really.
 
  To view/edit the code for certain Forms classes, you may want to avoid the 
- obvious click-the-form-name-then-double-click-the-title-bar. That also runs
+ obvious dpouble-click in the solution explorer as well as avoiding the 
+ click-the-form-name-then-double-click-the-title-bar. These clicks also run
  the VS resource-compiler and form-generator which may do crazy things. Of 
  course there are many cases where you want that to occur but, when you don't,
  then click the expand arrow to the left of the form then right-click-the-
  code-file-beneath-it-then-select-view-code. Otherwise you will sometimes get
  bitten in the ass. This is because there are two source files for each form,
  the one you edit, which is not the one you get when you click a form in the
- Solution Explorer, as that opens the "xxx.Designer.cs" file.
+ Solution Explorer, as that opens the "xxx.Designer.cs" file. For instance, if
+ you double-click MainScreen.Support.cs, VS generates an OnLoad handler that 
+ conflicts with the existing OnLoad handler. You WILL be bitten by this!
 
- Speaking of the resource-compiler and form-generator, yoou will sometimes 
+ Speaking of the resource-compiler and form-generator, you will sometimes 
  see a form get scrambled, a form that suddenly cannot be rendered, or a
  form that comes up in a foreign language. Go back to the code and undo 
  whatever you did that caused the issue. You may want to avoid using Undo
@@ -188,7 +191,10 @@ Notes to developers who are MS/VS virgins...
  somersaults in your underoos, and it will still use the obsolete. And the 
  error message may be very misleading, related to an indirect effect.
 
-PayPal WS
+ In the app.config (or web.config) file, <configSections> must be the first
+ element inside the <configuration> or it will be ignored.
+
+PayPal Web Services
  jim.clack@gmail.com p8
  https://developer.paypal.com/
  Account Type:     Personal (Merchant)
@@ -217,26 +223,8 @@ PayPal WS
    Client ID:      
    Secret:         (do not list here)
    Return URL:     (not set up yet)
- TOKEN REQUEST
-   Request:
-     https://api-m.sandbox.paypal.com/v1/oauth2/token
-     POST
-     Authorization: Basic QWZscHJ6 ... 4wSmFCNlpGekRnMU9qQjg= (base64 from Client ID and Secret)
-     Content-Type: application/x-www-form-urlencoded
-     Body: grant_type:client_credentials
-   Response: {
-       "scope": "https://uri.paypal.com/services/invoicing ... openid ... https://uri.paypal.com/services/applications/webhooks",
-       "access_token": "A21AALDNImyn3a0Fv ... 1Q8rgua47FxY7-Fh92SpHGJ06YPPOA48D-QTbPig",
-       "token_type": "Bearer",
-       "app_id": "APP-80W284485P519543T",
-       "expires_in": 32310,
-       "nonce": "2022-08-27T23:01:39ZoyZ2NnVEKuu3f-8vN30bz8CInmQ2pnJVgAj4Zt1z11I"
-     }
- PURCHASE:
 
-   TODO
-
-JSON REST API 
+JSON REST API (AbleStrategies checkbook web services)
   All return a JsonUserInfoResponse except for GET verify connection
   Verify connection
     GET as/checkbook (returns strings in a JSON wrapper)
@@ -257,6 +245,8 @@ JSON REST API
     "ApiState": 20,
     "Message": "",
     "PinNumber": "",
+	"ReconfigurationRecords": [
+	],
     "UserInfos": [
         {
             "LicenseRecord": {

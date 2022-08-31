@@ -18,7 +18,7 @@ namespace AbleCheckbook.Logic
     /// </summary>
     public enum UserLevel
     {
-        Unlicensed = 0,
+        Evaluation = 0,
         Deactivated = 1,
         Standard = 2,
         ProCPA = 4,
@@ -39,12 +39,15 @@ namespace AbleCheckbook.Logic
 #if DEBUG
         private string _webServiceUrl = "https://localhost:44363/as/checkbook";
         private string _payPalUrl = "https://api-m.sandbox.paypal.com";
+        private string _payPalConfiguration = 
+            "AflprzxmNo52GWqoFsivWm8Ozk9SCuLZPBieSB2oEEUL-P67ghOb9TdxE-GG7EgOlk6dfYdUl1OJgI_u" + "|" +
+            "ELlCB3sJ6-hfhAuiqZI-8Dk9ykeWyqQdLrjJ0raYXBkd_2p2QqF_2bjzl8eyMpPUn0JaB6ZFzDg1OjB8";
 #else
         private string _webServiceUrl = "https://ablestrategies.com/as/checkbook/";
         private string _payPalUrl = "https://api-m.paypal.com";
+        private string _payPalConfiguration = "default|default";
 #endif
         private string _alertNotification = "";
-        private string _payPalConfiguration = "default|default";
         private string _directoryLogs = "";
         private string _directoryDatabase = "";
         private string _directorySupportFiles = "";
@@ -169,9 +172,9 @@ namespace AbleCheckbook.Logic
         }
 
         /// <summary>
-        /// Is this is a licensed version?
+        /// Is this is an activated version?
         /// </summary>
-        public bool GetIsLicensedVersion()
+        public bool GetIsActivated()
         {
 #if DEBUG
             // dont proceed if in UNIT TEST mode
@@ -182,7 +185,7 @@ namespace AbleCheckbook.Logic
                     return true;
             }
 #endif
-            return Activation.Instance.IsLicensed;
+            return Activation.Instance.IsActivated;
         }
 
         /// <summary>
@@ -413,15 +416,15 @@ namespace AbleCheckbook.Logic
         }
 
         /// <summary>
-        /// Get the license level. i.e. Unlicensed, Basic, SuperUser.
+        /// Get the license level. i.e. Evaluation, Basic, SuperUser.
         /// </summary>
         /// <returns></returns>
         public UserLevel GetUserLevel()
         {
-            bool isLicensed = GetIsLicensedVersion();
-            if (!isLicensed || _licenseCode == null || _licenseCode.Length < 3 || _licenseCode.ToUpper().Contains("UNLICENSED"))
+            bool isActivated = GetIsActivated();
+            if (!isActivated || _licenseCode == null || _licenseCode.Length < 3 || _licenseCode.ToUpper().Contains("UNLICENSED"))
             {
-                return UserLevel.Unlicensed;
+                return UserLevel.Evaluation;
             }
             // We should augment this with Activation.IsFeatureEnabled().
             switch ((int)_licenseCode[6])
@@ -435,7 +438,7 @@ namespace AbleCheckbook.Logic
                 case (int)UserLevelPunct.SuperUser:
                     return UserLevel.SuperUser;
             }
-            return UserLevel.Unlicensed;
+            return UserLevel.Evaluation;
         }
 
         /// <summary>
@@ -456,7 +459,7 @@ namespace AbleCheckbook.Logic
             }
             _postEventAdvanceDays = 30;
             _logLevel = LogLevel.Diag;
-            _licenseCode = Strings.Get("(Unlicensed)");
+            _licenseCode = Strings.Get("(Evaluation)");
             _showCalendars = true;
             _suppressReconcileAlert = false;
             _suppressYearEndAlert = false;
@@ -493,7 +496,7 @@ namespace AbleCheckbook.Logic
         }
 
         /// <summary>
-        /// Verify that this is a licensed version.
+        /// Verify that this is an activated version.
         /// </summary>
         public void Verify()
         {

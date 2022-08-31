@@ -14,7 +14,7 @@ namespace AbleLicensing
     /// </summary>
     public enum UserLevelPunct
     {
-        Unlicensed = 0,
+        Evaluation = 0,
         Unknown = '~',
         Deactivated = (int)'–', // note: en-dash, not a hyphen
         Standard = (int)'-',

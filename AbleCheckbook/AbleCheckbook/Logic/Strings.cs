@@ -351,7 +351,7 @@ namespace AbleCheckbook.Logic
             AddString("Sorry");
             AddString("Admin Mode - Force Year-End Wrap-Up?");
             AddString("I accept these terms. (If you do not accept then close and uninstall this program)");
-            AddString("If you have already paid and are licensed, you may fill out your codes in the spaces below");
+            AddString("If you have already paid and activated, you may fill out your codes in the spaces below");
             AddString("Try Again?");
             AddString("Category Report");
             AddString("Print Register");
@@ -419,8 +419,8 @@ namespace AbleCheckbook.Logic
             AddString("Activation");
             AddString("Activate");
             AddString("Activated");
-            AddString("(Licensed)");
-            AddString("(Unlicensed)");
+            AddString("(Activated)");
+            AddString("(Evaluation)");
             AddString("Site Identification Code");
             AddString("Contact/User Name");
             AddString("Address and Street");
@@ -539,7 +539,7 @@ namespace AbleCheckbook.Logic
             AddString("Licensed to: ");
             AddString("Level: ");
             AddString("Version: ");
-            AddString("UNLICENSED_VERSION");
+            AddString("EVALUATION_VERSION");
             // lowercase comma-separated, prefix: =equal, ~contains, <startwith, >endwith, *default, !category
             AddString("CategoryGuesses",
                 "~cafe,~bistro,~steak,~carrabba,~ruby tuesday,~fridays,~mcdonalds,~tim horton,~taco bell" +

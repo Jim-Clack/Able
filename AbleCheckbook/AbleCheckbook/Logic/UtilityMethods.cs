@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace AbleCheckbook.Logic
@@ -586,6 +587,108 @@ namespace AbleCheckbook.Logic
                 }
             }
             return buffer.ToString().Trim();
+        }
+
+        /// <summary>
+        /// [static] Format a phone number.
+        /// </summary>
+        /// <param name="phoneNumber">Phone number, possibly with extraneous chars.</param>
+        /// <returns>phoneNumber, reformatted if it contains at least ten digits</returns>
+        public static string FormatPhoneNumber(string phoneNumber)
+        {
+            string phone = OnlyDigits(phoneNumber);
+            if (phone.Length == 0)
+            {
+                return phone;
+            }
+            if (phone.Length >= 10)
+            {
+                int lgt = phone.Length;
+                phone = phone.Substring(0, lgt - 7) + "-" + phone.Substring(lgt - 7, 3) + "-" + phone.Substring(lgt - 4);
+                if (lgt > 10)
+                {
+                    phone = "+" + phone.Substring(0, lgt - 10) + "-" + phone.Substring(lgt - 10);
+                }
+            }
+            return phone;
+        }
+
+        /// <summary>
+        /// [static] Strip everything but digits from a string.
+        /// </summary>
+        /// <param name="val">To be stripped</param>
+        /// <returns>val with all non-digits stripped</returns>
+        public static string OnlyDigits(string val)
+        {
+            return (new Regex("[^0-9]")).Replace(val, "");
+        }
+
+        /// <summary>
+        /// [static] Return the credit/debit card type.
+        /// </summary>
+        /// <param name="ccNumber">Card number</param>
+        /// <returns>Amex, Visa, Mastercard, Discover, or "" if unkown</returns>
+        /// <remarks>TODO: Verify check digit, BIN, and length</remarks>
+        public static string CreditCardType(string ccNumber)
+        {
+            ccNumber = OnlyDigits(ccNumber);
+            if(ccNumber.Length < 15)
+            {
+                return "";
+            }
+            switch(ccNumber[0])
+            {
+                case '3':
+                    if (ccNumber.Length == 15)
+                    {
+                        return "Amex";
+                    }
+                    break;
+                case '4':
+                    if (ccNumber.Length == 16)
+                    {
+                        return "Visa";
+                    }
+                    break;
+                case '5':
+                    if (ccNumber.Length == 16)
+                    {
+                        return "Mastercard";
+                    }
+                    break;
+                case '6':
+                    if (ccNumber.Length == 16)
+                    {
+                        return "Discover";
+                    }
+                    break;
+                default:
+                    break;
+            }
+            return "";
+        }
+
+        /// <summary>
+        /// Format a credit card number with hyphens.
+        /// </summary>
+        /// <param name="ccNumber">To be formatted</param>
+        /// <returns>ccNumber with hyphens inserted</returns>
+        public static string FormatCreditCardNumber(string ccNumber)
+        {
+            ccNumber = OnlyDigits(ccNumber);
+            if(ccNumber.Length < 4)
+            {
+                return ccNumber;
+            }
+            if(ccNumber[0] == '3' && ccNumber.Length >= 15)
+            {
+                return ccNumber.Substring(0, 4) + "-" + ccNumber.Substring(4, 6) + "-" + ccNumber.Substring(10);
+            }
+            if (ccNumber.Length >= 16)
+            {
+                return ccNumber.Substring(0, 4) + "-" + ccNumber.Substring(4, 4) + "-" + ccNumber.Substring(8, 4) + "-" + ccNumber.Substring(12);
+            }
+            return ccNumber;
         }
 
         /// <summary>

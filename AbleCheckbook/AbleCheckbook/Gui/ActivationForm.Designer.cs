@@ -278,7 +278,7 @@
             this.labelCityState.Name = "labelCityState";
             this.labelCityState.Size = new System.Drawing.Size(155, 17);
             this.labelCityState.TabIndex = 23;
-            this.labelCityState.Text = "City and State/Province";
+            this.labelCityState.Text = "City or County";
             // 
             // labelStreetAddress
             // 

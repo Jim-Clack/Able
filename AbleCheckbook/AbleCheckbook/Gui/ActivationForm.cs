@@ -34,7 +34,7 @@ namespace AbleCheckbook.Gui
             labelSiteId.Text = Strings.Get("Site Identification Code");
             labelUserId.Text = Strings.Get("Contact/User Name");
             labelStreetAddress.Text = Strings.Get("Address and Street");
-            labelCityState.Text = Strings.Get("City and State/Province");
+            labelCityState.Text = Strings.Get("City or County");
             labelPostalCode.Text = Strings.Get("Postal/ZIP Code or CC");
             labelPhoneNumber.Text = Strings.Get("10-12 Digit Phone Nbr");
             labelEmailAddress.Text = Strings.Get("Contact Email Address");

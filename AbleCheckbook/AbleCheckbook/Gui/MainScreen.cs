@@ -533,6 +533,13 @@ namespace AbleCheckbook
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            new PaymentInfoForm(
+                new string[] {
+                    "AbleCheckbook Std Edition","" +
+                    " Price:            $29.95",
+                    "                 --------",
+                    " Total:            $29.95"
+                }).ShowDialog();
             OnlineActivation.Instance.TestConnection();
 #if DEBUG
             /*

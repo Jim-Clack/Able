@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PaymentInfoForm));
             this.labelInstructions = new System.Windows.Forms.Label();
             this.textBoxFirstName = new System.Windows.Forms.TextBox();
             this.textBoxLastName = new System.Windows.Forms.TextBox();
@@ -62,6 +64,7 @@
             this.comboBoxCountryCode = new System.Windows.Forms.ComboBox();
             this.comboBoxCcExpMonth = new System.Windows.Forms.ComboBox();
             this.comboBoxCcExpYear = new System.Windows.Forms.ComboBox();
+            this.toolTipPopups = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
             // 
             // labelInstructions
@@ -69,16 +72,16 @@
             this.labelInstructions.AutoSize = true;
             this.labelInstructions.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelInstructions.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.labelInstructions.Location = new System.Drawing.Point(12, 13);
+            this.labelInstructions.Location = new System.Drawing.Point(12, 7);
             this.labelInstructions.Name = "labelInstructions";
-            this.labelInstructions.Size = new System.Drawing.Size(574, 17);
+            this.labelInstructions.Size = new System.Drawing.Size(548, 17);
             this.labelInstructions.TabIndex = 0;
-            this.labelInstructions.Text = "Entries must agree with credit card company data, or your purchase may not go thr" +
+            this.labelInstructions.Text = "Entries must agree with credit card billing info, or your purchase may not go thr" +
     "ough...";
             // 
             // textBoxFirstName
             // 
-            this.textBoxFirstName.Location = new System.Drawing.Point(141, 42);
+            this.textBoxFirstName.Location = new System.Drawing.Point(141, 35);
             this.textBoxFirstName.Name = "textBoxFirstName";
             this.textBoxFirstName.Size = new System.Drawing.Size(150, 22);
             this.textBoxFirstName.TabIndex = 1;
@@ -87,7 +90,7 @@
             // 
             this.textBoxLastName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxLastName.Location = new System.Drawing.Point(430, 42);
+            this.textBoxLastName.Location = new System.Drawing.Point(430, 35);
             this.textBoxLastName.Name = "textBoxLastName";
             this.textBoxLastName.Size = new System.Drawing.Size(149, 22);
             this.textBoxLastName.TabIndex = 2;
@@ -96,7 +99,7 @@
             // 
             this.textBoxAptNumber.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxAptNumber.Location = new System.Drawing.Point(430, 74);
+            this.textBoxAptNumber.Location = new System.Drawing.Point(430, 67);
             this.textBoxAptNumber.Name = "textBoxAptNumber";
             this.textBoxAptNumber.Size = new System.Drawing.Size(149, 22);
             this.textBoxAptNumber.TabIndex = 4;
@@ -104,7 +107,7 @@
             // 
             // textBoxStreetAddress
             // 
-            this.textBoxStreetAddress.Location = new System.Drawing.Point(141, 74);
+            this.textBoxStreetAddress.Location = new System.Drawing.Point(141, 67);
             this.textBoxStreetAddress.Name = "textBoxStreetAddress";
             this.textBoxStreetAddress.Size = new System.Drawing.Size(150, 22);
             this.textBoxStreetAddress.TabIndex = 3;
@@ -113,21 +116,21 @@
             // 
             this.textBoxState.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxState.Location = new System.Drawing.Point(430, 106);
+            this.textBoxState.Location = new System.Drawing.Point(430, 99);
             this.textBoxState.Name = "textBoxState";
             this.textBoxState.Size = new System.Drawing.Size(149, 22);
             this.textBoxState.TabIndex = 6;
             // 
             // textBoxCity
             // 
-            this.textBoxCity.Location = new System.Drawing.Point(141, 106);
+            this.textBoxCity.Location = new System.Drawing.Point(141, 99);
             this.textBoxCity.Name = "textBoxCity";
             this.textBoxCity.Size = new System.Drawing.Size(150, 22);
             this.textBoxCity.TabIndex = 5;
             // 
             // textBoxZip
             // 
-            this.textBoxZip.Location = new System.Drawing.Point(141, 138);
+            this.textBoxZip.Location = new System.Drawing.Point(141, 131);
             this.textBoxZip.Name = "textBoxZip";
             this.textBoxZip.Size = new System.Drawing.Size(150, 22);
             this.textBoxZip.TabIndex = 7;
@@ -136,14 +139,14 @@
             // 
             this.textBoxCcCvv2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxCcCvv2.Location = new System.Drawing.Point(518, 217);
+            this.textBoxCcCvv2.Location = new System.Drawing.Point(518, 206);
             this.textBoxCcCvv2.Name = "textBoxCcCvv2";
             this.textBoxCcCvv2.Size = new System.Drawing.Size(61, 22);
             this.textBoxCcCvv2.TabIndex = 12;
             // 
             // textBoxCcNumber
             // 
-            this.textBoxCcNumber.Location = new System.Drawing.Point(141, 217);
+            this.textBoxCcNumber.Location = new System.Drawing.Point(141, 206);
             this.textBoxCcNumber.Name = "textBoxCcNumber";
             this.textBoxCcNumber.Size = new System.Drawing.Size(254, 22);
             this.textBoxCcNumber.TabIndex = 11;
@@ -153,14 +156,14 @@
             // 
             this.textBoxEmail.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxEmail.Location = new System.Drawing.Point(430, 170);
+            this.textBoxEmail.Location = new System.Drawing.Point(430, 163);
             this.textBoxEmail.Name = "textBoxEmail";
             this.textBoxEmail.Size = new System.Drawing.Size(149, 22);
             this.textBoxEmail.TabIndex = 10;
             // 
             // textBoxPhone
             // 
-            this.textBoxPhone.Location = new System.Drawing.Point(141, 170);
+            this.textBoxPhone.Location = new System.Drawing.Point(141, 163);
             this.textBoxPhone.Name = "textBoxPhone";
             this.textBoxPhone.Size = new System.Drawing.Size(150, 22);
             this.textBoxPhone.TabIndex = 9;
@@ -170,7 +173,7 @@
             // 
             this.buttonBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonBar.Location = new System.Drawing.Point(16, 202);
+            this.buttonBar.Location = new System.Drawing.Point(16, 193);
             this.buttonBar.Name = "buttonBar";
             this.buttonBar.Size = new System.Drawing.Size(563, 6);
             this.buttonBar.TabIndex = 15;
@@ -184,32 +187,33 @@
             this.textBoxShoppingCart.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBoxShoppingCart.Font = new System.Drawing.Font("Courier New", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxShoppingCart.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.textBoxShoppingCart.Location = new System.Drawing.Point(16, 284);
+            this.textBoxShoppingCart.Location = new System.Drawing.Point(16, 270);
             this.textBoxShoppingCart.Multiline = true;
             this.textBoxShoppingCart.Name = "textBoxShoppingCart";
             this.textBoxShoppingCart.ReadOnly = true;
             this.textBoxShoppingCart.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxShoppingCart.Size = new System.Drawing.Size(275, 101);
+            this.textBoxShoppingCart.Size = new System.Drawing.Size(295, 93);
             this.textBoxShoppingCart.TabIndex = 16;
             this.textBoxShoppingCart.WordWrap = false;
             // 
             // buttonOk
             // 
             this.buttonOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOk.Location = new System.Drawing.Point(460, 341);
+            this.buttonOk.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("buttonOk.BackgroundImage")));
+            this.buttonOk.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.buttonOk.Location = new System.Drawing.Point(459, 329);
             this.buttonOk.Name = "buttonOk";
-            this.buttonOk.Size = new System.Drawing.Size(119, 32);
+            this.buttonOk.Size = new System.Drawing.Size(121, 34);
             this.buttonOk.TabIndex = 15;
-            this.buttonOk.Text = "Purchase";
             this.buttonOk.UseVisualStyleBackColor = true;
             this.buttonOk.Click += new System.EventHandler(this.buttonOk_Click);
             // 
             // buttonCancel
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonCancel.Location = new System.Drawing.Point(317, 341);
+            this.buttonCancel.Location = new System.Drawing.Point(331, 330);
             this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(119, 32);
+            this.buttonCancel.Size = new System.Drawing.Size(105, 32);
             this.buttonCancel.TabIndex = 16;
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
@@ -222,18 +226,18 @@
             this.textBoxErrorMessage.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBoxErrorMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxErrorMessage.ForeColor = System.Drawing.Color.Red;
-            this.textBoxErrorMessage.Location = new System.Drawing.Point(298, 284);
+            this.textBoxErrorMessage.Location = new System.Drawing.Point(316, 272);
             this.textBoxErrorMessage.Multiline = true;
             this.textBoxErrorMessage.Name = "textBoxErrorMessage";
             this.textBoxErrorMessage.ReadOnly = true;
-            this.textBoxErrorMessage.Size = new System.Drawing.Size(281, 51);
+            this.textBoxErrorMessage.Size = new System.Drawing.Size(273, 52);
             this.textBoxErrorMessage.TabIndex = 19;
             this.textBoxErrorMessage.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // labelFirstName
             // 
             this.labelFirstName.AutoSize = true;
-            this.labelFirstName.Location = new System.Drawing.Point(12, 44);
+            this.labelFirstName.Location = new System.Drawing.Point(12, 37);
             this.labelFirstName.Name = "labelFirstName";
             this.labelFirstName.Size = new System.Drawing.Size(118, 17);
             this.labelFirstName.TabIndex = 20;
@@ -242,7 +246,7 @@
             // labelLastName
             // 
             this.labelLastName.AutoSize = true;
-            this.labelLastName.Location = new System.Drawing.Point(303, 45);
+            this.labelLastName.Location = new System.Drawing.Point(303, 38);
             this.labelLastName.Name = "labelLastName";
             this.labelLastName.Size = new System.Drawing.Size(118, 17);
             this.labelLastName.TabIndex = 21;
@@ -251,7 +255,7 @@
             // labelStreetAddress
             // 
             this.labelStreetAddress.AutoSize = true;
-            this.labelStreetAddress.Location = new System.Drawing.Point(12, 75);
+            this.labelStreetAddress.Location = new System.Drawing.Point(12, 68);
             this.labelStreetAddress.Name = "labelStreetAddress";
             this.labelStreetAddress.Size = new System.Drawing.Size(102, 17);
             this.labelStreetAddress.TabIndex = 22;
@@ -260,7 +264,7 @@
             // labelAptNumber
             // 
             this.labelAptNumber.AutoSize = true;
-            this.labelAptNumber.Location = new System.Drawing.Point(304, 77);
+            this.labelAptNumber.Location = new System.Drawing.Point(304, 70);
             this.labelAptNumber.Name = "labelAptNumber";
             this.labelAptNumber.Size = new System.Drawing.Size(83, 17);
             this.labelAptNumber.TabIndex = 23;
@@ -269,7 +273,7 @@
             // labelCity
             // 
             this.labelCity.AutoSize = true;
-            this.labelCity.Location = new System.Drawing.Point(13, 107);
+            this.labelCity.Location = new System.Drawing.Point(13, 100);
             this.labelCity.Name = "labelCity";
             this.labelCity.Size = new System.Drawing.Size(107, 17);
             this.labelCity.TabIndex = 24;
@@ -278,7 +282,7 @@
             // labelState
             // 
             this.labelState.AutoSize = true;
-            this.labelState.Location = new System.Drawing.Point(304, 109);
+            this.labelState.Location = new System.Drawing.Point(304, 102);
             this.labelState.Name = "labelState";
             this.labelState.Size = new System.Drawing.Size(107, 17);
             this.labelState.TabIndex = 25;
@@ -287,7 +291,7 @@
             // labelZip
             // 
             this.labelZip.AutoSize = true;
-            this.labelZip.Location = new System.Drawing.Point(14, 139);
+            this.labelZip.Location = new System.Drawing.Point(14, 132);
             this.labelZip.Name = "labelZip";
             this.labelZip.Size = new System.Drawing.Size(108, 17);
             this.labelZip.TabIndex = 26;
@@ -296,7 +300,7 @@
             // labelCountryCode
             // 
             this.labelCountryCode.AutoSize = true;
-            this.labelCountryCode.Location = new System.Drawing.Point(304, 139);
+            this.labelCountryCode.Location = new System.Drawing.Point(304, 132);
             this.labelCountryCode.Name = "labelCountryCode";
             this.labelCountryCode.Size = new System.Drawing.Size(94, 17);
             this.labelCountryCode.TabIndex = 27;
@@ -305,7 +309,7 @@
             // labelPhone
             // 
             this.labelPhone.AutoSize = true;
-            this.labelPhone.Location = new System.Drawing.Point(14, 171);
+            this.labelPhone.Location = new System.Drawing.Point(14, 164);
             this.labelPhone.Name = "labelPhone";
             this.labelPhone.Size = new System.Drawing.Size(124, 17);
             this.labelPhone.TabIndex = 28;
@@ -314,7 +318,7 @@
             // labelEmail
             // 
             this.labelEmail.AutoSize = true;
-            this.labelEmail.Location = new System.Drawing.Point(304, 171);
+            this.labelEmail.Location = new System.Drawing.Point(304, 164);
             this.labelEmail.Name = "labelEmail";
             this.labelEmail.Size = new System.Drawing.Size(98, 17);
             this.labelEmail.TabIndex = 29;
@@ -323,7 +327,7 @@
             // labelCcNumber
             // 
             this.labelCcNumber.AutoSize = true;
-            this.labelCcNumber.Location = new System.Drawing.Point(14, 218);
+            this.labelCcNumber.Location = new System.Drawing.Point(14, 207);
             this.labelCcNumber.Name = "labelCcNumber";
             this.labelCcNumber.Size = new System.Drawing.Size(112, 17);
             this.labelCcNumber.TabIndex = 30;
@@ -332,7 +336,7 @@
             // labelCcCvv2
             // 
             this.labelCcCvv2.AutoSize = true;
-            this.labelCcCvv2.Location = new System.Drawing.Point(414, 218);
+            this.labelCcCvv2.Location = new System.Drawing.Point(414, 207);
             this.labelCcCvv2.Name = "labelCcCvv2";
             this.labelCcCvv2.Size = new System.Drawing.Size(86, 17);
             this.labelCcCvv2.TabIndex = 31;
@@ -342,7 +346,7 @@
             // labelCcExpMonth
             // 
             this.labelCcExpMonth.AutoSize = true;
-            this.labelCcExpMonth.Location = new System.Drawing.Point(14, 252);
+            this.labelCcExpMonth.Location = new System.Drawing.Point(14, 241);
             this.labelCcExpMonth.Name = "labelCcExpMonth";
             this.labelCcExpMonth.Size = new System.Drawing.Size(113, 17);
             this.labelCcExpMonth.TabIndex = 32;
@@ -351,7 +355,7 @@
             // labelCcExpYear
             // 
             this.labelCcExpYear.AutoSize = true;
-            this.labelCcExpYear.Location = new System.Drawing.Point(304, 251);
+            this.labelCcExpYear.Location = new System.Drawing.Point(304, 240);
             this.labelCcExpYear.Name = "labelCcExpYear";
             this.labelCcExpYear.Size = new System.Drawing.Size(104, 17);
             this.labelCcExpYear.TabIndex = 33;
@@ -369,7 +373,7 @@
             "JP",
             "FR",
             "DE"});
-            this.comboBoxCountryCode.Location = new System.Drawing.Point(430, 137);
+            this.comboBoxCountryCode.Location = new System.Drawing.Point(430, 130);
             this.comboBoxCountryCode.Name = "comboBoxCountryCode";
             this.comboBoxCountryCode.Size = new System.Drawing.Size(149, 24);
             this.comboBoxCountryCode.TabIndex = 8;
@@ -391,7 +395,7 @@
             "10",
             "11",
             "12"});
-            this.comboBoxCcExpMonth.Location = new System.Drawing.Point(141, 248);
+            this.comboBoxCcExpMonth.Location = new System.Drawing.Point(141, 237);
             this.comboBoxCcExpMonth.Name = "comboBoxCcExpMonth";
             this.comboBoxCcExpMonth.Size = new System.Drawing.Size(149, 24);
             this.comboBoxCcExpMonth.TabIndex = 13;
@@ -401,7 +405,7 @@
             this.comboBoxCcExpYear.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxCcExpYear.FormattingEnabled = true;
-            this.comboBoxCcExpYear.Location = new System.Drawing.Point(430, 248);
+            this.comboBoxCcExpYear.Location = new System.Drawing.Point(430, 237);
             this.comboBoxCcExpYear.Name = "comboBoxCcExpYear";
             this.comboBoxCcExpYear.Size = new System.Drawing.Size(149, 24);
             this.comboBoxCcExpYear.TabIndex = 14;
@@ -410,7 +414,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(594, 387);
+            this.CancelButton = this.buttonCancel;
+            this.ClientSize = new System.Drawing.Size(594, 372);
             this.Controls.Add(this.comboBoxCcExpYear);
             this.Controls.Add(this.comboBoxCcExpMonth);
             this.Controls.Add(this.comboBoxCountryCode);
@@ -445,8 +450,8 @@
             this.Controls.Add(this.labelStreetAddress);
             this.Controls.Add(this.labelLastName);
             this.Controls.Add(this.labelFirstName);
-            this.MaximumSize = new System.Drawing.Size(740, 480);
-            this.MinimumSize = new System.Drawing.Size(600, 400);
+            this.MaximumSize = new System.Drawing.Size(740, 540);
+            this.MinimumSize = new System.Drawing.Size(590, 390);
             this.Name = "PaymentInfoForm";
             this.Text = "PaymentInfoForm";
             this.Load += new System.EventHandler(this.PaymentInfoForm_Load);
@@ -491,5 +496,6 @@
         private System.Windows.Forms.ComboBox comboBoxCountryCode;
         private System.Windows.Forms.ComboBox comboBoxCcExpMonth;
         private System.Windows.Forms.ComboBox comboBoxCcExpYear;
+        private System.Windows.Forms.ToolTip toolTipPopups;
     }
 }

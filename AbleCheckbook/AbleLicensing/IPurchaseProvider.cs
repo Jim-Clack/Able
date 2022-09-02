@@ -40,12 +40,13 @@ namespace AbleLicensing
         /// <param name="phone">Per payment provider</param>
         /// <param name="email">Per payment provider</param>
         /// <param name="streetAddress">Per payment provider</param>
+        /// <param name="apt">Per payment provider</param>
         /// <param name="city">Per payment provider</param>
         /// <param name="state">Per payment provider</param>
         /// <param name="zip">Per payment provider</param>
         /// <param name="country">Per payment provider</param>
         /// <returns>Success - see ErrorMessage if false</returns>
-        bool SetPurchaser(string lastName, string firstName, string phone, string email, string streetAddress, string city, string state, string zip, string country);
+        bool SetPurchaser(string lastName, string firstName, string phone, string email, string streetAddress, string apt, string city, string state, string zip, string country);
 
         /// <summary>
         /// Add an item to the purchase.
@@ -56,17 +57,18 @@ namespace AbleLicensing
         /// <param name="quantity">Quantity of items</param>
         /// <param name="extendedPrice">Price for given quantity (typically amount times quantity)</param>
         /// <returns>Success - see ErrorMessage if false</returns>
-        bool AddItem(string label, string description, long amount, int quantity, long extendedPrice);
+        bool SetItem(string label, string description, long amount, int quantity, long extendedPrice);
 
         /// <summary>
-        /// Set te payment method.
+        /// Set the payment method.
         /// </summary>
         /// <param name="ccNumber">credit card number</param>
         /// <param name="ccExpMonth">expiration date month</param>
         /// <param name="ccExpYear">expiration date year</param>
         /// <param name="cvv2">CVV2 code</param>
+        /// <param name="ccType">Visa, Mastercard, etc.</param>
         /// <returns>Success - see ErrorMessage if false</returns>
-        bool SetPayment(string ccNumber, string ccExpMonth, string ccExpYear, string cvv2);
+        bool SetPayment(string ccNumber, string ccExpMonth, string ccExpYear, string cvv2, string ccType);
 
         /// <summary>
         /// Verify that a purchase has been made and update the user info accordingly. (calls PayPal)

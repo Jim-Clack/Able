@@ -692,6 +692,23 @@ namespace AbleCheckbook.Logic
         }
 
         /// <summary>
+        /// [static] If a value is not between specified lengths, return the value's name, else return ""
+        /// </summary>
+        /// <param name="name">name to return on invalidation</param>
+        /// <param name="value">value to check</param>
+        /// <param name="minLgt">shortest valid lgt</param>
+        /// <param name="maxLgt">longest valid lgt</param>
+        /// <returns>"" if okay, else name of invalid field</returns>
+        public static string LengthNotBetween(string name, string value, int minLgt, int maxLgt)
+        {
+            if (value.Trim().Length < minLgt || value.Trim().Length > maxLgt)
+            {
+                return "  (" + name + ")";
+            }
+            return "";
+        }
+
+        /// <summary>
         /// Get a list of potential backups.
         /// </summary>
         /// <param name="filename">Template, with or without path or extension</param>

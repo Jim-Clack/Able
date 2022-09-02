@@ -452,8 +452,9 @@ namespace AbleCheckbook.Logic
             AddString("Visa");
             AddString("Mastercard");
             AddString("Discover");
-            AddString("Please fill out all applicable fields");
-            AddString("Entries must agree with credit card company data, or your purchase may not go through...");
+            AddString("Click here to make the Purchase");
+            AddString("Please fill out applicable fields:");
+            AddString("Entries must agree with credit card billing info, or your purchase may not go through...");
             AddString("Apt");
             AddString("CVV2: Amex is 4 digits, Visa/MC/etc are 3 digits");
             AddString("Payment Info");

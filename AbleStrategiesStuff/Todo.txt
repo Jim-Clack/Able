@@ -20,6 +20,7 @@ Alpha TODO... (C=client/default, S=server)
  - AreYouSureForm with date/time/user that screen-captures, logs, and read log (C/S)
  - Once you've entered a payee with bad capitalization, you cannot change it (C)
  - Web Services for online reconciliation (Open Banking API)
+ - Refactor ActivationForm per LoadAndCheckScratchVars()
  - If sorted differently the cursor sometimes jumps way down (C)
  - Much testing 
 

@@ -6,6 +6,7 @@ using AbleLicensing.WsApi;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Windows.Forms;
 
 namespace AbleCheckbook
@@ -533,13 +534,14 @@ namespace AbleCheckbook
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new PaymentInfoForm(
-                new string[] {
-                    "AbleCheckbook Std Edition","" +
-                    " Price:            $29.95",
-                    "                 --------",
-                    " Total:            $29.95"
-                }).ShowDialog();
+            PayPalPurchaseProvider provider =
+                new PayPalPurchaseProvider(Configuration.Instance.PayPalUrl, Configuration.Instance.PayPalConfiguration, 20000);
+            provider.SetPurchaser("Sid", "Glick", "1234567890", "a@b.com", "123 Main", "", "NYC", "NY", "10101", "US");
+            provider.SetItem("Activation", "AbleCheckbook", 2995, 1, 2995);
+            provider.SetPayment("1234-567890-12345", "03", "2023", "1234", "Amex");
+            UserInfo u = new UserInfo();
+            provider.CompletePurchase(ref u, "who cares", false);
+            new PaymentInfoForm("Standard Edition", 2995L).ShowDialog();
             OnlineActivation.Instance.TestConnection();
 #if DEBUG
             /*

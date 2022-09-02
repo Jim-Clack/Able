@@ -36,17 +36,9 @@ namespace AbleCheckbook.Logic
         private string[] _legalFilenames = new string[] { "Checking", "Business", "Personal", "Alternate" };
         private string _helpPageUrl = "https://ablestrategies.com/ablecheckbook/help";
         private string _helpSearchUrl = "https://www.google.com/search?q=site%3Aablestrategies.com+checkbook+help+";
-#if DEBUG
-        private string _webServiceUrl = "https://localhost:44363/as/checkbook";
-        private string _payPalUrl = "https://api-m.sandbox.paypal.com";
-        private string _payPalConfiguration = 
-            "AflprzxmNo52GWqoFsivWm8Ozk9SCuLZPBieSB2oEEUL-P67ghOb9TdxE-GG7EgOlk6dfYdUl1OJgI_u" + "|" +
-            "ELlCB3sJ6-hfhAuiqZI-8Dk9ykeWyqQdLrjJ0raYXBkd_2p2QqF_2bjzl8eyMpPUn0JaB6ZFzDg1OjB8";
-#else
         private string _webServiceUrl = "https://ablestrategies.com/as/checkbook/";
         private string _payPalUrl = "https://api-m.paypal.com";
-        private string _payPalConfiguration = "default|default";
-#endif
+        private string _payPalConfiguration = "default123";
         private string _alertNotification = "";
         private string _directoryLogs = "";
         private string _directoryDatabase = "";
@@ -140,6 +132,7 @@ namespace AbleCheckbook.Logic
                     {
                         _instance._logLevel = LogLevel.Diag;
                     }
+                    _instance.AdjustSettings();
                 }
                 return _instance;
             }
@@ -355,7 +348,9 @@ namespace AbleCheckbook.Logic
             }
             set
             {
+#if !DEBUG
                 _payPalConfiguration = value;
+#endif
             }
         }
 
@@ -558,6 +553,20 @@ namespace AbleCheckbook.Logic
             {
                 // ignore any problems
             }
+        }
+
+        /// <summary>
+        /// Adjust settings, overriding some of those read from preferences.cfg
+        /// </summary>
+        private void AdjustSettings()
+        {
+#if DEBUG
+            _webServiceUrl = "https://localhost:44363/as/checkbook";
+            _payPalUrl = "https://api-m.sandbox.paypal.com";
+            _payPalConfiguration =
+                "QWZscHJ6eG1ObzUyR1dxb0ZzaXZXbThPems5U0N1TFpQQmllU0Iyb0VFVUwtUDY3Z2hPYjlUZHhFLUdHN0VnT2xrNmRmWWRVbDFPSmdJX3U6" +
+                "RUxsQ0Izc0o2LWhmaEF1aXFaSS04RGs5eWtlV3lxUWRMcmpKMHJhWVhCa2RfMnAyUXFGXzJianpsOGV5TXBQVW4wSmFCNlpGekRnMU9qQjg=";
+#endif
         }
 
         ///////////////////////////// SiteSettings ///////////////////////////

@@ -9,7 +9,7 @@ Workstation Setup Notes...
  E. AbleCheckbook VS Pre-Build Event: copy $(ProjectDir)Support\* $(TargetDir)
  F. Set Build Configuration Symbols: Debug: SUPERUSER, Release: RELEASE 
  G. Install via NuGet: System.Text.Json (AbleCheckbook & AbleLicensing)
- H. Install via NuGet: PayPal .NET SDK (AbleLicensing only)
+ H. Install via NuGet: PayPal .NET SDK (AbleCheckbook & AbleLicensing)
  I. In AssemblyInfo.cs, if necessary, change to [assembly: AssemblyVersion("1.0.*")]
  J. Import AbleCheckbook.postman_collection.json into PostMan for sandboxing 
  K. Options:Debug:General Uncheck "Step over propertes and operators" (Critical!)
@@ -210,8 +210,7 @@ PayPal Web Services
    Pers Passwd:    aGVs5%sm
    Pers Phone:     4087983656
    Pers Acct:      BBG6Q73XGCFFL
-   Client ID:      AflprzxmNo52GWqoFsivWm8Ozk9SCuLZPBieSB2oEEUL-P67ghOb9TdxE-GG7EgOlk6dfYdUl1OJgI_u
-   Secret:         ELlCB3sJ6-hfhAuiqZI-8Dk9ykeABLEWyqQdLrjJ0raYXBkd_2p2QqF_2bjzSTRATEGIESl8eyMpPUn0JaB6ZFzDg1OjB8 (fake)
+   Basic Auth:     QWZscHJ6eG1ObzUyR1dxb0ZzaXZXbThPems5U0N1TFpQQmllU0Iyb0VFVUwtUDY3Z2hPYjlUZHhFLUdHN0VnT2xrNmRmWWRVbDFPSmdJX3U6RUxsQ0Izc0o2LWhmaEF1aXFaSS04RGs5eWtlV3lxUWRMcmpKMHJhWVhCa2RfMnAyUXFGXzJianpsOGV5TXBQVW4wSmFCNlpGekRnMU9qQjg=
    Return URL:     (not set up yet)
  Live Account:  
    App ID:         

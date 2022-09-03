@@ -31,6 +31,14 @@ namespace AbleCheckbook.Logic
     public class Configuration : AbleLicensing.SiteSettings
     {
 
+#if DEBUG
+        private static string DEBUG_webServiceUrl = "https://localhost:44363/as/checkbook";
+        private static string DEBUG_payPalUrl = "https://api-m.sandbox.paypal.com";
+        private static string DEBUG_payPalConfiguration =
+            "QWZscHJ6eG1ObzUyR1dxb0ZzaXZXbThPems5U0N1TFpQQmllU0Iyb0VFVUwtUDY3Z2hPYjlUZHhFLUdHN0VnT2xrNmRmWWRVbDFPSmdJX3U6" +
+            "RUxsQ0Izc0o2LWhmaEF1aXFaSS04RGs5eWtlV3lxUWRMcmpKMHJhWVhCa2RfMnAyUXFGXzJianpsOGV5TXBQVW4wSmFCNlpGekRnMU9qQjg=";
+#endif
+
         private static Configuration _instance = null;
 
         private string[] _legalFilenames = new string[] { "Checking", "Business", "Personal", "Alternate" };
@@ -74,7 +82,7 @@ namespace AbleCheckbook.Logic
 
         // Non-persisted
         [System.Text.Json.Serialization.JsonIgnore()]
-        private bool _firstTime = false;
+        private bool _firstTime = true;
 
         // Getters/Setters
         public string DirectoryLogs { get => _directoryLogs; set => _directoryLogs = value; }
@@ -132,7 +140,6 @@ namespace AbleCheckbook.Logic
                     {
                         _instance._logLevel = LogLevel.Diag;
                     }
-                    _instance.AdjustSettings();
                 }
                 return _instance;
             }
@@ -173,7 +180,7 @@ namespace AbleCheckbook.Logic
             // dont proceed if in UNIT TEST mode
             System.Reflection.Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
             if (assemblies.Any(a => a.FullName.ToLowerInvariant().Contains("testplatform")) ||
-                assemblies.Any(a => a.FullName.ToLowerInvariant().Contains("nunit.fraemwork"))) 
+                assemblies.Any(a => a.FullName.ToLowerInvariant().Contains("nunit.framework"))) 
             {
                     return true;
             }
@@ -327,13 +334,15 @@ namespace AbleCheckbook.Logic
         {
             get
             {
+#if DEBUG
+                return DEBUG_payPalUrl;
+#else
                 return _payPalUrl;
+#endif
             }
             set
             {
-#if !DEBUG
                 _payPalUrl = value;
-#endif
             }
         }
 
@@ -344,13 +353,15 @@ namespace AbleCheckbook.Logic
         {
             get
             {
+#if DEBUG
+                return DEBUG_payPalConfiguration;
+#else
                 return _payPalConfiguration;
+#endif
             }
             set
             {
-#if !DEBUG
                 _payPalConfiguration = value;
-#endif
             }
         }
 
@@ -555,20 +566,6 @@ namespace AbleCheckbook.Logic
             }
         }
 
-        /// <summary>
-        /// Adjust settings, overriding some of those read from preferences.cfg
-        /// </summary>
-        private void AdjustSettings()
-        {
-#if DEBUG
-            _webServiceUrl = "https://localhost:44363/as/checkbook";
-            _payPalUrl = "https://api-m.sandbox.paypal.com";
-            _payPalConfiguration =
-                "QWZscHJ6eG1ObzUyR1dxb0ZzaXZXbThPems5U0N1TFpQQmllU0Iyb0VFVUwtUDY3Z2hPYjlUZHhFLUdHN0VnT2xrNmRmWWRVbDFPSmdJX3U6" +
-                "RUxsQ0Izc0o2LWhmaEF1aXFaSS04RGs5eWtlV3lxUWRMcmpKMHJhWVhCa2RfMnAyUXFGXzJianpsOGV5TXBQVW4wSmFCNlpGekRnMU9qQjg=";
-#endif
-        }
-
         ///////////////////////////// SiteSettings ///////////////////////////
 
         /// <summary>
@@ -587,7 +584,11 @@ namespace AbleCheckbook.Logic
         {
             get
             {
+#if DEBUG
+                return DEBUG_webServiceUrl;
+#else
                 return _webServiceUrl;
+#endif
             }
             set
             {

@@ -225,16 +225,24 @@ namespace AbleLicensing
         public bool CompletePurchase(ref UserInfo userInfo, string details, bool addTax)
         {
             errorMessage = "";
-
             JsonSerializerOptions options = new JsonSerializerOptions();
             options.IncludeFields = true;
             options.WriteIndented = true;
             string json = JsonSerializer.Serialize(payment, typeof(Payment), options);
-            Activation.Instance.LoggerHook("@@@@@@@" + accessToken);
-            Activation.Instance.LoggerHook("@@@@@@@" + json);
-
-            // TODO
-
+            Activation.Instance.LoggerHook("@@@@@@@ Token: " + accessToken);
+            Activation.Instance.LoggerHook("@@@@@@@ Request: " + json);
+            try
+            {
+                Payment executedPayment = payment.Create(apiContext);
+            }
+            catch (Exception ex)
+            {
+                errorMessage = "Cannot process payment: " + ex.Message;
+                Activation.Instance.LoggerHook("Exception processing payment: " + ex.Message + "\n" + ex.StackTrace + "\n" + json);
+                return false;
+            }
+            json = JsonSerializer.Serialize(payment, typeof(Payment), options);
+            Activation.Instance.LoggerHook("@@@@@@@ Response: " + json);
             purchaseDesignator = "????";
             return true;
         }

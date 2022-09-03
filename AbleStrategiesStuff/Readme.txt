@@ -7,18 +7,20 @@ Workstation Setup Notes...
  C. Install git and/or GitHub desktop
  D. You will want to install Postman and WinSCP as well
  E. AbleCheckbook VS Pre-Build Event: copy $(ProjectDir)Support\* $(TargetDir)
- F. Set Build Configuration Symbols: Debug: SUPERUSER, Release: RELEASE 
- G. Install via NuGet: System.Text.Json (AbleCheckbook & AbleLicensing)
- H. Install via NuGet: PayPal .NET SDK (AbleCheckbook & AbleLicensing)
- I. In AssemblyInfo.cs, if necessary, change to [assembly: AssemblyVersion("1.0.*")]
- J. Import AbleCheckbook.postman_collection.json into PostMan for sandboxing 
- K. Options:Debug:General Uncheck "Step over propertes and operators" (Critical!)
+ F. Install via NuGet: System.Text.Json (AbleCheckbook & AbleLicensing)
+ G. Install via NuGet: PayPal .NET SDK (AbleCheckbook & AbleLicensing)
+ H. In AssemblyInfo.cs, if necessary, change to [assembly: AssemblyVersion("1.0.*")]
+ I. Import AbleCheckbook.postman_collection.json into PostMan for sandboxing 
+ J. Options:Debug:General Uncheck "Step over propertes and operators"
 
  Caveats...
  . If you are new to MS VS, see the notes at the end of this document
- . C# Bug: A DataGridView column called "Name" will instead apply to Form
+ . VS C# Bug: A DataGridView column called "Name" will instead apply to Form
  . VS Gotcha: See comments at end of MainScreen.Reconciler/Support.cs
- . Run unit tests only in DEBUG mode, as there is some debug code to handle caveats
+ . Run unit tests only in DEBUG mode, as there is debug code to handle caveats
+ . To avoid live web services (i.e. PayPal, as) always run in DEBUG mode
+ . Debug Checkbook and WebServices in separate instances of VS on the same host
+ . You will need to alter the port number on DEBUG_WebServiceUrl when you test
 
 Terminology...
  - New-Entry-Row refers to the "Insert Entry" row in the checkbook register
@@ -30,11 +32,11 @@ Terminology...
   
 Class Topology...
  a. Start from IDbAccess in order to understand the class heirarchy
- b. DB Class Inheritance: JsonDbAccess -> UndoableDbAccess -> IDbAccess
+ b. DB Class stack: IDbAccess -> UndoableDbAccess -> JsonDbAccess
  c. IDbAccess uses custom IDbIterators to cursor through records
  d. Primary data record is CheckbookEntry, which contains SplitEntries
- e. GUI Entry Hier: DataGridViewRow.RowOfCheckbook.CheckbookEntry.SplitEntry
- f. Reconcile Entry Hier: CandidateEntry.OpenEntry.CheckbookEntry.SplitEntry
+ e. GUI Entry Hierarchy: DataGridViewRow.RowOfCheckbook.CheckbookEntry
+ f. Reconcile Entry Hierarchy: CandidateEntry.OpenEntry.CheckbookEntry
 
 Developer Tips...
  1. Some APIs are public merely to support serialization or unit testing
@@ -56,10 +58,11 @@ Design of this project...
  * Automatic recovery from crashes, corrupt-data, and other such conditions
  * Event handlers must be small, up to five or six statements max
  * Maintain average MI of 75+ and CycComp to 5 or less in non-GUI methods
+ * JSON is shared in AbleLicensing.WsApi - enums are deliberately omitted
  * 65% test coverage of non-GUI code, addressing all happy-paths therein 
 
 User Levels (and corresponding License Code delimiters)...
- 0. Eval (Evaluation, Time Limited, Limited Undo, No Support, No Admin)
+ 0. Evaluation (Time Limited, Limited Undo, No Support, No Admin)
  1. Deactivated (abuse deactivates most latent)     en-dash, not a hyphen: –
  2. Standard (Regular activated version)                           hyphen: -
  3. ProCPA (Named Accts, SLA, Live Support, Mult Instances)     ampersand: &
@@ -75,6 +78,16 @@ When writing docs/help, explain...
  - Time-limited: Days of use vs days since installed
  - Show credit for Upcounsel EULA, icons/fonts, and other third parties
 
+DEBUG manifest constant usage
+ Note that the PayPal sandbox is selected and localhost is selected for
+ Able Strategies web service calls when in DEBUG mode. This is facilitated
+ by the DEBUG_ constants in Configuration.cs. Thus it is important to have
+ a second instance of VS up and running the web services on the same host
+ when in DEBUG mode. It is also important to not test purchases (PayPal)
+ in RELEASE mode or you will be attempting to spend real money. Unit tests
+ must be run in DEBUG mode; refer to GetIsActivated for details. Also note
+ that SuperUser mode is non-functional in RELEASE mode. 
+
 Kludge to enable your system (via Able Licensing) for Super-User mode...
  Activation.Instance.SetDefaultDays(180, 366); // note1: not needed but shown for completeness
  Activation.Instance.LicenseCode = "MYNAME@99999"; // Name6 + @ + zip5 (plus compile/run in DEBUG mode) enables SuperUser mode
@@ -85,6 +98,8 @@ Kludge to enable your system (via Able Licensing) for Super-User mode...
 
 EULA...
  https://www.upcounsel.com/end-user-license-agreement
+Regex tester/guide for .NET
+ http://regexstorm.net/
 MS DotNet WebBrowser...
  https://docs.microsoft.com/en-us/dotnet/desktop/winforms/controls/implement-two-way-com-between-dhtml-and-client?view=netframeworkdesktop-4.8
 Open Banking API...
@@ -194,6 +209,11 @@ Notes to developers who are MS/VS virgins...
  In the app.config (or web.config) file, <configSections> must be the first
  element inside the <configuration> or it will be ignored.
 
+ There is an insidious VS C# Bug, in that a DataGridView column called 
+ "Name" will instead apply to the Form, per code-time and intellisense.
+ So if you have a DataGridView with one column named "Name" in the VS edit-
+ form, you will get nonsense error messages and it will refuse to compile.
+
 PayPal Web Services
  jim.clack@gmail.com p8
  https://developer.paypal.com/
@@ -211,7 +231,6 @@ PayPal Web Services
    Pers Phone:     4087983656
    Pers Acct:      BBG6Q73XGCFFL
    Basic Auth:     QWZscHJ6eG1ObzUyR1dxb0ZzaXZXbThPems5U0N1TFpQQmllU0Iyb0VFVUwtUDY3Z2hPYjlUZHhFLUdHN0VnT2xrNmRmWWRVbDFPSmdJX3U6RUxsQ0Izc0o2LWhmaEF1aXFaSS04RGs5eWtlV3lxUWRMcmpKMHJhWVhCa2RfMnAyUXFGXzJianpsOGV5TXBQVW4wSmFCNlpGekRnMU9qQjg=
-   Return URL:     (not set up yet)
  Live Account:  
    App ID:         
    Name:           
@@ -220,8 +239,7 @@ PayPal Web Services
    Bus Phone:      
    Bus Acct:       
    Client ID:      
-   Secret:         (do not list here)
-   Return URL:     (not set up yet)
+   Basic Auth:     
 
 JSON REST API (AbleStrategies checkbook web services)
   All return a JsonUserInfoResponse except for GET verify connection

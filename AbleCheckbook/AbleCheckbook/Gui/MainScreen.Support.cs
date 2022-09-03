@@ -101,9 +101,8 @@ namespace AbleCheckbook
             _mainScreen = this;
             superToolStripMenuItem.Visible = superToolStripMenuItem.Enabled = false;
 #if DEBUG
-#if SUPERUSER
-            superToolStripMenuItem.Visible = superToolStripMenuItem.Enabled = (Configuration.Instance.GetUserLevel() == UserLevel.SuperUser);
-#endif
+            superToolStripMenuItem.Visible = superToolStripMenuItem.Enabled = 
+                (Configuration.Instance.GetUserLevel() == UserLevel.SuperUser);
 #endif
             _backend = new CheckbookRegisterBackend(dataGridView1);
             this.Text = Strings.Get("Able Strategies AbleCheckbook") + " - " + _backend.Db.Name;

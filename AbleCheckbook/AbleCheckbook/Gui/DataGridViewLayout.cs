@@ -184,8 +184,8 @@ namespace AbleCheckbook.Gui
             int residual = difference - rowsAdjust * 10;
             dataGridView.Columns["IsChecked"].Width = 30;
             dataGridView.Columns["Payee"].Width = Math.Max(100 + plus, dataGridView.Columns["Payee"].Width + rowsAdjust * 2 + residual);
-            dataGridView.Columns["Category"].Width = Math.Max(84 + plus, dataGridView.Columns["Category"].Width + rowsAdjust * 2);
-            dataGridView.Columns["Memo"].Width = Math.Max(84 + plus, dataGridView.Columns["Memo"].Width + rowsAdjust * 2);
+            dataGridView.Columns["Category"].Width = Math.Max(128 + plus, dataGridView.Columns["Category"].Width + rowsAdjust * 2);
+            dataGridView.Columns["Memo"].Width = Math.Max(120 + plus, dataGridView.Columns["Memo"].Width + rowsAdjust * 2);
             dataGridView.Columns["Amount"].Width = Math.Max(84 + plus, dataGridView.Columns["Amount"].Width + rowsAdjust);
             dataGridView.Columns["Debit"].Width = Math.Max(84 + plus, dataGridView.Columns["Debit"].Width + rowsAdjust);
             dataGridView.Columns["Balance"].Width = Math.Max(84 + plus, dataGridView.Columns["Balance"].Width + rowsAdjust);

@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FE9CE850-989D-44A6-A360-C5C70161E53D}"
 	ProjectSection(SolutionItems) = preProject
 		AbleCheckbook\Support\A.jpg = AbleCheckbook\Support\A.jpg
+		BankConfigurations.json = BankConfigurations.json
 		AbleCheckbook\Support\banner-en-US.png = AbleCheckbook\Support\banner-en-US.png
 		AbleCheckbook\Support\eula.txt = AbleCheckbook\Support\eula.txt
 		..\AbleStrategiesStuff\Features.txt = ..\AbleStrategiesStuff\Features.txt
@@ -16,6 +17,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\AbleStrategiesStuff\Testing.txt = ..\AbleStrategiesStuff\Testing.txt
 		..\AbleStrategiesStuff\Todo.txt = ..\AbleStrategiesStuff\Todo.txt
 		AbleCheckbook\Support\watermark.jpg = AbleCheckbook\Support\watermark.jpg
+	EndProjectSection
+	ProjectSection(FolderGlobals) = preProject
+		__JSONSchema = https://docs.gradle.com/build-cache-node/schema/build-cache-node-config-schema-5.json
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbleCheckbookTests", "AbleCheckbookTests\AbleCheckbookTests.csproj", "{3F48EBE1-B6E8-4ED5-B690-35E30681BCD8}"

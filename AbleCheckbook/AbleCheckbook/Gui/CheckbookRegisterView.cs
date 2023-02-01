@@ -204,6 +204,15 @@ namespace AbleCheckbook.Gui
                     int hgt = (gridRow.InheritedStyle.Font.Height + 2) * entryRow.Entry.Splits.Length + 5;
                     gridRow.Height = hgt;
                 }
+                entryRow.ShowSplits = true;
+                foreach (DataGridViewCell cell in gridRow.Cells)
+                {
+                    if (cell.Value != null)
+                    {
+                        cell.ToolTipText = cell.Value.ToString();
+                    }
+                }
+                entryRow.ShowSplits = _itemizedSplits;
             }
         }
 

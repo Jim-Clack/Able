@@ -70,6 +70,7 @@
     <Compile Include="Gui\RegisterReportGeneratorTests.cs" />
     <Compile Include="Gui\ReportPrinterTests.cs" />
     <Compile Include="Logic\AutoReconcilerTests.cs" />
+    <Compile Include="Logic\BankRegexTests.cs" />
     <Compile Include="Logic\SuOperationsTests.cs" />
     <Compile Include="Logic\BackupsTests.cs" />
     <Compile Include="Logic\CsvExporterTests.cs" />

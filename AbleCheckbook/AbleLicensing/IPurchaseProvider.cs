@@ -73,11 +73,9 @@ namespace AbleLicensing
         /// <summary>
         /// Verify that a purchase has been made and update the user info accordingly. (calls PayPal)
         /// </summary>
-        /// <param name="userInfo">To be updated with purchase data, possibly replacing the existing purchase record</param>
-        /// <param name="details">details - man-readable</param>
-        /// <param name="addTax">not yet supported</param>
         /// <returns>Success - see ErrorMessage if false</returns>
-        bool CompletePurchase(ref UserInfo userInfo, string details, bool addTax);
+        /// <remarks>On success, get purchaseDesignator</remarks>
+        bool CompletePurchase();
 
         /// <summary>
         /// After the purchase is successful, this will be populated.

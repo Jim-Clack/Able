@@ -1,0 +1,89 @@
+/*
+	Uniquely named, i.e. Truist-USA-Checking-STD
+	  Instead of modifying an entry, duplicate it and change the Revision
+	Request Sequence: Initial -> Account -> Statement -> Terminate
+	Statement Response Sequence: Head -> OptionalInlineStatement -> Tail
+  Replacement symbols:
+	  \#c3       Capture string 3 (single digit 0...9) * (responses only)
+	  \#i3       Insert captured string 3
+	  \\ or \#\  Backslash
+	  \r or \#r  Return key (no linefeed)
+    \n or \#n  Linefeed (no return key)
+	  \t or \#t  Tab Key
+    \#q        Quotation mark
+	  \##        Hash
+	  \#u        User ID
+	  \#p        Password
+    \#b        Bank routing number
+    \#a        Account number
+    \#h        HTTP Auth, Basic base64(userid:password)
+	  \#s        Start date, inclusive
+	  \#e        End date, inclusive
+	  \#x        End date, exclusive
+	  \#w        Wait (pause) 500 milliseconds
+    \#6        Convert from base64 up to a quote (or just use FilenameRegex)
+    \#&        Value of AccountRequestAddToHeader (for use in mult places)
+  Caoture String Usages:
+    0 - If closing balance isn't present in statement, use this as default
+    1 - Often used as the account Key/ID as matched up to the bank acct#
+    2-5 - Available for any purpose whatsoever
+    6-9 - May be values captured from response (if CaptureNFromEntryNamed)
+  CaptureNFromEntryNamed: If a value is found in any header, query string, or
+    x-www-form-encoded entry with the specified name, in any response, it will
+    be captured and placed in the corresponding capture string.
+  Trace: Off or Screen
+  Method: HTML-CSV or OpenBanking (future)
+	RequestType: ""=x-www-form-urlencoded, else mime-type, i.e. application/json
+	ResponseType: I=inline, M=mime
+	FieldSeparator: Typically "," or "\t"
+  FilenameRegex: Pattern to identify the internal file name for the statement
+*/
+{
+  "Trace": "Off",
+  "LastUpdate": "2020/01/01",
+  "Banks": [
+    /* Truist */
+    {
+      "Bank": "Truist",
+      "Region": "USA",
+      "Account": "Checking",
+      "Revision": "STD",
+      "DateModified": "2020/01/01",
+      "ModifiedBy": "AbleStrategies",
+      "Method": "HTML-CSV",
+      "BaseURL": "https://truist.com",
+      "Capture6FromEntryNamed": "",
+      "Capture7FromEntryNamed": "",
+      "Capture8FromEntryNamed": "",
+      "Capture9FromEntryNamed": "",
+      "InitialRequestQuery": "",
+      "InitialResponse": "",
+      "AccountRequestQuery": "",
+      "AccountRequestAddToHeader": "",
+      "AccountRequestBody": "",
+      "StatementRequestQuery": "",
+      "StatementRequestAddToHeader": "",
+      "StatementRequestBody": "",
+      "StatementResponseHead": "",
+      "StatementResponseTail": "",
+      "TerminateRequestQuery": "",
+      "DateFormatsRequest": "yyyy/MM/dd",
+      "DateFormatsResponse": "yyyy/MM/dd",
+      "AmountFormatsResponse": "",
+      "RequestType": "F",
+      "ResponseType": "I",
+      "FieldSeparator": ",",
+      "FilenameRegex": "[A-Za-z0-9_]+\\.csv",
+      "HeaderNumberOfLines": 0,
+      "DateColumnNumber": 0,
+      "PayeeColumnNumber": 0,
+      "AmountColumnNumber": 0,
+      "AddlInfoColumnNumber": -1,
+      "CreditFlagColumnNumber": 0,
+      "CreditFlagIsCreditRegex": "",
+      "CheckNumberColumnNumber": 0,
+      "TransactionColumnNumber": -1,
+      "BalanceColumnNumber": -1
+    }
+  ]
+}

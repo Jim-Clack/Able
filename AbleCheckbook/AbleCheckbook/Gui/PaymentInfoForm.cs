@@ -1,4 +1,5 @@
 ﻿using AbleCheckbook.Logic;
+using AbleLicensing;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,11 +21,20 @@ namespace AbleCheckbook.Gui
         /// </summary>
         private string details = "";
 
-        private string itemName = "";
+        /// <summary>
+        /// Name of purchased item.
+        /// </summary>
+        private string itemName = "Activation";
 
-        private long itemCost = 0L;
+        /// <summary>
+        /// Cost of purchased item.
+        /// </summary>
+        private long itemCost = 2995L;
 
-        private string productDesignator = "";
+        /// <summary>
+        /// Code to verify and track purchase.
+        /// </summary>
+        private string purchaseDesignator = "";
 
         /// <summary>
         /// Member scratch variables.
@@ -76,6 +86,17 @@ namespace AbleCheckbook.Gui
             textBoxZip.Text = zip.Trim();
             textBoxPhone.Text = UtilityMethods.FormatPhoneNumber(phone.Trim());
             textBoxEmail.Text = email.Trim();
+        }
+
+        /// <summary>
+        /// Purchase designator.
+        /// </summary>
+        public string PurchaseDesignator
+        {
+            get
+            {
+                return purchaseDesignator;
+            }
         }
 
         /// <summary>
@@ -173,6 +194,7 @@ namespace AbleCheckbook.Gui
 
         private void buttonOk_Click(object sender, EventArgs e)
         {
+            details = "(Transaction failed)";
             string badFields = LoadAndCheckScratchVars();
             if (badFields.Length > 0)
             {
@@ -183,10 +205,22 @@ namespace AbleCheckbook.Gui
                 custFirstName + " " + custLastName + ", " + UtilityMethods.FormatPhoneNumber(custPhone) + ", " + custEmail + "\n " +
                 custAddress + " " + custApt + ", " + custCity + " " + custState + " " + custZip + " " + custCountry + "\n " +
                 ccType + " xxxx" + ccNumber.Substring(11) + ", " + ccExpMonth + "/" + ccExpYear;
-
-            // TODO - make purchase
-
-            details += " " + productDesignator;
+            IPurchaseProvider provider =
+                new PayPalPurchaseProvider(Configuration.Instance.PayPalUrl, Configuration.Instance.PayPalConfiguration, 20000);
+            if(!string.IsNullOrEmpty(provider.ErrorMessage) &&
+                provider.SetPurchaser(custFirstName, custLastName, custPhone, custEmail, custAddress, custApt, custCity, custState, custZip, custCountry) &&
+                provider.SetItem(itemName, "AbleCheckbook", itemCost, 1, itemCost) &&
+                provider.SetPayment(ccNumber, ccExpMonth, ccExpYear, ccCvc2, UtilityMethods.CreditCardType(ccNumber)) &&
+                provider.CompletePurchase())
+            {
+                purchaseDesignator = provider.PurchaseDesignator;
+                details += " " + purchaseDesignator;
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+                return;
+            }
+            purchaseDesignator = "";
+            textBoxErrorMessage.Text = Strings.Get("Transaction Failed") + ": " + provider.ErrorMessage;
         }
 
         private void textBoxAptNumber_Leave(object sender, EventArgs e)
@@ -219,6 +253,10 @@ namespace AbleCheckbook.Gui
             }
         }
 
+        private void buttonCancel_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+        }
     }
 
 }

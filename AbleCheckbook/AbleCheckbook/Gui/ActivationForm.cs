@@ -15,6 +15,15 @@ using System.Windows.Forms;
 
 namespace AbleCheckbook.Gui
 {
+
+    /// <summary>
+    /// Prompt user for activation info and then activate.
+    /// </summary>
+    /// <remarks>
+    /// - If the PurchaseDesignator is blank then make the purchase.
+    /// - Else if the PIN is blank then try to reactivate from a prior purchase.
+    /// - Else try to do manual activation using the provided PIN.
+    /// </remarks>
     public partial class ActivationForm : Form
     {
 
@@ -69,40 +78,9 @@ namespace AbleCheckbook.Gui
         /// <param name="e"></param>
         private void buttonActivate_Click(object sender, EventArgs e)
         {
-            if(textBoxUserId.Text.Trim().Length < 6)
+            if (!ValidateInputs())
             {
-                MessageBox.Show(this, Strings.Get("User name too short"), Strings.Get("Sorry"), MessageBoxButtons.OK);
                 return;
-            }
-            if (textBoxStreetAddress.Text.Trim().Length < 6 || textBoxCityState.Text.Trim().Length < 6)
-            {
-                MessageBox.Show(this, Strings.Get("Address and City Needed"), Strings.Get("Sorry"), MessageBoxButtons.OK);
-                return;
-            }
-            if (textBoxPostalCode.Text.Trim().Length < 5)
-            {
-                MessageBox.Show(this, Strings.Get("Invalid postal/CC code"), Strings.Get("Sorry"), MessageBoxButtons.OK);
-                return;
-            }
-            if (textBoxPhoneNumber.Text.Trim().Length + textBoxEmailAddress.Text.Trim().Length < 16)
-            {
-                MessageBox.Show(this, Strings.Get("Phone and email required"), Strings.Get("Sorry"), MessageBoxButtons.OK);
-                return;
-            }
-            if (!checkBoxAcceptTerms.Checked)
-            {
-                MessageBox.Show(this, Strings.Get("You must accept the EULA"), Strings.Get("Sorry"), MessageBoxButtons.OK);
-                return;
-            }
-            if(criticalValueChanged)
-            {
-                if(MessageBox.Show(
-                    Strings.Get("You changed a greyed-out critical entry, if you did not wish to do this, click Cancel"),
-                    Strings.Get("Verify"), MessageBoxButtons.OKCancel) == DialogResult.Cancel)
-                {
-                    SetToInitialValues();
-                    return;
-                }
             }
             criticalValueChanged = false;
             if (textBoxPin.Text.Trim().Length > 3)
@@ -143,7 +121,7 @@ namespace AbleCheckbook.Gui
                 labelSaveTheseNotice.Visible = true;
                 labelAlreadyPurchased.Visible = false;
             }
-            MessageBox.Show("------------ " + Strings.Get(isActivated ? "(Activated)" : "(Evaluation)") + " ------------", 
+            MessageBox.Show("------------ " + Strings.Get(isActivated ? "(Activated)" : "(Evaluation)") + " ------------",
                 Strings.Get("Notice"), MessageBoxButtons.OK);
         }
 
@@ -237,19 +215,36 @@ namespace AbleCheckbook.Gui
                     return;
                 }
             }
-            PayPalPurchaseProvider provider = new PayPalPurchaseProvider(Configuration.Instance.PayPalUrl, Configuration.Instance.PayPalConfiguration, 20000);
-
-            // TODO
-
-            // textBoxPurchase.Text = XXX
+            PaymentInfoForm form = new PaymentInfoForm(Strings.Get("Activation"), 2995);
+            if(form.ShowDialog() != DialogResult.OK || string.IsNullOrEmpty(form.PurchaseDesignator))
+            {
+                return;
+            }
+            // TODO - The next several lines should be done on the server
+            if (userInfoResponse.UserInfos[0].PurchaseRecords.Count == 0)
+            {
+                userInfoResponse.UserInfos[0].PurchaseRecords.Add(new PurchaseRecord());
+            }
+            PurchaseRecord purchaseRecord = userInfoResponse.UserInfos[0].PurchaseRecords[0];
+            purchaseRecord.PurchaseDesignator = form.PurchaseDesignator;
+            purchaseRecord.Details = form.Details;
+            purchaseRecord.ProductBitMask = 0;
+            purchaseRecord.PurchaseAuthority = (int)PurchaseAuthority.PayPalStd;
+            purchaseRecord.PurchaseAmount = 2995;
+            purchaseRecord.ProductBitMask |= (int)ProductBitMask.AbleCheckbookStd;
+            textBoxPurchase.Text = form.PurchaseDesignator;
+            SaveTextboxValues();
             // Make purchase
             userInfoResponse = DbCall((int)ApiState.MakePurchase, true);
             if (!IsValidResponse(userInfoResponse, new int[] { (int)ApiState.PurchaseOk, (int)ApiState.PurchaseOkUpgrade }))
             {
-                // TODO popup a message box
-                return; // Do nothing, failed
+                MessageBox.Show(Strings.Get("Purchase succeeded but activation failed, try again later"), Strings.Get("Error"), MessageBoxButtons.OK);
+                textBoxPin.Text = "";
             }
-            textBoxPin.Text = userInfoResponse.UserInfos[0].DeviceRecords[0].CodesAndPin;
+            else
+            {
+                textBoxPin.Text = userInfoResponse.UserInfos[0].DeviceRecords[0].CodesAndPin;
+            }
             SaveTextboxValues();
         }
 
@@ -429,7 +424,7 @@ namespace AbleCheckbook.Gui
             {
                 body += " Attached: Activation Form Capture\r\n";
             }
-            if(Emailer.SendEmail("ATTENTION - CUSTOMER SUPPORT ISSUE !!!", body, jpgPath))
+            if(Emailer.SendEmail("PRIORITY - CUSTOMER SUPPORT ISSUE !!!", body, jpgPath))
             {
                 message += " NOTE: Problem report was sent to customer support. Please check your email in the next business day or two for a response.";
             }
@@ -438,6 +433,50 @@ namespace AbleCheckbook.Gui
                 message += " NOTE: Cannot contact server at this time. Please contact support by email or phone with the info on the activation screen.";
             }
             return message;
+        }
+
+        /// <summary>
+        /// Make sure user-input values are okay.
+        /// </summary>
+        /// <returns>true if all is well</returns>
+        private bool ValidateInputs()
+        {
+            if (textBoxUserId.Text.Trim().Length < 6)
+            {
+                MessageBox.Show(this, Strings.Get("User name too short"), Strings.Get("Sorry"), MessageBoxButtons.OK);
+                return false;
+            }
+            if (textBoxStreetAddress.Text.Trim().Length < 6 || textBoxCityState.Text.Trim().Length < 6)
+            {
+                MessageBox.Show(this, Strings.Get("Address and City Needed"), Strings.Get("Sorry"), MessageBoxButtons.OK);
+                return false;
+            }
+            if (textBoxPostalCode.Text.Trim().Length < 5)
+            {
+                MessageBox.Show(this, Strings.Get("Invalid postal/CC code"), Strings.Get("Sorry"), MessageBoxButtons.OK);
+                return false;
+            }
+            if (textBoxPhoneNumber.Text.Trim().Length + textBoxEmailAddress.Text.Trim().Length < 16)
+            {
+                MessageBox.Show(this, Strings.Get("Phone and email required"), Strings.Get("Sorry"), MessageBoxButtons.OK);
+                return false;
+            }
+            if (!checkBoxAcceptTerms.Checked)
+            {
+                MessageBox.Show(this, Strings.Get("You must accept the EULA"), Strings.Get("Sorry"), MessageBoxButtons.OK);
+                return false;
+            }
+            if (criticalValueChanged)
+            {
+                if (MessageBox.Show(
+                    Strings.Get("You changed a greyed-out critical entry, if you did not wish to do this, click Cancel"),
+                    Strings.Get("Verify"), MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+                {
+                    SetToInitialValues();
+                    return false;
+                }
+            }
+            return true;
         }
 
         /// <summary>

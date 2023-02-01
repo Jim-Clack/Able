@@ -1,4 +1,11 @@
 Alpha TODO... (C=client/default, S=server)
+ - Forget about licensing
+ - BankStrings for auto-reconcile
+ - Compare promerchant, nationalprocessing, cardknox, tremendous, paypal, stripe, etc
+   https://sonary.com/merchant-services
+   https://www.trustpilot.com/categories/payment_service
+     https://www.promerchant.com/internet/
+     https://www.flywire.com/platform/integrations/api
  - WS Server: find/update PurchaseRecord, use UserInfoBuilder.UpdatePurchase (C/S)
  - WS Server: Searches for license code should use wildcard for punct char (S)
  - WS Server: Latent site ID for abused License Code should return Deactivated (S)
@@ -28,7 +35,7 @@ Alpha TODO... (C=client/default, S=server)
 Longer term TODO...
  - Why can't program.cs trap exceptions? (debug mode only?)
  - Refactor to extract large methods
- - Quick yesterday thru future-low+2 condensed report as jpg file (date, payee, amt, bal)
+ - Quick "Yesterday thru FutureLow+2" condensed report as jpg file 
  - Budgeting, forecasting, trends, etc.
  - When to call DiscardWeakRefs
  - Better Icon, Toolbar Images, etc.

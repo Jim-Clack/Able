@@ -452,7 +452,9 @@ namespace AbleCheckbook.Logic
             AddString("Visa");
             AddString("Mastercard");
             AddString("Discover");
+            AddString("Transaction Failed");
             AddString("Click here to make the Purchase");
+            AddString("Purchase succeeded but activation failed, try again later");
             AddString("Please fill out applicable fields:");
             AddString("Entries must agree with credit card billing info, or your purchase may not go through...");
             AddString("Apt");

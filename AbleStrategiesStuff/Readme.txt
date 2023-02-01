@@ -100,12 +100,15 @@ EULA...
  https://www.upcounsel.com/end-user-license-agreement
 Regex tester/guide for .NET
  http://regexstorm.net/
+applicaiton/x-www-form-urlencoded v multipart/form-data
+ https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
 MS DotNet WebBrowser...
  https://docs.microsoft.com/en-us/dotnet/desktop/winforms/controls/implement-two-way-com-between-dhtml-and-client?view=netframeworkdesktop-4.8
 Open Banking API...
  https://www.openbankingtracker.com/country/united-states
  https://open-bank-project.readthedocs.io/en/latest/
  https://www.programmableweb.com/api/
+ https://www.direct.id/?utm_medium=ppc&utm_campaign=%5BNEW%5D+Open+Banking+Data+US&utm_source=adwords&utm_term=open%20banking&hsa_mt=p&hsa_acc=4959752413&hsa_tgt=kwd-301019364898&hsa_kw=open%20banking&hsa_ad=554116540304&hsa_src=g&hsa_ver=3&hsa_net=adwords&hsa_cam=14987299884&hsa_grp=132264197727&gclid=CjwKCAjwm8WZBhBUEiwA178UnClEKJ45Y2qJrqz63ncTuylPSYRqR6I4PEOGLnQSu1evDMjKjQUWOBoCFdAQAvD_BwE
 PayPal
  https://developer.paypal.com/home
  https://github.com/paypal/PayPal-NET-SDK/wiki/Make-Your-First-Call

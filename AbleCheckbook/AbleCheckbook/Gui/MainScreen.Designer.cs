@@ -33,6 +33,7 @@ namespace AbleCheckbook
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainScreen));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -45,31 +46,8 @@ namespace AbleCheckbook
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainScreen));
             this.BgWorkerThread = new System.ComponentModel.BackgroundWorker();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.IsChecked = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.DateOfTransaction = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CheckNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Payee = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Category = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Debit = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Credit = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Balance = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.IsCleared = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DateCleared = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Memo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Status = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DateModified = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ModifiedBy = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NewEntryRow = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Entry = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Color = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.EntryBeforeEdit = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ShowSplits = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BankInfo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newAcctToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -158,6 +136,28 @@ namespace AbleCheckbook
             this.labelLastClosing = new System.Windows.Forms.Label();
             this.labelThisClosing = new System.Windows.Forms.Label();
             this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
+            this.IsChecked = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.DateOfTransaction = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CheckNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Payee = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Category = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Debit = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Credit = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Balance = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.IsCleared = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DateCleared = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Memo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Status = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DateModified = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ModifiedBy = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NewEntryRow = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Entry = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Color = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EntryBeforeEdit = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ShowSplits = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BankInfo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -232,234 +232,6 @@ namespace AbleCheckbook
             this.dataGridView1.Paint += new System.Windows.Forms.PaintEventHandler(this.dataGridView1_Paint);
             this.dataGridView1.Enter += new System.EventHandler(this.dataGridView1_Enter);
             this.dataGridView1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dataGridView1_KeyDown);
-            // 
-            // IsChecked
-            // 
-            this.IsChecked.DataPropertyName = "IsChecked";
-            this.IsChecked.HeaderText = "X";
-            this.IsChecked.Name = "IsChecked";
-            this.IsChecked.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.IsChecked.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.IsChecked.Visible = false;
-            this.IsChecked.Width = 30;
-            // 
-            // DateOfTransaction
-            // 
-            this.DateOfTransaction.DataPropertyName = "DateOfTransaction";
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DateOfTransaction.DefaultCellStyle = dataGridViewCellStyle2;
-            this.DateOfTransaction.HeaderText = "Date";
-            this.DateOfTransaction.Name = "DateOfTransaction";
-            this.DateOfTransaction.ReadOnly = true;
-            this.DateOfTransaction.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.DateOfTransaction.Width = 78;
-            // 
-            // CheckNumber
-            // 
-            this.CheckNumber.DataPropertyName = "CheckNumber";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CheckNumber.DefaultCellStyle = dataGridViewCellStyle3;
-            this.CheckNumber.HeaderText = "Ck#";
-            this.CheckNumber.Name = "CheckNumber";
-            this.CheckNumber.ReadOnly = true;
-            this.CheckNumber.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.CheckNumber.Width = 42;
-            // 
-            // Payee
-            // 
-            this.Payee.DataPropertyName = "Payee";
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Payee.DefaultCellStyle = dataGridViewCellStyle4;
-            this.Payee.HeaderText = "Payee";
-            this.Payee.Name = "Payee";
-            this.Payee.ReadOnly = true;
-            this.Payee.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Category
-            // 
-            this.Category.DataPropertyName = "Category";
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Category.DefaultCellStyle = dataGridViewCellStyle5;
-            this.Category.HeaderText = "Category";
-            this.Category.Name = "Category";
-            this.Category.ReadOnly = true;
-            this.Category.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Category.Width = 84;
-            // 
-            // Amount
-            // 
-            this.Amount.DataPropertyName = "Amount";
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Amount.DefaultCellStyle = dataGridViewCellStyle6;
-            this.Amount.HeaderText = "Amount";
-            this.Amount.Name = "Amount";
-            this.Amount.ReadOnly = true;
-            this.Amount.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Amount.Width = 84;
-            // 
-            // Debit
-            // 
-            this.Debit.DataPropertyName = "Debit";
-            this.Debit.HeaderText = "Debit";
-            this.Debit.Name = "Debit";
-            this.Debit.ReadOnly = true;
-            this.Debit.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Debit.Width = 84;
-            // 
-            // Credit
-            // 
-            this.Credit.DataPropertyName = "Credit";
-            this.Credit.HeaderText = "Credit";
-            this.Credit.Name = "Credit";
-            this.Credit.ReadOnly = true;
-            this.Credit.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Credit.Width = 84;
-            // 
-            // Balance
-            // 
-            this.Balance.DataPropertyName = "Balance";
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Balance.DefaultCellStyle = dataGridViewCellStyle7;
-            this.Balance.HeaderText = "Balance";
-            this.Balance.Name = "Balance";
-            this.Balance.ReadOnly = true;
-            this.Balance.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Balance.Width = 90;
-            // 
-            // IsCleared
-            // 
-            this.IsCleared.DataPropertyName = "IsCleared";
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IsCleared.DefaultCellStyle = dataGridViewCellStyle8;
-            this.IsCleared.HeaderText = "x";
-            this.IsCleared.Name = "IsCleared";
-            this.IsCleared.ReadOnly = true;
-            this.IsCleared.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.IsCleared.Width = 20;
-            // 
-            // DateCleared
-            // 
-            this.DateCleared.DataPropertyName = "DateCleared";
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DateCleared.DefaultCellStyle = dataGridViewCellStyle9;
-            this.DateCleared.HeaderText = "Cleared";
-            this.DateCleared.Name = "DateCleared";
-            this.DateCleared.ReadOnly = true;
-            this.DateCleared.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.DateCleared.Width = 78;
-            // 
-            // Memo
-            // 
-            this.Memo.DataPropertyName = "Memo";
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Memo.DefaultCellStyle = dataGridViewCellStyle10;
-            this.Memo.HeaderText = "Memo";
-            this.Memo.Name = "Memo";
-            this.Memo.ReadOnly = true;
-            this.Memo.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Memo.Width = 80;
-            // 
-            // Status
-            // 
-            this.Status.DataPropertyName = "Status";
-            dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Status.DefaultCellStyle = dataGridViewCellStyle11;
-            this.Status.HeaderText = "Status";
-            this.Status.Name = "Status";
-            this.Status.ReadOnly = true;
-            this.Status.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Status.Visible = false;
-            // 
-            // DateModified
-            // 
-            this.DateModified.DataPropertyName = "DateModified";
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle12.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DateModified.DefaultCellStyle = dataGridViewCellStyle12;
-            this.DateModified.HeaderText = "Modified";
-            this.DateModified.Name = "DateModified";
-            this.DateModified.ReadOnly = true;
-            this.DateModified.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.DateModified.Width = 78;
-            // 
-            // ModifiedBy
-            // 
-            this.ModifiedBy.DataPropertyName = "ModifiedBy";
-            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle13.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ModifiedBy.DefaultCellStyle = dataGridViewCellStyle13;
-            this.ModifiedBy.HeaderText = "By";
-            this.ModifiedBy.Name = "ModifiedBy";
-            this.ModifiedBy.ReadOnly = true;
-            this.ModifiedBy.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.ModifiedBy.Width = 50;
-            // 
-            // NewEntryRow
-            // 
-            this.NewEntryRow.DataPropertyName = "NewEntryRow";
-            this.NewEntryRow.HeaderText = "NewEntryRow";
-            this.NewEntryRow.Name = "NewEntryRow";
-            this.NewEntryRow.ReadOnly = true;
-            this.NewEntryRow.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.NewEntryRow.Visible = false;
-            // 
-            // Entry
-            // 
-            this.Entry.DataPropertyName = "Entry";
-            this.Entry.HeaderText = "Entry";
-            this.Entry.Name = "Entry";
-            this.Entry.ReadOnly = true;
-            this.Entry.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Entry.Visible = false;
-            // 
-            // Color
-            // 
-            this.Color.DataPropertyName = "Color";
-            this.Color.HeaderText = "Color";
-            this.Color.Name = "Color";
-            this.Color.ReadOnly = true;
-            this.Color.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Color.Visible = false;
-            // 
-            // EntryBeforeEdit
-            // 
-            this.EntryBeforeEdit.DataPropertyName = "EntryBeforeEdit";
-            this.EntryBeforeEdit.HeaderText = "EntryBeforeEdit";
-            this.EntryBeforeEdit.Name = "EntryBeforeEdit";
-            this.EntryBeforeEdit.ReadOnly = true;
-            this.EntryBeforeEdit.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.EntryBeforeEdit.Visible = false;
-            // 
-            // Id
-            // 
-            this.Id.DataPropertyName = "Id";
-            this.Id.HeaderText = "Id";
-            this.Id.Name = "Id";
-            this.Id.ReadOnly = true;
-            this.Id.Visible = false;
-            this.Id.Width = 250;
-            // 
-            // ShowSplits
-            // 
-            this.ShowSplits.DataPropertyName = "ShowSplits";
-            this.ShowSplits.HeaderText = "ShowSplits";
-            this.ShowSplits.Name = "ShowSplits";
-            this.ShowSplits.ReadOnly = true;
-            this.ShowSplits.Visible = false;
-            // 
-            // BankInfo
-            // 
-            this.BankInfo.DataPropertyName = "BankInfo";
-            this.BankInfo.HeaderText = "BankInfo";
-            this.BankInfo.Name = "BankInfo";
-            this.BankInfo.ReadOnly = true;
-            this.BankInfo.Width = 80;
             // 
             // menuStrip1
             // 
@@ -1257,6 +1029,234 @@ namespace AbleCheckbook
             this.pictureBoxLogo.TabStop = false;
             this.pictureBoxLogo.Visible = false;
             // 
+            // IsChecked
+            // 
+            this.IsChecked.DataPropertyName = "IsChecked";
+            this.IsChecked.HeaderText = "X";
+            this.IsChecked.Name = "IsChecked";
+            this.IsChecked.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.IsChecked.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.IsChecked.Visible = false;
+            this.IsChecked.Width = 30;
+            // 
+            // DateOfTransaction
+            // 
+            this.DateOfTransaction.DataPropertyName = "DateOfTransaction";
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DateOfTransaction.DefaultCellStyle = dataGridViewCellStyle2;
+            this.DateOfTransaction.HeaderText = "Date";
+            this.DateOfTransaction.Name = "DateOfTransaction";
+            this.DateOfTransaction.ReadOnly = true;
+            this.DateOfTransaction.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.DateOfTransaction.Width = 78;
+            // 
+            // CheckNumber
+            // 
+            this.CheckNumber.DataPropertyName = "CheckNumber";
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CheckNumber.DefaultCellStyle = dataGridViewCellStyle3;
+            this.CheckNumber.HeaderText = "Ck#";
+            this.CheckNumber.Name = "CheckNumber";
+            this.CheckNumber.ReadOnly = true;
+            this.CheckNumber.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.CheckNumber.Width = 42;
+            // 
+            // Payee
+            // 
+            this.Payee.DataPropertyName = "Payee";
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Payee.DefaultCellStyle = dataGridViewCellStyle4;
+            this.Payee.HeaderText = "Payee";
+            this.Payee.Name = "Payee";
+            this.Payee.ReadOnly = true;
+            this.Payee.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Category
+            // 
+            this.Category.DataPropertyName = "Category";
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Category.DefaultCellStyle = dataGridViewCellStyle5;
+            this.Category.HeaderText = "Category";
+            this.Category.Name = "Category";
+            this.Category.ReadOnly = true;
+            this.Category.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Category.Width = 128;
+            // 
+            // Amount
+            // 
+            this.Amount.DataPropertyName = "Amount";
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Amount.DefaultCellStyle = dataGridViewCellStyle6;
+            this.Amount.HeaderText = "Amount";
+            this.Amount.Name = "Amount";
+            this.Amount.ReadOnly = true;
+            this.Amount.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Amount.Width = 84;
+            // 
+            // Debit
+            // 
+            this.Debit.DataPropertyName = "Debit";
+            this.Debit.HeaderText = "Debit";
+            this.Debit.Name = "Debit";
+            this.Debit.ReadOnly = true;
+            this.Debit.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Debit.Width = 84;
+            // 
+            // Credit
+            // 
+            this.Credit.DataPropertyName = "Credit";
+            this.Credit.HeaderText = "Credit";
+            this.Credit.Name = "Credit";
+            this.Credit.ReadOnly = true;
+            this.Credit.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Credit.Width = 84;
+            // 
+            // Balance
+            // 
+            this.Balance.DataPropertyName = "Balance";
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Balance.DefaultCellStyle = dataGridViewCellStyle7;
+            this.Balance.HeaderText = "Balance";
+            this.Balance.Name = "Balance";
+            this.Balance.ReadOnly = true;
+            this.Balance.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Balance.Width = 90;
+            // 
+            // IsCleared
+            // 
+            this.IsCleared.DataPropertyName = "IsCleared";
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.IsCleared.DefaultCellStyle = dataGridViewCellStyle8;
+            this.IsCleared.HeaderText = "x";
+            this.IsCleared.Name = "IsCleared";
+            this.IsCleared.ReadOnly = true;
+            this.IsCleared.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.IsCleared.Width = 20;
+            // 
+            // DateCleared
+            // 
+            this.DateCleared.DataPropertyName = "DateCleared";
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DateCleared.DefaultCellStyle = dataGridViewCellStyle9;
+            this.DateCleared.HeaderText = "Cleared";
+            this.DateCleared.Name = "DateCleared";
+            this.DateCleared.ReadOnly = true;
+            this.DateCleared.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.DateCleared.Width = 78;
+            // 
+            // Memo
+            // 
+            this.Memo.DataPropertyName = "Memo";
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Memo.DefaultCellStyle = dataGridViewCellStyle10;
+            this.Memo.HeaderText = "Memo";
+            this.Memo.Name = "Memo";
+            this.Memo.ReadOnly = true;
+            this.Memo.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Memo.Width = 120;
+            // 
+            // Status
+            // 
+            this.Status.DataPropertyName = "Status";
+            dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Status.DefaultCellStyle = dataGridViewCellStyle11;
+            this.Status.HeaderText = "Status";
+            this.Status.Name = "Status";
+            this.Status.ReadOnly = true;
+            this.Status.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Status.Visible = false;
+            // 
+            // DateModified
+            // 
+            this.DateModified.DataPropertyName = "DateModified";
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle12.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DateModified.DefaultCellStyle = dataGridViewCellStyle12;
+            this.DateModified.HeaderText = "Modified";
+            this.DateModified.Name = "DateModified";
+            this.DateModified.ReadOnly = true;
+            this.DateModified.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.DateModified.Width = 78;
+            // 
+            // ModifiedBy
+            // 
+            this.ModifiedBy.DataPropertyName = "ModifiedBy";
+            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle13.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ModifiedBy.DefaultCellStyle = dataGridViewCellStyle13;
+            this.ModifiedBy.HeaderText = "By";
+            this.ModifiedBy.Name = "ModifiedBy";
+            this.ModifiedBy.ReadOnly = true;
+            this.ModifiedBy.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.ModifiedBy.Width = 50;
+            // 
+            // NewEntryRow
+            // 
+            this.NewEntryRow.DataPropertyName = "NewEntryRow";
+            this.NewEntryRow.HeaderText = "NewEntryRow";
+            this.NewEntryRow.Name = "NewEntryRow";
+            this.NewEntryRow.ReadOnly = true;
+            this.NewEntryRow.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.NewEntryRow.Visible = false;
+            // 
+            // Entry
+            // 
+            this.Entry.DataPropertyName = "Entry";
+            this.Entry.HeaderText = "Entry";
+            this.Entry.Name = "Entry";
+            this.Entry.ReadOnly = true;
+            this.Entry.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Entry.Visible = false;
+            // 
+            // Color
+            // 
+            this.Color.DataPropertyName = "Color";
+            this.Color.HeaderText = "Color";
+            this.Color.Name = "Color";
+            this.Color.ReadOnly = true;
+            this.Color.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Color.Visible = false;
+            // 
+            // EntryBeforeEdit
+            // 
+            this.EntryBeforeEdit.DataPropertyName = "EntryBeforeEdit";
+            this.EntryBeforeEdit.HeaderText = "EntryBeforeEdit";
+            this.EntryBeforeEdit.Name = "EntryBeforeEdit";
+            this.EntryBeforeEdit.ReadOnly = true;
+            this.EntryBeforeEdit.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.EntryBeforeEdit.Visible = false;
+            // 
+            // Id
+            // 
+            this.Id.DataPropertyName = "Id";
+            this.Id.HeaderText = "Id";
+            this.Id.Name = "Id";
+            this.Id.ReadOnly = true;
+            this.Id.Visible = false;
+            this.Id.Width = 250;
+            // 
+            // ShowSplits
+            // 
+            this.ShowSplits.DataPropertyName = "ShowSplits";
+            this.ShowSplits.HeaderText = "ShowSplits";
+            this.ShowSplits.Name = "ShowSplits";
+            this.ShowSplits.ReadOnly = true;
+            this.ShowSplits.Visible = false;
+            // 
+            // BankInfo
+            // 
+            this.BankInfo.DataPropertyName = "BankInfo";
+            this.BankInfo.HeaderText = "BankInfo";
+            this.BankInfo.Name = "BankInfo";
+            this.BankInfo.ReadOnly = true;
+            this.BankInfo.Width = 80;
+            // 
             // MainScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -1392,6 +1392,7 @@ namespace AbleCheckbook
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator13;
         private System.Windows.Forms.ToolStripMenuItem itemizeSplitsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem acctSettingsToolStripMenuItem;
+        private System.Windows.Forms.PictureBox pictureBoxLogo;
         private System.Windows.Forms.DataGridViewCheckBoxColumn IsChecked;
         private System.Windows.Forms.DataGridViewTextBoxColumn DateOfTransaction;
         private System.Windows.Forms.DataGridViewTextBoxColumn CheckNumber;
@@ -1414,7 +1415,6 @@ namespace AbleCheckbook
         private System.Windows.Forms.DataGridViewTextBoxColumn Id;
         private System.Windows.Forms.DataGridViewTextBoxColumn ShowSplits;
         private System.Windows.Forms.DataGridViewTextBoxColumn BankInfo;
-        private System.Windows.Forms.PictureBox pictureBoxLogo;
     }
 }
 

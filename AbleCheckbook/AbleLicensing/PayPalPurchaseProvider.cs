@@ -218,11 +218,9 @@ namespace AbleLicensing
         /// <summary>
         /// Verify that a purchase has been made and update the user info accordingly. (calls PayPal)
         /// </summary>
-        /// <param name="userInfo">To be updated with purchase data, possibly replacing the existing purchase record</param>
-        /// <param name="details">details - man-readable</param>
-        /// <param name="addTax">not yet supported</param>
         /// <returns>Success - see ErrorMessage if false</returns>
-        public bool CompletePurchase(ref UserInfo userInfo, string details, bool addTax)
+        /// <remarks>On success, get purchaseDesignator</remarks>
+        public bool CompletePurchase()
         {
             errorMessage = "";
             JsonSerializerOptions options = new JsonSerializerOptions();
@@ -243,7 +241,7 @@ namespace AbleLicensing
             }
             json = JsonSerializer.Serialize(payment, typeof(Payment), options);
             Activation.Instance.LoggerHook("@@@@@@@ Response: " + json);
-            purchaseDesignator = "????";
+            purchaseDesignator = ToPurchaseDesignator("????-????(Failed-Transaction)", "001", "001"); ;
             return true;
         }
 
@@ -351,12 +349,6 @@ namespace AbleLicensing
             Array.Copy(Encoding.ASCII.GetBytes(new char[] {'&'}, 0, 1), 0, entries, entry.Length, 1);
             Array.Copy(entry, 0, entries, entry.Length + 1, entry.Length);
             return entries;
-        }
-
-        private string PerformTransaction()
-        {
-
-            return "";
         }
 
         /// <summary>

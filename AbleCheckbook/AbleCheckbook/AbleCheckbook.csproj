@@ -176,6 +176,10 @@
     <Compile Include="Gui\ReconcileStartForm.Designer.cs">
       <DependentUpon>ReconcileStartForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Logic\BankClient.cs" />
+    <Compile Include="Logic\BankRegex.cs" />
+    <Compile Include="Logic\BankStmtImporter.cs" />
+    <Compile Include="Logic\BankConfiguration.cs" />
     <Compile Include="Logic\Emailer.cs" />
     <Compile Include="Logic\Poller.cs" />
     <Compile Include="Logic\RowOfSchEvents.cs" />

@@ -228,6 +228,10 @@ namespace AbleCheckbook.Gui
             this.Close();
         }
 
+        private void textBoxCsvFile_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 
 }

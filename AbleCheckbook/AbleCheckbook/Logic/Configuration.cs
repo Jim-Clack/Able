@@ -433,7 +433,7 @@ namespace AbleCheckbook.Logic
                 return UserLevel.Evaluation;
             }
             // We should augment this with Activation.IsFeatureEnabled().
-            switch ((int)_licenseCode[6])
+            switch ((int)_licenseCode[5])
             {
                 case (int)UserLevelPunct.Standard:
                     return UserLevel.Standard;

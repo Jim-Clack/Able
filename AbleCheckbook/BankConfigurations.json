@@ -21,7 +21,7 @@
 	  \#e        End date, inclusive
 	  \#x        End date, exclusive
 	  \#w        Wait (pause) 500 milliseconds
-    \#6        Convert from base64 up to a quote (or just use FilenameRegex)
+    \#6        Convert from base64 (No! Just use PrefixBase64DataRegex)
     \#&        Value of AccountRequestAddToHeader (for use in mult places)
   Caoture String Usages:
     0 - If closing balance isn't present in statement, use this as default
@@ -73,7 +73,7 @@
       "RequestType": "F",
       "ResponseType": "I",
       "FieldSeparator": ",",
-      "FilenameRegex": "[A-Za-z0-9_]+\\.csv",
+      "PrefixBase64DataRegex": "[A-Za-z0-9_]+\\.csv\"Content=\"",
       "HeaderNumberOfLines": 0,
       "DateColumnNumber": 0,
       "PayeeColumnNumber": 0,

@@ -82,12 +82,13 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxWebConnection.BackColor = System.Drawing.SystemColors.Control;
             this.textBoxWebConnection.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBoxWebConnection.Enabled = false;
             this.textBoxWebConnection.ForeColor = System.Drawing.SystemColors.MenuHighlight;
             this.textBoxWebConnection.Location = new System.Drawing.Point(205, 54);
             this.textBoxWebConnection.Name = "textBoxWebConnection";
             this.textBoxWebConnection.Size = new System.Drawing.Size(351, 15);
             this.textBoxWebConnection.TabIndex = 4;
-            this.textBoxWebConnection.Text = "(none)";
+            this.textBoxWebConnection.Text = "(none) - Not Yet Implemented";
             // 
             // buttonBrowse
             // 
@@ -108,6 +109,7 @@
             this.textBoxCsvFile.Name = "textBoxCsvFile";
             this.textBoxCsvFile.Size = new System.Drawing.Size(361, 22);
             this.textBoxCsvFile.TabIndex = 2;
+            this.textBoxCsvFile.TextChanged += new System.EventHandler(this.textBoxCsvFile_TextChanged);
             // 
             // radioButtonCsv
             // 
@@ -122,6 +124,7 @@
             // radioButtonWeb
             // 
             this.radioButtonWeb.AutoSize = true;
+            this.radioButtonWeb.Enabled = false;
             this.radioButtonWeb.Location = new System.Drawing.Point(11, 52);
             this.radioButtonWeb.Name = "radioButtonWeb";
             this.radioButtonWeb.Size = new System.Drawing.Size(186, 21);

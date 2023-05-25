@@ -57,6 +57,11 @@ namespace AbleCheckbook.Logic
             return captures[index];
         }
 
+        public void SetCapture(int index, String value)
+        {
+            captures[index] = value;
+        }
+
         public String ProcessRequest(string inString)
         {
             inString = ReplaceBackslashes(inString);
@@ -103,14 +108,14 @@ namespace AbleCheckbook.Logic
                 errorMessage = "Missing response for " + expected;
                 return errorMessage;
             }
-            inString = DecodeMimeFromBase64(inString);
+            inString = DecodeBase64AfterPrefix(inString);
             if (errorMessage.Length == 0)
             {
                 inString = DecodeBase64Data(expected, inString);
             }
             if (errorMessage.Length == 0)
             {
-                ValidateAndCapture(expected, inString);
+                ValidateAndCapture(expected.Replace(BASE64_HASHCODE, MATCH_QUOTED), inString);
             }
             if (errorMessage.Length > 0)
             {
@@ -119,13 +124,12 @@ namespace AbleCheckbook.Logic
             return inString;
         }
 
+        /////////////////////////////// support //////////////////////////////
+
         private void ValidateAndCapture(string expected, string inString)
         {
-
-            // base64 was already done, now match what WAS base64 data
-            string expected2 = expected.Replace(BASE64_HASHCODE, MATCH_QUOTED);
             // disassemble substrings from expected
-            string[] matchStrings = expected2.Split(new String[] { CAPTURE_HASHCODE }, StringSplitOptions.RemoveEmptyEntries);
+            string[] matchStrings = expected.Split(new String[] { CAPTURE_HASHCODE }, StringSplitOptions.RemoveEmptyEntries);
             int[] captureNumbers = new int[matchStrings.Length];
             Array.Clear(captureNumbers, 0, captureNumbers.Length);
             for (int substringNumber = 0; substringNumber < matchStrings.Length; ++substringNumber)
@@ -142,7 +146,8 @@ namespace AbleCheckbook.Logic
             int prevMatchEndIndex = 0;
             for (int substringNumber = 0; substringNumber < matchStrings.Length; ++substringNumber)
             {
-                Regex regExp = new Regex(matchStrings[substringNumber], RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.CultureInvariant);
+                Regex regExp = new Regex(matchStrings[substringNumber], 
+                    RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.CultureInvariant);
                 Match match = regExp.Match(inString, startColumn);
                 if (!match.Success)
                 {
@@ -160,14 +165,32 @@ namespace AbleCheckbook.Logic
             }
         }
 
-        private string DecodeMimeFromBase64(string inString)
+        private string DecodeBase64AfterPrefix(string inString)
         {
-            // mimeType:application/json, fileName and fileContent fields?
-            // inline vs attachment
-            // content disposition values
-
-            // TODO
-
+            Regex regex = new Regex(config.PrefixBase64DataRegex, 
+                RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.CultureInvariant);
+            Match match = regex.Match(inString);
+            if(match.Success)
+            {
+                int base64Length = 0;
+                StringBuilder outBuffer = new StringBuilder();
+                try
+                {
+                    base64Length = ConvertFromBase64(inString, match.Index + match.Length, outBuffer);
+                }
+                catch(ArgumentNullException)
+                {
+                    base64Length = 0;
+                }
+                catch(FormatException)
+                {
+                    base64Length = 0;
+                }
+                if (base64Length > 0)
+                {
+                    inString = inString.Substring(0, match.Index) + outBuffer.ToString() + inString.Substring(match.Index + base64Length);
+                }
+            }
             return inString;
         }
 
@@ -214,8 +237,20 @@ namespace AbleCheckbook.Logic
             if (errorMessage.Length == 0)
             {
                 StringBuilder outBuffer = new StringBuilder();
+                int base64Length = 0;
                 int base64Index = prefixIndex + prefix.Length;
-                int base64Length = ConvertFromBase64(inString, base64Index, outBuffer);
+                try
+                { 
+                    base64Length = ConvertFromBase64(inString, base64Index, outBuffer);
+                }
+                catch (ArgumentNullException)
+                {
+                    base64Length = 0;
+                }
+                catch (FormatException)
+                {
+                    base64Length = 0;
+                }
                 if (base64Length > 0)
                 {
                     inString = inString.Substring(0, base64Index) + outBuffer.ToString() + inString.Substring(base64Index + base64Length);
@@ -304,6 +339,15 @@ namespace AbleCheckbook.Logic
             return skipCharCount;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="inBuffer"></param>
+        /// <param name="startColumn"></param>
+        /// <param name="outBuffer"></param>
+        /// <returns>size of base64 data before conversion</returns>
+        /// <exception cref="ArgumentNullException">if startColumn is outside of inBuffer</exception>
+        /// <exception cref="FormatException">if the data is not base64 encoded</exception>
         private int ConvertFromBase64(string inBuffer, int startColumn, StringBuilder outBuffer)
         {
             int charsRead = 0;

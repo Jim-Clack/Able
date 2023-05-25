@@ -44,7 +44,7 @@ namespace AbleCheckbook.Logic
         private string requestType = "F";
         private string responseType = "M";
         private string fieldSeparator = ",";
-        private string filenameRegex = "[A-Za-z0-9_]+\\.csv";
+        private string prefixBase64DataRegex = "[A-Za-z0-9_]+\\.csv\"Content=\"";
         private int headerNumberOfLines = 0;
         private int dateColumnNumber = 0;
         private int payeeColumnNumber = 0;
@@ -85,7 +85,7 @@ namespace AbleCheckbook.Logic
         public string RequestType { get => requestType; set => requestType = value; }
         public string ResponseType { get => responseType; set => responseType = value; }
         public string FieldSeparator { get => fieldSeparator; set => fieldSeparator = value; }
-        public string FilenameRegex { get => filenameRegex; set => filenameRegex = value; }
+        public string PrefixBase64DataRegex { get => prefixBase64DataRegex; set => prefixBase64DataRegex = value; }
         public int HeaderNumberOfLines { get => headerNumberOfLines; set => headerNumberOfLines = value; }
         public int DateColumnNumber { get => dateColumnNumber; set => dateColumnNumber = value; }
         public int PayeeColumnNumber { get => payeeColumnNumber; set => payeeColumnNumber = value; }

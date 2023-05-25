@@ -18,7 +18,7 @@ namespace AbleLicensing
     /// Usage:
     ///  Activation act = Activation.Instance;
     ///  act.SetDefaultDays(92, 183);
-    ///  act.LicenseCode = "JonDoe-60606";
+    ///  act.LicenseCode = "JoDoe-606060";
     ///  string pin = act.ResetAllEntries(act.ChecksumOfString(act.SiteIdentification));
     ///  act.SetActivationPin(pin);
     ///  // And optionally...
@@ -53,6 +53,12 @@ namespace AbleLicensing
     /// </remarks>
     public class Activation
     {
+
+        /// <summary>
+        /// Bypass everything herein?
+        /// </summary>
+        private const Boolean DisableSecurity = true;
+        private static bool _disableSecurity = DisableSecurity;
 
         /// <summary>
         /// How many seconds must pass between local activation attempts.
@@ -151,6 +157,10 @@ namespace AbleLicensing
         /// <param name="message">To be logged</param>
         public void LoggerHook(string message)
         {
+            if (_disableSecurity)
+            {
+                return;
+            }
             SiteSettings.LoggerHook(message);
         }
 
@@ -188,7 +198,15 @@ namespace AbleLicensing
                 {
                     return false;
                 }
-                if(string.IsNullOrEmpty(LicenseCode) || (
+                if (_disableSecurity)
+                {
+                    LicenseCode = "NOSEC-URITY";
+                    SiteSettings.LicenseCode = SiteSettings.LicenseCode.Substring(0, 5) +
+                        (char)UserLevelPunct.Standard + SiteSettings.LicenseCode.Substring(7);
+                    _isActivated = true;
+                    return _isActivated;
+                }
+                if (string.IsNullOrEmpty(LicenseCode) || (
                     LicenseCode.Trim()[6] != (char)(int)UserLevelPunct.Standard && 
                     LicenseCode.Trim()[6] != (char)(int)UserLevelPunct.SuperUser && 
                     LicenseCode.Trim()[6] != (char)(int)UserLevelPunct.ProCPA))
@@ -242,6 +260,10 @@ namespace AbleLicensing
         /// <param name="verificationCode">Calculated code: checksum of chars in siteIdentification</param>
         public void SetExpiration(int daysRemaining, long verificationCode)
         {
+            if (_disableSecurity)
+            {
+                return;
+            }
             if (!CheckVerificationCode(ChecksumOfString(SiteIdentification), verificationCode))
             {
                 return;
@@ -258,6 +280,10 @@ namespace AbleLicensing
         /// <param name="pin">Activation PIN</param>
         public void SetActivationPin(string pin)
         {
+            if (_disableSecurity)
+            {
+                return;
+            }
             SiteSettings.ActivationPin = pin;
             SiteSettings.Save();
         }
@@ -299,6 +325,10 @@ namespace AbleLicensing
         /// <returns>unencrypted feature bitmask, 0 if none</returns>
         public long GetFeatureBitmask(long verificationCode)
         {
+            if (_disableSecurity)
+            {
+                return -1L;
+            }
             if (!CheckVerificationCode(ChecksumOfString(SiteIdentification), verificationCode))
             {
                 return 0L;
@@ -374,7 +404,7 @@ namespace AbleLicensing
         /// <returns>the PIN - always 4 digits on success, "" on error</returns>
         public string CalculatePin(long verificationCode, string sid = "", string lCode = "")
         {
-            if(sid.Trim().Length < 1)
+            if (sid.Trim().Length < 1)
             {
                 if(DateTime.Now.Subtract(_lastAttempt).TotalSeconds < SecondsBetweenAttempts)
                 {
@@ -431,7 +461,7 @@ namespace AbleLicensing
         /// </remarks>
         public int GetExpirationDays()
         {
-            if (IsActivated)
+            if (IsActivated || DisableSecurity)
             {
                 return 10000;
             }
@@ -484,6 +514,10 @@ namespace AbleLicensing
         /// <returns>daysRemaining, possibly updated based on how long the app has been installed</returns>
         private int ClampAtDaysSinceInstallation(int daysRemaining, DateTime lastChecked, bool restart = false)
         {
+            if (_disableSecurity)
+            {
+                return 1000;
+            }
             string checkFilePath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                     SiteSettings.MfrAndAppName + "\\settings.cnf");

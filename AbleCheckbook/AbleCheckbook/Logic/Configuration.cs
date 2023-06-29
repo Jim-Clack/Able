@@ -35,8 +35,8 @@ namespace AbleCheckbook.Logic
         private static string DEBUG_webServiceUrl = "https://localhost:44363/as/checkbook";
         private static string DEBUG_payPalUrl = "https://api-m.sandbox.paypal.com";
         private static string DEBUG_payPalConfiguration =
-            "QWZscHJ6eG1ObzUyR1dxb0ZzaXZXbThPems5U0N1TFpQQmllU0Iyb0VFVUwtUDY3Z2hPYjlUZHhFLUdHN0VnT2xrNmRmWWRVbDFPSmdJX3U6" +
-            "RUxsQ0Izc0o2LWhmaEF1aXFaSS04RGs5eWtlV3lxUWRMcmpKMHJhWVhCa2RfMnAyUXFGXzJianpsOGV5TXBQVW4wSmFCNlpGekRnMU9qQjg=";
+            "------------------------------------------------------------------------------------------------------------" +
+            "------------------------------------------------------------------------------------------------------------";
 #endif
 
         private static Configuration _instance = null;

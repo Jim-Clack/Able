@@ -233,7 +233,7 @@ PayPal Web Services
    Pers Passwd:    aGVs5%sm
    Pers Phone:     4087983656
    Pers Acct:      BBG6Q73XGCFFL
-   Basic Auth:     QWZscHJ6eG1ObzUyR1dxb0ZzaXZXbThPems5U0N1TFpQQmllU0Iyb0VFVUwtUDY3Z2hPYjlUZHhFLUdHN0VnT2xrNmRmWWRVbDFPSmdJX3U6RUxsQ0Izc0o2LWhmaEF1aXFaSS04RGs5eWtlV3lxUWRMcmpKMHJhWVhCa2RfMnAyUXFGXzJianpsOGV5TXBQVW4wSmFCNlpGekRnMU9qQjg=
+   Basic Auth:     ---------------------------------------------------------------------------------------------------
  Live Account:  
    App ID:         
    Name:           

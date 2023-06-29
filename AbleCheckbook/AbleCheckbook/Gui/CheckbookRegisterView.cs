@@ -119,7 +119,6 @@ namespace AbleCheckbook.Gui
         /// <summary>
         /// Update the datagridview in preparation for a repaint.
         /// </summary>
-        /// <param name="view">To be prepared</param>
         public void PrepForRepaint()
         {
             int lowBalanceRow = -1;
@@ -330,7 +329,7 @@ namespace AbleCheckbook.Gui
             BindingSource bindingSource1 = new BindingSource();
             bindingSource1.DataSource = _transactions;
             _dataGridView.DataSource = bindingSource1;
-            PrepForRepaint(); // new 6-18-2021
+            PrepForRepaint();
             _dataGridView.Visible = true;
             LayoutDataGridView();
             ScrollToActiveRow();

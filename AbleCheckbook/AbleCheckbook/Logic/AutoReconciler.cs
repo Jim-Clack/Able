@@ -241,7 +241,7 @@ namespace AbleCheckbook.Logic
             if (bestScore < targetScore)
             {
                 // if this is to be a NEW entry, populate its primary properties
-                string catName = UtilityMethods.GuessAtCategory(newEntry.BankPayee);
+                string catName = UtilityMethods.GuessAtCategory(newEntry.BankPayee, true);
                 Guid catId = UtilityMethods.GetCategoryOrUnknown(_userDb, catName).Id;
                 TransactionKind tranKind = (newEntry.BankAmount < 0 ? TransactionKind.Payment : TransactionKind.Deposit);
                 newEntry.AddSplit(catId, tranKind, Math.Abs(newEntry.BankAmount));

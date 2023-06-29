@@ -784,9 +784,10 @@ namespace AbleCheckbook.Logic
         /// Guess at a catetgory based on the payee.
         /// </summary>
         /// <param name="payee">Payee name.</param>
+        /// <param name="ignoreHousing">true to NOT treat "*bank" as "Housing"</param>
         /// <returns>Best guess at a category name - in lowercase.</returns>
         /// <remarks>(hardcoded - should be data-driven and locale-specific)</remarks>
-        public static string GuessAtCategory(string payee)
+        public static string GuessAtCategory(string payee, bool ignoreHousing = false)
         {
             payee = payee.ToLower().Trim();
             bool found = false;
@@ -829,6 +830,10 @@ namespace AbleCheckbook.Logic
                     case '!':
                         if (found)
                         {
+                            if(match.ToUpper().Contains("HOUSING") && ignoreHousing)
+                            {
+                                break;
+                            }
                             return UberCaps(match);
                         }
                         break;

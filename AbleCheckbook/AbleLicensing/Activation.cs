@@ -134,6 +134,10 @@ namespace AbleLicensing
                 LoggerHook("[V5b] Activation() ERROR - No class found that implements SiteSettings");
                 throw new ApplicationException("No class found that implements SiteSettings");
             }
+            if(_disableSecurity)
+            {
+                LoggerHook("[V5c] Activation() Disable security release");
+            }
         }
 
         /// <summary>

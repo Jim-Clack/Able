@@ -480,7 +480,6 @@ namespace AbleCheckbook.Gui
                 _mutex.ReleaseMutex();
             }
             DeleteTransaction(rowCheckbook);
-            CurrentEntryId = Guid.Empty;
             ReloadTransactions();
         }
 

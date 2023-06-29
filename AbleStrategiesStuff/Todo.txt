@@ -1,39 +1,23 @@
 Alpha TODO... (C=client/default, S=server)
- - Forget about licensing
- - BankStrings for auto-reconcile
+ - Change license & website to open source
  - Compare promerchant, nationalprocessing, cardknox, tremendous, paypal, stripe, etc
    https://sonary.com/merchant-services
    https://www.trustpilot.com/categories/payment_service
-     https://www.promerchant.com/internet/
-     https://www.flywire.com/platform/integrations/api
- - WS Server: find/update PurchaseRecord, use UserInfoBuilder.UpdatePurchase (C/S)
- - WS Server: Searches for license code should use wildcard for punct char (S)
- - WS Server: Latent site ID for abused License Code should return Deactivated (S)
- - WS Server: Append activations to activated.log (S)
- - WS Server: Keep track of unique hosts/IPs in a persisted collection
- - WS Server: Keep track of activations in a persisted collection
- - Paypal API (S)
- - Preserve Ids and FkLicenseIds appropriately to DB in web services (S)
- - Deleting obsolete records from CheckbookController WS API (S)
- - Web Services for online purchase and self-service activation (S)
- - Prompts for reconcile when it is not yet time (fixed?)
- - Year-end is not saving categories (fixed?)
+   https://www.promerchant.com/internet/
+   https://www.flywire.com/platform/integrations/api
+   ...are there any that are free for open-source use?
  - Flesh out online help (S)
  - Deploy website for testing (S)
- - Implement Activate via Email/Phone as is appropriate (C/S)
- - Move SU user data to website instead of file (superuser) (C/S)
- - Refactor Due-Notice, _alertType, add check-number-gap and AlertNotification
  - Preserve Undo/Redo histories in acb file (max 100 levels?)
  - Implement SU ReadLog (C/S)
  - AreYouSureForm with date/time/user that screen-captures, logs, and read log (C/S)
- - Once you've entered a payee with bad capitalization, you cannot change it (C)
- - Web Services for online reconciliation (Open Banking API)
- - Refactor ActivationForm per LoadAndCheckScratchVars()
+ - Web Services for online reconciliation (Open Banking API ?)
+ - Don't reset current row ID after a row is deleted, move to prev instead (C)
  - If sorted differently the cursor sometimes jumps way down (C)
- - Much testing 
 
 Longer term TODO...
- - Why can't program.cs trap exceptions? (debug mode only?)
+ - Make CSV import more flexible, parse headers, track balance, etc.
+ - Why can't program.cs trap exceptions in debug mode?
  - Refactor to extract large methods
  - Quick "Yesterday thru FutureLow+2" condensed report as jpg file 
  - Budgeting, forecasting, trends, etc.
@@ -51,7 +35,6 @@ Longer term TODO...
  - More fine-grained unit tests
  - Document (help) "2 wks" - i.e. schedule within 2 weks, close, selete unwanted
  - Print preview
- - Overflow Undo-Queues to disk (is this ever necessary?)
  - View: Load Custom View, Save Custom View (Sort, ColWdts, ColSeq)
  - Performance: Cache and maintain collections, optimize for speed
  - Mobile App
@@ -65,14 +48,4 @@ Online Banking
  - Check past 30 days for bank corrections
  - MemorizedPayee: BankPayeeRegex
  - Update, De-Update BankPayeeRegex per user activity
-
-Server DB
- - Purch_T: GetPurchTreeByPk, GetNullPurchTrees
- - PayPal_T: GetPayPalByPk, GetPayPalByDateRange, GetPayPalByDesc, GetPayPalByPurch
- - Site_T: GetSiteByPk, GetSiteByDesc, GetSiteBySid, GetSiteByEmail, GetSiteByPhone
- - Purch_T: Purch_Pk, PayPal_Fk, Name, Email, Phone, DateCreated, Status, etc.
- - PayPal_T: PayPal_Pk, Purch, Sid, Desc, Email, Phone, Auth, Amount, Status, etc.
- - Site_T: Site_Pk, Purch_Fk, Sid, Desc, Name, Email, Phone, DateCreated, DatePinged, Status, etc.
- - PurchStatus: GotPrePurchaseQuery, PurchaseFailed, PurchaseOkay, PurchaseCancelled
- - SiteStatus: GotPreActivationQuery, ActivationFailed, ActivationOkay, SiteDisabled
 

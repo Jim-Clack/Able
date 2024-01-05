@@ -760,6 +760,7 @@ namespace AbleCheckbook
             {
                 _helpForm.ReShow(searchPattern);
             }
+            this.BringToFront();
         }
 
         //////////////////////////// Other Threads ///////////////////////////

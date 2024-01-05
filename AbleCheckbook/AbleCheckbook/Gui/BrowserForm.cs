@@ -12,12 +12,14 @@ using System.Windows.Forms;
 
 namespace AbleCheckbook.Gui
 {
+    [System.Runtime.InteropServices.ComVisible(true)]
     public partial class BrowserForm : Form
     {
 
         /// <summary>
         /// For comm between browser and app.
         /// </summary>
+        [System.Runtime.InteropServices.ComVisible(true)]
         public class BrowserScripting
         {
             private Form _form;
@@ -53,9 +55,11 @@ namespace AbleCheckbook.Gui
             webBrowser1.IsWebBrowserContextMenuEnabled = false;
             webBrowser1.AllowWebBrowserDrop = false;
             webBrowser1.WebBrowserShortcutsEnabled = false;
+            bool is1 = System.Runtime.InteropServices.Marshal.IsTypeVisibleFromCom(this.GetType());
+            bool is2 = System.Runtime.InteropServices.Marshal.IsTypeVisibleFromCom(new BrowserScripting(this).GetType());
             webBrowser1.ObjectForScripting = new BrowserScripting(this);
             this.Text = Strings.Get(title);
-            if(bounds != null)
+            if (bounds != null)
             {
                 this.Bounds = bounds.Bounds;
             }

@@ -37,6 +37,8 @@ namespace AbleCheckbook.Gui
 
         private string _homeUrl = "";
 
+        private Form _parent = null;
+
         private string _searchUrlBase = "";
 
         /// <summary>
@@ -45,11 +47,12 @@ namespace AbleCheckbook.Gui
         /// <param name="title">Title of window</param>
         /// <param name="homeUrl">Initial URL</param>
         /// <param name="searchUrlBase">Search prefix, typically ending in a %20 or q= or +</param>
-        /// <param name="bounds">optional bounds for the form</param>
-        public BrowserForm(string title, string homeUrl, string searchUrlBase, Form bounds = null)
+        /// <param name="parent">optional, for bounds and for returning it to foreground</param>
+        public BrowserForm(string title, string homeUrl, string searchUrlBase, Form parent = null)
         {
             _homeUrl = homeUrl;
             _searchUrlBase = searchUrlBase;
+            _parent = parent;
             InitializeComponent();
             webBrowser1.ScriptErrorsSuppressed = true;
             webBrowser1.IsWebBrowserContextMenuEnabled = false;
@@ -59,9 +62,9 @@ namespace AbleCheckbook.Gui
             bool is2 = System.Runtime.InteropServices.Marshal.IsTypeVisibleFromCom(new BrowserScripting(this).GetType());
             webBrowser1.ObjectForScripting = new BrowserScripting(this);
             this.Text = Strings.Get(title);
-            if (bounds != null)
+            if (_parent != null)
             {
-                this.Bounds = bounds.Bounds;
+                this.Bounds = _parent.Bounds;
             }
         }
 
@@ -141,6 +144,15 @@ namespace AbleCheckbook.Gui
                 FitToPanel();
             }
         }
+
+        private void BrowserForm_Leave(object sender, EventArgs e)
+        {
+            if(_parent != null)
+            {
+                _parent.BringToFront();
+            }
+        }
+
     }
 
 }

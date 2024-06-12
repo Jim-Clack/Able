@@ -116,7 +116,10 @@
             this.MinimumSize = new System.Drawing.Size(520, 200);
             this.Name = "BrowserForm";
             this.Text = "Browser Form";
+            this.Deactivate += new System.EventHandler(this.BrowserForm_Leave);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.BrowserForm_Leave);
             this.Load += new System.EventHandler(this.BrowserForm_Load);
+            this.Leave += new System.EventHandler(this.BrowserForm_Leave);
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();

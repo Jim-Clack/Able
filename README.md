@@ -14,6 +14,7 @@
 - It has a couple of minor bugs that you may not even notice
 - It could use a lot more charts. (hint: do you code?)
 ## More...
+- Ignore the AbleLicensing tree - that was started before I open-sourced this
 - Your data is stored in JSON format for easy editing
 - Source code is fairly readable and documented internally
 - I'm 75 and wrote this when I was 70, so I hope it's not too old-fashioned.

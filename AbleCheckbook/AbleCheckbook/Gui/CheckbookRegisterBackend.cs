@@ -496,7 +496,7 @@ namespace AbleCheckbook.Gui
             YearEndWrapup yearEndWrapUp = new YearEndWrapup(_db);
             if (_db.InProgress != InProgress.Nothing || !yearEndWrapUp.IsTimeToWrapUp)
             {
-                MessageBox.Show(win, Strings.Get("Many old entries not yet been cleared, or current year acct already exists."),
+                MessageBox.Show(win, Strings.Get("Not Yet: Many old entries yet uncleared, current year acct already exists, or it is not yet past Feb 2."),
                     Strings.Get("Not Yet"), MessageBoxButtons.OK);
                 return "";
             }

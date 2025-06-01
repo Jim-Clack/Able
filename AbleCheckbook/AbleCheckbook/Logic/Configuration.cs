@@ -47,6 +47,7 @@ namespace AbleCheckbook.Logic
         private string _webServiceUrl = "https://ablestrategies.com/as/checkbook/";
         private string _payPalUrl = "https://api-m.paypal.com";
         private string _payPalConfiguration = "default123";
+        private string _errorList = "";
         private string _alertNotification = "";
         private string _directoryLogs = "";
         private string _directoryDatabase = "";
@@ -161,6 +162,15 @@ namespace AbleCheckbook.Logic
             _loadedFrom = "LoadedFromFile";
             SaveFile();
             _loadedFrom = prevLoadedFrom;
+        }
+
+        /// <summary>
+        /// Get the error list.
+        /// </summary>
+        /// <returns>Errors in the configuration or, if there are no errors, a zero-length string ""</returns>
+        public String getErrorList()
+        {
+            return _errorList;
         }
 
         /// <summary>
@@ -507,12 +517,44 @@ namespace AbleCheckbook.Logic
         public void Verify()
         {
             GetUserLevel();
-            Directory.CreateDirectory(DirectoryConfiguration);
-            Directory.CreateDirectory(DirectoryBackup1);
-            Directory.CreateDirectory(DirectoryBackup2);
-            Directory.CreateDirectory(DirectoryDatabase);
-            Directory.CreateDirectory(DirectoryImportExport);
-            Directory.CreateDirectory(DirectoryLogs);
+            _errorList = "";
+            CreateDirectory(DirectoryConfiguration);
+            if (DirectoryBackup1.Length > 0 && !DirectoryBackup1.Equals(DirectoryDatabase))
+            {
+                CreateDirectory(DirectoryBackup1);
+            }
+            if (DirectoryBackup2.Length > 0 && !DirectoryBackup2.Equals(DirectoryBackup1))
+            {
+                CreateDirectory(DirectoryBackup2);
+            }
+            CreateDirectory(DirectoryDatabase);
+            if (DirectoryImportExport.Length > 0)
+            {
+                CreateDirectory(DirectoryImportExport);
+            }
+            CreateDirectory(DirectoryLogs);
+        }
+
+        /// <summary>
+        /// Create a directory
+        /// </summary>
+        /// <param name="dirName">Directory to be created</param>
+        private void CreateDirectory(String dirName)
+        {
+            try
+            {
+                Directory.CreateDirectory(dirName);
+            } catch(Exception ex)
+            {
+                if(_errorList.Length == 0)
+                {
+                    _errorList = "Directories not accessible: \n " + dirName;
+                }
+                else
+                {
+                    _errorList += "\n " + dirName;
+                }
+            }
         }
 
         /// <summary>

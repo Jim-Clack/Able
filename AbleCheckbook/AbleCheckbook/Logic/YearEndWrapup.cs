@@ -85,7 +85,7 @@ namespace AbleCheckbook.Logic
                     return false;
                 }
                 DateTime now = DateTime.Now;
-                if(now.Month < 2 || (now.Month == 2 && now.Day < 12)) // wait until Feb 12, at least
+                if(now.Month < 2 || (now.Month == 2 && now.Day < 2)) // wait until after Feb 2
                 {
                     return false;
                 }

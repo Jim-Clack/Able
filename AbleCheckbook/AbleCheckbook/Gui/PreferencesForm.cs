@@ -95,6 +95,13 @@ namespace AbleCheckbook.Gui
                 return false;
             }
             textBoxBackupsDir.Text = Configuration.Instance.DirectoryBackup2; // just in case it was changed too
+            String errorList = Configuration.Instance.getErrorList();
+            if(errorList.Length > 0)
+            {
+                NotificationForm form = new NotificationForm(true, "Directory Problem",
+                    errorList, false);
+                DialogResult result = form.ShowDialog();
+            }
             return true;
         }
 

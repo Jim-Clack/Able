@@ -1,23 +1,22 @@
 Alpha TODO... (C=client/default, S=server)
- - Change license & website to open source
+ - Flesh out online help (S)
+ - Deploy website for testing (S)
+ - Preserve Undo/Redo histories in acb file (max 100 levels?)
+ - Implement SU ReadLog (C/S)
+ - AreYouSureForm with date/time/user that screen-captures, logs, and read log (C/S)
+ - Don't reset current row ID after a row is deleted, move to prev instead (C)
+ - If sorted differently the cursor sometimes jumps way down (C)
+
+Web Services for online reconciliation... (Open Banking API ?)
  - Compare promerchant, nationalprocessing, cardknox, tremendous, paypal, stripe, etc
    https://sonary.com/merchant-services
    https://www.trustpilot.com/categories/payment_service
    https://www.promerchant.com/internet/
    https://www.flywire.com/platform/integrations/api
    ...are there any that are free for open-source use?
- - Flesh out online help (S)
- - Deploy website for testing (S)
- - Preserve Undo/Redo histories in acb file (max 100 levels?)
- - Implement SU ReadLog (C/S)
- - AreYouSureForm with date/time/user that screen-captures, logs, and read log (C/S)
- - Web Services for online reconciliation (Open Banking API ?)
- - Don't reset current row ID after a row is deleted, move to prev instead (C)
- - If sorted differently the cursor sometimes jumps way down (C)
 
 Longer term TODO...
  - Make CSV import more flexible, parse headers, track balance, etc.
- - Why can't program.cs trap exceptions in debug mode?
  - Refactor to extract large methods
  - Quick "Yesterday thru FutureLow+2" condensed report as jpg file 
  - Budgeting, forecasting, trends, etc.

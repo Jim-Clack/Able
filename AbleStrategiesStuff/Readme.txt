@@ -40,14 +40,11 @@ Class Topology...
 
 Developer Tips...
  1. Some APIs are public merely to support serialization or unit testing
- 2. Surround each GUI operation with BeforeOperation() and AfterOperation() 
- 3. Allow foreign language Categories and Payees - don't translate
- 4. Filenames are in English and NOT translated per i18n
- 5. Yes, it's not performant, deliberately -> simplicity until it's stable
- 6. When you add/mod quoted text, be sure to update Strings.cs as well
- 7. db.UpdateEntry() caveats galore, esp w/Undo, because of live data
- 8. db.InsertEntry() caveats as well, don't modify record AFTER the insert
- 9. Web Services: Rebuild references (i.e. AbleLicensing) after change/build
+ 2. Yes, it's not performant, deliberately -> simplicity until it's stable
+ 3. When you add/mod quoted text, be sure to update Strings.cs as well
+ 4. db.UpdateEntry() caveats galore, esp w/Undo, because of live data
+ 5. db.InsertEntry() caveats as well, don't modify record AFTER the insert
+ 6. Web Services: Rebuild references (i.e. AbleLicensing) after change/build
 
 Design of this project...
  * Avoid the use of sophisticated libraries, as it's intended to be ported

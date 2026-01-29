@@ -93,7 +93,7 @@
       <Name>AbleCheckbook</Name>
     </ProjectReference>
     <ProjectReference Include="..\AbleLicensing\AbleLicensing.csproj">
-      <Project>{ca62da72-fc88-44cf-be75-0068d5005e9d}</Project>
+      <Project>{c3821f75-6152-afe6-68f8-7c20b0d4d6ba}</Project>
       <Name>AbleLicensing</Name>
     </ProjectReference>
   </ItemGroup>

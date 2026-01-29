@@ -1,3 +1,27 @@
+BUGS:
+ Done??? . . .
+ - Use the updated CsvImporter.cs for these changes...
+ -    look for contains("description") not equals("description") etc. 
+ -    new columns to ignore: retailer, category
+ -    commas in values should be okay - ignore
+ -    quotes around values should be okay - ignore
+ -    prefer posted date over trans date 
+ -    \ouch_acct_3070_11_21_2025_to_12_23_2025.csv reconcile (with pdf and bu1/acb)  
+ - Make sure change was made to use the correct Category for imported entries
+ YTD . . .
+ - When you click checkboxes during reconcile, the Reconciled Balance doesn't update
+ -    Debug step through MainScreen.Reconciler(78)
+ - Should change reconcile end date to be inclusive, then bump it for next start date
+
+MS VS 2022 Upgrade Notes
+ - No longer needs NewtonSoft.Json package, uses System.Text.Json
+ - Remove the NewtonSoft Error Check at the end of AbleCheckbook.csproj
+ - Load the solution/project in VS and let it upgrade
+ - The MSIX project may need to be removed (no longer needed)
+ - Go to Project>NuGet and set the 2 Restore Packages options to true
+ - Rebuild
+ - Add Project "C# Packager" AbleCheckbookInstaller, configure it, and build it
+
 Alpha TODO... (C=client/default, S=server)
  - Flesh out online help (S)
  - Deploy website for testing (S)
@@ -39,8 +63,6 @@ Longer term TODO...
  - Mobile App
  - Mac edition
 
-THOUGHTS ---
-
 Online Banking
  - Accomodate either sequence: User-First, Sync-First
  - Accomodate delayed amt-updates (Tips, Held-Funds, etc.)
@@ -48,3 +70,7 @@ Online Banking
  - MemorizedPayee: BankPayeeRegex
  - Update, De-Update BankPayeeRegex per user activity
 
+Creating a Deliverable
+ - Set Solution to Release configuration and Rebuild all
+ - Rebuild AbleCheckbookInstaller
+ - Click AbleCheckbook in solution explorer, Publish, output to an empty folder

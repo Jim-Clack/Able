@@ -89,7 +89,7 @@ namespace AbleCheckbook.Db
         private bool _isCleared = false;
 
         /// <summary>
-        /// Has this entry been checked for further processing?
+        /// Is this entry checked to indicate further processing?
         /// </summary>
         private bool _isChecked = false;
 

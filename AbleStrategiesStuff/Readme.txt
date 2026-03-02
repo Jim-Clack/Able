@@ -3,7 +3,7 @@ Development Notes
 
 Workstation Setup Notes...
  A. Install MS 2019 Visual Studio complete
- B. Install MS 2017 Installer for Application Deployment via MSIx
+ B. MSIX: Extensions > ManageExtensions > VsInstallerProjects, then Restart VS 
  C. Install git and/or GitHub desktop
  D. You will want to install Postman and WinSCP as well
  E. AbleCheckbook VS Pre-Build Event: copy $(ProjectDir)Support\* $(TargetDir)
@@ -57,6 +57,7 @@ Design of this project...
  * Maintain average MI of 75+ and CycComp to 5 or less in non-GUI methods
  * JSON is shared in AbleLicensing.WsApi - enums are deliberately omitted
  * 65% test coverage of non-GUI code, addressing all happy-paths therein 
+ * Setup [Solution] Add>NewProject>Setup; ApplicFolder>Add>Project Output
 
 User Levels (and corresponding License Code delimiters)...
  0. Evaluation (Time Limited, Limited Undo, No Support, No Admin)

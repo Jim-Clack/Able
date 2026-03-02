@@ -1,5 +1,6 @@
 BUGS:
- Done??? . . .
+Still, as of March 2, 2026, tries to parse header: "cannot parse amount Full Description at line 1"  
+Done? No, See above
  - Use the updated CsvImporter.cs for these changes...
  -    look for contains("description") not equals("description") etc. 
  -    new columns to ignore: retailer, category

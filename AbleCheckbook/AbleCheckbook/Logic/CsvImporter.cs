@@ -200,11 +200,15 @@ namespace AbleCheckbook.Logic
                     case "transaction date":
                     case "date of tran":
                     case "date of transaction":
+                    case "tran date":
+                    case "trans date":
                         sawDate = true;
                         _columnMap[ColumnMap.Date] = colNum;
                         _numColumns = Math.Max(_numColumns, colNum + 1);
                         break;
                     case "check #":
+                    case "check no":
+                    case "check nbr":
                     case "checknum":
                     case "check number":
                         _columnMap[ColumnMap.CheckNum] = colNum;
@@ -230,6 +234,7 @@ namespace AbleCheckbook.Logic
                         _columnMap[ColumnMap.Cleared] = colNum;
                         break;
                     case "payee":
+                    case "vendor":
                         sawPayee = true;
                         _columnMap[ColumnMap.Payee] = colNum;
                         _numColumns = Math.Max(_numColumns, colNum + 1);
@@ -239,6 +244,8 @@ namespace AbleCheckbook.Logic
                         break;
                     case "category":
                     case "description":
+                    case "full description":
+                    case "desc":
                         _columnMap[ColumnMap.Category] = colNum;
                         if (!sawPayee)
                         {

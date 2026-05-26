@@ -33,6 +33,11 @@ namespace AbleCheckbook.Logic
         private List<Guid> _matches = null;
 
         /// <summary>
+        /// Access to the database, used only for CompareEntriesByCategory
+        /// </summary>
+        private IDbAccess _db = null;
+
+        /// <summary>
         /// How are the entries currently sorted?
         /// </summary>
         private SortEntriesBy _sortedBy = SortEntriesBy.TranDate;
@@ -67,6 +72,7 @@ namespace AbleCheckbook.Logic
         /// <returns>The sorted list</returns>
         public List<CheckbookEntry> GetSortedEntries(IDbAccess db, SortEntriesBy sortedBy, List<Guid> matches = null)
         {
+            _db = db;
             _matches = matches;
             if (sortedBy != _sortedBy)
             {
@@ -189,7 +195,9 @@ namespace AbleCheckbook.Logic
             {
                 return 1;
             }
-            int result = leftArg.Splits[0].CategoryId.CompareTo(rightArg.Splits[0].CategoryId);
+            String leftArgName = UtilityMethods.CategoryNameByGuid(_db, leftArg.Id);
+            String rightArgName = UtilityMethods.CategoryNameByGuid(_db, rightArg.Id);
+            int result = leftArgName.CompareTo(leftArgName);
             if (result == 0)
             {
                 result = CompareEntriesByTranDate(leftArg, rightArg);

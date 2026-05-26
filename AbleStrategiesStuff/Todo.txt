@@ -1,15 +1,7 @@
 BUGS:
-Still, as of March 2, 2026, tries to parse header: "cannot parse amount Full Description at line 1"  
-Done? No, See above
- - Use the updated CsvImporter.cs for these changes...
- -    look for contains("description") not equals("description") etc. 
- -    new columns to ignore: retailer, category
- -    commas in values should be okay - ignore
- -    quotes around values should be okay - ignore
- -    prefer posted date over trans date 
- -    \ouch_acct_3070_11_21_2025_to_12_23_2025.csv reconcile (with pdf and bu1/acb)  
- - Make sure change was made to use the correct Category for imported entries
- YTD . . .
+ - When reconciling, use statement date, not register date to check if out-of-date-range
+ - Category always gets set to Clothing for auto-reconciled entries
+ - When sorting by Category it is not in order, may be sorting by hash instead of string
  - When you click checkboxes during reconcile, the Reconciled Balance doesn't update
  -    Debug step through MainScreen.Reconciler(78)
  - Should change reconcile end date to be inclusive, then bump it for next start date

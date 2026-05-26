@@ -10,6 +10,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace AbleCheckbook.Logic
 {
@@ -399,7 +400,23 @@ namespace AbleCheckbook.Logic
         }
 
         /// <summary>
-        /// Get a category from the DB or, if not found, return the "Unknnown" category.
+        /// Get a category name when only the guid is known.
+        /// </summary>
+        /// <param name="db">For accessing the database</param>
+        /// <param name="guid">Of the category</param>
+        /// <returns>The category name or "Unknown" if not found</returns>
+        public static String CategoryNameByGuid(IDbAccess db, Guid guid)
+        {
+            FinancialCategory category = db.GetFinancialCategoryById(guid);
+            if (category == null)
+            {
+                return "Unknown";
+            }
+            return category.Name;
+        }
+
+        /// <summary>
+        /// Get a category from the DB or, if not found, return the "Unknown" category.
         /// </summary>
         /// <param name="db">To find or update with the category</param>
         /// <param name="name">Name of category, null to default to "Unknown"</param>
